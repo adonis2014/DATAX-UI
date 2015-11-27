@@ -14,11 +14,6 @@ import org.apache.commons.lang3.StringUtils;
 import org.guess.core.utils.DateUtil;
 
 import com.google.common.collect.Maps;
-import com.iharding.generator.xml.Attribute;
-import com.iharding.generator.xml.Bean;
-import com.iharding.generator.xml.Column;
-import com.iharding.generator.xml.PrimaryKey;
-import com.iharding.generator.xml.Validation;
 
 public class DBReverse {
 	
