@@ -10,43 +10,23 @@ import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 /**
- * 数据源Entity
+ * 项目名称Entity
  * @author Joe.zhang
  * @version 2015-11-29
  */
 @Entity
-@Table(name = "meta_dataSource")
+@Table(name = "meta_project")
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
-public class DataSource extends IdEntity {
+public class Project extends IdEntity {
 
-	/**
-	 * 数据源ID
-	 */
-	private Integer datasourceId;
 	/**
 	 * 项目编码
 	 */
 	private String projectCode;
 	/**
-	 * jdbc驱动class
+	 * 项目名称
 	 */
-	private String driverClassName;
-	/**
-	 * jdbc url
-	 */
-	private String jdbcUrl;
-	/**
-	 * jdbc User
-	 */
-	private String jdbcUser;
-	/**
-	 * jdbc password
-	 */
-	private String jdbcPassword;
-	/**
-	 * 数据库类型
-	 */
-	private Integer dbType;
+	private String projectName;
 	/**
 	 * 备注
 	 */
@@ -68,14 +48,6 @@ public class DataSource extends IdEntity {
 	 */
 	private Long updateId;
 	
-	public Integer getDatasourceId() {
-		return datasourceId;
-	}
-
-	public void setDatasourceId(Integer datasourceId) {
-		this.datasourceId = datasourceId;
-	}
-	
 	public String getProjectCode() {
 		return projectCode;
 	}
@@ -84,44 +56,12 @@ public class DataSource extends IdEntity {
 		this.projectCode = projectCode;
 	}
 	
-	public String getDriverClassName() {
-		return driverClassName;
+	public String getProjectName() {
+		return projectName;
 	}
 
-	public void setDriverClassName(String driverClassName) {
-		this.driverClassName = driverClassName;
-	}
-	
-	public String getJdbcUrl() {
-		return jdbcUrl;
-	}
-
-	public void setJdbcUrl(String jdbcUrl) {
-		this.jdbcUrl = jdbcUrl;
-	}
-	
-	public String getJdbcUser() {
-		return jdbcUser;
-	}
-
-	public void setJdbcUser(String jdbcUser) {
-		this.jdbcUser = jdbcUser;
-	}
-	
-	public String getJdbcPassword() {
-		return jdbcPassword;
-	}
-
-	public void setJdbcPassword(String jdbcPassword) {
-		this.jdbcPassword = jdbcPassword;
-	}
-	
-	public Integer getDbType() {
-		return dbType;
-	}
-
-	public void setDbType(Integer dbType) {
-		this.dbType = dbType;
+	public void setProjectName(String projectName) {
+		this.projectName = projectName;
 	}
 	
 	public String getRemark() {
