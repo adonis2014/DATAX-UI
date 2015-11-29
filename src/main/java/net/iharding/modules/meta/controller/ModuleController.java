@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 * 
 * @ClassName: Module
 * @Description: ModuleController
-* @author renzp
+* @author zhangxuhui
 * @date 2014-8-5 下午02:04:46
 *
 */

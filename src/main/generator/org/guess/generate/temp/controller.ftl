@@ -11,8 +11,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 * 
 * @ClassName: ${ClassName}
 * @Description: ${ClassName}Controller
-* @author renzp
-* @date 2014-8-5 下午02:04:46
+* @author ${classAuthor}
+* @date  ${.now}
 *
 */
 @Controller

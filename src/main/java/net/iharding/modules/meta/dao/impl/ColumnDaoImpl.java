@@ -9,8 +9,8 @@ import org.springframework.stereotype.Repository;
 * 
 * @ClassName: Column
 * @Description: ColumndaoImpl
-* @author renzp
-* @date 2014-8-5 下午02:04:46
+* @author Joe.zhang
+* @date  2015-11-29 23:01:51
 *
 */
 @Repository

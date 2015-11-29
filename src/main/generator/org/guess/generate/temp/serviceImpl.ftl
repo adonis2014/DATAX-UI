@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 * 
 * @ClassName: ${ClassName}
 * @Description: ${ClassName}serviceImpl
-* @author renzp
+* @author ${classAuthor}
 * @date 2014-8-5 下午02:04:46
 *
 */

@@ -9,7 +9,7 @@ import org.springframework.stereotype.Repository;
 * 
 * @ClassName: DBTable
 * @Description: DBTabledaoImpl
-* @author renzp
+* @author zhangxuhui
 * @date 2014-8-5 下午02:04:46
 *
 */
