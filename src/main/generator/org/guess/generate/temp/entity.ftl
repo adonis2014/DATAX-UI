@@ -1,9 +1,11 @@
 package ${packageName}.${moduleName}.model;
 
+import java.util.Date;
+
 import javax.persistence.Entity;
 import javax.persistence.Table;
 
-import org.guess.core.IdEntity;
+import org.guess.core.orm.IdEntity;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
@@ -29,7 +31,7 @@ public class ${ClassName} extends IdEntity {
 		return ${item.name};
 	}
 
-	public void set${item.name?cap_first}(String ${item.name}) {
+	public void set${item.name?cap_first}(${item.type} ${item.name}) {
 		this.${item.name} = ${item.name};
 	}
 	

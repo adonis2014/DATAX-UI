@@ -13,7 +13,7 @@
 
     <aop:aspectj-autoproxy proxy-target-class="true"/>
 
-    <context:component-scan base-package="org.guess.**.controller" use-default-filters="false">
+    <context:component-scan base-package="org.guess.**.controller,net.iharding.**.controller" use-default-filters="false">
         <context:include-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
     </context:component-scan>
 

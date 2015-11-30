@@ -18,7 +18,7 @@
     <aop:aspectj-autoproxy proxy-target-class="true"/>
     <context:annotation-config />
     <!-- 使用annotation模式 -->
-    <context:component-scan base-package="org.guess">
+    <context:component-scan base-package="net.iharding.modules,org.guess">
         <context:exclude-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
     </context:component-scan>
 
@@ -73,9 +73,7 @@
             <list>
                 <value>org.guess.sys.model</value>
                 <value>org.guess.showcase.workflow.model</value>
-                <value>org.guess.showcase.finance.model</value>
-                <value>org.guess.showcase.cms.model</value>
-                <value>org.guess.showcase.qixiu.model</value>
+                <value>net.iharding.modules</value>
             </list>
         </property>
         <property name="hibernateProperties">

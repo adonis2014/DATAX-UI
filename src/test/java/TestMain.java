@@ -1,10 +1,3 @@
-/**
- * Copyright &copy; 2012-2013 <a href="https://github.com/thinkgem/jeesite">JeeSite</a> All rights reserved.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- */
-package org.guess.generate;
-
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
@@ -17,6 +10,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.guess.core.utils.DateUtil;
 import org.guess.core.utils.FileUtils;
 import org.guess.core.utils.FreeMarkers;
+import org.guess.generate.Field;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.io.DefaultResourceLoader;
@@ -26,17 +20,12 @@ import com.google.common.collect.Maps;
 import freemarker.template.Configuration;
 import freemarker.template.Template;
 
-/**
- * 代码生成器
- * 
- * @author ThinkGem
- * @version 2013-06-21
- */
-public class Generate {
 
-	private static Logger logger = LoggerFactory.getLogger(Generate.class);
+public class TestMain {
+	private static Logger logger = LoggerFactory.getLogger(TestMain.class);
 
 	public static void main(String[] args) {
+		// TODO Auto-generated method stub
 
 		// ========== ↓↓↓↓↓↓ 执行前请修改参数，谨慎执行。↓↓↓↓↓↓ ====================
 
@@ -224,4 +213,5 @@ public class Generate {
 			e.printStackTrace();
 		}
 	}
+
 }

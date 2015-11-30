@@ -7,7 +7,7 @@ import ${packageName}.${moduleName}.model.${ClassName};
 * 
 * @ClassName: ${ClassName}
 * @Description: ${ClassName}service
-* @author renzp
+* @author ${classAuthor}
 * @date 2014-8-5 下午02:04:46
 *
 */

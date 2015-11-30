@@ -9,8 +9,8 @@ import org.springframework.stereotype.Repository;
 * 
 * @ClassName: ${ClassName}
 * @Description: ${ClassName}daoImpl
-* @author renzp
-* @date 2014-8-5 下午02:04:46
+* @author ${classAuthor}
+* @date  ${.now}
 *
 */
 @Repository
