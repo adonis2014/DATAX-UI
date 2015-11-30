@@ -122,9 +122,9 @@ CREATE SEQUENCE "public"."seq_sys_log"
  INCREMENT 1
  MINVALUE 1
  MAXVALUE 9223372036854775807
- START 24
+ START 26
  CACHE 1;
-SELECT setval('"public"."seq_sys_log"', 24, true);
+SELECT setval('"public"."seq_sys_log"', 26, true);
 
 -- ----------------------------
 -- Sequence structure for seq_sys_res
@@ -2376,7 +2376,7 @@ INSERT INTO "public"."cms_site" VALUES ('2', '@copy2014', '新闻网站', 'news'
 -- ----------------------------
 DROP TABLE IF EXISTS "public"."etl_job";
 CREATE TABLE "public"."etl_job" (
-"job_id" int4 NOT NULL,
+"id" int8 NOT NULL,
 "job_name" varchar(50) COLLATE "default",
 "next_exe_date" date,
 "cron_trigger" varchar(100) COLLATE "default",
@@ -2391,6 +2391,7 @@ WITH (OIDS=FALSE)
 
 ;
 COMMENT ON TABLE "public"."etl_job" IS 'etl调度任务';
+COMMENT ON COLUMN "public"."etl_job"."id" IS 'job_id';
 COMMENT ON COLUMN "public"."etl_job"."job_name" IS '调度名称';
 COMMENT ON COLUMN "public"."etl_job"."remark" IS '备注';
 
@@ -2403,15 +2404,16 @@ COMMENT ON COLUMN "public"."etl_job"."remark" IS '备注';
 -- ----------------------------
 DROP TABLE IF EXISTS "public"."etl_job_log";
 CREATE TABLE "public"."etl_job_log" (
-"log_id" int8 NOT NULL,
-"task_id" int4,
+"id" int8 NOT NULL,
+"task_id" int8,
 "log_content" text COLLATE "default",
 "log_time" timestamp(6),
-"create_date" date
+"createby_id" int8
 )
 WITH (OIDS=FALSE)
 
 ;
+COMMENT ON COLUMN "public"."etl_job_log"."id" IS 'log_id';
 
 -- ----------------------------
 -- Records of etl_job_log
@@ -2422,9 +2424,9 @@ WITH (OIDS=FALSE)
 -- ----------------------------
 DROP TABLE IF EXISTS "public"."etl_param_column";
 CREATE TABLE "public"."etl_param_column" (
-"column_id" int4 NOT NULL,
-"param_id" int4,
-"task_id" int4,
+"id" int8 NOT NULL,
+"task_param_id" int8,
+"task_id" int8,
 "column_name" varchar(50) COLLATE "default",
 "column_value_index" int4,
 "remark" varchar(200) COLLATE "default"
@@ -2432,7 +2434,7 @@ CREATE TABLE "public"."etl_param_column" (
 WITH (OIDS=FALSE)
 
 ;
-COMMENT ON COLUMN "public"."etl_param_column"."param_id" IS '参数ID';
+COMMENT ON COLUMN "public"."etl_param_column"."task_param_id" IS '参数ID';
 
 -- ----------------------------
 -- Records of etl_param_column
@@ -2443,7 +2445,7 @@ COMMENT ON COLUMN "public"."etl_param_column"."param_id" IS '参数ID';
 -- ----------------------------
 DROP TABLE IF EXISTS "public"."etl_plugin";
 CREATE TABLE "public"."etl_plugin" (
-"plugin_id" int4 NOT NULL,
+"id" int8 NOT NULL,
 "plugin_name" varchar(100) COLLATE "default",
 "plugin_type" int2,
 "class_name" varchar(200) COLLATE "default",
@@ -2456,7 +2458,7 @@ CREATE TABLE "public"."etl_plugin" (
 WITH (OIDS=FALSE)
 
 ;
-COMMENT ON COLUMN "public"."etl_plugin"."plugin_id" IS 'plugin 序号';
+COMMENT ON COLUMN "public"."etl_plugin"."id" IS 'plugin 序号';
 COMMENT ON COLUMN "public"."etl_plugin"."plugin_name" IS 'plugin名称';
 COMMENT ON COLUMN "public"."etl_plugin"."plugin_type" IS 'plugin类别';
 COMMENT ON COLUMN "public"."etl_plugin"."jar_name" IS 'jar名称';
@@ -2465,17 +2467,14 @@ COMMENT ON COLUMN "public"."etl_plugin"."remark" IS '备注';
 -- ----------------------------
 -- Records of etl_plugin
 -- ----------------------------
-INSERT INTO "public"."etl_plugin" VALUES ('1', 'mysqlreader', '0', 'com.taobao.datax.plugins.reader.mysqlreader.MysqlReader', '1.0', 'mysql', 'mysqlreader-1.0.0.jar', '10', '读取mysql');
-INSERT INTO "public"."etl_plugin" VALUES ('2', 'mongodbreader', '0', 'com.taobao.datax.plugins.reader.mongodbreader.MongoDBReader', '1.0', 'mongodb', 'mongodbreader-1.0.0.jar', '10', '读取mongodb');
-INSERT INTO "public"."etl_plugin" VALUES ('3', 'hbase1reader', '0', null, null, null, null, null, null);
 
 -- ----------------------------
 -- Table structure for etl_plugin_param
 -- ----------------------------
 DROP TABLE IF EXISTS "public"."etl_plugin_param";
 CREATE TABLE "public"."etl_plugin_param" (
-"param_id" int4 NOT NULL,
-"plugin_id" int4 NOT NULL,
+"id" int8 NOT NULL,
+"plugin_id" int8 NOT NULL,
 "name" varchar(50) COLLATE "default",
 "range" varchar(200) COLLATE "default",
 "mandatory" int2,
@@ -2486,7 +2485,7 @@ CREATE TABLE "public"."etl_plugin_param" (
 WITH (OIDS=FALSE)
 
 ;
-COMMENT ON COLUMN "public"."etl_plugin_param"."param_id" IS '参数ID';
+COMMENT ON COLUMN "public"."etl_plugin_param"."id" IS '参数ID';
 COMMENT ON COLUMN "public"."etl_plugin_param"."plugin_id" IS 'plugin 序号';
 COMMENT ON COLUMN "public"."etl_plugin_param"."name" IS '名称';
 COMMENT ON COLUMN "public"."etl_plugin_param"."range" IS '范围';
@@ -2503,16 +2502,21 @@ COMMENT ON COLUMN "public"."etl_plugin_param"."description" IS '备注';
 -- ----------------------------
 DROP TABLE IF EXISTS "public"."etl_task";
 CREATE TABLE "public"."etl_task" (
-"task_id" int4 NOT NULL,
+"id" int8 NOT NULL,
 "task_name" varchar(200) COLLATE "default",
-"job_id" int4,
-"plugin_id" int4,
+"job_id" int8,
+"plugin_id" int8,
+"create_date" date,
+"update_date" date,
+"createby_id" int8,
+"updateby_id" int8,
 "remark" varchar(200) COLLATE "default"
 )
 WITH (OIDS=FALSE)
 
 ;
 COMMENT ON TABLE "public"."etl_task" IS 'ETL任务';
+COMMENT ON COLUMN "public"."etl_task"."id" IS 'task_id';
 COMMENT ON COLUMN "public"."etl_task"."plugin_id" IS 'plugin 序号';
 
 -- ----------------------------
@@ -2524,9 +2528,9 @@ COMMENT ON COLUMN "public"."etl_task"."plugin_id" IS 'plugin 序号';
 -- ----------------------------
 DROP TABLE IF EXISTS "public"."etl_task_param";
 CREATE TABLE "public"."etl_task_param" (
-"task_param_id" int4 NOT NULL,
-"task_id" int4,
-"param_id" int4,
+"id" int8 NOT NULL,
+"task_id" int8,
+"plugin_param_id" int8,
 "param_key" varchar(50) COLLATE "default",
 "param_value" varchar(200) COLLATE "default",
 "remark" varchar(200) COLLATE "default"
@@ -2535,32 +2539,37 @@ WITH (OIDS=FALSE)
 
 ;
 COMMENT ON TABLE "public"."etl_task_param" IS '任务参数值';
-COMMENT ON COLUMN "public"."etl_task_param"."task_param_id" IS '参数ID';
-COMMENT ON COLUMN "public"."etl_task_param"."param_id" IS '参数ID';
+COMMENT ON COLUMN "public"."etl_task_param"."id" IS '参数ID';
+COMMENT ON COLUMN "public"."etl_task_param"."plugin_param_id" IS '参数ID';
 
 -- ----------------------------
 -- Records of etl_task_param
 -- ----------------------------
 
 -- ----------------------------
--- Table structure for finace
+-- Table structure for meta_case_info
 -- ----------------------------
-DROP TABLE IF EXISTS "public"."finace";
-CREATE TABLE "public"."finace" (
-"id" int8 DEFAULT nextval('seq_finace'::regclass) NOT NULL,
-"content" varchar(255) COLLATE "default",
-"inorout" int4 NOT NULL,
-"money" float8 NOT NULL,
-"name" varchar(255) COLLATE "default",
-"time" timestamp(6),
-"type" varchar(255) COLLATE "default"
+DROP TABLE IF EXISTS "public"."meta_case_info";
+CREATE TABLE "public"."meta_case_info" (
+"id" int8 NOT NULL,
+"case_code" varchar(50) COLLATE "default" NOT NULL,
+"project_id" int8,
+"case_type" int2,
+"check_label" int2,
+"create_date" date,
+"update_date" date,
+"createby_id" int8,
+"updateby_id" int8,
+"remark" varchar(200) COLLATE "default"
 )
 WITH (OIDS=FALSE)
 
 ;
+COMMENT ON COLUMN "public"."meta_case_info"."id" IS 'case id';
+COMMENT ON COLUMN "public"."meta_case_info"."remark" IS '备注';
 
 -- ----------------------------
--- Records of finace
+-- Records of meta_case_info
 -- ----------------------------
 
 -- ----------------------------
@@ -2568,8 +2577,8 @@ WITH (OIDS=FALSE)
 -- ----------------------------
 DROP TABLE IF EXISTS "public"."meta_column";
 CREATE TABLE "public"."meta_column" (
-"column_id" int4 NOT NULL,
-"table_id" int4,
+"id" int8 NOT NULL,
+"table_id" int8,
 "column_name" varchar(100) COLLATE "default",
 "column_pname" varchar(200) COLLATE "default",
 "type" int4,
@@ -2584,6 +2593,7 @@ WITH (OIDS=FALSE)
 
 ;
 COMMENT ON TABLE "public"."meta_column" IS '字段';
+COMMENT ON COLUMN "public"."meta_column"."id" IS '字段ID';
 COMMENT ON COLUMN "public"."meta_column"."table_id" IS '表格ID';
 COMMENT ON COLUMN "public"."meta_column"."column_name" IS '字段名';
 COMMENT ON COLUMN "public"."meta_column"."column_pname" IS '物理名';
@@ -2602,20 +2612,25 @@ COMMENT ON COLUMN "public"."meta_column"."remark" IS '备注';
 -- ----------------------------
 DROP TABLE IF EXISTS "public"."meta_datasource";
 CREATE TABLE "public"."meta_datasource" (
-"datasource_id" int4 NOT NULL,
-"project_code" varchar(50) COLLATE "default",
+"id" int8 NOT NULL,
+"project_id" int8,
 "driver_class_name" varchar(200) COLLATE "default",
 "jdbc_url" varchar(250) COLLATE "default",
 "jdbc_user" varchar(50) COLLATE "default",
 "jdbc_password" varchar(50) COLLATE "default",
 "db_type" int4,
+"create_date" date,
+"update_date" date,
+"createby_id" int8,
+"updateby_id" int8,
 "remark" varchar(200) COLLATE "default"
 )
 WITH (OIDS=FALSE)
 
 ;
 COMMENT ON TABLE "public"."meta_datasource" IS '数据源';
-COMMENT ON COLUMN "public"."meta_datasource"."datasource_id" IS '数据源ID';
+COMMENT ON COLUMN "public"."meta_datasource"."id" IS '数据源ID';
+COMMENT ON COLUMN "public"."meta_datasource"."project_id" IS 'project_id';
 COMMENT ON COLUMN "public"."meta_datasource"."db_type" IS '数据库类别';
 COMMENT ON COLUMN "public"."meta_datasource"."remark" IS '备注';
 
@@ -2624,10 +2639,80 @@ COMMENT ON COLUMN "public"."meta_datasource"."remark" IS '备注';
 -- ----------------------------
 
 -- ----------------------------
--- Table structure for meta_project
+-- Table structure for meta_dbtable
 -- ----------------------------
-DROP TABLE IF EXISTS "public"."meta_project";
-CREATE TABLE "public"."meta_project" (
+DROP TABLE IF EXISTS "public"."meta_dbtable";
+CREATE TABLE "public"."meta_dbtable" (
+"id" int8 NOT NULL,
+"datasource_id" int8,
+"table_name" varchar(100) COLLATE "default",
+"table_pname" varchar(200) COLLATE "default",
+"table_type" int2,
+"remark" varchar(200) COLLATE "default"
+)
+WITH (OIDS=FALSE)
+
+;
+COMMENT ON TABLE "public"."meta_dbtable" IS '表';
+COMMENT ON COLUMN "public"."meta_dbtable"."id" IS '表格ID';
+COMMENT ON COLUMN "public"."meta_dbtable"."datasource_id" IS '数据源ID';
+COMMENT ON COLUMN "public"."meta_dbtable"."table_pname" IS '物理名';
+COMMENT ON COLUMN "public"."meta_dbtable"."remark" IS '备注';
+
+-- ----------------------------
+-- Records of meta_dbtable
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for meta_module
+-- ----------------------------
+DROP TABLE IF EXISTS "public"."meta_module";
+CREATE TABLE "public"."meta_module" (
+"id" int8 NOT NULL,
+"datasource_id" int8,
+"package_name" varchar(200) COLLATE "default",
+"create_date" date,
+"update_date" date,
+"createby_id" int8,
+"updateby_id" int8,
+"remark" varchar(200) COLLATE "default"
+)
+WITH (OIDS=FALSE)
+
+;
+COMMENT ON COLUMN "public"."meta_module"."id" IS '模块编号';
+COMMENT ON COLUMN "public"."meta_module"."datasource_id" IS '数据源ID';
+COMMENT ON COLUMN "public"."meta_module"."package_name" IS '模块名';
+COMMENT ON COLUMN "public"."meta_module"."remark" IS '备注';
+
+-- ----------------------------
+-- Records of meta_module
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for meta_module_table
+-- ----------------------------
+DROP TABLE IF EXISTS "public"."meta_module_table";
+CREATE TABLE "public"."meta_module_table" (
+"module_id" int8 NOT NULL,
+"table_id" int8 NOT NULL
+)
+WITH (OIDS=FALSE)
+
+;
+COMMENT ON COLUMN "public"."meta_module_table"."module_id" IS '模块编号';
+COMMENT ON COLUMN "public"."meta_module_table"."table_id" IS '表格ID';
+
+-- ----------------------------
+-- Records of meta_module_table
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for meta_poject
+-- ----------------------------
+DROP TABLE IF EXISTS "public"."meta_poject";
+CREATE TABLE "public"."meta_poject" (
+"id" int8 NOT NULL,
 "project_code" varchar(50) COLLATE "default" NOT NULL,
 "project_name" varchar(100) COLLATE "default",
 "create_date" date,
@@ -2641,169 +2726,7 @@ WITH (OIDS=FALSE)
 ;
 
 -- ----------------------------
--- Records of meta_project
--- ----------------------------
-INSERT INTO "public"."meta_project" VALUES ('01', 'lotuseed', '2015-07-27', '2015-07-27', '5', '5', '莲子统计范例');
-
--- ----------------------------
--- Table structure for meta_table
--- ----------------------------
-DROP TABLE IF EXISTS "public"."meta_table";
-CREATE TABLE "public"."meta_table" (
-"table_id" int4 NOT NULL,
-"datasource_id" int4,
-"table_name" varchar(100) COLLATE "default",
-"table_pname" varchar(200) COLLATE "default",
-"table_type" int2,
-"remark" varchar(200) COLLATE "default"
-)
-WITH (OIDS=FALSE)
-
-;
-COMMENT ON TABLE "public"."meta_table" IS '表';
-COMMENT ON COLUMN "public"."meta_table"."table_id" IS '表格ID';
-COMMENT ON COLUMN "public"."meta_table"."datasource_id" IS '数据源ID';
-COMMENT ON COLUMN "public"."meta_table"."table_pname" IS '物理名';
-COMMENT ON COLUMN "public"."meta_table"."remark" IS '备注';
-
--- ----------------------------
--- Records of meta_table
--- ----------------------------
-
--- ----------------------------
--- Table structure for oa_leave
--- ----------------------------
-DROP TABLE IF EXISTS "public"."oa_leave";
-CREATE TABLE "public"."oa_leave" (
-"id" int8 DEFAULT nextval('seq_oa_leave'::regclass) NOT NULL,
-"endtime" timestamp(6),
-"leavedays" float8,
-"leavetype" varchar(255) COLLATE "default",
-"processinstanceid" varchar(255) COLLATE "default",
-"reason" varchar(255) COLLATE "default",
-"sponsorloginid" varchar(255) COLLATE "default",
-"starttime" timestamp(6),
-"depauditopinion" varchar(255) COLLATE "default",
-"hrauditopinion" varchar(255) COLLATE "default",
-"fileid" varchar(255) COLLATE "default",
-"filename" varchar(255) COLLATE "default"
-)
-WITH (OIDS=FALSE)
-
-;
-
--- ----------------------------
--- Records of oa_leave
--- ----------------------------
-INSERT INTO "public"."oa_leave" VALUES ('2', '2014-03-06 09:03:00', '1', '事假', '5', 'rrrrrrrrrr', null, '2014-03-12 09:03:00', '不行', '', null, null);
-INSERT INTO "public"."oa_leave" VALUES ('3', '2014-03-11 00:00:00', '2', '事假', '15', '22222', 'depman', '2014-02-26 00:00:00', '批准', '同意，请合理安排时间', null, null);
-INSERT INTO "public"."oa_leave" VALUES ('4', '2014-03-12 00:00:00', '8', '事假', '113', '面试', null, '2014-03-04 00:00:00', '肯定不同意', '', null, null);
-INSERT INTO "public"."oa_leave" VALUES ('5', '2014-03-01 00:03:44', '11', '霸王假', '801', '22222', null, '2014-03-01 00:03:44', '好', '就这样', null, null);
-INSERT INTO "public"."oa_leave" VALUES ('6', '2014-03-21 10:50:00', '6', '事假', '901', '66666', 'admin', '2014-03-12 00:00:00', null, null, null, null);
-INSERT INTO "public"."oa_leave" VALUES ('7', '2014-04-06 10:50:00', '1', '事假', '1001', '我有检查证明', null, '2014-04-05 23:15:00', '好，可以，身体是革命的本钱', '不行，你肯定是装的', null, null);
-INSERT INTO "public"."oa_leave" VALUES ('8', '2014-04-11 16:20:00', '1', '事假', '1101', '222222', 'admin', '2014-04-11 16:20:00', null, null, null, null);
-INSERT INTO "public"."oa_leave" VALUES ('9', '2014-04-16 09:00:00', '1', '事假', '1201', '111111111', 'admin', '2014-04-16 09:00:00', null, null, '4887fe1e-4fc1-431e-aab0-962f1a365f1a.txt', 'remark.txt');
-INSERT INTO "public"."oa_leave" VALUES ('10', '2014-04-16 13:25:00', '1', '事假', '1212', '11111111', 'depman', '2014-04-16 13:25:00', null, null, '5e0dfd15-b5a2-4255-b247-642b3c615076.docx', '6包问题.docx');
-INSERT INTO "public"."oa_leave" VALUES ('11', '2014-05-13 10:25:00', '1', '事假', '2301', 'ceshi', 'depman', '2014-05-12 10:25:00', null, null, '5526c4f5-3487-41b8-9831-04afba86b679.xlsx', '后勤部门考核评价表-成都.xlsx');
-INSERT INTO "public"."oa_leave" VALUES ('12', '2014-05-14 08:50:00', '1', '事假', '2401', '11', 'depman', '2014-05-13 08:50:00', null, null, 'bf15b99d-7329-429d-a1db-60d20f236121.xlsx', 'P165五省部署服务器地址.xlsx');
-INSERT INTO "public"."oa_leave" VALUES ('13', '2014-06-04 10:55:00', '1', '事假', '2501', '111', 'admin', '2014-06-05 10:55:00', null, null, 'e78f0994-b98e-4d09-b74d-b3886ba17b97.docx', '农业面源污染防控设计文档V2.docx');
-
--- ----------------------------
--- Table structure for pre_case_info
--- ----------------------------
-DROP TABLE IF EXISTS "public"."pre_case_info";
-CREATE TABLE "public"."pre_case_info" (
-"case_id" int4 NOT NULL,
-"case_code" varchar(50) COLLATE "default" NOT NULL,
-"project_code" varchar(50) COLLATE "default",
-"case_type" int2,
-"check_label" int2,
-"create_date" date,
-"update_date" date,
-"createby_id" int8,
-"updateby_id" int8,
-"remark" varchar(200) COLLATE "default"
-)
-WITH (OIDS=FALSE)
-
-;
-COMMENT ON COLUMN "public"."pre_case_info"."remark" IS '备注';
-
--- ----------------------------
--- Records of pre_case_info
--- ----------------------------
-
--- ----------------------------
--- Table structure for pre_entity_info
--- ----------------------------
-DROP TABLE IF EXISTS "public"."pre_entity_info";
-CREATE TABLE "public"."pre_entity_info" (
-"entity_id" int4 NOT NULL,
-"entity_code" varchar(50) COLLATE "default",
-"entity_name" varchar(50) COLLATE "default",
-"column_family_name" varchar(50) COLLATE "default",
-"region_num" int4,
-"start_key" varchar(100) COLLATE "default",
-"end_key" varchar(100) COLLATE "default",
-"entity_type" int2,
-"check_label" int2,
-"create_date" date,
-"update_date" date,
-"createby_id" int8,
-"updateby_id" int8,
-"remark" varchar(200) COLLATE "default"
-)
-WITH (OIDS=FALSE)
-
-;
-COMMENT ON COLUMN "public"."pre_entity_info"."remark" IS '备注';
-
--- ----------------------------
--- Records of pre_entity_info
--- ----------------------------
-
--- ----------------------------
--- Table structure for pre_field_info
--- ----------------------------
-DROP TABLE IF EXISTS "public"."pre_field_info";
-CREATE TABLE "public"."pre_field_info" (
-"field_id" int4 NOT NULL,
-"field_code" varchar(50) COLLATE "default",
-"entity_code" varchar(50) COLLATE "default",
-"summary_type" int4,
-"db_type" int4,
-"field_name" varchar(100) COLLATE "default",
-"target_field_name" varchar(50) COLLATE "default",
-"function_name" varchar(100) COLLATE "default",
-"field_type" int4,
-"sort_id" int4,
-"remark" varchar(200) COLLATE "default"
-)
-WITH (OIDS=FALSE)
-
-;
-
--- ----------------------------
--- Records of pre_field_info
--- ----------------------------
-
--- ----------------------------
--- Table structure for pre_group_info
--- ----------------------------
-DROP TABLE IF EXISTS "public"."pre_group_info";
-CREATE TABLE "public"."pre_group_info" (
-"group_id" int4 NOT NULL,
-"parent_id" int4,
-"code_type" int4,
-"group_str" varchar(200) COLLATE "default",
-"remark" varchar(200) COLLATE "default"
-)
-WITH (OIDS=FALSE)
-
-;
-
--- ----------------------------
--- Records of pre_group_info
+-- Records of meta_poject
 -- ----------------------------
 
 -- ----------------------------
@@ -3245,6 +3168,8 @@ INSERT INTO "public"."sys_log" VALUES ('21', '退出系统', '系统登出', '20
 INSERT INTO "public"."sys_log" VALUES ('22', '登录系统', '系统登录', '2015-10-26 23:49:10.114', '1', '5', '0:0:0:0:0:0:0:1');
 INSERT INTO "public"."sys_log" VALUES ('23', '退出系统', '系统登出', '2015-10-29 22:47:41.648', '1', '5', '0:0:0:0:0:0:0:1');
 INSERT INTO "public"."sys_log" VALUES ('24', '登录系统', '系统登录', '2015-10-29 22:47:43.346', '1', '5', '0:0:0:0:0:0:0:1');
+INSERT INTO "public"."sys_log" VALUES ('25', '退出系统', '系统登出', '2015-11-30 23:00:25.644', '1', '5', '0:0:0:0:0:0:0:1');
+INSERT INTO "public"."sys_log" VALUES ('26', '登录系统', '系统登录', '2015-11-30 23:00:27.544', '1', '5', '0:0:0:0:0:0:0:1');
 
 -- ----------------------------
 -- Table structure for sys_muti_lang
@@ -3326,7 +3251,7 @@ INSERT INTO "public"."sys_res" VALUES ('34', null, '2', 'diy_icon_04_41', '发�
 INSERT INTO "public"."sys_res" VALUES ('35', null, '2', 'diy_icon_02_33', '我的流程', '4', 'workflow:myprocess', '', '/workflow/myprocess', '30');
 INSERT INTO "public"."sys_res" VALUES ('36', null, '2', 'diy_icon_04_19', '系统日志', '5', 'sys:log:list', '', '/sys/log/list', '1');
 INSERT INTO "public"."sys_res" VALUES ('37', null, '3', 'icon-tasks', '日志列表', '1', 'sys:log:list', '', '/sys/log/list', '36');
-INSERT INTO "public"."sys_res" VALUES ('39', null, '2', 'diy_icon_03_08', '数据库管理', '1', 'dbmgnt:dbms', '', '/dbmgnt/dbms', '41');
+INSERT INTO "public"."sys_res" VALUES ('39', null, '2', 'diy_icon_03_08', '数据源管理', '1', 'meta:dataSource', '', '/meta/dataSource', '41');
 INSERT INTO "public"."sys_res" VALUES ('40', null, '3', 'icon-cog', '删除日志', '2', 'sys:log:delete', '', '/sys/log/delete', '36');
 INSERT INTO "public"."sys_res" VALUES ('41', null, '1', 'diy_icon_04_49', '数据仓库管理', '3', 'dbmgnt', '数据仓库管理，Hive建库、建表、建立索引、建立预统计表管理', '/dbmgnt', '5');
 INSERT INTO "public"."sys_res" VALUES ('42', null, '1', 'diy_icon_02_34', '报表', '5', 'bi', '', '/bi', '5');
@@ -3891,87 +3816,72 @@ ALTER TABLE "public"."cms_site" ADD PRIMARY KEY ("id");
 -- ----------------------------
 -- Primary Key structure for table etl_job
 -- ----------------------------
-ALTER TABLE "public"."etl_job" ADD PRIMARY KEY ("job_id");
+ALTER TABLE "public"."etl_job" ADD PRIMARY KEY ("id");
 
 -- ----------------------------
 -- Primary Key structure for table etl_job_log
 -- ----------------------------
-ALTER TABLE "public"."etl_job_log" ADD PRIMARY KEY ("log_id");
+ALTER TABLE "public"."etl_job_log" ADD PRIMARY KEY ("id");
 
 -- ----------------------------
 -- Primary Key structure for table etl_param_column
 -- ----------------------------
-ALTER TABLE "public"."etl_param_column" ADD PRIMARY KEY ("column_id");
+ALTER TABLE "public"."etl_param_column" ADD PRIMARY KEY ("id");
 
 -- ----------------------------
 -- Primary Key structure for table etl_plugin
 -- ----------------------------
-ALTER TABLE "public"."etl_plugin" ADD PRIMARY KEY ("plugin_id");
+ALTER TABLE "public"."etl_plugin" ADD PRIMARY KEY ("id");
 
 -- ----------------------------
 -- Primary Key structure for table etl_plugin_param
 -- ----------------------------
-ALTER TABLE "public"."etl_plugin_param" ADD PRIMARY KEY ("param_id");
+ALTER TABLE "public"."etl_plugin_param" ADD PRIMARY KEY ("id");
 
 -- ----------------------------
 -- Primary Key structure for table etl_task
 -- ----------------------------
-ALTER TABLE "public"."etl_task" ADD PRIMARY KEY ("task_id");
+ALTER TABLE "public"."etl_task" ADD PRIMARY KEY ("id");
 
 -- ----------------------------
 -- Primary Key structure for table etl_task_param
 -- ----------------------------
-ALTER TABLE "public"."etl_task_param" ADD PRIMARY KEY ("task_param_id");
+ALTER TABLE "public"."etl_task_param" ADD PRIMARY KEY ("id");
 
 -- ----------------------------
--- Primary Key structure for table finace
+-- Primary Key structure for table meta_case_info
 -- ----------------------------
-ALTER TABLE "public"."finace" ADD PRIMARY KEY ("id");
+ALTER TABLE "public"."meta_case_info" ADD PRIMARY KEY ("id");
 
 -- ----------------------------
 -- Primary Key structure for table meta_column
 -- ----------------------------
-ALTER TABLE "public"."meta_column" ADD PRIMARY KEY ("column_id");
+ALTER TABLE "public"."meta_column" ADD PRIMARY KEY ("id");
 
 -- ----------------------------
 -- Primary Key structure for table meta_datasource
 -- ----------------------------
-ALTER TABLE "public"."meta_datasource" ADD PRIMARY KEY ("datasource_id");
+ALTER TABLE "public"."meta_datasource" ADD PRIMARY KEY ("id");
 
 -- ----------------------------
--- Primary Key structure for table meta_project
+-- Primary Key structure for table meta_dbtable
 -- ----------------------------
-ALTER TABLE "public"."meta_project" ADD PRIMARY KEY ("project_code");
+ALTER TABLE "public"."meta_dbtable" ADD PRIMARY KEY ("id");
 
 -- ----------------------------
--- Primary Key structure for table meta_table
+-- Primary Key structure for table meta_module
 -- ----------------------------
-ALTER TABLE "public"."meta_table" ADD PRIMARY KEY ("table_id");
+ALTER TABLE "public"."meta_module" ADD PRIMARY KEY ("id");
 
 -- ----------------------------
--- Primary Key structure for table oa_leave
+-- Primary Key structure for table meta_module_table
 -- ----------------------------
-ALTER TABLE "public"."oa_leave" ADD PRIMARY KEY ("id");
+ALTER TABLE "public"."meta_module_table" ADD PRIMARY KEY ("module_id", "table_id");
 
 -- ----------------------------
--- Primary Key structure for table pre_case_info
+-- Primary Key structure for table meta_poject
 -- ----------------------------
-ALTER TABLE "public"."pre_case_info" ADD PRIMARY KEY ("case_id");
-
--- ----------------------------
--- Primary Key structure for table pre_entity_info
--- ----------------------------
-ALTER TABLE "public"."pre_entity_info" ADD PRIMARY KEY ("entity_id");
-
--- ----------------------------
--- Primary Key structure for table pre_field_info
--- ----------------------------
-ALTER TABLE "public"."pre_field_info" ADD PRIMARY KEY ("field_id");
-
--- ----------------------------
--- Primary Key structure for table pre_group_info
--- ----------------------------
-ALTER TABLE "public"."pre_group_info" ADD PRIMARY KEY ("group_id");
+ALTER TABLE "public"."meta_poject" ADD PRIMARY KEY ("id");
 
 -- ----------------------------
 -- Primary Key structure for table sys_dict
@@ -4068,9 +3978,9 @@ ALTER TABLE "public"."act_ge_bytearray" ADD FOREIGN KEY ("deployment_id_") REFER
 -- ----------------------------
 -- Foreign Key structure for table "public"."act_re_model"
 -- ----------------------------
-ALTER TABLE "public"."act_re_model" ADD FOREIGN KEY ("deployment_id_") REFERENCES "public"."act_re_deployment" ("id_") ON DELETE NO ACTION ON UPDATE NO ACTION;
 ALTER TABLE "public"."act_re_model" ADD FOREIGN KEY ("editor_source_extra_value_id_") REFERENCES "public"."act_ge_bytearray" ("id_") ON DELETE NO ACTION ON UPDATE NO ACTION;
 ALTER TABLE "public"."act_re_model" ADD FOREIGN KEY ("editor_source_value_id_") REFERENCES "public"."act_ge_bytearray" ("id_") ON DELETE NO ACTION ON UPDATE NO ACTION;
+ALTER TABLE "public"."act_re_model" ADD FOREIGN KEY ("deployment_id_") REFERENCES "public"."act_re_deployment" ("id_") ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 -- ----------------------------
 -- Foreign Key structure for table "public"."act_ru_event_subscr"
@@ -4080,16 +3990,16 @@ ALTER TABLE "public"."act_ru_event_subscr" ADD FOREIGN KEY ("execution_id_") REF
 -- ----------------------------
 -- Foreign Key structure for table "public"."act_ru_execution"
 -- ----------------------------
+ALTER TABLE "public"."act_ru_execution" ADD FOREIGN KEY ("proc_inst_id_") REFERENCES "public"."act_ru_execution" ("id_") ON DELETE NO ACTION ON UPDATE NO ACTION;
 ALTER TABLE "public"."act_ru_execution" ADD FOREIGN KEY ("super_exec_") REFERENCES "public"."act_ru_execution" ("id_") ON DELETE NO ACTION ON UPDATE NO ACTION;
 ALTER TABLE "public"."act_ru_execution" ADD FOREIGN KEY ("parent_id_") REFERENCES "public"."act_ru_execution" ("id_") ON DELETE NO ACTION ON UPDATE NO ACTION;
 ALTER TABLE "public"."act_ru_execution" ADD FOREIGN KEY ("proc_def_id_") REFERENCES "public"."act_re_procdef" ("id_") ON DELETE NO ACTION ON UPDATE NO ACTION;
-ALTER TABLE "public"."act_ru_execution" ADD FOREIGN KEY ("proc_inst_id_") REFERENCES "public"."act_ru_execution" ("id_") ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 -- ----------------------------
 -- Foreign Key structure for table "public"."act_ru_identitylink"
 -- ----------------------------
-ALTER TABLE "public"."act_ru_identitylink" ADD FOREIGN KEY ("proc_def_id_") REFERENCES "public"."act_re_procdef" ("id_") ON DELETE NO ACTION ON UPDATE NO ACTION;
 ALTER TABLE "public"."act_ru_identitylink" ADD FOREIGN KEY ("proc_inst_id_") REFERENCES "public"."act_ru_execution" ("id_") ON DELETE NO ACTION ON UPDATE NO ACTION;
+ALTER TABLE "public"."act_ru_identitylink" ADD FOREIGN KEY ("proc_def_id_") REFERENCES "public"."act_re_procdef" ("id_") ON DELETE NO ACTION ON UPDATE NO ACTION;
 ALTER TABLE "public"."act_ru_identitylink" ADD FOREIGN KEY ("task_id_") REFERENCES "public"."act_ru_task" ("id_") ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 -- ----------------------------
@@ -4100,16 +4010,16 @@ ALTER TABLE "public"."act_ru_job" ADD FOREIGN KEY ("exception_stack_id_") REFERE
 -- ----------------------------
 -- Foreign Key structure for table "public"."act_ru_task"
 -- ----------------------------
+ALTER TABLE "public"."act_ru_task" ADD FOREIGN KEY ("proc_inst_id_") REFERENCES "public"."act_ru_execution" ("id_") ON DELETE NO ACTION ON UPDATE NO ACTION;
 ALTER TABLE "public"."act_ru_task" ADD FOREIGN KEY ("proc_def_id_") REFERENCES "public"."act_re_procdef" ("id_") ON DELETE NO ACTION ON UPDATE NO ACTION;
 ALTER TABLE "public"."act_ru_task" ADD FOREIGN KEY ("execution_id_") REFERENCES "public"."act_ru_execution" ("id_") ON DELETE NO ACTION ON UPDATE NO ACTION;
-ALTER TABLE "public"."act_ru_task" ADD FOREIGN KEY ("proc_inst_id_") REFERENCES "public"."act_ru_execution" ("id_") ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 -- ----------------------------
 -- Foreign Key structure for table "public"."act_ru_variable"
 -- ----------------------------
 ALTER TABLE "public"."act_ru_variable" ADD FOREIGN KEY ("proc_inst_id_") REFERENCES "public"."act_ru_execution" ("id_") ON DELETE NO ACTION ON UPDATE NO ACTION;
-ALTER TABLE "public"."act_ru_variable" ADD FOREIGN KEY ("bytearray_id_") REFERENCES "public"."act_ge_bytearray" ("id_") ON DELETE NO ACTION ON UPDATE NO ACTION;
 ALTER TABLE "public"."act_ru_variable" ADD FOREIGN KEY ("execution_id_") REFERENCES "public"."act_ru_execution" ("id_") ON DELETE NO ACTION ON UPDATE NO ACTION;
+ALTER TABLE "public"."act_ru_variable" ADD FOREIGN KEY ("bytearray_id_") REFERENCES "public"."act_ge_bytearray" ("id_") ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 -- ----------------------------
 -- Foreign Key structure for table "public"."cms_article"
@@ -4121,8 +4031,8 @@ ALTER TABLE "public"."cms_article" ADD FOREIGN KEY ("category_id") REFERENCES "p
 -- ----------------------------
 -- Foreign Key structure for table "public"."cms_category"
 -- ----------------------------
-ALTER TABLE "public"."cms_category" ADD FOREIGN KEY ("site_id") REFERENCES "public"."cms_site" ("id") ON DELETE NO ACTION ON UPDATE NO ACTION;
 ALTER TABLE "public"."cms_category" ADD FOREIGN KEY ("parent_id") REFERENCES "public"."cms_category" ("id") ON DELETE NO ACTION ON UPDATE NO ACTION;
+ALTER TABLE "public"."cms_category" ADD FOREIGN KEY ("site_id") REFERENCES "public"."cms_site" ("id") ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 -- ----------------------------
 -- Foreign Key structure for table "public"."cms_comment"
@@ -4134,54 +4044,6 @@ ALTER TABLE "public"."cms_comment" ADD FOREIGN KEY ("article_id") REFERENCES "pu
 -- Foreign Key structure for table "public"."cms_link"
 -- ----------------------------
 ALTER TABLE "public"."cms_link" ADD FOREIGN KEY ("category_id") REFERENCES "public"."cms_category" ("id") ON DELETE NO ACTION ON UPDATE NO ACTION;
-
--- ----------------------------
--- Foreign Key structure for table "public"."etl_job_log"
--- ----------------------------
-ALTER TABLE "public"."etl_job_log" ADD FOREIGN KEY ("task_id") REFERENCES "public"."etl_task" ("task_id") ON DELETE RESTRICT ON UPDATE RESTRICT;
-
--- ----------------------------
--- Foreign Key structure for table "public"."etl_param_column"
--- ----------------------------
-ALTER TABLE "public"."etl_param_column" ADD FOREIGN KEY ("task_id") REFERENCES "public"."etl_task" ("task_id") ON DELETE RESTRICT ON UPDATE RESTRICT;
-ALTER TABLE "public"."etl_param_column" ADD FOREIGN KEY ("param_id") REFERENCES "public"."etl_task_param" ("task_param_id") ON DELETE RESTRICT ON UPDATE RESTRICT;
-
--- ----------------------------
--- Foreign Key structure for table "public"."etl_plugin_param"
--- ----------------------------
-ALTER TABLE "public"."etl_plugin_param" ADD FOREIGN KEY ("plugin_id") REFERENCES "public"."etl_plugin" ("plugin_id") ON DELETE RESTRICT ON UPDATE RESTRICT;
-
--- ----------------------------
--- Foreign Key structure for table "public"."etl_task"
--- ----------------------------
-ALTER TABLE "public"."etl_task" ADD FOREIGN KEY ("job_id") REFERENCES "public"."etl_job" ("job_id") ON DELETE RESTRICT ON UPDATE RESTRICT;
-ALTER TABLE "public"."etl_task" ADD FOREIGN KEY ("plugin_id") REFERENCES "public"."etl_plugin" ("plugin_id") ON DELETE RESTRICT ON UPDATE RESTRICT;
-
--- ----------------------------
--- Foreign Key structure for table "public"."etl_task_param"
--- ----------------------------
-ALTER TABLE "public"."etl_task_param" ADD FOREIGN KEY ("param_id") REFERENCES "public"."etl_plugin_param" ("param_id") ON DELETE RESTRICT ON UPDATE RESTRICT;
-ALTER TABLE "public"."etl_task_param" ADD FOREIGN KEY ("task_id") REFERENCES "public"."etl_task" ("task_id") ON DELETE RESTRICT ON UPDATE RESTRICT;
-
--- ----------------------------
--- Foreign Key structure for table "public"."meta_column"
--- ----------------------------
-ALTER TABLE "public"."meta_column" ADD FOREIGN KEY ("table_id") REFERENCES "public"."meta_table" ("table_id") ON DELETE RESTRICT ON UPDATE RESTRICT;
-
--- ----------------------------
--- Foreign Key structure for table "public"."meta_datasource"
--- ----------------------------
-ALTER TABLE "public"."meta_datasource" ADD FOREIGN KEY ("project_code") REFERENCES "public"."meta_project" ("project_code") ON DELETE RESTRICT ON UPDATE RESTRICT;
-
--- ----------------------------
--- Foreign Key structure for table "public"."meta_table"
--- ----------------------------
-ALTER TABLE "public"."meta_table" ADD FOREIGN KEY ("datasource_id") REFERENCES "public"."meta_datasource" ("datasource_id") ON DELETE RESTRICT ON UPDATE RESTRICT;
-
--- ----------------------------
--- Foreign Key structure for table "public"."pre_case_info"
--- ----------------------------
-ALTER TABLE "public"."pre_case_info" ADD FOREIGN KEY ("project_code") REFERENCES "public"."meta_project" ("project_code") ON DELETE RESTRICT ON UPDATE RESTRICT;
 
 -- ----------------------------
 -- Foreign Key structure for table "public"."sys_log"
