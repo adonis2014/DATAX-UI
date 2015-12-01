@@ -37,22 +37,20 @@ public class CodeGenerate {
 		String packageName = "net.iharding.modules";
 
 		String moduleName = "meta"; // 模块名，例：sys
-		String className = "column"; // 类名，例：user
+		String className = "dbTable"; // 类名，例：user
 		String classAuthor = "Joe.zhang"; // 类作者，例：
-		String functionName = "表字段"; // 功能名，例：用户
+		String functionName = "表对象"; // 功能名，例：用户
 		
 		List<Field> fields = new ArrayList<Field>();
-		fields.add(new Field("columnId", "字段ID", "Integer"));
-		fields.add(new Field("tableId", "表ID", "Integer"));
-		fields.add(new Field("columnName", "字段名", "String"));
-		fields.add(new Field("columnPName", "字段中文名", "String"));
+		fields.add(new Field("datasourceId", "数据源ID", "Long"));
+		fields.add(new Field("tableName", "表名", "String"));
+		fields.add(new Field("tablePname", "逻辑名", "String"));
+		fields.add(new Field("tableType", "表类别", "Integer"));
 		fields.add(new Field("remark", "备注", "String"));
-		fields.add(new Field("type", "类别", "Integer"));
-		fields.add(new Field("store", "是否存储", "String"));
-		fields.add(new Field("docValues", "docValues", "String"));
-		fields.add(new Field("index", "是否索引", "String"));
-		fields.add(new Field("required", "是否必须", "String"));
-		fields.add(new Field("format", "格式", "String"));
+		fields.add(new Field("updatebyId", "最后更新人", "Long"));
+		fields.add(new Field("createbyId", "建立人", "Long"));
+		fields.add(new Field("updateDate", "最后更新时间", "Date"));
+		fields.add(new Field("createDate", "建立时间", "Date"));
 		
 		
 

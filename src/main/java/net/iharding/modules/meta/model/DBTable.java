@@ -1,5 +1,7 @@
 package net.iharding.modules.meta.model;
 
+import java.util.Date;
+
 import javax.persistence.Entity;
 import javax.persistence.Table;
 
@@ -8,53 +10,57 @@ import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 /**
- * 数据表Entity
+ * 表对象Entity
  * @author Joe.zhang
- * @version 2015-11-29
+ * @version 2015-12-01
  */
 @Entity
-@Table(name = "meta_DBTable")
+@Table(name = "meta_Table")
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class DBTable extends IdEntity {
 
 	/**
-	 * 表ID
-	 */
-	private Integer tableId;
-	/**
 	 * 数据源ID
 	 */
-	private Integer datasourceId;
+	private Long datasourceId;
 	/**
 	 * 表名
 	 */
 	private String tableName;
 	/**
-	 * 表中文名
+	 * 逻辑名
 	 */
-	private String tablePName;
+	private String tablePname;
+	/**
+	 * 表类别
+	 */
+	private Integer tableType;
 	/**
 	 * 备注
 	 */
 	private String remark;
 	/**
-	 * 表类别
+	 * 最后更新人
 	 */
-	private Integer tableType;
+	private Long updatebyId;
+	/**
+	 * 建立人
+	 */
+	private Long createbyId;
+	/**
+	 * 最后更新时间
+	 */
+	private Date updateDate;
+	/**
+	 * 建立时间
+	 */
+	private Date createDate;
 	
-	public Integer getTableId() {
-		return tableId;
-	}
-
-	public void setTableId(Integer tableId) {
-		this.tableId = tableId;
-	}
-	
-	public Integer getDatasourceId() {
+	public Long getDatasourceId() {
 		return datasourceId;
 	}
 
-	public void setDatasourceId(Integer datasourceId) {
+	public void setDatasourceId(Long datasourceId) {
 		this.datasourceId = datasourceId;
 	}
 	
@@ -66,12 +72,20 @@ public class DBTable extends IdEntity {
 		this.tableName = tableName;
 	}
 	
-	public String getTablePName() {
-		return tablePName;
+	public String getTablePname() {
+		return tablePname;
 	}
 
-	public void setTablePName(String tablePName) {
-		this.tablePName = tablePName;
+	public void setTablePname(String tablePname) {
+		this.tablePname = tablePname;
+	}
+	
+	public Integer getTableType() {
+		return tableType;
+	}
+
+	public void setTableType(Integer tableType) {
+		this.tableType = tableType;
 	}
 	
 	public String getRemark() {
@@ -82,12 +96,36 @@ public class DBTable extends IdEntity {
 		this.remark = remark;
 	}
 	
-	public Integer getTableType() {
-		return tableType;
+	public Long getUpdatebyId() {
+		return updatebyId;
 	}
 
-	public void setTableType(Integer tableType) {
-		this.tableType = tableType;
+	public void setUpdatebyId(Long updatebyId) {
+		this.updatebyId = updatebyId;
+	}
+	
+	public Long getCreatebyId() {
+		return createbyId;
+	}
+
+	public void setCreatebyId(Long createbyId) {
+		this.createbyId = createbyId;
+	}
+	
+	public Date getUpdateDate() {
+		return updateDate;
+	}
+
+	public void setUpdateDate(Date updateDate) {
+		this.updateDate = updateDate;
+	}
+	
+	public Date getCreateDate() {
+		return createDate;
+	}
+
+	public void setCreateDate(Date createDate) {
+		this.createDate = createDate;
 	}
 	
 	

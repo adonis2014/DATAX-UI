@@ -1,5 +1,7 @@
 package net.iharding.modules.meta.model;
 
+import java.util.Date;
+
 import javax.persistence.Entity;
 import javax.persistence.Table;
 
@@ -10,7 +12,7 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 /**
  * 表字段Entity
  * @author Joe.zhang
- * @version 2015-11-29
+ * @version 2015-12-01
  */
 @Entity
 @Table(name = "meta_column")
@@ -18,13 +20,9 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 public class Column extends IdEntity {
 
 	/**
-	 * 字段ID
-	 */
-	private Integer columnId;
-	/**
 	 * 表ID
 	 */
-	private Integer tableId;
+	private Long tableId;
 	/**
 	 * 字段名
 	 */
@@ -62,19 +60,11 @@ public class Column extends IdEntity {
 	 */
 	private String format;
 	
-	public Integer getColumnId() {
-		return columnId;
-	}
-
-	public void setColumnId(Integer columnId) {
-		this.columnId = columnId;
-	}
-	
-	public Integer getTableId() {
+	public Long getTableId() {
 		return tableId;
 	}
 
-	public void setTableId(Integer tableId) {
+	public void setTableId(Long tableId) {
 		this.tableId = tableId;
 	}
 	
