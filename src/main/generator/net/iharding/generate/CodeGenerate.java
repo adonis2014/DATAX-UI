@@ -171,7 +171,7 @@ public class CodeGenerate {
 		writeFile(content, filePath);
 		logger.info("Controller: {}", filePath);
 		
-	/*	// 生成 list.jsp
+	/**/	// 生成 list.jsp
 		template = cfg.getTemplate("list.ftl");
 		content = FreeMarkers.renderTemplate(template, model);
 		filePath = viewPath + separator + "list.jsp";
@@ -183,7 +183,7 @@ public class CodeGenerate {
 		content = FreeMarkers.renderTemplate(template, model);
 		filePath = viewPath + separator + "edit.jsp";
 		writeFile(content, filePath);
-		logger.info("Controller: {}", filePath);*/
+		logger.info("Controller: {}", filePath);
 
 		logger.info("Generate Success.");
 	}
