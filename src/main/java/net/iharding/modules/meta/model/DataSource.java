@@ -12,7 +12,7 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 /**
  * 数据源Entity
  * @author Joe.zhang
- * @version 2015-11-29
+ * @version 2015-12-01
  */
 @Entity
 @Table(name = "meta_dataSource")
@@ -20,68 +20,56 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 public class DataSource extends IdEntity {
 
 	/**
-	 * 数据源ID
+	 * 项目ID
 	 */
-	private Integer datasourceId;
+	private Long projectId;
 	/**
-	 * 项目编码
-	 */
-	private String projectCode;
-	/**
-	 * jdbc驱动class
+	 * jdbc驱动
 	 */
 	private String driverClassName;
 	/**
-	 * jdbc url
+	 * jdbc URL
 	 */
 	private String jdbcUrl;
 	/**
-	 * jdbc User
+	 * jdbc用户
 	 */
 	private String jdbcUser;
 	/**
-	 * jdbc password
+	 * jdbc用户
 	 */
 	private String jdbcPassword;
-	/**
-	 * 数据库类型
-	 */
-	private Integer dbType;
 	/**
 	 * 备注
 	 */
 	private String remark;
 	/**
-	 * 建立日期
+	 * 类别
 	 */
-	private Date createDate;
+	private Integer dbType;
 	/**
-	 * 更新日期
+	 * 最后更新人
+	 */
+	private Long updatebyId;
+	/**
+	 * 建立人
+	 */
+	private Long createbyId;
+	/**
+	 * 最后更新时间
 	 */
 	private Date updateDate;
 	/**
-	 * 建立者
+	 * 建立时间
 	 */
-	private Long createId;
-	/**
-	 * 更新人
-	 */
-	private Long updateId;
+	private Date createDate;
 	
-	public Integer getDatasourceId() {
-		return datasourceId;
+	public Long getProjectId() {
+		return projectId;
 	}
 
-	public void setDatasourceId(Integer datasourceId) {
-		this.datasourceId = datasourceId;
-	}
-	
-	public String getProjectCode() {
-		return projectCode;
-	}
-
-	public void setProjectCode(String projectCode) {
-		this.projectCode = projectCode;
+	public void setProjectId(Long projectId) {
+		this.projectId = projectId;
 	}
 	
 	public String getDriverClassName() {
@@ -116,14 +104,6 @@ public class DataSource extends IdEntity {
 		this.jdbcPassword = jdbcPassword;
 	}
 	
-	public Integer getDbType() {
-		return dbType;
-	}
-
-	public void setDbType(Integer dbType) {
-		this.dbType = dbType;
-	}
-	
 	public String getRemark() {
 		return remark;
 	}
@@ -132,12 +112,28 @@ public class DataSource extends IdEntity {
 		this.remark = remark;
 	}
 	
-	public Date getCreateDate() {
-		return createDate;
+	public Integer getDbType() {
+		return dbType;
 	}
 
-	public void setCreateDate(Date createDate) {
-		this.createDate = createDate;
+	public void setDbType(Integer dbType) {
+		this.dbType = dbType;
+	}
+	
+	public Long getUpdatebyId() {
+		return updatebyId;
+	}
+
+	public void setUpdatebyId(Long updatebyId) {
+		this.updatebyId = updatebyId;
+	}
+	
+	public Long getCreatebyId() {
+		return createbyId;
+	}
+
+	public void setCreatebyId(Long createbyId) {
+		this.createbyId = createbyId;
 	}
 	
 	public Date getUpdateDate() {
@@ -148,20 +144,12 @@ public class DataSource extends IdEntity {
 		this.updateDate = updateDate;
 	}
 	
-	public Long getCreateId() {
-		return createId;
+	public Date getCreateDate() {
+		return createDate;
 	}
 
-	public void setCreateId(Long createId) {
-		this.createId = createId;
-	}
-	
-	public Long getUpdateId() {
-		return updateId;
-	}
-
-	public void setUpdateId(Long updateId) {
-		this.updateId = updateId;
+	public void setCreateDate(Date createDate) {
+		this.createDate = createDate;
 	}
 	
 	

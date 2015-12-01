@@ -10,9 +10,9 @@ import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 /**
- * 模块Entity
+ * 模块对象Entity
  * @author Joe.zhang
- * @version 2015-11-29
+ * @version 2015-12-01
  */
 @Entity
 @Table(name = "meta_module")
@@ -20,60 +20,60 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 public class Module extends IdEntity {
 
 	/**
-	 * 模块ID
+	 * 项目ID
 	 */
-	private Integer moduleId;
+	private Long projectId;
 	/**
-	 * 数据源ID
+	 * 模块编码
 	 */
-	private Integer datasourceId;
+	private String moduleCode;
 	/**
-	 * 包名
+	 * 模块名
 	 */
-	private String packageName;
+	private String moduleName;
 	/**
 	 * 备注
 	 */
 	private String remark;
 	/**
-	 * 建立日期
+	 * 最后更新人
 	 */
-	private Date createDate;
+	private Long updatebyId;
 	/**
-	 * 更新日期
+	 * 建立人
+	 */
+	private Long createbyId;
+	/**
+	 * 最后更新时间
 	 */
 	private Date updateDate;
 	/**
-	 * 建立者
+	 * 建立时间
 	 */
-	private Long createId;
-	/**
-	 * 更新人
-	 */
-	private Long updateId;
+	private Date createDate;
 	
-	public Integer getModuleId() {
-		return moduleId;
+	public Long getProjectId() {
+		return projectId;
 	}
 
-	public void setModuleId(Integer moduleId) {
-		this.moduleId = moduleId;
+	public void setProjectId(Long projectId) {
+		this.projectId = projectId;
 	}
 	
-	public Integer getDatasourceId() {
-		return datasourceId;
+	public String getModuleCode() {
+		return moduleCode;
 	}
 
-	public void setDatasourceId(Integer datasourceId) {
-		this.datasourceId = datasourceId;
+	public void setModuleCode(String moduleCode) {
+		this.moduleCode = moduleCode;
 	}
 	
-	public String getPackageName() {
-		return packageName;
+	public String getModuleName() {
+		return moduleName;
 	}
 
-	public void setPackageName(String packageName) {
-		this.packageName = packageName;
+	public void setModuleName(String moduleName) {
+		this.moduleName = moduleName;
 	}
 	
 	public String getRemark() {
@@ -84,12 +84,20 @@ public class Module extends IdEntity {
 		this.remark = remark;
 	}
 	
-	public Date getCreateDate() {
-		return createDate;
+	public Long getUpdatebyId() {
+		return updatebyId;
 	}
 
-	public void setCreateDate(Date createDate) {
-		this.createDate = createDate;
+	public void setUpdatebyId(Long updatebyId) {
+		this.updatebyId = updatebyId;
+	}
+	
+	public Long getCreatebyId() {
+		return createbyId;
+	}
+
+	public void setCreatebyId(Long createbyId) {
+		this.createbyId = createbyId;
 	}
 	
 	public Date getUpdateDate() {
@@ -100,20 +108,12 @@ public class Module extends IdEntity {
 		this.updateDate = updateDate;
 	}
 	
-	public Long getCreateId() {
-		return createId;
+	public Date getCreateDate() {
+		return createDate;
 	}
 
-	public void setCreateId(Long createId) {
-		this.createId = createId;
-	}
-	
-	public Long getUpdateId() {
-		return updateId;
-	}
-
-	public void setUpdateId(Long updateId) {
-		this.updateId = updateId;
+	public void setCreateDate(Date createDate) {
+		this.createDate = createDate;
 	}
 	
 	

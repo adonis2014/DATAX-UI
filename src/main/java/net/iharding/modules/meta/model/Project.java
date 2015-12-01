@@ -10,9 +10,9 @@ import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 /**
- * 项目名称Entity
+ * 数据源Entity
  * @author Joe.zhang
- * @version 2015-11-29
+ * @version 2015-12-01
  */
 @Entity
 @Table(name = "meta_project")
@@ -24,7 +24,7 @@ public class Project extends IdEntity {
 	 */
 	private String projectCode;
 	/**
-	 * 项目名称
+	 * 项目名
 	 */
 	private String projectName;
 	/**
@@ -32,21 +32,21 @@ public class Project extends IdEntity {
 	 */
 	private String remark;
 	/**
-	 * 建立日期
+	 * 最后更新人
 	 */
-	private Date createDate;
+	private Long updatebyId;
 	/**
-	 * 更新日期
+	 * 建立人
+	 */
+	private Long createbyId;
+	/**
+	 * 最后更新时间
 	 */
 	private Date updateDate;
 	/**
-	 * 建立者
+	 * 建立时间
 	 */
-	private Long createId;
-	/**
-	 * 更新人
-	 */
-	private Long updateId;
+	private Date createDate;
 	
 	public String getProjectCode() {
 		return projectCode;
@@ -72,12 +72,20 @@ public class Project extends IdEntity {
 		this.remark = remark;
 	}
 	
-	public Date getCreateDate() {
-		return createDate;
+	public Long getUpdatebyId() {
+		return updatebyId;
 	}
 
-	public void setCreateDate(Date createDate) {
-		this.createDate = createDate;
+	public void setUpdatebyId(Long updatebyId) {
+		this.updatebyId = updatebyId;
+	}
+	
+	public Long getCreatebyId() {
+		return createbyId;
+	}
+
+	public void setCreatebyId(Long createbyId) {
+		this.createbyId = createbyId;
 	}
 	
 	public Date getUpdateDate() {
@@ -88,20 +96,12 @@ public class Project extends IdEntity {
 		this.updateDate = updateDate;
 	}
 	
-	public Long getCreateId() {
-		return createId;
+	public Date getCreateDate() {
+		return createDate;
 	}
 
-	public void setCreateId(Long createId) {
-		this.createId = createId;
-	}
-	
-	public Long getUpdateId() {
-		return updateId;
-	}
-
-	public void setUpdateId(Long updateId) {
-		this.updateId = updateId;
+	public void setCreateDate(Date createDate) {
+		this.createDate = createDate;
 	}
 	
 	
