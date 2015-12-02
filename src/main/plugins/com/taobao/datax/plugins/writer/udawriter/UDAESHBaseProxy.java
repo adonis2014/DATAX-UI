@@ -290,28 +290,30 @@ public class UDAESHBaseProxy {
 	}
 
 	public void insert(String id, Map map) throws IOException {
-		buffer.add(this.p);
-//		if (buffer.size() >= BUFFER_LINE) {
-		//多线程程序，需要即时写入hbase，防止get当前记录合并是出错
-			htable.put(buffer);
-			buffer.clear();
-//		}
-		try {
-			if (StringUtils.isEmpty(id)) {
-				bulkRequestBuilder.add(client.prepareIndex(this.indexname, this.typename).setSource(map).request());
-			} else {
-				bulkRequestBuilder.add(client.prepareIndex(this.indexname, this.typename, id).setSource(map).request());
+		if (this.p.size()>0){
+			buffer.add(this.p);
+	//		if (buffer.size() >= BUFFER_LINE) {
+			//多线程程序，需要即时写入hbase，防止get当前记录合并是出错
+				htable.put(buffer);
+				buffer.clear();
+	//		}
+			try {
+				if (StringUtils.isEmpty(id)) {
+					bulkRequestBuilder.add(client.prepareIndex(this.indexname, this.typename).setSource(map).request());
+				} else {
+					bulkRequestBuilder.add(client.prepareIndex(this.indexname, this.typename, id).setSource(map).request());
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
 			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		if (bulkRequestBuilder.numberOfActions() >= BUFFER_LINE) {
-			BulkResponse response = bulkRequestBuilder.execute().actionGet();
-			String err = getFailueMessage(response);
-			if (err.length() > 0) {
-				System.out.println(err);
+			if (bulkRequestBuilder.numberOfActions() >= BUFFER_LINE) {
+				BulkResponse response = bulkRequestBuilder.execute().actionGet();
+				String err = getFailueMessage(response);
+				if (err.length() > 0) {
+					System.out.println(err);
+				}
+				this.prepareEs();
 			}
-			this.prepareEs();
 		}
 	}
 

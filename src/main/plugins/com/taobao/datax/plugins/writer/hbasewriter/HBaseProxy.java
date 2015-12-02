@@ -120,7 +120,9 @@ public class HBaseProxy {
 	}
 	
 	public void insert() throws IOException {
-		buffer.add(this.p);
+		if (this.p.size()>0){
+			buffer.add(this.p);
+		}
 		if (buffer.size() >= BUFFER_LINE) {
 			htable.put(buffer);
 			buffer.clear();
