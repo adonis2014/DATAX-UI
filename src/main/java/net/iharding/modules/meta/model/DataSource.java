@@ -1,14 +1,23 @@
 package net.iharding.modules.meta.model;
 
 import java.util.Date;
+import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.OrderBy;
 import javax.persistence.Table;
 import javax.persistence.Column;
 
 import org.guess.core.orm.IdEntity;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.hibernate.annotations.NotFound;
+import org.hibernate.annotations.NotFoundAction;
 
 /**
  * 数据源Entity
@@ -23,8 +32,11 @@ public class DataSource extends IdEntity {
 	/**
 	 * 项目ID
 	 */
-	@Column(name="project_id")
-	private Long projectId;
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name="project_id")
+	@NotFound(action = NotFoundAction.IGNORE)
+	@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
+	private Project project;
 	/**
 	 * jdbc驱动
 	 */
@@ -45,6 +57,12 @@ public class DataSource extends IdEntity {
 	 */
 	@Column(name="jdbc_password")
 	private String jdbcPassword;
+	
+	@Column(name="db_name")
+	private String dbName;
+	
+	@Column(name="schema_name")
+	private String schemaName;
 	/**
 	 * 备注
 	 */
@@ -75,15 +93,26 @@ public class DataSource extends IdEntity {
 	@Column(name="create_date")
 	private Date createDate;
 	
-	@Column(name="project_id")
-	public Long getProjectId() {
-		return projectId;
+	@OneToMany(targetEntity=DBTable.class,fetch = FetchType.LAZY,cascade=CascadeType.ALL,mappedBy = "DBTable")
+	@OrderBy("id ASC")
+	private Set<DBTable> tables;
+	
+	public Set<DBTable> getTables() {
+		return tables;
 	}
 
-	public void setProjectId(Long projectId) {
-		this.projectId = projectId;
+	public void setTables(Set<DBTable> tables) {
+		this.tables = tables;
 	}
-	
+
+	public Project getProject() {
+		return project;
+	}
+
+	public void setProject(Project project) {
+		this.project = project;
+	}
+
 	@Column(name="driver_class_name")
 	public String getDriverClassName() {
 		return driverClassName;
@@ -93,6 +122,22 @@ public class DataSource extends IdEntity {
 		this.driverClassName = driverClassName;
 	}
 	
+	public String getDbName() {
+		return dbName;
+	}
+
+	public void setDbName(String dbName) {
+		this.dbName = dbName;
+	}
+
+	public String getSchemaName() {
+		return schemaName;
+	}
+
+	public void setSchemaName(String schemaName) {
+		this.schemaName = schemaName;
+	}
+
 	@Column(name="jdbc_url")
 	public String getJdbcUrl() {
 		return jdbcUrl;

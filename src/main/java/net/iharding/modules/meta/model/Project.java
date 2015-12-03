@@ -1,11 +1,18 @@
 package net.iharding.modules.meta.model;
 
 import java.util.Date;
+import java.util.Set;
 
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.OneToMany;
+import javax.persistence.OrderBy;
 import javax.persistence.Table;
 
 import org.guess.core.orm.IdEntity;
+import org.guess.showcase.cms.model.Comment;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
@@ -22,10 +29,12 @@ public class Project extends IdEntity {
 	/**
 	 * 项目编码
 	 */
+	@Column(name="project_code")
 	private String projectCode;
 	/**
 	 * 项目名
 	 */
+	@Column(name="project_name")
 	private String projectName;
 	/**
 	 * 备注
@@ -34,19 +43,35 @@ public class Project extends IdEntity {
 	/**
 	 * 最后更新人
 	 */
+	@Column(name="updateby_id")
 	private Long updatebyId;
 	/**
 	 * 建立人
 	 */
+	@Column(name="createby_id")
 	private Long createbyId;
 	/**
 	 * 最后更新时间
 	 */
+	@Column(name="update_date")
 	private Date updateDate;
 	/**
 	 * 建立时间
 	 */
+	@Column(name="create_date")
 	private Date createDate;
+	/**
+	 * 项目模块
+	 */
+	@OneToMany(targetEntity=Module.class,fetch = FetchType.LAZY,cascade=CascadeType.ALL,mappedBy = "Module")
+	@OrderBy("id ASC")
+	private Set<Module> modules;
+	/**
+	 * 项目数据源
+	 */
+	@OneToMany(targetEntity=DataSource.class,fetch = FetchType.LAZY,cascade=CascadeType.ALL,mappedBy = "DataSource")
+	@OrderBy("id ASC")
+	private Set<DataSource> dataSources;
 	
 	public String getProjectCode() {
 		return projectCode;
@@ -102,6 +127,22 @@ public class Project extends IdEntity {
 
 	public void setCreateDate(Date createDate) {
 		this.createDate = createDate;
+	}
+
+	public Set<Module> getModules() {
+		return modules;
+	}
+
+	public void setModules(Set<Module> modules) {
+		this.modules = modules;
+	}
+
+	public Set<DataSource> getDataSources() {
+		return dataSources;
+	}
+
+	public void setDataSources(Set<DataSource> dataSources) {
+		this.dataSources = dataSources;
 	}
 	
 	
