@@ -15,7 +15,6 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import org.guess.core.orm.IdEntity;
-import org.guess.sys.model.User;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.annotations.NotFound;
@@ -88,7 +87,7 @@ public class Module extends IdEntity {
 	@Column(name="create_date")
 	private Date createDate;
 	
-	@ManyToMany(cascade = { CascadeType.PERSIST, CascadeType.MERGE }, targetEntity = DBTable.class,mappedBy="modules")
+	@ManyToMany(cascade = { CascadeType.PERSIST, CascadeType.MERGE }, targetEntity = DBTable.class)
 	@JoinTable(name = "meta_module_table", joinColumns = { @JoinColumn(name = "module_id") }, inverseJoinColumns = { @JoinColumn(name = "table_id") })
 	@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 	private Set<DBTable> tables = new HashSet<DBTable>(0);

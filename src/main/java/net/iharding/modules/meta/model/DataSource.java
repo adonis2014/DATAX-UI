@@ -93,7 +93,7 @@ public class DataSource extends IdEntity {
 	@Column(name="create_date")
 	private Date createDate;
 	
-	@OneToMany(targetEntity=DBTable.class,fetch = FetchType.LAZY,cascade=CascadeType.ALL,mappedBy = "DBTable")
+	@OneToMany(targetEntity=DBTable.class,fetch = FetchType.LAZY,cascade=CascadeType.ALL)
 	@OrderBy("id ASC")
 	private Set<DBTable> tables;
 	

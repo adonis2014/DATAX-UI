@@ -9,11 +9,10 @@
 		<pattern>/sys/*</pattern>
 		<pattern>/cms/*</pattern>
 		<pattern>/file/*</pattern>
-		<pattern>/finance/*</pattern>
+		<pattern>/meta/*</pattern>
 		<pattern>/mobile/*</pattern>
 		<pattern>/workflow/*</pattern>
         <pattern>/chat/*</pattern>
-        <pattern>/qixiu/*</pattern>
 	</decorator>
 	
 	<!-- CMS博客主题 -->

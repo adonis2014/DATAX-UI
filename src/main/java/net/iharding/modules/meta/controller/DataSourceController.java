@@ -16,13 +16,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 *
 */
 @Controller
-@RequestMapping("/meta/dataSource")
+@RequestMapping("/meta/DataSource")
 public class DataSourceController extends BaseController<DataSource>{
 
 	{
-		editView = "/meta/dataSource/edit";
-		listView = "/meta/dataSource/list";
-		showView = "/meta/dataSource/show";
+		editView = "/meta/DataSource/edit";
+		listView = "/meta/DataSource/list";
+		showView = "/meta/DataSource/show";
 	}
 	
 	@Autowired

@@ -16,13 +16,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 *
 */
 @Controller
-@RequestMapping("/meta/dBTable")
+@RequestMapping("/meta/DBTable")
 public class DBTableController extends BaseController<DBTable>{
 
 	{
-		editView = "/meta/dBTable/edit";
-		listView = "/meta/dBTable/list";
-		showView = "/meta/dBTable/show";
+		editView = "/meta/DBTable/edit";
+		listView = "/meta/DBTable/list";
+		showView = "/meta/DBTable/show";
 	}
 	
 	@Autowired

@@ -62,11 +62,11 @@
 <script type="text/javascript">
 $(document).ready(function() {
 	
-	App.activeMenu("meta/dataSource/list");
+	App.activeMenu("meta/DataSource/list");
 	
 	Page.initData(
 		{
-			url:"${ctx}/meta/dataSource/page",
+			url:"${ctx}/meta/DataSource/page",
 			pageNo : 1,
 			pageSize : 10,
 			tableId : "#sample_1"

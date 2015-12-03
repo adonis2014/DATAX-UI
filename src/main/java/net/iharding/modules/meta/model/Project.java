@@ -63,13 +63,13 @@ public class Project extends IdEntity {
 	/**
 	 * 项目模块
 	 */
-	@OneToMany(targetEntity=Module.class,fetch = FetchType.LAZY,cascade=CascadeType.ALL,mappedBy = "Module")
+	@OneToMany(targetEntity=Module.class,fetch = FetchType.LAZY,cascade=CascadeType.ALL)
 	@OrderBy("id ASC")
 	private Set<Module> modules;
 	/**
 	 * 项目数据源
 	 */
-	@OneToMany(targetEntity=DataSource.class,fetch = FetchType.LAZY,cascade=CascadeType.ALL,mappedBy = "DataSource")
+	@OneToMany(targetEntity=DataSource.class,fetch = FetchType.LAZY,cascade=CascadeType.ALL)
 	@OrderBy("id ASC")
 	private Set<DataSource> dataSources;
 	

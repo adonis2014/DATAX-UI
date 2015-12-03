@@ -86,12 +86,12 @@ public class DBTable extends IdEntity {
 	@Column(name = "create_date")
 	private Date createDate;
 
-	@ManyToMany(cascade = { CascadeType.PERSIST, CascadeType.MERGE }, targetEntity = Module.class, mappedBy = "tables")
+	@ManyToMany(cascade = { CascadeType.PERSIST, CascadeType.MERGE }, targetEntity = Module.class)
 	@JoinTable(name = "meta_module_table", joinColumns = { @JoinColumn(name = "table_id") }, inverseJoinColumns = { @JoinColumn(name = "module_id") })
 	@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 	private Set<Module> modules = new HashSet<Module>(0);
 
-	@OneToMany(targetEntity = Column.class, fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "Column")
+	@OneToMany(targetEntity = DbColumn.class, fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	@OrderBy("id ASC")
 	private Set<DbColumn> columns;
 
