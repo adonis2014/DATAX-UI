@@ -8,31 +8,35 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Types;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+
+
+
+
+
+
+import net.iharding.modules.meta.model.DBTable;
+import net.iharding.modules.meta.model.DataSource;
+import net.iharding.modules.meta.model.DbColumn;
+import net.iharding.modules.meta.model.Module;
 
 import org.apache.commons.lang3.StringUtils;
 import org.guess.core.utils.DateUtil;
 
 import com.google.common.collect.Maps;
+import com.taobao.datax.utils.ETLConstants;
 
 public class DBReverse {
 	
-	private String packageName="net.iharding";
-	private String driverClass="";
-	private String url;
-	private String user;
-	private String password;
-	private String dbName;
-	private String schemaName;
-	private String dbms;
 	
-	private String getOracleTableComments(String table)  {
+	private String getOracleTableComments(DataSource dataSource,String table)  {
 		ResultSet rs = null;
 		PreparedStatement ps=null;
 		String comments="";
 		try {
 			String sql = "SELECT comments FROM user_tab_comments WHERE table_name='"+table+"'";
-			ps=getCommentConnection().prepareStatement(sql);
+			ps=getConnection(dataSource).prepareStatement(sql);
 			rs =ps.executeQuery();
 			if (rs.next()) {
 				comments=rs.getString("comments");				
@@ -48,13 +52,24 @@ public class DBReverse {
 		return comments;
 	}
 	
-	private String getOracleColumnComments(String table,String column)  {
+	private void close(ResultSet rs){
+		if (rs!=null){
+			try {
+				rs.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+			rs=null;
+		}
+	}
+	
+	private String getOracleColumnComments(DataSource dataSource,String table,String column)  {
 		ResultSet rs = null;
 		PreparedStatement  ps=null;
 		String comments="";
 		try {
 			String sql = "SELECT comments FROM user_col_comments WHERE table_name='"+table+"' AND column_name = '"+column+"'";
-			ps=getCommentConnection().prepareStatement(sql);
+			ps=getConnection(dataSource).prepareStatement(sql);
 			rs =ps.executeQuery();
 			if (rs.next()) {
 				comments=rs.getString("comments");				
@@ -71,83 +86,70 @@ public class DBReverse {
 		return comments;
 	}
 	
-	private Map getTableDescription(DatabaseMetaData dmd, String tableName, String moduleName) {
+	public DBTable getTableDescription(DatabaseMetaData dmd, String tableName, DataSource dataSource) {
 		ResultSet rs = null;
-		Bean bean = new Bean();
+		DBTable bean = new DBTable();
 		try {
-			if ("oracle".equalsIgnoreCase(this.dbms)){
-				bean.setTitle(this.getOracleTableComments(tableName));
+			if (dataSource.getDbType()==ETLConstants.DBMS_TYPE_ORACLE){
+				bean.setTablePname(this.getOracleTableComments(dataSource,tableName));
 			}
-			bean.setName(util.firstUpper(util.sql2javaName(tableName, 1)).substring(moduleName.length()));
-			if (!tableName.equals(util.java2sqlName(bean.getName()))) {
-				bean.setSqlName(tableName.toUpperCase());
-			}			
-			bean.setGenerateDao(true);
-			bean.setGenerateProcess(false);
-			if ("mssql".equalsIgnoreCase(this.dbms)){
-				rs = dmd.getPrimaryKeys(null, null, tableName);
-			}else{
-				rs = dmd.getPrimaryKeys(dbName, schemaName, tableName);
-			}
-			HashMap pkMap = new HashMap();
-			while (rs.next()) {
-				pkMap.put(util.sql2javaName(rs.getString(4), 0), "");
-			}
-			if (pkMap.size() == 0) {
-				System.out.println("err pk able:" + tableName);
-			}
-			close(rs);
-			if ("mssql".equalsIgnoreCase(this.dbms)){
+			bean.setTableName(tableName);
+			//primaryKey
+//			if (dataSource.getDbType()==ETLConstants.DBMS_TYPE_MSSQL){
+//				rs = dmd.getPrimaryKeys(null, null, tableName);
+//			}else{
+//				rs = dmd.getPrimaryKeys(dataSource.getDbName(), dataSource.getSchemaName(), tableName);
+//			}
+//			HashMap pkMap = new HashMap();
+//			while (rs.next()) {
+//				pkMap.put(util.sql2javaName(rs.getString(4), 0), "");
+//			}
+//			if (pkMap.size() == 0) {
+//				System.out.println("err pk able:" + tableName);
+//			}
+//			close(rs);
+			if (dataSource.getDbType()==ETLConstants.DBMS_TYPE_MSSQL){
 				rs = dmd.getColumns(null, null, tableName, "%");
 			}else{
-				rs = dmd.getColumns(dbName, schemaName, tableName, "%");
+				rs = dmd.getColumns(dataSource.getDbName(), dataSource.getSchemaName(), tableName, "%");
 			}
-			Attribute attr = new Attribute();
-			PrimaryKey pk = new PrimaryKey();
 			while (rs.next()) {
 				int colType = rs.getInt(5);
 				if (colType != Types.BINARY && colType != Types.VARBINARY && colType != Types.LONGVARBINARY) {
 					String sqlColName = rs.getString(4);
-					String javaColName = util.sql2javaName(sqlColName, 0);
+					String javaColName =sqlColName;// util.sql2javaName(sqlColName, 0);
 					int colTypeLength = rs.getInt(7);
 					int decimalLength = rs.getInt(9);
-					Column col = new Column();
-					Validation val = new Validation();
-					col.setValidation(val);
-					col.setName(javaColName);
-					if (!util.java2sqlName(javaColName).equals(sqlColName)) {
-						col.setSqlName(sqlColName);
-					}
+					DbColumn col = new DbColumn();
+//					Validation val = new Validation();
+//					col.setValidation(val);
+					col.setFieldCode(javaColName);
+					col.setColumnName(sqlColName);
 					String tit ="";
-					if ("oracle".equalsIgnoreCase(this.dbms)){
-						tit=getOracleColumnComments(tableName,sqlColName);						
+					if (dataSource.getDbType()==ETLConstants.DBMS_TYPE_ORACLE){
+						tit=getOracleColumnComments(dataSource,tableName,sqlColName);						
 					}else{
 						 tit = rs.getString(12);						
 					}
 					if ("".equalsIgnoreCase(tit) || tit == null) {
-						col.setTitle(javaColName);
+						col.setColumnPname(javaColName);
 					} else {
-						col.setTitle(tit);
+						col.setColumnPname(tit);
 					}
-					col.setType(convert(colType, colTypeLength, decimalLength));
-					if (!pkMap.containsKey(javaColName)) {
-						val.setRequired(false);
-						attr.addColumn(col);
-					} else {
-						pk.addColumn(col);
-						val.setRequired(true);
+					col.setRemark(col.getColumnPname());
+					col.setType("String");//convert(colType, colTypeLength, decimalLength));
+					if (!"id".equalsIgnoreCase(sqlColName)) {
+//						val.setRequired(false);
+						bean.addColumn(col);
 					}
-
-					if (col.getType().equals("string")) {
-						try {
-							val.setMaxLength(rs.getInt(7));
-						} catch (RuntimeException e) {
-							val.setMaxLength(30);
-						}
-					}
+//					if (col.getType().equals("string")) {
+//						try {
+//							val.setMaxLength(rs.getInt(7));
+//						} catch (RuntimeException e) {
+//							val.setMaxLength(30);
+//						}
+//					}
 				}
-				bean.setAttribute(attr);
-				bean.setPrimaryKey(pk);
 			}
 		} catch (SQLException e) {
 		} finally {
@@ -156,46 +158,36 @@ public class DBReverse {
 		return bean;
 	}
 
+	public Connection getConnection(DataSource dataSource) throws ClassNotFoundException, SQLException{
+		Class.forName(dataSource.getDriverClassName());
+		return DriverManager.getConnection(dataSource.getJdbcUrl(),dataSource.getJdbcUser(),dataSource.getJdbcPassword());
+	}
 	
-	public Map<String, Object> getTablesDescription(String moduleName,String className,String classAuthor,String functionName) throws ClassNotFoundException, SQLException{
+	public Module reverseModule(Module module,String classAuthor) throws ClassNotFoundException, SQLException{
 		ResultSet rs = null;
-		Connection conn = null;
-		Map<String, Object> model = Maps.newHashMap();
-		model.put("packageName", StringUtils.lowerCase(packageName));
-		model.put("moduleName", StringUtils.lowerCase(moduleName));
-		model.put("className", StringUtils.uncapitalize(className));
-		model.put("ClassName", StringUtils.capitalize(className));
-		model.put("classAuthor",
-				StringUtils.isNotBlank(classAuthor) ? classAuthor
-						: "Generate Tools");
-		model.put("classVersion", DateUtil.getCurrenDate());
-		model.put("functionName", functionName);
-		model.put("tableName",model.get("moduleName") + "_" + model.get("className"));
-		Class.forName(driverClass);
-		conn = DriverManager.getConnection(url, user, password);
+		Connection conn = getConnection(module.getDatasource());
 		DatabaseMetaData dmd = conn.getMetaData();
 		String[] tabletypes = { "TABLE" };
-		if ("oracle".equalsIgnoreCase(dbms)){
-			rs = dmd.getTables(dbName, schemaName, "%", tabletypes);
-		}else if ("mssql".equalsIgnoreCase(dbms)){
+		if (module.getDatasource().getDbType()==ETLConstants.DBMS_TYPE_ORACLE){
+			rs = dmd.getTables(module.getDatasource().getDbName(), module.getDatasource().getSchemaName(), "%", tabletypes);
+		}else if (module.getDatasource().getDbType()==ETLConstants.DBMS_TYPE_MSSQL){
 			rs = dmd.getTables(null, null, "%", null);
 		}else{
-			rs = dmd.getTables(dbName, null, null, tabletypes);
+			rs = dmd.getTables(module.getDatasource().getDbName(), null, null, tabletypes);
 		}
 		while (rs.next()) {
 			if (rs.getString(4).equalsIgnoreCase("table")) {
 				String tableName = rs.getString(3);
 				if (tableName != null) {
 					System.out.println("tables: " + tableName);
-					if (tableName.toLowerCase().startsWith(moduleName.toLowerCase() + "_") || "*".equalsIgnoreCase(moduleName)) {
+					if (tableName.toLowerCase().startsWith(module.getModuleCode().toLowerCase() + "_") || "*".equalsIgnoreCase(module.getModuleCode())) {
 //						System.out.println("Importing table " + tableName);
 //						tree.addBean(getTableDescription(dmd, tableName, moduleName));
 					}
 				}
 			}
 		}
-//		model.put("fields", fields);
-		return model;
+		return module;
 	}
 
 }

@@ -2,13 +2,13 @@
 <%@ include file="/WEB-INF/content/common/common.jsp"%>
 <html>
 <head>
-<title>${functionName}列表</title>
+<title>字段(属性)对象列表</title>
 </head>
 <body>
 	<div class="page-content">
 		<div class="container-fluid">
 			<!-- 页面导航 -->
-			<tool:navBar pageTitle="${functionName}列表" pageTitleContent="内容管理-${functionName}管理-${functionName}列表" titleIcon="icon-home"/>
+			<tool:navBar pageTitle="字段(属性)对象列表" pageTitleContent="内容管理-字段(属性)对象管理-字段(属性)对象列表" titleIcon="icon-home"/>
 			<!-- 主体内容 -->
 			<div class="row-fluid">
 				<div class="span12">
@@ -29,7 +29,7 @@
 	                                 	<div class="span7 ">
 		                                    <div class="control-group">
 		                                       <div class="controls">
-		                                          <input type="text" id="filters" class="m-wrap span12" placeholder="<#list fields as item><#if item_has_next>${item.value},<#else>${item.value}</#if></#list>">
+		                                          <input type="text" id="filters" class="m-wrap span12" placeholder="表对象,字段属性编码,字段名,逻辑名,字段类别,是否存储,es doc类型,是否索引,是否必须,格式,备注">
 		                                       </div>
 		                                    </div>
 	                                 	</div>
@@ -62,30 +62,45 @@
 <script type="text/javascript">
 $(document).ready(function() {
 	
-	App.activeMenu("${moduleName}/${className}/list");
+	App.activeMenu("meta/dbColumn/list");
 	
 	Page.initData(
 		{
-			url:"${r"${ctx}"}/${moduleName}/${className}/page",
+			url:"${ctx}/meta/dbColumn/page",
 			pageNo : 1,
 			pageSize : 10,
 			tableId : "#sample_1"
 		},
 		null,
-		[<#list fields as item>
-			 <#if item_has_next>
-			 	{cName:"${item.name}",cValue:"${item.value}"},
-			 <#else>
-			  	{cName:"${item.name}",cValue:"${item.value}"}
-			 </#if>
-		 </#list>
+		[
+			 	{cName:"table",cValue:"表对象"},
+
+			 	{cName:"fieldCode",cValue:"字段属性编码"},
+
+			 	{cName:"columnName",cValue:"字段名"},
+
+			 	{cName:"columnPname",cValue:"逻辑名"},
+
+			 	{cName:"type",cValue:"字段类别"},
+
+			 	{cName:"store",cValue:"是否存储"},
+
+			 	{cName:"doc_values",cValue:"es doc类型"},
+
+			 	{cName:"index",cValue:"是否索引"},
+
+			 	{cName:"required",cValue:"是否必须"},
+
+			 	{cName:"format",cValue:"格式"},
+
+			  	{cName:"remark",cValue:"备注"}
 		 ]
 	);
 });
 
 function doQuery(){
 	var queryObj = {
-			search_LIKES_<#list fields as item><#if item_has_next>${item.name}_OR_<#else>${item.name}</#if></#list> : App.isEqPlacehoder($("#filters"))
+			search_LIKES_table_OR_fieldCode_OR_columnName_OR_columnPname_OR_type_OR_store_OR_doc_values_OR_index_OR_required_OR_format_OR_remark : App.isEqPlacehoder($("#filters"))
 		};
 	Page.doQuery(queryObj);
 }

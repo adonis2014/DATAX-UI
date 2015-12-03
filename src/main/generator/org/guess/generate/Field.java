@@ -8,6 +8,8 @@ public class Field {
 	private String value;
 	//内型字符串，如String Integer
 	private String type;
+	
+	
 	public String getName() {
 		return name;
 	}

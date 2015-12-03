@@ -35,26 +35,61 @@ public class CodeGenerate {
 		// packageName
 		// 包名，这里如果更改包名，请在applicationContext.xml和srping-mvc.xml中配置base-package、packagesToScan属性，来指定多个（共4处需要修改）。
 		String packageName = "net.iharding.modules";
-
-		String moduleName = "meta"; // 模块名，例：sys
-		String className = "DataDource"; // 类名，例：user
-		String classAuthor = "Joe.zhang"; // 类作者，例：
-		String functionName = "数据源对象"; // 功能名，例：用户
-		
 		List<Field> fields = new ArrayList<Field>();
-		fields.add(new Field("projectId", "项目ID", "Long"));
-		fields.add(new Field("driverCLassName", "jdbc driver classname", "String"));
-		fields.add(new Field("jdbcPassword", "jdbc登录密码", "String"));
-		fields.add(new Field("jdbcUrl", "jdbc连接url", "String"));
-		fields.add(new Field("dbType", "数据库类别", "Integer"));
-		fields.add(new Field("jdbcUser", "jdbc用户", "String"));
+		
+		String classAuthor = "Joe.zhang"; // 类作者，例：
+		String moduleName = "meta"; // 模块名，例：sys
+//		String className = "Project"; // 类名，例：user
+//		String functionName = "项目对象"; // 功能名，例：用户
+//		fields.add(new Field("projectCode", "项目编码", "String"));
+//		fields.add(new Field("projectName", "项目名称", "String"));
+
+//		String className = "Module"; // 类名，例：user
+//		String functionName = "模块对象"; // 功能名，例：用户
+//		fields.add(new Field("project", "项目", "Project"));
+//		fields.add(new Field("moduleCode", "模块编码", "String"));
+//		fields.add(new Field("moduleName", "模块名", "String"));
+//		fields.add(new Field("packageName", "包名", "String"));
+		
+		String className = "DBTable"; // 类名，例：user
+		String functionName = "表对象"; // 功能名，例：用户
+		fields.add(new Field("datasource", "数据源", "DataSource"));
+		fields.add(new Field("className", "类名", "String"));
+		fields.add(new Field("tableName", "表名", "String"));
+		fields.add(new Field("tablePname", "逻辑名", "String"));
+		fields.add(new Field("tableType", "表类别", "Integer"));
+		
+//		fields.add(new Field("moduleName", "模块名", "String"));
+		
+//		String className = "DataSource"; // 类名，例：user
+//		String functionName = "数据源对象"; // 功能名，例：用户
+//		fields.add(new Field("driverCLassName", "jdbc driver classname", "String"));
+//		fields.add(new Field("jdbcPassword", "jdbc登录密码", "String"));
+//		fields.add(new Field("jdbcUrl", "jdbc连接url", "String"));
+//		fields.add(new Field("dbType", "数据库类别", "Integer"));
+//		fields.add(new Field("jdbcUser", "jdbc用户", "String"));
+//		fields.add(new Field("schemaName", "schema名称", "String"));
+//		fields.add(new Field("dbName", "db名称", "String"));		
+		
+		
+//		String className = "DbColumn"; // 类名，例：user
+//		String functionName = "字段(属性)对象"; // 功能名，例：用户
+//		fields.add(new Field("table", "表对象", "DBTable"));
+//		fields.add(new Field("fieldCode", "字段属性编码", "String"));
+//		fields.add(new Field("columnName", "字段名", "String"));
+//		fields.add(new Field("columnPname", "逻辑名", "String"));
+//		fields.add(new Field("type", "字段类别", "String"));
+//		fields.add(new Field("store", "是否存储", "String"));	 
+//		fields.add(new Field("doc_values", "es doc类型", "String")); 
+//		fields.add(new Field("index", "是否索引", "String")); 
+//		fields.add(new Field("required", "是否必须", "String")); 
+//		fields.add(new Field("format", "格式", "String")); 
+
+		fields.add(new Field("createbyId", "建立者", "Long"));
+		fields.add(new Field("updatebyId", "更新者", "Long"));
+		fields.add(new Field("createDate", "建立世间", "Date"));
+		fields.add(new Field("updateDate", "更新世间", "Date"));
 		fields.add(new Field("remark", "备注", "String"));
-		fields.add(new Field("updatebyId", "最后更新人", "Long"));
-		fields.add(new Field("createbyId", "建立人", "Long"));
-		fields.add(new Field("updateDate", "最后更新时间", "Date"));
-		fields.add(new Field("createDate", "建立时间", "Date"));
-		
-		
 
 		// 是否启用生成工具
 		Boolean isEnable = true;
