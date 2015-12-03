@@ -37,15 +37,17 @@ public class CodeGenerate {
 		String packageName = "net.iharding.modules";
 
 		String moduleName = "meta"; // 模块名，例：sys
-		String className = "dbTable"; // 类名，例：user
+		String className = "DataDource"; // 类名，例：user
 		String classAuthor = "Joe.zhang"; // 类作者，例：
-		String functionName = "表对象"; // 功能名，例：用户
+		String functionName = "数据源对象"; // 功能名，例：用户
 		
 		List<Field> fields = new ArrayList<Field>();
-		fields.add(new Field("datasourceId", "数据源ID", "Long"));
-		fields.add(new Field("tableName", "表名", "String"));
-		fields.add(new Field("tablePname", "逻辑名", "String"));
-		fields.add(new Field("tableType", "表类别", "Integer"));
+		fields.add(new Field("projectId", "项目ID", "Long"));
+		fields.add(new Field("driverCLassName", "jdbc driver classname", "String"));
+		fields.add(new Field("jdbcPassword", "jdbc登录密码", "String"));
+		fields.add(new Field("jdbcUrl", "jdbc连接url", "String"));
+		fields.add(new Field("dbType", "数据库类别", "Integer"));
+		fields.add(new Field("jdbcUser", "jdbc用户", "String"));
 		fields.add(new Field("remark", "备注", "String"));
 		fields.add(new Field("updatebyId", "最后更新人", "Long"));
 		fields.add(new Field("createbyId", "建立人", "Long"));
