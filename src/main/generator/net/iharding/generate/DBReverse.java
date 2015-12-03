@@ -117,7 +117,7 @@ public class DBReverse {
 				int colType = rs.getInt(5);
 				if (colType != Types.BINARY && colType != Types.VARBINARY && colType != Types.LONGVARBINARY) {
 					String sqlColName = rs.getString(4);
-					String javaColName = util.sql2javaName(sqlColName, 0);
+					String javaColName =sqlColName;// util.sql2javaName(sqlColName, 0);
 					int colTypeLength = rs.getInt(7);
 					int decimalLength = rs.getInt(9);
 					DbColumn col = new DbColumn();
@@ -137,7 +137,7 @@ public class DBReverse {
 						col.setColumnPname(tit);
 					}
 					col.setRemark(col.getColumnPname());
-					col.setType(convert(colType, colTypeLength, decimalLength));
+					col.setType("String");//convert(colType, colTypeLength, decimalLength));
 					if (!"id".equalsIgnoreCase(sqlColName)) {
 //						val.setRequired(false);
 						bean.addColumn(col);
