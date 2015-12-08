@@ -7,19 +7,6 @@
 	<packaging>pom</packaging>
 	<name>eshbase</name>
 	<description>elasticsearch +Hbase</description>
-	<modules>
-		
-		
-		
-		<module>eshbase-commons</module>
-		<module>eshbase-jdbc</module>
-		<module>eshbase-sql</module>
-		<module>public</module>
-		<module>code-generator</module>
-		<module>datax-engine</module>
-		<module>datax-plugins</module>
-		<module>es-plugins</module>
-	</modules>
 		<developers>
 		<developer>
 			<id>joezxh</id>
@@ -857,4 +844,14 @@
 	
 	</dependencies>
 	
+	<modules>
+		<module>code-generator</module>
+		<module>datax-engine</module>
+		<module>datax-plugins</module>
+		<module>es-plugins</module>
+		<module>eshbase-commons</module>
+		<module>eshbase-console</module>
+		<module>eshbase-jdbc</module>
+		<module>eshbase-sql</module>
+	</modules>
 </project>

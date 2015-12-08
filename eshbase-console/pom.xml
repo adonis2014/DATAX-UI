@@ -6,7 +6,7 @@
 
 	<artifactId>eshbase-console</artifactId>
 	<packaging>war</packaging>
-	<name>publicui</name>
+	<name>eshbase-console</name>
 	<url>http://maven.apache.org</url>
 	<groupId>com.taobao</groupId>
 	<version>1.0</version>
@@ -101,4 +101,5 @@
 	</build>
 
 
+	<description>eshbase console</description>
 </project>
