@@ -16,6 +16,7 @@ import net.iharding.modules.meta.model.Module;
 
 public class DBReverse {
 	
+	private Util util=new Util();
 	
 	private String getOracleTableComments(DataSource dataSource,String table)  {
 		ResultSet rs = null;
@@ -76,6 +77,7 @@ public class DBReverse {
 	public DBTable getTableDescription(DatabaseMetaData dmd, String tableName, DataSource dataSource) {
 		ResultSet rs = null;
 		DBTable bean = new DBTable();
+		
 		try {
 			if (dataSource.getDbType()==Constants.DBMS_TYPE_ORACLE){
 				bean.setTablePname(this.getOracleTableComments(dataSource,tableName));
@@ -104,7 +106,7 @@ public class DBReverse {
 				int colType = rs.getInt(5);
 				if (colType != Types.BINARY && colType != Types.VARBINARY && colType != Types.LONGVARBINARY) {
 					String sqlColName = rs.getString(4);
-					String javaColName =sqlColName;// util.sql2javaName(sqlColName, 0);
+					String javaColName =util.sql2javaName(sqlColName, 0);
 					int colTypeLength = rs.getInt(7);
 					int decimalLength = rs.getInt(9);
 					DbColumn col = new DbColumn();
@@ -124,7 +126,7 @@ public class DBReverse {
 						col.setColumnPname(tit);
 					}
 					col.setRemark(col.getColumnPname());
-					col.setType("String");//convert(colType, colTypeLength, decimalLength));
+					col.setType(convert(colType, colTypeLength, decimalLength));
 					if (!"id".equalsIgnoreCase(sqlColName)) {
 //						val.setRequired(false);
 						bean.addColumn(col);
@@ -143,6 +145,61 @@ public class DBReverse {
 			close(rs);
 		}
 		return bean;
+	}
+	
+	private String convert(int type, int typeLength, int decimalLength) {
+		switch (type) {
+		case Types.CHAR:
+		case Types.VARCHAR:
+			return "string";
+		case Types.NUMERIC:
+			if (typeLength < 10) {
+				return "int";
+			} else {
+				return "long";
+			}
+		case Types.DECIMAL:
+			if (decimalLength > 0) {
+				return "double";
+			} else {
+				if (typeLength < 10) {
+					return "int";
+				} else {
+					return "long";
+				}
+			}
+		case Types.DOUBLE:
+			return "double";
+		case Types.BIT:
+			return "boolean";
+		case Types.TINYINT:
+			return "int";
+		case Types.SMALLINT:
+			return "int";
+		case Types.INTEGER:
+			return "int";
+		case Types.BIGINT:
+			return "long";
+		case Types.REAL:
+		case Types.FLOAT:
+			return "float";
+		case Types.BINARY:
+		case Types.VARBINARY:
+		case Types.BLOB:
+		case Types.LONGVARBINARY:
+			return "blob";
+		case Types.CLOB:
+		case Types.LONGVARCHAR:
+			return "clob";
+		case Types.DATE:
+			return "timestamp";
+		case Types.TIME:
+			return "timestamp";
+		case Types.TIMESTAMP:
+			return "timestamp";
+		default:
+			return "string";
+		}
 	}
 
 	public Connection getConnection(DataSource dataSource) throws ClassNotFoundException, SQLException{
