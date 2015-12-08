@@ -15,7 +15,23 @@
 		<module>eshbase-jdbc</module>
 		<module>eshbase-sql</module>
 		<module>public</module>
+		<module>code-generator</module>
+		<module>datax-engine</module>
+		<module>datax-plugins</module>
+		<module>es-plugins</module>
 	</modules>
+		<developers>
+		<developer>
+			<id>joezxh</id>
+			<name>Joe.zhang</name>
+			<email>joezxh@qq.com</email>
+		</developer>
+        <developer>
+            <id>louhuirong</id>
+            <name>louhuirong</name>
+            <email>louhr@iharding.net</email>
+        </developer>
+	</developers>
 	
 	
 	<properties>
@@ -27,7 +43,7 @@
 		<hibernate.version>4.3.7.Final</hibernate.version>
 		<commons-lang3.version>3.1</commons-lang3.version>
 		<commons-io.version>2.4</commons-io.version>
-		<guava.version>13.0.1</guava.version>
+		<guava.version>18.0</guava.version>
 		<jackson.version>2.1.2</jackson.version>
 		<dozer.version>5.3.2</dozer.version>
 		<commons-dbcp.version>1.4</commons-dbcp.version>
