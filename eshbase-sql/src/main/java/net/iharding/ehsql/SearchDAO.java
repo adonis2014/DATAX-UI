@@ -1,8 +1,6 @@
-package org.nlpcn.es4sql;
+package net.iharding.ehsql;
 
 import java.sql.SQLFeatureNotSupportedException;
-import java.util.HashSet;
-import java.util.Set;
 
 import org.elasticsearch.action.ActionRequestBuilder;
 import org.elasticsearch.client.Client;
@@ -10,23 +8,12 @@ import org.nlpcn.es4sql.exception.SqlParseException;
 import org.nlpcn.es4sql.query.ESActionFactory;
 import org.nlpcn.es4sql.query.QueryAction;
 
-
-public class SearchDao {
-
-	private static final Set<String> END_TABLE_MAP = new HashSet<>();
-
-	static {
-		END_TABLE_MAP.add("limit");
-		END_TABLE_MAP.add("order");
-		END_TABLE_MAP.add("where");
-		END_TABLE_MAP.add("group");
-
-	}
+public class SearchDAO {
 
 	private Client client = null;
 
 
-	public SearchDao(Client client) {
+	public SearchDAO(Client client) {
 		this.client = client;
 	}
 
@@ -43,5 +30,4 @@ public class SearchDao {
 		QueryAction query = ESActionFactory.create(client, sql);
 		return query.explain();
 	}
-
 }

@@ -1,22 +1,19 @@
 package net.iharding.plugin.eshbasesql;
 
 
-import org.elasticsearch.action.ActionRequest;
-import org.elasticsearch.action.deletebyquery.DeleteByQueryRequest;
-import org.elasticsearch.action.search.SearchRequest;
-import org.elasticsearch.action.search.SearchResponse;
+import net.iharding.ehsql.ESSearchRequest;
+
 import org.elasticsearch.client.Client;
 import org.elasticsearch.rest.RestChannel;
-import org.elasticsearch.rest.action.support.RestStatusToXContentListener;
 
 
 public class ActionRequestExecuter {
 
 	private RestChannel channel;
 	private Client client;
-	private ActionRequest request;
+	private ESSearchRequest request;
 
-	public ActionRequestExecuter(ActionRequest request, RestChannel channel, final Client client) {
+	public ActionRequestExecuter(ESSearchRequest request, RestChannel channel, final Client client) {
 		this.request = request;
 		this.channel = channel;
 		this.client = client;
@@ -26,16 +23,17 @@ public class ActionRequestExecuter {
 	 * Execute the ActionRequest and returns the REST response using the channel.
 	 */
 	public void execute() throws Exception {
-		request.listenerThreaded(false);
+//		request.listenerThreaded(false);
 
-		if (request instanceof SearchRequest) {
-			client.search((SearchRequest) request, new RestStatusToXContentListener<SearchResponse>(channel));
-		} else if (request instanceof DeleteByQueryRequest) {
-			client.deleteByQuery((DeleteByQueryRequest) request, new DeleteByQueryRestListener(channel));
-		}
-		else {
-			throw new Exception(String.format("Unsupported ActionRequest provided: %s", request.getClass().getName()));
-		}
+//		if (request instanceof SearchRequest) {
+//			client.prepareSearch("userfigure").setTypes("types").setQuery(queryBuilder)
+//			client.search((SearchRequest) request, new RestStatusToXContentListener<SearchResponse>(channel));
+//		} else if (request instanceof DeleteByQueryRequest) {
+//			client.deleteByQuery((DeleteByQueryRequest) request, new DeleteByQueryRestListener(channel));
+//		}
+//		else {
+//			throw new Exception(String.format("Unsupported ActionRequest provided: %s", request.getClass().getName()));
+//		}
 	}
 
 }
