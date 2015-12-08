@@ -1,28 +1,24 @@
-<?xml version="1.0"?>
-<project
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"
-	xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
-
-
-	<artifactId>datax-ui</artifactId>
-	<packaging>war</packaging>
-	<name>datax-ui</name>
-	<url>http://maven.apache.org</url>
-
-
-	<repositories>
-		<repository>
-			<id>oschina</id>
-			<name>oschina</name>
-			<url>http://maven.oschina.net/content/groups/public/</url>
-		</repository>
-	</repositories>
-
+	<groupId>net.iharding.bigdata</groupId>
+	<artifactId>eshbase-all</artifactId>
+	<version>0.1-beta</version>
+	<packaging>pom</packaging>
+	<name>eshbase</name>
+	<description>elasticsearch +Hbase</description>
+	<modules>
+		
+		
+		
+		<module>eshbase-commons</module>
+		<module>eshbase-jdbc</module>
+		<module>eshbase-sql</module>
+		<module>public</module>
+	</modules>
+	
+	
 	<properties>
-		<jetty.version>9.0.4.v20130625</jetty.version>
-		<webserver.port>9999</webserver.port>
 		<downloadSources>false</downloadSources>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<sitemesh.version>2.4.2</sitemesh.version>
@@ -50,15 +46,47 @@
 		<jsp.version>2.2</jsp.version>
 		<jstl.version>1.2</jstl.version>
 		<standard.version>1.1.2</standard.version>
-		<!-- mybaties -->
-		<mybatis.version>3.2.8</mybatis.version>
-		<mybatis-spring.version>1.2.2</mybatis-spring.version>
 		<!-- druid -->
 		<druid.version>1.0.11</druid.version>
 		<!-- cxf -->
 		<cxf.version>2.7.11</cxf.version>
 	</properties>
+	
 
+	<repositories>
+	<repository>
+			<id>oschina</id>
+			<url>http://maven.oschina.net/content/groups/public/</url>
+		</repository>
+		<repository>
+			<id>sonatype</id>
+			<url>http://oss.sonatype.org/content/groups/public/</url>
+		</repository>
+		<repository>
+			<id>central</id>
+			<url>http://repo1.maven.org/maven2</url>
+		</repository>
+		<repository>
+			<id>clojars</id>
+			<url>http://clojars.org/repo/</url>
+		</repository>
+
+		
+	</repositories>
+	<build>
+		<plugins>
+			<plugin>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>2.0.2</version>
+				<configuration>
+					<source>1.7</source>
+					<target>1.7</target>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
+	
+	
 	<dependencyManagement>
 		<dependencies>
 			<!-- junit -->
@@ -411,16 +439,6 @@
 			</dependency>
 
 			<!-- MyBatis -->
-			<dependency>
-				<groupId>org.mybatis</groupId>
-				<artifactId>mybatis</artifactId>
-				<version>${mybatis.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>org.mybatis</groupId>
-				<artifactId>mybatis-spring</artifactId>
-				<version>${mybatis-spring.version}</version>
-			</dependency>
 
 			<!-- connection pool -->
 			<dependency>
@@ -472,8 +490,9 @@
 
 		</dependencies>
 	</dependencyManagement>
+
 	<dependencies>
-		<!-- junit -->
+	<!-- junit -->
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
@@ -585,10 +604,6 @@
 		<dependency>
 			<groupId>commons-io</groupId>
 			<artifactId>commons-io</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>commons-codec</groupId>
-			<artifactId>commons-codec</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>commons-beanutils</groupId>
@@ -815,91 +830,15 @@
 			<groupId>commons-dbcp</groupId>
 			<artifactId>commons-dbcp</artifactId>
 		</dependency>
+	
+		<dependency>
+			<groupId>org.apache.zookeeper</groupId>
+			<artifactId>zookeeper</artifactId>
+			<version>3.4.6</version>
+		</dependency>
+		
+		
+	
 	</dependencies>
-
-	<build>
-		<finalName>etl-ui</finalName>
-
-		<plugins>
-			<plugin>
-				<groupId>org.eclipse.jetty</groupId>
-				<artifactId>jetty-maven-plugin</artifactId>
-				<version>${jetty.version}</version>
-				<configuration>
-					<webAppConfig>
-						<contextPath>/thinker</contextPath>
-					</webAppConfig>
-					<httpConnector>
-						<port>9999</port>
-					</httpConnector>
-				</configuration>
-			</plugin>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-compiler-plugin</artifactId>
-				<version>2.3.2</version>
-				<configuration>
-					<source>1.7</source>
-					<target>1.7</target>
-					<encoding>utf8</encoding>
-					<compilerArguments>
-						<verbose />
-						<bootclasspath>${java.home}/lib/rt.jar</bootclasspath>
-					</compilerArguments>
-				</configuration>
-			</plugin>
-			<plugin>
-				<groupId>org.codehaus.mojo</groupId>
-				<artifactId>build-helper-maven-plugin</artifactId>
-				<executions>
-					<execution>
-						<id>add-source</id>
-						<phase>generate-sources</phase>
-						<goals>
-							<goal>add-source</goal>
-						</goals>
-						<configuration>
-							<sources>
-								<source>${basedir}/src/main/java</source>
-								<source>${basedir}/src/main/app</source>
-								<source>${basedir}/src/main/plugins</source>
-							</sources>
-						</configuration>
-					</execution>
-				</executions>
-			</plugin>
-		</plugins>
-
-		<pluginManagement>
-			<plugins>
-				<plugin>
-					<groupId>org.eclipse.m2e</groupId>
-					<artifactId>lifecycle-mapping</artifactId>
-					<version>1.0.0</version>
-					<configuration>
-						<lifecycleMappingMetadata>
-							<pluginExecutions>
-								<pluginExecution>
-									<pluginExecutionFilter>
-										<groupId>org.codehaus.mojo</groupId>
-										<artifactId>build-helper-maven-plugin</artifactId>
-										<versionRange>[1.9.1,)</versionRange>
-										<goals>
-											<goal>add-source</goal>
-										</goals>
-									</pluginExecutionFilter>
-									<action>
-										<ignore />
-									</action>
-								</pluginExecution>
-							</pluginExecutions>
-						</lifecycleMappingMetadata>
-					</configuration>
-				</plugin>
-			</plugins>
-		</pluginManagement>
-	</build>
-
-	<groupId>com.taobao</groupId>
-	<version>1.0</version>
+	
 </project>
