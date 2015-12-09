@@ -39,6 +39,11 @@
             <version>1.3</version>
             <scope>test</scope>
         </dependency>
+	 <dependency>
+	 	<groupId>net.iharding</groupId>
+	 	<artifactId>eshbase-commons</artifactId>
+	 	<version>0.1-beta</version>
+	 </dependency>
 	</dependencies>
 
 
