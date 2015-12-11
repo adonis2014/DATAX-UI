@@ -2,7 +2,7 @@ package net.iharding.query.query;
 
 import net.iharding.ehsql.ESSearchRequest;
 import net.iharding.query.domain.Query;
-import net.iharding.query.exception.SqlParseException;
+import net.sf.jsqlparser.JSQLParserException;
 
 import org.elasticsearch.client.Client;
 
@@ -26,8 +26,8 @@ public abstract class QueryAction {
 	/**
 	 * Prepare the request, and return ES request.
 	 * @return ActionRequestBuilder (ES request)
-	 * @throws SqlParseException
+	 * @throws JSQLParserException
 	 */
-	public abstract ESSearchRequest explain() throws SqlParseException;
+	public abstract ESSearchRequest explain() throws JSQLParserException;
 
 }

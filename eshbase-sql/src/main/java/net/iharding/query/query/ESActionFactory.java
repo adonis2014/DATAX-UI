@@ -1,6 +1,7 @@
 package net.iharding.query.query;
 
 import java.sql.SQLFeatureNotSupportedException;
+import java.util.List;
 
 import net.iharding.query.parse.SqlParser;
 import net.sf.jsqlparser.JSQLParserException;
@@ -15,7 +16,10 @@ import net.sf.jsqlparser.statement.drop.Drop;
 import net.sf.jsqlparser.statement.execute.Execute;
 import net.sf.jsqlparser.statement.insert.Insert;
 import net.sf.jsqlparser.statement.replace.Replace;
+import net.sf.jsqlparser.statement.select.PlainSelect;
 import net.sf.jsqlparser.statement.select.Select;
+import net.sf.jsqlparser.statement.select.SelectBody;
+import net.sf.jsqlparser.statement.select.WithItem;
 import net.sf.jsqlparser.statement.truncate.Truncate;
 import net.sf.jsqlparser.statement.update.Update;
 
@@ -39,7 +43,26 @@ public class ESActionFactory {
 	public static QueryAction create(Client client, String sql) throws JSQLParserException {
 		Statement stmt = CCJSqlParserUtil.parse(sql);
 		if (stmt instanceof Select) {
-
+			Select select=(Select) stmt;
+			if (select.getSelectBody()!=null){
+				SelectBody selBody=select.getSelectBody();
+				if (selBody instanceof PlainSelect){
+					PlainSelect psel=(PlainSelect)selBody;
+					if (psel.getGroupByColumnReferences().size()>0){//统计聚合
+						
+					}else{//查询
+						
+					}
+				}else{
+					
+				}
+			}else{
+				List<WithItem> items=select.getWithItemsList();
+				for(WithItem witem:items){
+//					witem.getSelectBody()
+				}
+			}
+			
 		} else if (stmt instanceof Delete) {
 
 		} else if (stmt instanceof Insert) {

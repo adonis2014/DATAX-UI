@@ -8,6 +8,7 @@ import net.iharding.ehsql.ESSearchRequest;
 import net.iharding.query.exception.SqlParseException;
 import net.iharding.query.query.ESActionFactory;
 import net.iharding.query.query.QueryAction;
+import net.sf.jsqlparser.JSQLParserException;
 
 import org.elasticsearch.client.Client;
 
@@ -37,9 +38,10 @@ public class SearchDao {
 	 * into ES ActionRequest
 	 * @param sql SQL query to execute.
 	 * @return ES request
+	 * @throws JSQLParserException 
 	 * @throws SqlParseException
 	 */
-	public ESSearchRequest explain(String sql) throws SqlParseException, SQLFeatureNotSupportedException {
+	public ESSearchRequest explain(String sql) throws JSQLParserException  {
 
 		QueryAction query = ESActionFactory.create(client, sql);
 		return query.explain();
