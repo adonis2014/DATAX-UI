@@ -18,6 +18,15 @@ public class DBReverse {
 	
 	private Util util=new Util();
 	
+	public static void main(String[] args) throws Exception {
+		DBReverse reverse=new DBReverse();
+		Module module=new Module();
+		
+		module.setModuleCode("etl");
+		module.setModuleName("ETL模块");
+		reverse.reverseModule(module, "Joe.Zhang");
+	}
+	
 	private String getOracleTableComments(DataSource dataSource,String table)  {
 		ResultSet rs = null;
 		PreparedStatement ps=null;
