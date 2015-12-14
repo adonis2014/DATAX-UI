@@ -1,7 +1,7 @@
 package org.elasticsearch.plugin.nlpcn;
 
-import net.iharding.ehsql.query.explain.ExPlainManager;
-import net.iharding.query.SearchDao;
+import net.iharding.ehdb.SearchDao;
+import net.iharding.ehdb.ehsql.query.explain.ExPlainManager;
 
 import org.elasticsearch.action.ActionRequest;
 import org.elasticsearch.action.ActionRequestBuilder;

@@ -96,6 +96,26 @@ public class DBTable extends IdEntity {
 	@OneToMany(targetEntity = DbColumn.class, fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	@OrderBy("id ASC")
 	private Set<DbColumn> columns;
+	
+	@OneToMany(targetEntity = DBIndex.class, fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@OrderBy("id ASC")
+	private Set<DBIndex> dbIndexs;
+
+	public String getClassName() {
+		return className;
+	}
+
+	public void setClassName(String className) {
+		this.className = className;
+	}
+
+	public Set<DBIndex> getDbIndexs() {
+		return dbIndexs;
+	}
+
+	public void setDbIndexs(Set<DBIndex> dbIndexs) {
+		this.dbIndexs = dbIndexs;
+	}
 
 	public Set<DbColumn> getColumns() {
 		return columns;

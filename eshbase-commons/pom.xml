@@ -1,5 +1,4 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>net.iharding</groupId>
 	<artifactId>eshbase-commons</artifactId>
@@ -7,7 +6,7 @@
 	<description>elasticsearch hbase dbms common</description>
 	<name>eshbase-commons</name>
 	<url>https://github.com/joezxh/Datax-ui/</url>
-	
+
 	<version>0.1-beta</version>
 	<parent>
 		<groupId>net.iharding.bigdata</groupId>
@@ -15,25 +14,55 @@
 		<version>0.1-beta</version>
 		<relativePath>../pom.xml</relativePath>
 	</parent>
-	
+
 	<developers>
 		<developer>
 			<id>joezxh</id>
 			<name>Joe.zhang</name>
 			<email>joezxh@qq.com</email>
 		</developer>
-        <developer>
-            <id>louhuirong</id>
-            <name>louhuirong</name>
-            <email>louhr@iharding.net</email>
-        </developer>
+		<developer>
+			<id>louhuirong</id>
+			<name>louhuirong</name>
+			<email>louhr@iharding.net</email>
+		</developer>
 	</developers>
 
 
 
 
 	<dependencies>
-	
+		<dependency>
+			<groupId>org.apache.hbase</groupId>
+			<artifactId>hbase-server</artifactId>
+			<version>1.0.1.1</version>
+			<exclusions>
+				<exclusion>
+					<artifactId>jsp-2.1</artifactId>
+					<groupId>org.mortbay.jetty</groupId>
+				</exclusion>
+				<exclusion>
+					<artifactId>jsp-api-2.1</artifactId>
+					<groupId>org.mortbay.jetty</groupId>
+				</exclusion>
+				<exclusion>
+					<artifactId>servlet-api-2.5</artifactId>
+					<groupId>org.mortbay.jetty</groupId>
+				</exclusion>
+				<exclusion>
+					<artifactId>jdk.tools</artifactId>
+					<groupId>jdk.tools</groupId>
+				</exclusion>
+				<exclusion>
+					<artifactId>jasper-runtime</artifactId>
+					<groupId>tomcat</groupId>
+				</exclusion>
+				<exclusion>
+					<artifactId>jasper-compiler</artifactId>
+					<groupId>tomcat</groupId>
+				</exclusion>
+			</exclusions>
+		</dependency>
 	</dependencies>
 
 
@@ -64,8 +93,8 @@
 
 
 
-            
-        </plugins>
+
+		</plugins>
 
 
 	</build>

@@ -29,7 +29,7 @@ public class DbColumn extends IdEntity {
 	 */
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name="table_id")
-	@NotFound(action = NotFoundAction.IGNORE)
+	@NotFound(action = NotFoundAction.EXCEPTION)
 	@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 	private DBTable table;
 	
@@ -65,32 +65,55 @@ public class DbColumn extends IdEntity {
 	/**
 	 * 字段类别
 	 */
+	@Column(name="type")
 	private String type;
 	/**
 	 * 是否存储
 	 */
+	@Column(name="store")
 	private String store="false";
 	/**
 	 * es doc类型
 	 */
+	@Column(name="doc_values")
 	private String doc_values="true";
 	/**
 	 * 是否索引
 	 */
+	@Column(name="index")
 	private String index="true";
 	/**
 	 * 是否必须
 	 */
+	@Column(name="required")
 	private String required="false";
 	/**
 	 * 格式
 	 */
+	@Column(name="format")
 	private String format;
 	/**
 	 * 备注
 	 */
+	@Column(name="remark")
 	private String remark;
 	
+	public String getFamilyName() {
+		return familyName;
+	}
+
+	public void setFamilyName(String familyName) {
+		this.familyName = familyName;
+	}
+
+	public DBIndex getDbindex() {
+		return dbindex;
+	}
+
+	public void setDbindex(DBIndex dbindex) {
+		this.dbindex = dbindex;
+	}
+
 	public DBTable getTable() {
 		return table;
 	}

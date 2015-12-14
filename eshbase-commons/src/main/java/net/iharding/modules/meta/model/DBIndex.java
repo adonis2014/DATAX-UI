@@ -2,13 +2,19 @@ package net.iharding.modules.meta.model;
 
 import java.util.Date;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import net.iharding.core.orm.IdEntity;
 
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.hibernate.annotations.NotFound;
+import org.hibernate.annotations.NotFoundAction;
 
 /**
  * 索引对象Entity
@@ -23,38 +29,50 @@ public class DBIndex extends IdEntity {
 	/**
 	 * 数据表
 	 */
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name="table_id")
+	@NotFound(action = NotFoundAction.EXCEPTION)
+	@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 	private DBTable dbtable;
 	/**
 	 * 索引库名
 	 */
+	@Column(name="index_name")
 	private String index_name;
 	/**
 	 * 索引表名
 	 */
+	@Column(name="type_name")
 	private String type_name;
 	/**
 	 * 索引类别
 	 */
+	@Column(name="index_type")
 	private Integer indexType;
 	/**
 	 * 建立者
 	 */
+	@Column(name="createby_id")
 	private Long createbyId;
 	/**
 	 * 更新者
 	 */
+	@Column(name="updateby_id")
 	private Long updatebyId;
 	/**
 	 * 建立世间
 	 */
+	@Column(name="create_date")
 	private Date createDate;
 	/**
 	 * 更新世间
 	 */
+	@Column(name="update_date")
 	private Date updateDate;
 	/**
 	 * 备注
 	 */
+	@Column(name="remark")
 	private String remark;
 	
 	public DBTable getDbtable() {

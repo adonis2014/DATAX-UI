@@ -7,9 +7,10 @@ import java.util.Map;
 
 import net.iharding.Constants;
 import net.iharding.core.model.Response;
-import net.iharding.ehsql.ESSearchRequest;
-import net.iharding.ehsql.query.explain.ExPlainManager;
-import net.iharding.query.SearchDao;
+import net.iharding.ehdb.SearchDao;
+import net.iharding.ehdb.ehsql.ESSearchRequest;
+import net.iharding.ehdb.ehsql.SQLRequest;
+import net.iharding.ehdb.ehsql.query.explain.ExPlainManager;
 import net.iharding.utils.HBaseUtils;
 
 import org.apache.hadoop.hbase.client.Get;
@@ -57,16 +58,17 @@ public class RestSqlAction extends BaseRestHandler {
 		}
 		SearchDao searchDao = new SearchDao(client);
 		//获取解析sql为ES request对象
-		ESSearchRequest actionRequest = searchDao.explain(sql);
+		SQLRequest actionRequest = searchDao.explain(sql);
 
-		if (request.path().endsWith("/_explain")) {
+		if (request.path().endsWith("/_explain")) {//显示执行计划内容
 			String jsonExplanation = ExPlainManager.explain(actionRequest);
 			BytesRestResponse bytesRestResponse = new BytesRestResponse(RestStatus.OK, jsonExplanation);
 			channel.sendResponse(bytesRestResponse);
 		} else {
 			Response<List<Map>> response = new Response<List<Map>>();
 			response.start();
-			SearchRequestBuilder esRequest = client.prepareSearch(actionRequest.getIndexName()).setTypes(actionRequest.getTypeNames())
+			//根据table定义显示
+			SearchRequestBuilder esRequest = client.prepareSearch(actionRequest.getTable().getIndexName()).setTypes(actionRequest.getTypeNames())
 					.setQuery(actionRequest.getQb()).setFrom(actionRequest.getFrom())
 					.setSize(actionRequest.getSize());
 			for (SortBuilder oitem : actionRequest.getSorts()) {

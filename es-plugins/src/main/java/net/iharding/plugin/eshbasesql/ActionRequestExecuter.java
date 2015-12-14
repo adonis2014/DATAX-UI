@@ -2,7 +2,7 @@ package net.iharding.plugin.eshbasesql;
 
 
 import net.iharding.Constants;
-import net.iharding.ehsql.ESSearchRequest;
+import net.iharding.ehdb.ehsql.ESSearchRequest;
 
 import org.elasticsearch.client.Client;
 

@@ -49,6 +49,7 @@ public class Constants {
 	public static final int DBMS_TYPE_MSSQL = 2;//MS Sql Server
 	public static final int DBMS_TYPE_MYSQL = 3;//mysql
 	public static final int DBMS_TYPE_POSTGRESQL = 4;//postgresql db
+	public static final int DBMS_TYPE_HBASE = 5;//hbase db
 	
 	public static final int ES_REQUEST_TYPE_SEARCH = 1;//select 查询
 	public static final int ES_REQUEST_TYPE_SEARCH_GROUP = 2;//select 查询 group by
@@ -66,6 +67,10 @@ public class Constants {
 	public static final String DEFAULT_COLUMN_DATA = "data";
 	public static final String DEFAULT_COLUMN_ROWNUM = "rowNum";
 	public static final String DEFAULT_COLUMN_AGGROWNUM = "aggRowNum";
-
+	
+	//请求类型
+	public static final int REQUESTTYPE_ELASTICSEARCH_SEARCH = 1;
+	public static final int REQUESTTYPE_HBASE_SCAN = 2;
+	public static final int REQUESTTYPE_PHOEINX_SEARCH = 3;
 	
 }
