@@ -13,7 +13,9 @@ import net.iharding.ehdb.query.maker.QueryMaker;
 import net.iharding.modules.meta.model.DBTable;
 import net.iharding.modules.meta.service.DBTableService;
 import net.iharding.modules.meta.service.impl.DBTableServiceImpl;
+import net.sf.jsqlparser.expression.Expression;
 import net.sf.jsqlparser.schema.Table;
+import net.sf.jsqlparser.statement.select.OrderByElement;
 import net.sf.jsqlparser.statement.select.PlainSelect;
 import net.sf.jsqlparser.statement.select.Select;
 import net.sf.jsqlparser.statement.select.SelectItem;
@@ -32,7 +34,7 @@ import org.elasticsearch.search.sort.SortOrder;
 public class DefaultQueryAction extends QueryAction {
 
 	private final Select select;
-	private ESSearchRequest request;
+	private SQLRequest request;
 	private DBTable dbtable;
 	private PlainSelect psel;
 	DBTableService tableService=new DBTableServiceImpl();
@@ -57,7 +59,7 @@ public class DefaultQueryAction extends QueryAction {
 		setFields(psel.getSelectItems());
 		setWhere(psel.getWhere());
 		setSorts(psel.getOrderByElements());
-		setLimit(psel.getLimit(), psel.getOffset());
+		setLimit(psel.getLimit().getOffset(), psel.getOffset().getOffset());
 		return request;
 	}
 
@@ -99,7 +101,7 @@ public class DefaultQueryAction extends QueryAction {
 	 * @param where the 'WHERE' part of the SQL query.
 	 * @throws SqlParseException
 	 */
-	private void setWhere(Where where) throws SqlParseException {
+	private void setWhere(Expression where)  {
 		if (where != null) {
 			if (select.isQuery) {
 				BoolQueryBuilder boolQuery = QueryMaker.explan(where);
@@ -117,7 +119,7 @@ public class DefaultQueryAction extends QueryAction {
 	 * based on the 'ORDER BY' clause.
 	 * @param orderBys list of Order object
 	 */
-	private void setSorts(List<Order> orderBys) {
+	private void setSorts(List<OrderByElement> orderBys) {
 		for (Order order : orderBys) {
 			request.addSort(order.getName(), SortOrder.valueOf(order.getType()));
 		}
@@ -130,7 +132,7 @@ public class DefaultQueryAction extends QueryAction {
 	 * @param from starts from document at position from
 	 * @param size number of documents to return.
 	 */
-	private void setLimit(int from, int size) {
+	private void setLimit(long from, long size) {
 		request.setFrom(from);
 
 		if (size > -1) {
