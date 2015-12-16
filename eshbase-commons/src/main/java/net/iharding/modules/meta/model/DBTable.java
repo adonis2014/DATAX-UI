@@ -100,6 +100,17 @@ public class DBTable extends IdEntity {
 	@OneToMany(targetEntity = DBIndex.class, fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	@OrderBy("id ASC")
 	private Set<DBIndex> dbIndexs;
+	
+	public DBIndex getDBIndex(int indexType){
+		if (dbIndexs!=null && dbIndexs.size()>0){
+			for(DBIndex index:dbIndexs){
+				if (index.getIndexType()==indexType){
+					return index;
+				}
+			}
+		}
+		return null;
+	}
 
 	public String getClassName() {
 		return className;
@@ -210,6 +221,15 @@ public class DBTable extends IdEntity {
 			columns = new HashSet<DbColumn>();
 		}
 		columns.add(col);
+	}
+
+	public DbColumn getDbColumn(String columnName) {
+		for(DbColumn column:columns){
+			if (column.getFieldCode().equalsIgnoreCase(columnName)){
+				return column;
+			}
+		}
+		return null;
 	}
 
 }

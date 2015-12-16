@@ -72,5 +72,9 @@ public class Constants {
 	public static final int REQUESTTYPE_ELASTICSEARCH_SEARCH = 1;
 	public static final int REQUESTTYPE_HBASE_SCAN = 2;
 	public static final int REQUESTTYPE_PHOEINX_SEARCH = 3;
+	//索引类别
+	public static final int INDEX_TYPE_ELASTICSEARCH = 1;
+	public static final int INDEX_TYPE_SOLR = 2;
+	public static final int INDEX_TYPE_HBASESECOND = 3;
 	
 }

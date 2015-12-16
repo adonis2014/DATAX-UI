@@ -16,29 +16,30 @@ public class ESSearchRequest implements EHRequestInf{
 
 	private String indexName;
 	private String[] typeNames;
-	private String htableName;
 	private QueryBuilder qb;
 	private List<SortBuilder> sorts;
-	private int from=0;
-	private int size=50;
+	private long from=0l;
+	private long size=50l;
+	private String[] fetchSourceColumns;
 	
-	public String getHtableName() {
-		return htableName;
-	}
-	public void setHtableName(String htableName) {
-		this.htableName = htableName;
-	}
-	public int getFrom() {
+	public long getFrom() {
 		return from;
 	}
-	public void setFrom(int from) {
+	public void setFrom(long from) {
 		this.from = from;
 	}
-	public int getSize() {
+	public long getSize() {
 		return size;
 	}
-	public void setSize(int size) {
+	public void setSize(long size) {
 		this.size = size;
+	}
+	
+	public String[] getFetchSourceColumns() {
+		return fetchSourceColumns;
+	}
+	public void setFetchSourceColumns(String[] fetchSourceColumns) {
+		this.fetchSourceColumns = fetchSourceColumns;
 	}
 	public List<SortBuilder> getSorts() {
 		return sorts;

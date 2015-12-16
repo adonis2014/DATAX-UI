@@ -1,10 +1,12 @@
 package net.iharding.ehdb.ehsql;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.hadoop.hbase.client.Get;
 
 import net.iharding.Constants;
+import net.iharding.modules.meta.model.DbColumn;
 
 /**
  * HBase请求封装，提供通过hbase get，scan查询的封装
@@ -16,6 +18,7 @@ public class HBaseRequest implements EHRequestInf{
 	
 	private String htableName;
 
+	private List<DbColumn> columns=new ArrayList<DbColumn>();
 	
 	private List<Get> gets;
 	
@@ -33,6 +36,72 @@ public class HBaseRequest implements EHRequestInf{
 			return "hbase scan timestamp 范围"+timeRange;
 		} 
 		return "不执行任何操作";
+	}
+	
+	
+	
+	public String getHtableName() {
+		return htableName;
+	}
+
+
+
+	public void setHtableName(String htableName) {
+		this.htableName = htableName;
+	}
+
+
+
+	public List<DbColumn> getColumns() {
+		return columns;
+	}
+
+
+
+	public void setColumns(List<DbColumn> columns) {
+		this.columns = columns;
+	}
+
+
+
+	public List<Get> getGets() {
+		return gets;
+	}
+
+
+
+	public void setGets(List<Get> gets) {
+		this.gets = gets;
+	}
+
+
+
+	public String[] getIds() {
+		return ids;
+	}
+
+
+
+	public void setIds(String[] ids) {
+		this.ids = ids;
+	}
+
+
+
+	public long[] getTimeRange() {
+		return timeRange;
+	}
+
+
+
+	public void setTimeRange(long[] timeRange) {
+		this.timeRange = timeRange;
+	}
+
+
+
+	public void add(DbColumn column){
+		columns.add(column);
 	}
 
 	@Override

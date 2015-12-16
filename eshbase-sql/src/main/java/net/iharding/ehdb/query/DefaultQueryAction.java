@@ -3,21 +3,29 @@ package net.iharding.ehdb.query;
 import java.util.List;
 import java.util.ArrayList;
 
+import net.iharding.Constants;
 import net.iharding.core.model.Response;
 import net.iharding.ehdb.QueryAction;
 import net.iharding.ehdb.ehsql.ESSearchRequest;
+import net.iharding.ehdb.ehsql.HBaseRequest;
 import net.iharding.ehdb.ehsql.SQLRequest;
 import net.iharding.ehdb.exception.ErrorSqlException;
 import net.iharding.ehdb.query.maker.FilterMaker;
 import net.iharding.ehdb.query.maker.QueryMaker;
+import net.iharding.modules.meta.model.DBIndex;
 import net.iharding.modules.meta.model.DBTable;
+import net.iharding.modules.meta.model.DbColumn;
 import net.iharding.modules.meta.service.DBTableService;
 import net.iharding.modules.meta.service.impl.DBTableServiceImpl;
 import net.sf.jsqlparser.expression.Expression;
+import net.sf.jsqlparser.expression.operators.conditional.AndExpression;
+import net.sf.jsqlparser.expression.operators.conditional.OrExpression;
+import net.sf.jsqlparser.schema.Column;
 import net.sf.jsqlparser.schema.Table;
 import net.sf.jsqlparser.statement.select.OrderByElement;
 import net.sf.jsqlparser.statement.select.PlainSelect;
 import net.sf.jsqlparser.statement.select.Select;
+import net.sf.jsqlparser.statement.select.SelectExpressionItem;
 import net.sf.jsqlparser.statement.select.SelectItem;
 
 import org.elasticsearch.action.search.SearchRequestBuilder;
@@ -26,6 +34,8 @@ import org.elasticsearch.client.Client;
 import org.elasticsearch.index.query.BoolFilterBuilder;
 import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
+import org.elasticsearch.search.sort.SortBuilder;
+import org.elasticsearch.search.sort.SortBuilders;
 import org.elasticsearch.search.sort.SortOrder;
 
 /**
@@ -35,7 +45,10 @@ public class DefaultQueryAction extends QueryAction {
 
 	private final Select select;
 	private SQLRequest request;
+	private ESSearchRequest esrequest=new ESSearchRequest();
+	private HBaseRequest hbrequest=new HBaseRequest();
 	private DBTable dbtable;
+	private DBIndex esindex;
 	private PlainSelect psel;
 	DBTableService tableService=new DBTableServiceImpl();
 	
@@ -50,6 +63,7 @@ public class DefaultQueryAction extends QueryAction {
 			throw new ErrorSqlException("元数据库中找不到该表定义！");
 		}else{
 			dbtable=(DBTable)tables.get(0);
+			esindex=dbtable.getDBIndex(Constants.INDEX_TYPE_ELASTICSEARCH);
 		}
 	}
 
@@ -60,6 +74,8 @@ public class DefaultQueryAction extends QueryAction {
 		setWhere(psel.getWhere());
 		setSorts(psel.getOrderByElements());
 		setLimit(psel.getLimit().getOffset(), psel.getOffset().getOffset());
+		request.addRequest(esrequest);
+		request.addRequest(hbrequest);
 		return request;
 	}
 
@@ -67,11 +83,9 @@ public class DefaultQueryAction extends QueryAction {
 	 * Set indices and types to the search request.
 	 */
 	private void setIndicesAndTypes() {
-		request.setIndexName(query.getIndexArr());
-
-		String[] typeArr = query.getTypeArr();
-		if(typeArr != null) {
-			request.setTypes(typeArr);
+		if (esindex!=null){
+			esrequest.setIndexName(esindex.getIndex_name());
+			esrequest.setTypeNames(esindex.getType_name().split(";"));
 		}
 	}
 
@@ -83,14 +97,18 @@ public class DefaultQueryAction extends QueryAction {
 	private void setFields(List<SelectItem> fields) {
 		if (fields.size() > 0) {
 			ArrayList<String> includeFields = new ArrayList<String>();
-
 			for (SelectItem field : fields) {
-				if (field instanceof SelectItem) {
-					includeFields.add(field.getName());
+				if (field instanceof SelectExpressionItem) {
+					Column fi=(Column)((SelectExpressionItem)field).getExpression();
+					DbColumn column=dbtable.getDbColumn(fi.getColumnName());
+					if (column!=null ){
+						includeFields.add(column.getFieldCode());
+						hbrequest.add(column);
+					}
+					
 				}
 			}
-
-			request.setFetchSource(includeFields.toArray(new String[includeFields.size()]), null);
+			esrequest.setFetchSourceColumns(includeFields.toArray(new String[includeFields.size()]));
 		}
 	}
 
@@ -102,14 +120,10 @@ public class DefaultQueryAction extends QueryAction {
 	 * @throws SqlParseException
 	 */
 	private void setWhere(Expression where)  {
-		if (where != null) {
-			if (select.isQuery) {
-				BoolQueryBuilder boolQuery = QueryMaker.explan(where);
-				request.setQuery(boolQuery);
-			} else {
-				BoolFilterBuilder boolFilter = FilterMaker.explan(where);
-				request.setQuery(QueryBuilders.filteredQuery(null, boolFilter));
-			}
+		if (where instanceof AndExpression){
+			
+		}else if  (where instanceof OrExpression){
+			
 		}
 	}
 
@@ -120,9 +134,19 @@ public class DefaultQueryAction extends QueryAction {
 	 * @param orderBys list of Order object
 	 */
 	private void setSorts(List<OrderByElement> orderBys) {
-		for (Order order : orderBys) {
-			request.addSort(order.getName(), SortOrder.valueOf(order.getType()));
+		List<SortBuilder> sorts=new ArrayList<SortBuilder>();
+		for(OrderByElement order:orderBys){
+			Column fi=(Column)order.getExpression();
+			DbColumn column=dbtable.getDbColumn(fi.getColumnName());
+			if (column!=null){
+				if (order.isAsc()){
+					sorts.add(SortBuilders.fieldSort(column.getFieldCode()).order(SortOrder.ASC));
+				}else{
+					sorts.add(SortBuilders.fieldSort(column.getFieldCode()).order(SortOrder.DESC));
+				}
+			}
 		}
+		esrequest.setSorts(sorts);
 	}
 
 
@@ -133,10 +157,9 @@ public class DefaultQueryAction extends QueryAction {
 	 * @param size number of documents to return.
 	 */
 	private void setLimit(long from, long size) {
-		request.setFrom(from);
-
+		esrequest.setFrom(from);
 		if (size > -1) {
-			request.setSize(size);
+			esrequest.setSize(size);
 		}
 	}
 
