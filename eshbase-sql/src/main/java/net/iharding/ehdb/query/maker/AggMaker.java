@@ -6,7 +6,6 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
-import net.iharding.ehdb.Util;
 import net.iharding.ehdb.exception.NotSupportedException;
 import net.iharding.modules.meta.model.DBTable;
 import net.iharding.modules.meta.model.DbColumn;
