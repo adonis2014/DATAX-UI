@@ -1,7 +1,7 @@
 package net.iharding.ehdb.query;
 
-import java.util.List;
 import java.util.ArrayList;
+import java.util.List;
 
 import net.iharding.Constants;
 import net.iharding.core.model.Response;
@@ -10,7 +10,6 @@ import net.iharding.ehdb.ehsql.ESSearchRequest;
 import net.iharding.ehdb.ehsql.HBaseRequest;
 import net.iharding.ehdb.ehsql.SQLRequest;
 import net.iharding.ehdb.exception.ErrorSqlException;
-import net.iharding.ehdb.query.maker.FilterMaker;
 import net.iharding.ehdb.query.maker.QueryMaker;
 import net.iharding.modules.meta.model.DBIndex;
 import net.iharding.modules.meta.model.DBTable;
@@ -18,8 +17,6 @@ import net.iharding.modules.meta.model.DbColumn;
 import net.iharding.modules.meta.service.DBTableService;
 import net.iharding.modules.meta.service.impl.DBTableServiceImpl;
 import net.sf.jsqlparser.expression.Expression;
-import net.sf.jsqlparser.expression.operators.conditional.AndExpression;
-import net.sf.jsqlparser.expression.operators.conditional.OrExpression;
 import net.sf.jsqlparser.schema.Column;
 import net.sf.jsqlparser.schema.Table;
 import net.sf.jsqlparser.statement.select.OrderByElement;
@@ -28,22 +25,19 @@ import net.sf.jsqlparser.statement.select.Select;
 import net.sf.jsqlparser.statement.select.SelectExpressionItem;
 import net.sf.jsqlparser.statement.select.SelectItem;
 
-import org.elasticsearch.action.search.SearchRequestBuilder;
-import org.elasticsearch.action.search.SearchType;
 import org.elasticsearch.client.Client;
-import org.elasticsearch.index.query.BoolFilterBuilder;
 import org.elasticsearch.index.query.BoolQueryBuilder;
-import org.elasticsearch.index.query.QueryBuilders;
+import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.search.sort.SortBuilder;
 import org.elasticsearch.search.sort.SortBuilders;
 import org.elasticsearch.search.sort.SortOrder;
+
 
 /**
  * 单表查询实现
  */
 public class DefaultQueryAction extends QueryAction {
 
-	private final Select select;
 	private SQLRequest request;
 	private ESSearchRequest esrequest=new ESSearchRequest();
 	private HBaseRequest hbrequest=new HBaseRequest();
@@ -54,7 +48,6 @@ public class DefaultQueryAction extends QueryAction {
 	
 	public DefaultQueryAction(Client client, Select select) throws ErrorSqlException {
 		super(client, select);
-		this.select = select;
 		psel=(PlainSelect)select.getSelectBody();
 		//获取table信息
 		Table table=(Table)psel.getFromItem();
@@ -120,12 +113,13 @@ public class DefaultQueryAction extends QueryAction {
 	 * @throws SqlParseException
 	 */
 	private void setWhere(Expression where)  {
-		if (where instanceof AndExpression){
-			
-		}else if  (where instanceof OrExpression){
-			
+		if (where!=null){
+			 QueryBuilder boolQuery = QueryMaker.explan(dbtable,where);
+	         esrequest.setQb(boolQuery);
 		}
+		
 	}
+	
 
 
 	/**

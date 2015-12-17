@@ -1,13 +1,9 @@
 package net.iharding.ehdb.query.maker;
 
-import net.iharding.ehdb.domain.Condition;
-import net.iharding.ehdb.domain.Where;
-import net.iharding.ehdb.domain.Where.CONN;
-import net.iharding.ehdb.exception.SqlParseException;
+import net.iharding.modules.meta.model.DBTable;
+import net.sf.jsqlparser.expression.Expression;
 
-import org.elasticsearch.index.query.BaseQueryBuilder;
-import org.elasticsearch.index.query.BoolQueryBuilder;
-import org.elasticsearch.index.query.QueryBuilders;
+import org.elasticsearch.index.query.QueryBuilder;
 
 public class QueryMaker extends Maker {
 
@@ -18,43 +14,12 @@ public class QueryMaker extends Maker {
 	 * @return
 	 * @throws SqlParseException
 	 */
-	public static BoolQueryBuilder explan(Where where) throws SqlParseException {
-		BoolQueryBuilder boolQuery = QueryBuilders.boolQuery();
-		new QueryMaker().explanWhere(boolQuery, where);
-		return boolQuery;
+	public static QueryBuilder explan(DBTable dbtable,Expression where)  {
+		return (QueryBuilder) new QueryMaker(dbtable).make(where);
 	}
 
-	private QueryMaker() {
-		super(true);
+	public QueryMaker(DBTable dbtable) {
+		super(dbtable,true);
 	}
 
-	private void explanWhere(BoolQueryBuilder boolQuery, Where where) throws SqlParseException {
-		while (where.getWheres().size() == 1) {
-			where = where.getWheres().getFirst();
-		}
-		if (where instanceof Condition) {
-			addSubQuery(boolQuery, where, (BaseQueryBuilder) make((Condition) where));
-		} else {
-			BoolQueryBuilder subQuery = QueryBuilders.boolQuery();
-			addSubQuery(boolQuery, where, subQuery);
-			for (Where subWhere : where.getWheres()) {
-				explanWhere(subQuery, subWhere);
-			}
-		}
-	}
-
-	/**
-	 * 增加嵌套插
-	 * 
-	 * @param boolQuery
-	 * @param where
-	 * @param subQuery
-	 */
-	private void addSubQuery(BoolQueryBuilder boolQuery, Where where, BaseQueryBuilder subQuery) {
-		if (where.getConn() == CONN.AND) {
-			boolQuery.must(subQuery);
-		} else {
-			boolQuery.should(subQuery);
-		}
-	}
 }

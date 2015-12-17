@@ -7,11 +7,14 @@ import java.util.List;
 import java.util.Map;
 
 import net.iharding.ehdb.Util;
-import net.iharding.ehdb.domain.Field;
-import net.iharding.ehdb.domain.KVValue;
-import net.iharding.ehdb.domain.MethodField;
-import net.iharding.ehdb.exception.SqlParseException;
+import net.iharding.ehdb.exception.NotSupportedException;
+import net.iharding.modules.meta.model.DBTable;
+import net.iharding.modules.meta.model.DbColumn;
+import net.sf.jsqlparser.expression.Expression;
+import net.sf.jsqlparser.expression.Function;
+import net.sf.jsqlparser.schema.Column;
 
+import org.apache.commons.lang.math.NumberUtils;
 import org.elasticsearch.search.aggregations.AbstractAggregationBuilder;
 import org.elasticsearch.search.aggregations.AggregationBuilder;
 import org.elasticsearch.search.aggregations.AggregationBuilders;
@@ -28,23 +31,18 @@ import org.elasticsearch.search.sort.SortOrder;
 
 public class AggMaker {
 
-	private Map<String, KVValue> groupMap = new HashMap<>();
 
 	/**
 	 * 分组查的聚合函数
 	 * 
 	 * @param field
 	 * @return
+	 * @throws NotSupportedException 
 	 * @throws SqlParseException
 	 */
-	public AggregationBuilder<?> makeGroupAgg(Field field) throws SqlParseException {
-		if (field instanceof MethodField) {
-			return makeRangeGroup((MethodField) field);
-		} else {
-			TermsBuilder termsBuilder = AggregationBuilders.terms(field.getName()).field(field.getName());
-			groupMap.put(field.getName(), new KVValue("KEY", termsBuilder));
+	public AggregationBuilder<?> makeGroupAgg(DbColumn field) throws NotSupportedException  {
+			TermsBuilder termsBuilder = AggregationBuilders.terms(field.getColumnName()).field(field.getFieldCode());
 			return termsBuilder;
-		}
 	}
 
 
@@ -53,57 +51,64 @@ public class AggMaker {
 	 * @param field SQL function
 	 * @param parent parentAggregation
 	 * @return AggregationBuilder represents the SQL function
+	 * @throws NotSupportedException 
 	 * @throws SqlParseException in case of unrecognized function
 	 */
-	public AbstractAggregationBuilder makeFieldAgg(MethodField field, AbstractAggregationBuilder parent) throws SqlParseException {
-		groupMap.put(field.getAlias(), new KVValue("FIELD", parent));
+	public AbstractAggregationBuilder makeFieldAgg(DBTable dbtable,Function field, AbstractAggregationBuilder parent) throws NotSupportedException {
+//		groupMap.put(field.getAlias(), new KVValue("FIELD", parent));
+		Column column=(Column)field.getParameters().getExpressions().get(0);
+		DbColumn dbColumn=dbtable.getDbColumn(column.getColumnName());
 		switch (field.getName().toUpperCase()) {
 		case "SUM":
-			return AggregationBuilders.sum(field.getAlias()).field(field.getParams().get(0).toString());
+			return AggregationBuilders.sum(dbColumn.getColumnName()).field(dbColumn.getFieldCode());
 		case "MAX":
-			return AggregationBuilders.max(field.getAlias()).field(field.getParams().get(0).toString());
+			return AggregationBuilders.max(dbColumn.getColumnName()).field(dbColumn.getFieldCode());
 		case "MIN":
-			return AggregationBuilders.min(field.getAlias()).field(field.getParams().get(0).toString());
+			return AggregationBuilders.min(dbColumn.getColumnName()).field(dbColumn.getFieldCode());
 		case "AVG":
-			return AggregationBuilders.avg(field.getAlias()).field(field.getParams().get(0).toString());
+			return AggregationBuilders.avg(dbColumn.getColumnName()).field(dbColumn.getFieldCode());
 		case "STATS":
-			return AggregationBuilders.stats(field.getAlias()).field(field.getParams().get(0).toString());
+			return AggregationBuilders.stats(dbColumn.getColumnName()).field(dbColumn.getFieldCode());
 		case "TOPHITS":
-			return makeTopHitsAgg(field);
+			return makeTopHitsAgg(dbColumn);
 		case "COUNT":
-			groupMap.put(field.getAlias(), new KVValue("COUNT", parent));
-			return makeCountAgg(field);
+//			groupMap.put(dbColumn.getColumnName(), new KVValue("COUNT", parent));
+			return makeCountAgg(dbColumn);
 		default:
-			throw new SqlParseException("the agg function not to define !");
+			throw new NotSupportedException("the agg function not to define !");
 		}
 	}
 
-	private ValuesSourceAggregationBuilder<?> makeRangeGroup(MethodField field) throws SqlParseException {
+	public ValuesSourceAggregationBuilder<?> makeRangeGroup(DBTable dbtable,Function field) throws NotSupportedException {
 		switch (field.getName().toLowerCase()) {
 		case "range":
-			return rangeBuilder(field);
+			return rangeBuilder(dbtable,field);
 		case "date_histogram":
-			return dateHistogram(field);
+			return dateHistogram(dbtable,field);
 		case "date_range":
-			return dateRange(field);
+			return dateRange(dbtable,field);
 		case "month":
-			return dateRange(field);
+			return dateRange(dbtable,field);
 		case "histogram":
-			return histogram(field);
+			return histogram(dbtable,field);
 		default:
-			throw new SqlParseException("can define this method " + field);
+			throw new NotSupportedException("can define this method " + field);
 		}
 
 	}
 
 	private static final String TIME_FARMAT = "yyyy-MM-dd HH:mm:ss";
 
-	private ValuesSourceAggregationBuilder<?> dateRange(MethodField field) {
-		DateRangeBuilder dateRange = AggregationBuilders.dateRange(field.getAlias()).format(TIME_FARMAT);
+	private ValuesSourceAggregationBuilder<?> dateRange(DBTable dbtable,Function field) {
+		int leng= field.getParameters().getExpressions().size();
+		String column=field.getParameters().getExpressions().get(0).toString();
+		String format=field.getParameters().getExpressions().get(1).toString();
+		DbColumn dbColumn =dbtable.getDbColumn(column);
+		DateRangeBuilder dateRange = AggregationBuilders.dateRange(dbColumn.getColumnName()).format(TIME_FARMAT);
 
 		String value = null;
 		List<String> ranges = new ArrayList<>();
-		for (KVValue kv : field.getParams()) {
+		for (Expression kv : field.getParameters().getExpressions()) {
 			value = kv.value.toString();
 			if ("field".equals(kv.key)) {
 				dateRange.field(value);
@@ -136,7 +141,7 @@ public class AggMaker {
 	 * @return
 	 * @throws SqlParseException
 	 */
-	private DateHistogramBuilder dateHistogram(MethodField field) throws SqlParseException {
+	private DateHistogramBuilder dateHistogram(DBTable dbtable,Function field) throws NotSupportedException {
 		DateHistogramBuilder dateHistogram = AggregationBuilders.dateHistogram(field.getAlias()).format(TIME_FARMAT);
 		String value = null;
 		for (KVValue kv : field.getParams()) {
@@ -165,13 +170,13 @@ public class AggMaker {
 				dateHistogram.preOffset(value);
 				break;
 			default:
-				throw new SqlParseException("date range err or not define field " + kv.toString());
+				throw new NotSupportedException("date range err or not define field " + kv.toString());
 			}
 		}
 		return dateHistogram;
 	}
 
-	private HistogramBuilder histogram(MethodField field) throws SqlParseException {
+	private HistogramBuilder histogram(DBTable dbtable,Function field) throws NotSupportedException {
 		HistogramBuilder histogram = AggregationBuilders.histogram(field.getAlias());
 		String value = null;
 		for (KVValue kv : field.getParams()) {
@@ -211,7 +216,7 @@ public class AggMaker {
 					histogram.order(order);
 					break;
 				default:
-					throw new SqlParseException("histogram err or not define field " + kv.toString());
+					throw new NotSupportedException("histogram err or not define field " + kv.toString());
 			}
 		}
 		return histogram;
@@ -223,20 +228,15 @@ public class AggMaker {
 	 * @param field
 	 * @return
 	 */
-	private RangeBuilder rangeBuilder(MethodField field) {
-
-		LinkedList<KVValue> params = new LinkedList<>(field.getParams());
-
-		String fieldName = params.poll().toString();
-
-		double[] ds = Util.KV2DoubleArr(params);
-
-		RangeBuilder range = AggregationBuilders.range(field.getAlias()).field(fieldName);
-
-		for (int i = 1; i < ds.length; i++) {
-			range.addRange(ds[i - 1], ds[i]);
+	private RangeBuilder rangeBuilder(DBTable dbtable,Function field) {
+		int leng= field.getParameters().getExpressions().size();
+		Column column=(Column)field.getParameters().getExpressions().get(0);
+		DbColumn dbColumn =dbtable.getDbColumn(column.getColumnName());
+		RangeBuilder range = AggregationBuilders.range(dbColumn.getColumnName()).field(dbColumn.getFieldCode());
+		for (int i = 2; i < leng; i++) {
+			range.addRange(NumberUtils.toDouble(field.getParameters().getExpressions().get(i - 1).toString()),
+					NumberUtils.toDouble(field.getParameters().getExpressions().get(i).toString()));
 		}
-
 		return range;
 	}
 
@@ -246,7 +246,7 @@ public class AggMaker {
 	 * @param field The count function
 	 * @return AggregationBuilder use to count result
 	 */
-	private AbstractAggregationBuilder makeCountAgg(MethodField field) {
+	private AbstractAggregationBuilder makeCountAgg(DbColumn field) {
 
 		// Cardinality is approximate DISTINCT.
 		if ("DISTINCT".equals(field.getOption())) {
@@ -270,7 +270,7 @@ public class AggMaker {
 	 * @param field
 	 * @return
 	 */
-	private AbstractAggregationBuilder makeTopHitsAgg(MethodField field) {
+	private AbstractAggregationBuilder makeTopHitsAgg(DbColumn field) {
 		TopHitsBuilder topHits = AggregationBuilders.topHits(field.getAlias());
 		List<KVValue> params = field.getParams();
 		for (KVValue kv : params) {
@@ -287,10 +287,6 @@ public class AggMaker {
 			}
 		}
 		return topHits;
-	}
-
-	public Map<String, KVValue> getGroupMap() {
-		return this.groupMap;
 	}
 
 }

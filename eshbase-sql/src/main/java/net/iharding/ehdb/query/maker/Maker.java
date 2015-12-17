@@ -1,26 +1,41 @@
 package net.iharding.ehdb.query.maker;
 
-import java.util.Set;
-
-import net.iharding.ehdb.domain.Condition;
-import net.iharding.ehdb.domain.Paramer;
-import net.iharding.ehdb.domain.Condition.OPEAR;
-import net.iharding.ehdb.exception.SqlParseException;
+import net.iharding.modules.meta.model.DBTable;
+import net.iharding.modules.meta.model.DbColumn;
+import net.sf.jsqlparser.expression.Expression;
+import net.sf.jsqlparser.expression.StringValue;
+import net.sf.jsqlparser.expression.operators.conditional.AndExpression;
+import net.sf.jsqlparser.expression.operators.conditional.OrExpression;
+import net.sf.jsqlparser.expression.operators.relational.Between;
+import net.sf.jsqlparser.expression.operators.relational.EqualsTo;
+import net.sf.jsqlparser.expression.operators.relational.ExpressionList;
+import net.sf.jsqlparser.expression.operators.relational.GreaterThan;
+import net.sf.jsqlparser.expression.operators.relational.GreaterThanEquals;
+import net.sf.jsqlparser.expression.operators.relational.InExpression;
+import net.sf.jsqlparser.expression.operators.relational.IsNullExpression;
+import net.sf.jsqlparser.expression.operators.relational.LikeExpression;
+import net.sf.jsqlparser.expression.operators.relational.MinorThan;
+import net.sf.jsqlparser.expression.operators.relational.MinorThanEquals;
+import net.sf.jsqlparser.expression.operators.relational.NotEqualsTo;
+import net.sf.jsqlparser.schema.Column;
 
 import org.elasticsearch.common.xcontent.ToXContent;
-import org.elasticsearch.index.query.*;
-import org.durid.sql.ast.expr.SQLIdentifierExpr;
-import org.durid.sql.ast.expr.SQLMethodInvokeExpr;
-
-import com.google.common.collect.Sets;
+import org.elasticsearch.index.query.BoolQueryBuilder;
+import org.elasticsearch.index.query.FilterBuilder;
+import org.elasticsearch.index.query.FilterBuilders;
+import org.elasticsearch.index.query.MatchQueryBuilder;
+import org.elasticsearch.index.query.OrFilterBuilder;
+import org.elasticsearch.index.query.QueryBuilder;
+import org.elasticsearch.index.query.QueryBuilders;
+import org.elasticsearch.index.query.WildcardQueryBuilder;
 
 public abstract class Maker {
 
-	private static final Set<OPEAR> NOT_OPEAR_SET = Sets.newHashSet(OPEAR.N, OPEAR.NIN, OPEAR.ISN, OPEAR.NBETWEEN);
-
+	private DBTable dbtable;
 	private boolean isQuery = false;
 
-	protected Maker(Boolean isQuery) {
+	protected Maker( DBTable dbtable,Boolean isQuery) {
+		this.dbtable=dbtable;
 		this.isQuery = isQuery;
 	}
 
@@ -33,150 +48,113 @@ public abstract class Maker {
 	 * @return
 	 * @throws SqlParseException
 	 */
-	protected ToXContent make(Condition cond) throws SqlParseException {
-
-		String name = cond.getName();
-		Object value = cond.getValue();
-
+	protected ToXContent make(Expression cond)  {
 		ToXContent x = null;
-		if (value instanceof SQLMethodInvokeExpr) {
-			x = make(cond, name, (SQLMethodInvokeExpr) value);
-		} else {
-			x = make(cond, name, value);
+		if (cond instanceof AndExpression ){
+			AndExpression ae=(AndExpression)cond;
+			if (isQuery) {
+				x=QueryBuilders.boolQuery().must((QueryBuilder)make(ae.getLeftExpression())).must((QueryBuilder)make(ae.getRightExpression()));
+			}else{
+				x=FilterBuilders.boolFilter().must((FilterBuilder)make(ae.getLeftExpression())).must((FilterBuilder)make(ae.getRightExpression()));
+			}
+			x = fixNot(cond, x,ae.isNot());
+		}else if (cond instanceof OrExpression){
+			OrExpression oe=(OrExpression)cond;
+			if (isQuery) {
+				x=QueryBuilders.boolQuery().should((QueryBuilder)make(oe.getLeftExpression())).should((QueryBuilder)make(oe.getRightExpression()));
+			}else{
+				x=FilterBuilders.boolFilter().should((FilterBuilder)make(oe.getLeftExpression())).should((FilterBuilder)make(oe.getRightExpression()));
+			}
+			x = fixNot(cond, x,oe.isNot());
+		}else{
+			x= makeRelational(cond);
 		}
-
 		return x;
 	}
 
-	private ToXContent make(Condition cond, String name, SQLMethodInvokeExpr value) throws SqlParseException {
-		ToXContent bqb = null;
-		Paramer paramer = null;
-		switch (value.getMethodName().toLowerCase()) {
-		case "query":
-			paramer = Paramer.parseParamer(value);
-			QueryStringQueryBuilder queryString = QueryBuilders.queryString(paramer.value);
-			bqb = Paramer.fullParamer(queryString, paramer);
-			if (!isQuery) {
-				bqb = FilterBuilders.queryFilter((QueryBuilder) bqb);
-			}
-			bqb = fixNot(cond, bqb);
-			break;
-		case "matchquery":
-		case "match_query":
-			paramer = Paramer.parseParamer(value);
-			MatchQueryBuilder matchQuery = QueryBuilders.matchQuery(name, paramer.value);
-			bqb = Paramer.fullParamer(matchQuery, paramer);
-			if (!isQuery) {
-				bqb = FilterBuilders.queryFilter((QueryBuilder) bqb);
-			}
-			bqb = fixNot(cond, bqb);
-			break;
-		case "score":
-		case "scorequery":
-		case "score_query":
-			Float boost = Float.parseFloat(value.getParameters().get(1).toString());
-			Condition subCond = new Condition(cond.getConn(), cond.getName(), cond.getOpear(), value.getParameters().get(0));
-			if (isQuery) {
-				bqb = QueryBuilders.constantScoreQuery((QueryBuilder) make(subCond)).boost(boost);
-			} else {
-				bqb = QueryBuilders.constantScoreQuery((FilterBuilder) make(subCond)).boost(boost);
-				bqb = FilterBuilders.queryFilter((QueryBuilder) bqb);
-			}
-			break;
-		case "wildcardquery":
-		case "wildcard_query":
-			paramer = Paramer.parseParamer(value);
-			WildcardQueryBuilder wildcardQuery = QueryBuilders.wildcardQuery(name, paramer.value);
-			bqb = Paramer.fullParamer(wildcardQuery, paramer);
-			if (!isQuery) {
-				bqb = FilterBuilders.queryFilter((QueryBuilder) bqb);
-			}
-			break;
 
-		case "matchphrasequery":
-		case "match_phrase":
-		case "matchphrase":
-			paramer = Paramer.parseParamer(value);
-			MatchQueryBuilder matchPhraseQuery = QueryBuilders.matchPhraseQuery(name, paramer.value);
-			bqb = Paramer.fullParamer(matchPhraseQuery, paramer);
-			if (!isQuery) {
-				bqb = FilterBuilders.queryFilter((QueryBuilder) bqb);
-			}
-			break;
-		default:
-			throw new SqlParseException("it did not support this query method " + value.getMethodName());
-
-		}
-
-		return bqb;
-	}
-
-	private ToXContent make(Condition cond, String name, Object value) throws SqlParseException {
+	private ToXContent makeRelational(Expression cond)  {
 		ToXContent x = null;
-		switch (cond.getOpear()) {
-		case ISN:
-		case IS:
-		case N:
-		case EQ:
-			if (value instanceof SQLIdentifierExpr) {
-				SQLIdentifierExpr identifier = (SQLIdentifierExpr) value;
-				if(identifier.getName().equalsIgnoreCase("missing")) {
-					x = FilterBuilders.missingFilter(name);
-					if (isQuery) {
-						x = QueryBuilders.filteredQuery(QueryBuilders.matchAllQuery(), FilterBuilders.missingFilter(name));
-					}
-				}
-				else {
-					throw new SqlParseException(String.format("Cannot recoginze Sql identifer %s", identifier.getName()));
-				}
-				break;
-			} else {
-				// TODO, maybe use term filter when not analayzed field avalaible to make exact matching?
-				// using matchPhrase to achieve equallity.
-				// matchPhrase still have some disatvantegs, f.e search for 'word' will match 'some word'
-				MatchQueryBuilder matchPhraseQuery = QueryBuilders.matchPhraseQuery(name, value);
-				x = isQuery? matchPhraseQuery : FilterBuilders.queryFilter(matchPhraseQuery);
-				break;
+		boolean isnot=false;
+		if (cond instanceof Between){//A "BETWEEN" expr1 expr2 statement
+			Between bt=(Between)cond;
+			Column column=(Column)bt.getLeftExpression();
+			DbColumn dbcolumn=dbtable.getDbColumn(column.getColumnName());
+			if (isQuery) {
+				x=QueryBuilders.rangeQuery(dbcolumn.getFieldCode()).gte(bt.getBetweenExpressionStart()).lte(bt.getBetweenExpressionEnd());
+			}else{
+				x=FilterBuilders.rangeFilter(dbcolumn.getFieldCode()).gte(bt.getBetweenExpressionStart()).lte(bt.getBetweenExpressionEnd());
 			}
-		case LIKE:
-			String queryStr = ((String) value).replace('%', '*').replace('_', '?');
-			WildcardQueryBuilder wildcardQuery = QueryBuilders.wildcardQuery(name, queryStr);
-			x = isQuery ? wildcardQuery : FilterBuilders.queryFilter(wildcardQuery);
-			break;
-		case GT:
-			if (isQuery)
-				x = QueryBuilders.rangeQuery(name).gt(value);
-			else
-				x = FilterBuilders.rangeFilter(name).gt(value);
-
-			break;
-		case GTE:
-			if (isQuery)
-				x = QueryBuilders.rangeQuery(name).gte(value);
-			else
-				x = FilterBuilders.rangeFilter(name).gte(value);
-			break;
-		case LT:
-			if (isQuery)
-				x = QueryBuilders.rangeQuery(name).lt(value);
-			else
-				x = FilterBuilders.rangeFilter(name).lt(value);
-
-			break;
-		case LTE:
-			if (isQuery)
-				x = QueryBuilders.rangeQuery(name).lte(value);
-			else
-				x = FilterBuilders.rangeFilter(name).lte(value);
-			break;
-		case NIN:
-		case IN:
-			Object[] values = (Object[]) value;
-			MatchQueryBuilder[] matchQueries = new MatchQueryBuilder[values.length];
-			for(int i = 0; i < values.length; i++) {
-				matchQueries[i] = QueryBuilders.matchPhraseQuery(name, values[i]);
+			isnot=bt.isNot();
+		}else if (cond instanceof EqualsTo){
+			EqualsTo equalsTo=(EqualsTo)cond;
+			Column column=(Column)equalsTo.getLeftExpression();
+			DbColumn dbcolumn=dbtable.getDbColumn(column.getColumnName());
+			if (isQuery){
+				x=QueryBuilders.termQuery(dbcolumn.getFieldCode(), equalsTo.getRightExpression());
+			}else{
+				x=FilterBuilders.termFilter(dbcolumn.getFieldCode(), equalsTo.getRightExpression());
 			}
-
+			isnot=equalsTo.isNot();
+		}else if (cond instanceof GreaterThan){
+			GreaterThan greaterThan=(GreaterThan)cond;
+			Column column=(Column)greaterThan.getLeftExpression();
+			DbColumn dbcolumn=dbtable.getDbColumn(column.getColumnName());
+			if (isQuery){
+				x=QueryBuilders.rangeQuery(dbcolumn.getFieldCode()).gt(greaterThan.getRightExpression());
+			}else{
+				x=FilterBuilders.rangeFilter(dbcolumn.getFieldCode()).gt(greaterThan.getRightExpression());
+			}
+			isnot=greaterThan.isNot();
+		}else if (cond instanceof GreaterThanEquals){
+			GreaterThanEquals equalsTo=(GreaterThanEquals)cond;
+			Column column=(Column)equalsTo.getLeftExpression();
+			DbColumn dbcolumn=dbtable.getDbColumn(column.getColumnName());
+			if (isQuery){
+				x=QueryBuilders.rangeQuery(dbcolumn.getFieldCode()).gte(equalsTo.getRightExpression());
+			}else{
+				x=FilterBuilders.rangeFilter(dbcolumn.getFieldCode()).gte(equalsTo.getRightExpression());
+			}
+			isnot=equalsTo.isNot();
+		}else if (cond instanceof MinorThan){
+			MinorThan equalsTo=(MinorThan)cond;
+			Column column=(Column)equalsTo.getLeftExpression();
+			DbColumn dbcolumn=dbtable.getDbColumn(column.getColumnName());
+			if (isQuery){
+				x=QueryBuilders.rangeQuery(dbcolumn.getFieldCode()).lt(equalsTo.getRightExpression());
+			}else{
+				x=FilterBuilders.rangeFilter(dbcolumn.getFieldCode()).lt(equalsTo.getRightExpression());
+			}
+			isnot=equalsTo.isNot();
+		}  else if (cond instanceof MinorThanEquals){
+			MinorThanEquals equalsTo=(MinorThanEquals)cond;
+			Column column=(Column)equalsTo.getLeftExpression();
+			DbColumn dbcolumn=dbtable.getDbColumn(column.getColumnName());
+			if (isQuery){
+				x=QueryBuilders.rangeQuery(dbcolumn.getFieldCode()).lte(equalsTo.getRightExpression());
+			}else{
+				x=FilterBuilders.rangeFilter(dbcolumn.getFieldCode()).lte(equalsTo.getRightExpression());
+			}
+			isnot=equalsTo.isNot();
+		} else if (cond instanceof NotEqualsTo){
+			NotEqualsTo equalsTo=(NotEqualsTo)cond;
+			Column column=(Column)equalsTo.getLeftExpression();
+			DbColumn dbcolumn=dbtable.getDbColumn(column.getColumnName());
+			if (isQuery){
+				x=QueryBuilders.boolQuery().mustNot(QueryBuilders.termQuery(dbcolumn.getFieldCode(),equalsTo.getRightExpression()));
+			}else{
+				x=FilterBuilders.boolFilter().mustNot(FilterBuilders.termFilter(dbcolumn.getFieldCode(),equalsTo.getRightExpression()));
+			}
+			isnot=equalsTo.isNot();
+		}   else if (cond instanceof InExpression){
+			InExpression inExpress=(InExpression)cond;
+			Column column=(Column)inExpress.getLeftExpression();
+			DbColumn dbcolumn=dbtable.getDbColumn(column.getColumnName());
+			ExpressionList values = (ExpressionList) inExpress.getRightItemsList();
+			MatchQueryBuilder[] matchQueries = new MatchQueryBuilder[values.getExpressions().size()];
+			for(int i = 0; i < values.getExpressions().size(); i++) {
+				matchQueries[i] = QueryBuilders.matchPhraseQuery(dbcolumn.getFieldCode(), values.getExpressions().get(i));
+			}
 			if(isQuery) {
 				BoolQueryBuilder boolQuery = QueryBuilders.boolQuery();
 				for(MatchQueryBuilder matchQuery : matchQueries) {
@@ -191,24 +169,29 @@ public abstract class Maker {
 				}
 				x = orFilter;
 			}
-			break;
-		case BETWEEN:
-		case NBETWEEN:
-			if (isQuery)
-				x = QueryBuilders.rangeQuery(name).gte(((Object[]) value)[0]).lte(((Object[]) value)[1]);
-			else
-				x = FilterBuilders.rangeFilter(name).gte(((Object[]) value)[0]).lte(((Object[]) value)[1]);
-			break;
-		default:
-			throw new SqlParseException("not define type " + cond.getName());
-		}
-
-		x = fixNot(cond, x);
+			isnot=inExpress.isNot();
+		}   else if (cond instanceof IsNullExpression){
+			IsNullExpression missExp=(IsNullExpression)cond;
+			Column column=(Column)missExp.getLeftExpression();
+			DbColumn dbcolumn=dbtable.getDbColumn(column.getColumnName());
+			x=QueryBuilders.constantScoreQuery(FilterBuilders.missingFilter(dbcolumn.getFieldCode()));
+			isnot=missExp.isNot();
+		}   else if (cond instanceof LikeExpression){
+			LikeExpression like=(LikeExpression)cond;
+			Column column=(Column)like.getLeftExpression();
+			DbColumn dbcolumn=dbtable.getDbColumn(column.getColumnName());
+			StringValue value=(StringValue)like.getRightExpression();
+			String queryStr = value.getValue().replace('%', '*').replace('_', '?');
+			WildcardQueryBuilder wildcardQuery = QueryBuilders.wildcardQuery(dbcolumn.getFieldCode(), queryStr);
+			x = isQuery ? wildcardQuery : FilterBuilders.queryFilter(wildcardQuery);
+			isnot=like.isNot();
+		}    
+		x = fixNot(cond, x,isnot);
 		return x;
 	}
 
-	private ToXContent fixNot(Condition cond, ToXContent bqb) {
-		if (NOT_OPEAR_SET.contains(cond.getOpear())) {
+	private ToXContent fixNot(Expression cond, ToXContent bqb,boolean isnot) {
+		if (isnot) {
 			if (isQuery) {
 				bqb = QueryBuilders.boolQuery().mustNot((QueryBuilder) bqb);
 			} else {

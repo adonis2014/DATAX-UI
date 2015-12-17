@@ -1,15 +1,11 @@
 package net.iharding.ehdb.query;
 
-import java.sql.SQLFeatureNotSupportedException;
-import java.util.List;
-
 import net.iharding.ehdb.QueryAction;
 import net.iharding.ehdb.ddl.AlterTableAction;
 import net.iharding.ehdb.ddl.CreateTableAction;
 import net.iharding.ehdb.dml.DeleteQueryAction;
 import net.iharding.ehdb.exception.ErrorSqlException;
 import net.iharding.ehdb.exception.NotSupportedException;
-import net.iharding.ehdb.parse.SqlParser;
 import net.sf.jsqlparser.JSQLParserException;
 import net.sf.jsqlparser.parser.CCJSqlParserUtil;
 import net.sf.jsqlparser.statement.Statement;
@@ -25,16 +21,9 @@ import net.sf.jsqlparser.statement.replace.Replace;
 import net.sf.jsqlparser.statement.select.PlainSelect;
 import net.sf.jsqlparser.statement.select.Select;
 import net.sf.jsqlparser.statement.select.SelectBody;
-import net.sf.jsqlparser.statement.select.WithItem;
 import net.sf.jsqlparser.statement.truncate.Truncate;
 import net.sf.jsqlparser.statement.update.Update;
 
-import org.durid.sql.SQLUtils;
-import org.durid.sql.ast.expr.SQLQueryExpr;
-import org.durid.sql.ast.statement.SQLDeleteStatement;
-import org.durid.sql.parser.SQLParserUtils;
-import org.durid.sql.parser.SQLStatementParser;
-import org.durid.util.JdbcUtils;
 import org.elasticsearch.client.Client;
 
 public class ESActionFactory {
