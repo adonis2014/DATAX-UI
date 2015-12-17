@@ -14,7 +14,13 @@ import org.dom4j.Element;
 import org.dom4j.io.OutputFormat;
 import org.dom4j.io.SAXReader;
 import org.dom4j.io.XMLWriter;
-import org.springframework.scheduling.support.CronTrigger;
+import org.quartz.CronTrigger;
+import org.quartz.Scheduler;
+import org.quartz.SchedulerException;
+import org.quartz.SchedulerFactory;
+import org.quartz.Trigger;
+import org.quartz.TriggerKey;
+import org.quartz.impl.StdSchedulerFactory;
 import org.springframework.stereotype.Service;
 
 /**
@@ -45,10 +51,10 @@ public class DynamicTask {
 			CronTrigger trigger = (CronTrigger) getTrigger(triggerName,
 					Scheduler.DEFAULT_GROUP);
 			if(start){
-				getScheduler().resumeTrigger(trigger.getKey());
+				getScheduler().resumeTrigger(( trigger).getKey());
 				logger.info("trigger the start successfully!!");
 			}else{
-				getScheduler().pauseTrigger(trigger.getKey());
+				getScheduler().pauseTrigger(( trigger).getKey());
 				logger.info("trigger the pause successfully!!");
 			}
 			return true;
