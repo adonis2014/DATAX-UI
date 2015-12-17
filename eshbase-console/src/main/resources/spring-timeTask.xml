@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:mvc="http://www.springframework.org/schema/mvc" xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:task="http://www.springframework.org/schema/task"
+	xsi:schemaLocation="http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-4.0.xsd
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.0.xsd
+		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.0.xsd
+        http://www.springframework.org/schema/task http://www.springframework.org/schema/task/spring-task-4.0.xsd"
+        default-autowire="byName" default-lazy-init="false">
+
+<!-- 定时任务配置 scheduler 方式 注解 暂时不支持动态更新 -->
+	<context:component-scan base-package="com.lotuseed" />
+<!-- 定时任务配置 taskDemoService 可配置到管理界面 -->
+	<bean id="taskDemoServiceTaskJob"
+		class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+		<property name="targetObject" ref="taskDemoService" />
+		<property name="targetMethod" value="oneOClockPerDay" />
+		<property name="concurrent" value="true" />
+	</bean>
+	
+	<bean id="taskDemoService" class="com.lotuseed.core.timer.Job">
+		
+	</bean>
+
+	<bean id="taskDemoServiceTaskCronTrigger" class="com.lotuseed.core.timer.DataBaseCronTriggerBean">
+		<property name="jobDetail" ref="taskDemoServiceTaskJob" />
+		<property name="cronExpression" value="0 0/1 * * * ?" />
+	</bean>
+
+
+	
+
+	<!-- 定时任务调度器 -->
+	<bean id="schedulerFactory" lazy-init="false" autowire="no"
+		class="com.lotuseed.core.timer.DataBaseSchedulerFactoryBean">
+		<property name="triggers">
+			<list>
+				<ref bean="taskDemoServiceTaskCronTrigger" />
+			</list>
+		</property>
+	</bean>
+	
+</beans>
