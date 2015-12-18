@@ -16,13 +16,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 *
 */
 @Controller
-@RequestMapping("/meta/project")
+@RequestMapping("/meta/Project")
 public class ProjectController extends BaseController<Project>{
 
 	{
-		editView = "/meta/project/edit";
-		listView = "/meta/project/list";
-		showView = "/meta/project/show";
+		editView = "/meta/Project/edit";
+		listView = "/meta/Project/list";
+		showView = "/meta/Project/show";
 	}
 	
 	@Autowired

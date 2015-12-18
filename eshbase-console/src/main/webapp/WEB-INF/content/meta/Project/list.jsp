@@ -29,7 +29,7 @@
 	                                 	<div class="span7 ">
 		                                    <div class="control-group">
 		                                       <div class="controls">
-		                                          <input type="text" id="filters" class="m-wrap span12" placeholder="项目编码,项目名称,建立者,更新者,建立世间,更新世间,备注">
+		                                          <input type="text" id="filters" class="m-wrap span12" placeholder="项目编码,项目名称,建立者,更新者,建立时间,更新时间,备注">
 		                                       </div>
 		                                    </div>
 	                                 	</div>
@@ -62,11 +62,11 @@
 <script type="text/javascript">
 $(document).ready(function() {
 	
-	App.activeMenu("meta/project/list");
+	App.activeMenu("meta/Project/list");
 	
 	Page.initData(
 		{
-			url:"${ctx}/meta/project/page",
+			url:"${ctx}/meta/Project/page",
 			pageNo : 1,
 			pageSize : 10,
 			tableId : "#sample_1"
@@ -81,9 +81,9 @@ $(document).ready(function() {
 
 			 	{cName:"updatebyId",cValue:"更新者"},
 
-			 	{cName:"createDate",cValue:"建立世间"},
+			 	{cName:"createDate",cValue:"建立时间"},
 
-			 	{cName:"updateDate",cValue:"更新世间"},
+			 	{cName:"updateDate",cValue:"更新时间"},
 
 			  	{cName:"remark",cValue:"备注"}
 		 ]

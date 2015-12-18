@@ -8,16 +8,16 @@
 	</appender>
 
 	<appender name="file" class="ch.qos.logback.core.rolling.RollingFileAppender">
-		<File>logs/thinker.log</File>
+		<File>/Users/admin/logs/thinker.log</File>
 		<encoder>
 			<Pattern>%d %5p [%t] %c:%L - %m%n</Pattern>
 		</encoder>
 		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-			<FileNamePattern>logs/thinker%d{yyyy-MM-dd}.log</FileNamePattern>
+			<FileNamePattern>/Users/admin/logs/thinker%d{yyyy-MM-dd}.log</FileNamePattern>
 		</rollingPolicy>
 	</appender>
 	
-	<root level="INFO">
+	<root level="DEBUG">
 		<appender-ref ref="console" />
 		<appender-ref ref="file" />
 	</root>
