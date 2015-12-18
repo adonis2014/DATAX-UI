@@ -17,7 +17,7 @@
 		</rollingPolicy>
 	</appender>
 	
-	<root level="DEBUG">
+	<root level="INFO">
 		<appender-ref ref="console" />
 		<appender-ref ref="file" />
 	</root>
