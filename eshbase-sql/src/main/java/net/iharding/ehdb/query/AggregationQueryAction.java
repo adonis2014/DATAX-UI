@@ -10,6 +10,7 @@ import net.iharding.ehdb.ehsql.ESSearchRequest;
 import net.iharding.ehdb.ehsql.HBaseRequest;
 import net.iharding.ehdb.ehsql.SQLRequest;
 import net.iharding.ehdb.exception.ErrorSqlException;
+import net.iharding.ehdb.exception.NotSupportedException;
 import net.iharding.ehdb.query.maker.AggMaker;
 import net.iharding.ehdb.query.maker.FilterMaker;
 import net.iharding.ehdb.query.maker.QueryMaker;
@@ -21,9 +22,12 @@ import net.sf.jsqlparser.expression.Expression;
 import net.sf.jsqlparser.expression.Function;
 import net.sf.jsqlparser.schema.Column;
 import net.sf.jsqlparser.schema.Table;
+import net.sf.jsqlparser.statement.select.OrderByElement;
 import net.sf.jsqlparser.statement.select.PlainSelect;
 import net.sf.jsqlparser.statement.select.Select;
 import net.sf.jsqlparser.statement.select.SelectBody;
+import net.sf.jsqlparser.statement.select.SelectExpressionItem;
+import net.sf.jsqlparser.statement.select.SelectItem;
 
 import org.elasticsearch.action.search.SearchRequestBuilder;
 import org.elasticsearch.action.search.SearchType;
@@ -64,14 +68,10 @@ public class AggregationQueryAction extends QueryAction {
 	}
 
 	@Override
-	public SQLRequest explain()  {
-		//this.request = client.prepareSearch();
-		//request.setListenerThreaded(false);
+	public SQLRequest explain() throws NotSupportedException  {
 		setIndicesAndTypes();
-
 		setWhere(psel.getWhere());
 		AggregationBuilder<?> lastAgg = null;
-
 		if (psel.getGroupByColumnReferences().size() > 0) {
 			Expression exp=psel.getGroupByColumnReferences().get(0);
 			if (exp instanceof Column){
@@ -79,77 +79,80 @@ public class AggregationQueryAction extends QueryAction {
 				lastAgg = aggMaker.makeGroupAgg(dbtable.getDbColumn(field.getColumnName()));
 			}else{
 				Function function=(Function)exp;
-				lastAgg = aggMaker.makeGroupAgg(function);
+				lastAgg = aggMaker.makeFunctionGroup(dbtable,function);
 			}
 			if (lastAgg != null && lastAgg instanceof TermsBuilder) {
-				((TermsBuilder) lastAgg).size(select.getRowCount());
-			}
-
-			request.addAggregation(lastAgg);
-
-			for (int i = 1; i < select.getGroupBys().size(); i++) {
-				field = select.getGroupBys().get(i);
-				AggregationBuilder<?> subAgg = aggMaker.makeGroupAgg(field);
-				if(subAgg instanceof TermsBuilder){
-					((TermsBuilder)subAgg).size(0) ;
+				if (psel.getLimit()!=null){
+					((TermsBuilder) lastAgg).size((int)psel.getLimit().getRowCount());
+				}else{
+					((TermsBuilder) lastAgg).size(100);
 				}
-				
+			}
+			esrequest.setAggBuilder(lastAgg);
+			for (int i = 1; i < psel.getGroupByColumnReferences().size(); i++) {
+				Expression field = psel.getGroupByColumnReferences().get(i);
+				AggregationBuilder<?> subAgg =null;
+				if (field instanceof Column){
+					Column cc=(Column)field;
+					subAgg = aggMaker.makeGroupAgg(dbtable.getDbColumn(cc.getColumnName()));
+					if(subAgg instanceof TermsBuilder){
+						((TermsBuilder)subAgg).size(0) ;
+					}
+				}else if (field instanceof Function){
+					subAgg = aggMaker.makeFunctionGroup(dbtable,(Function) field);
+				}
 				lastAgg.subAggregation(subAgg);
 				lastAgg = subAgg;
 			}
 		}
 
-		Map<String, KVValue> groupMap = aggMaker.getGroupMap();
 		// add field
-		if (select.getFields().size() > 0) {
-			explanFields(request, select.getFields(), lastAgg);
+		if (psel.getSelectItems().size() > 0) {
+			explanFields(esrequest, psel.getSelectItems(), lastAgg);
 		}
 
 		// add order
-		if (lastAgg != null && select.getOrderBys().size() > 0) {
-			KVValue temp = null;
-			TermsBuilder termsBuilder = null;
-			for (Order order : select.getOrderBys()) {
-				temp = groupMap.get(order.getName());
-				termsBuilder = (TermsBuilder) temp.value;
-				switch (temp.key) {
-				case "COUNT":
-					termsBuilder.order(Terms.Order.count(isASC(order)));
-					break;
-				case "KEY":
-					termsBuilder.order(Terms.Order.term(isASC(order)));
-					break;
-				case "FIELD":
-					termsBuilder.order(Terms.Order.aggregation(order.getName(), isASC(order)));
-					break;
-				default:
-					throw new SqlParseException(order.getName() + " can not to order");
-				}
-			}
-		}
-		request.setSize(0);
-		request.setSearchType(SearchType.DEFAULT);
+//		if (lastAgg != null && psel.getOrderByElements().size() > 0) {
+//			TermsBuilder termsBuilder = null;
+//			for (OrderByElement order : psel.getOrderByElements()) {
+//				termsBuilder = (TermsBuilder) temp.value;
+//				switch (temp.key) {
+//				case "COUNT":
+//					termsBuilder.order(Terms.Order.count(isASC(order)));
+//					break;
+//				case "KEY":
+//					termsBuilder.order(Terms.Order.term(isASC(order)));
+//					break;
+//				case "FIELD":
+//					termsBuilder.order(Terms.Order.aggregation(order.getName(), isASC(order)));
+//					break;
+//				default:
+//					throw new SqlParseException(order.getName() + " can not to order");
+//				}
+//			}
+//		}
+//		request.setSize(0);
+//		request.setSearchType(SearchType.DEFAULT);
 		return request;
 	}
 
-	private boolean isASC(Order order) {
-		return "ASC".equals(order.getType());
-	}
+//	private boolean isASC(Order order) {
+//		return "ASC".equals(order.getType());
+//	}
 
-	private void explanFields(SearchRequestBuilder request, List<Field> fields, AggregationBuilder<?> groupByAgg) throws SqlParseException {
-		for (Field field : fields) {
-			if (field instanceof MethodField) {
-				AbstractAggregationBuilder makeAgg = aggMaker.makeFieldAgg((MethodField) field, groupByAgg);
+	private void explanFields(ESSearchRequest request, List<SelectItem> fields, AggregationBuilder<?> groupByAgg) throws NotSupportedException  {
+		for (SelectItem field : fields) {
+			if (((SelectExpressionItem)field).getExpression() instanceof Function) {
+				AbstractAggregationBuilder makeAgg = aggMaker.makeFieldAgg(dbtable, (Function)((SelectExpressionItem)field).getExpression());
 				if (groupByAgg != null) {
 					groupByAgg.subAggregation(makeAgg);
+				}else {
+//					request.setAggBuilder(makeAgg);
 				}
-				 else {
-					request.addAggregation(makeAgg);
-				}
-			} else if (field instanceof Field) {
-				request.addField(field.getName());
+			} else if (((SelectExpressionItem)field).getExpression() instanceof Column) {
+//				request.addField(((Column)field.getExpression()).getColumnName());
 			} else {
-				throw new SqlParseException("it did not support this field method " + field);
+				throw new NotSupportedException("it did not support this field method " );
 			}
 		}
 	}

@@ -2,6 +2,7 @@ package net.iharding.ehdb;
 
 import net.iharding.core.model.Response;
 import net.iharding.ehdb.ehsql.SQLRequest;
+import net.iharding.ehdb.exception.NotSupportedException;
 import net.sf.jsqlparser.JSQLParserException;
 import net.sf.jsqlparser.statement.Statement;
 
@@ -29,7 +30,7 @@ public abstract class QueryAction {
 	 * @return ActionRequestBuilder (ES request)
 	 * @throws JSQLParserException
 	 */
-	public abstract SQLRequest explain() throws JSQLParserException;
+	public abstract SQLRequest explain() throws   NotSupportedException;
 	
 	/**
 	 * 执行查询获取结果

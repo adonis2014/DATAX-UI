@@ -1,10 +1,7 @@
 package net.iharding.ehdb.query.maker;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
 
 import net.iharding.ehdb.exception.NotSupportedException;
 import net.iharding.modules.meta.model.DBTable;
@@ -30,33 +27,35 @@ import org.elasticsearch.search.sort.SortOrder;
 
 public class AggMaker {
 
-
 	/**
 	 * 分组查的聚合函数
 	 * 
-	 * @param field
+	 * @param column
 	 * @return
-	 * @throws NotSupportedException 
+	 * @throws NotSupportedException
 	 * @throws SqlParseException
 	 */
-	public AggregationBuilder<?> makeGroupAgg(DbColumn field) throws NotSupportedException  {
-			TermsBuilder termsBuilder = AggregationBuilders.terms(field.getColumnName()).field(field.getFieldCode());
-			return termsBuilder;
+	public AggregationBuilder<?> makeGroupAgg(DbColumn column) throws NotSupportedException {
+		TermsBuilder termsBuilder = AggregationBuilders.terms(column.getColumnName()).field(column.getFieldCode());
+		return termsBuilder;
 	}
-
 
 	/**
 	 * Create aggregation according to the SQL function.
-	 * @param field SQL function
-	 * @param parent parentAggregation
+	 * 
+	 * @param field
+	 *            SQL function
+	 * @param parent
+	 *            parentAggregation
 	 * @return AggregationBuilder represents the SQL function
-	 * @throws NotSupportedException 
-	 * @throws SqlParseException in case of unrecognized function
+	 * @throws NotSupportedException
+	 * @throws SqlParseException
+	 *             in case of unrecognized function
 	 */
-	public AbstractAggregationBuilder makeFieldAgg(DBTable dbtable,Function field, AbstractAggregationBuilder parent) throws NotSupportedException {
-//		groupMap.put(field.getAlias(), new KVValue("FIELD", parent));
-		Column column=(Column)field.getParameters().getExpressions().get(0);
-		DbColumn dbColumn=dbtable.getDbColumn(column.getColumnName());
+	public AbstractAggregationBuilder makeFieldAgg(DBTable dbtable, Function field) throws NotSupportedException {
+		// groupMap.put(field.getAlias(), new KVValue("FIELD", parent));
+		Column column = (Column) field.getParameters().getExpressions().get(0);
+		DbColumn dbColumn = dbtable.getDbColumn(column.getColumnName());
 		switch (field.getName().toUpperCase()) {
 		case "SUM":
 			return AggregationBuilders.sum(dbColumn.getColumnName()).field(dbColumn.getFieldCode());
@@ -69,27 +68,26 @@ public class AggMaker {
 		case "STATS":
 			return AggregationBuilders.stats(dbColumn.getColumnName()).field(dbColumn.getFieldCode());
 		case "TOPHITS":
-			return makeTopHitsAgg(dbColumn);
+			return makeTopHitsAgg(dbColumn,field);
 		case "COUNT":
-//			groupMap.put(dbColumn.getColumnName(), new KVValue("COUNT", parent));
-			return makeCountAgg(dbColumn);
+			return makeCountAgg(dbColumn,field);
 		default:
 			throw new NotSupportedException("the agg function not to define !");
 		}
 	}
 
-	public ValuesSourceAggregationBuilder<?> makeRangeGroup(DBTable dbtable,Function field) throws NotSupportedException {
+	public ValuesSourceAggregationBuilder<?> makeFunctionGroup(DBTable dbtable, Function field) throws NotSupportedException {
 		switch (field.getName().toLowerCase()) {
 		case "range":
-			return rangeBuilder(dbtable,field);
+			return rangeBuilder(dbtable, field);
 		case "date_histogram":
-			return dateHistogram(dbtable,field);
+			return dateHistogram(dbtable, field);
 		case "date_range":
-			return dateRange(dbtable,field);
+			return dateRange(dbtable, field);
 		case "month":
-			return dateRange(dbtable,field);
+			return dateRange(dbtable, field);
 		case "histogram":
-			return histogram(dbtable,field);
+			return histogram(dbtable, field);
 		default:
 			throw new NotSupportedException("can define this method " + field);
 		}
@@ -98,124 +96,130 @@ public class AggMaker {
 
 	private static final String TIME_FARMAT = "yyyy-MM-dd HH:mm:ss";
 
-	private ValuesSourceAggregationBuilder<?> dateRange(DBTable dbtable,Function field) {
-		int leng= field.getParameters().getExpressions().size();
-		String column=field.getParameters().getExpressions().get(0).toString();
-		String format=field.getParameters().getExpressions().get(1).toString();
-		DbColumn dbColumn =dbtable.getDbColumn(column);
+	/**
+	 * dateRange 统计 第一个参数为字段名,其它字段按照:间隔带key或者不带key为rang value daterange
+	 * aggregation { "aggs": { "range": { "date_range": { "field": "date",
+	 * "format": "MM-yyy", "ranges": [ { "to": "now-10M/M" }, { "from":
+	 * "now-10M/M" } ] } } } }
+	 * 
+	 * @param dbtable
+	 * @param field
+	 * @return
+	 */
+	private ValuesSourceAggregationBuilder<?> dateRange(DBTable dbtable, Function field) {
+		String column = field.getParameters().getExpressions().get(0).toString();
+		DbColumn dbColumn = dbtable.getDbColumn(column);
 		DateRangeBuilder dateRange = AggregationBuilders.dateRange(dbColumn.getColumnName()).format(TIME_FARMAT);
-
-		String value = null;
+		dateRange.field(dbColumn.getFieldCode());
 		List<String> ranges = new ArrayList<>();
-		for (Expression kv : field.getParameters().getExpressions()) {
-			value = kv.value.toString();
-			if ("field".equals(kv.key)) {
-				dateRange.field(value);
-				continue;
-			} else if ("format".equals(kv.key)) {
-				dateRange.format(value);
-				continue;
-			} else if ("from".equals(kv.key)) {
-				dateRange.addUnboundedFrom(kv.value);
-				continue;
-			} else if ("to".equals(kv.key)) {
-				dateRange.addUnboundedTo(kv.value);
-				continue;
+		for (Expression expression : field.getParameters().getExpressions()) {
+			String[] kv = expression.toString().split(":");
+			if (kv.length > 1) {
+				if (kv[0].equalsIgnoreCase("format")) {
+					dateRange.format(kv[0]);
+					continue;
+				} else if (kv[0].equalsIgnoreCase("from")) {
+					dateRange.addUnboundedFrom(kv[0]);
+					continue;
+				} else if (kv[0].equalsIgnoreCase("to")) {
+					dateRange.addUnboundedTo(kv[0]);
+					continue;
+				}
 			} else {
-				ranges.add(value);
+				ranges.add(kv[0]);
 			}
 		}
-
 		for (int i = 1; i < ranges.size(); i++) {
 			dateRange.addRange(ranges.get(i - 1), ranges.get(i));
 		}
-
 		return dateRange;
 	}
 
 	/**
-	 * 按照时间范围分组
+	 * 按照时间范围分组 第一个参数为字段名,其它字段按照:间隔带key
+	 * 
+	 * { "aggs" : { "articles_over_time" : { "date_histogram" : { "field" :
+	 * "date", "interval" : "1M", "format" : "yyyy-MM-dd" } } } }
 	 * 
 	 * @param field
 	 * @return
 	 * @throws SqlParseException
 	 */
-	private DateHistogramBuilder dateHistogram(DBTable dbtable,Function field) throws NotSupportedException {
-		DateHistogramBuilder dateHistogram = AggregationBuilders.dateHistogram(field.getAlias()).format(TIME_FARMAT);
-		String value = null;
-		for (KVValue kv : field.getParams()) {
-			value = kv.value.toString();
-			switch (kv.key.toLowerCase()) {
-			case "interval":
-				dateHistogram.interval(new DateHistogram.Interval(kv.value.toString()));
-				break;
-			case "field":
-				dateHistogram.field(value);
-				break;
-			case "format":
-				dateHistogram.format(value);
-				break;
-			case "time_zone":
-			case "pre_zone":
-				dateHistogram.preZone(value);
-				break;
-			case "post_zone":
-				dateHistogram.postZone(value);
-				break;
-			case "post_offset":
-				dateHistogram.postOffset(value);
-				break;
-			case "pre_offset":
-				dateHistogram.preOffset(value);
-				break;
-			default:
-				throw new NotSupportedException("date range err or not define field " + kv.toString());
+	private DateHistogramBuilder dateHistogram(DBTable dbtable, Function field) throws NotSupportedException {
+		String column = field.getParameters().getExpressions().get(0).toString();
+		DbColumn dbColumn = dbtable.getDbColumn(column);
+		DateHistogramBuilder dateHistogram = AggregationBuilders.dateHistogram(dbColumn.getFieldCode()).format(TIME_FARMAT);
+		dateHistogram.field(dbColumn.getFieldCode());
+		for(Expression expression:field.getParameters().getExpressions()){
+			String[] kv = expression.toString().split(":");
+			if (kv.length>1){
+				if (kv[0].equalsIgnoreCase("interval")){
+					dateHistogram.interval(new DateHistogram.Interval(kv[1]));
+					continue;
+				}else if (kv[0].equalsIgnoreCase("format")){
+					dateHistogram.format(kv[1]);
+					continue;
+				}else if (kv[0].equalsIgnoreCase("time_zone")|| kv[0].equalsIgnoreCase("pre_zone")){
+					dateHistogram.preZone(kv[1]);
+					continue;
+				}else if (kv[0].equalsIgnoreCase("post_zone")){
+					dateHistogram.postZone(kv[1]);
+					continue;
+				}else if (kv[0].equalsIgnoreCase("post_offset")){
+					dateHistogram.postOffset(kv[1]);
+					continue;
+				}else if (kv[0].equalsIgnoreCase("pre_offset")){
+					dateHistogram.preOffset(kv[1]);
+					continue;
+				}else{
+					throw new NotSupportedException("date range err or not define field " + kv.toString());
+				}
 			}
 		}
 		return dateHistogram;
 	}
 
-	private HistogramBuilder histogram(DBTable dbtable,Function field) throws NotSupportedException {
-		HistogramBuilder histogram = AggregationBuilders.histogram(field.getAlias());
-		String value = null;
-		for (KVValue kv : field.getParams()) {
-			value = kv.value.toString();
-			switch (kv.key.toLowerCase()) {
-				case "interval":
-					histogram.interval(Long.parseLong(value));
-					break;
-				case "field":
-					histogram.field(value);
-					break;
-				case "min_doc_count":
-					histogram.minDocCount(Long.parseLong(value));
-					break;
-				case "extended_bounds":
-					String[] bounds = value.split(":");
+	private HistogramBuilder histogram(DBTable dbtable, Function field) throws NotSupportedException {
+		String column = field.getParameters().getExpressions().get(0).toString();
+		DbColumn dbColumn = dbtable.getDbColumn(column);
+		HistogramBuilder histogram = AggregationBuilders.histogram(dbColumn.getColumnName());
+		histogram.field(dbColumn.getFieldCode());
+		for(Expression expression:field.getParameters().getExpressions()){
+			String[] kv = expression.toString().split(":");
+			if (kv.length>1){
+				if (kv[0].equalsIgnoreCase("interval")){
+					histogram.interval(Long.parseLong(kv[1]));
+					continue;
+				}else if (kv[0].equalsIgnoreCase("min_doc_count")){
+					histogram.minDocCount(Long.parseLong(kv[1]));
+					continue;
+				}else if (kv[0].equalsIgnoreCase("extended_bounds")){
+					String[] bounds = kv[1].split("/");
 					if (bounds.length == 2)
 						histogram.extendedBounds(Long.valueOf(bounds[0]), Long.valueOf(bounds[1]));
-					break;
-				case "order":
+					continue;
+				}else if (kv[0].equalsIgnoreCase("order")){
 					Histogram.Order order = null;
-					switch (value) {
-						case "key_desc":
-							order = Histogram.Order.KEY_DESC;
-							break;
-						case "count_asc":
-							order = Histogram.Order.COUNT_ASC;
-							break;
-						case "count_desc":
-							order = Histogram.Order.COUNT_DESC;
-							break;
-						case "key_asc":
-						default:
-							order = Histogram.Order.KEY_ASC;
-							break;
+					switch (kv[1]) {
+					case "key_desc":
+						order = Histogram.Order.KEY_DESC;
+						break;
+					case "count_asc":
+						order = Histogram.Order.COUNT_ASC;
+						break;
+					case "count_desc":
+						order = Histogram.Order.COUNT_DESC;
+						break;
+					case "key_asc":
+					default:
+						order = Histogram.Order.KEY_ASC;
+						break;
 					}
 					histogram.order(order);
-					break;
-				default:
+					continue;
+				}else{
 					throw new NotSupportedException("histogram err or not define field " + kv.toString());
+				}
 			}
 		}
 		return histogram;
@@ -224,42 +228,41 @@ public class AggMaker {
 	/**
 	 * 构建范围查询
 	 * 
+	 * 第一个参数为字段名
+	 * 
 	 * @param field
 	 * @return
 	 */
-	private RangeBuilder rangeBuilder(DBTable dbtable,Function field) {
-		int leng= field.getParameters().getExpressions().size();
-		Column column=(Column)field.getParameters().getExpressions().get(0);
-		DbColumn dbColumn =dbtable.getDbColumn(column.getColumnName());
+	private RangeBuilder rangeBuilder(DBTable dbtable, Function field) {
+		int leng = field.getParameters().getExpressions().size();
+		// 第一个参数为字段名
+		Column column = (Column) field.getParameters().getExpressions().get(0);
+		DbColumn dbColumn = dbtable.getDbColumn(column.getColumnName());
 		RangeBuilder range = AggregationBuilders.range(dbColumn.getColumnName()).field(dbColumn.getFieldCode());
 		for (int i = 2; i < leng; i++) {
-			range.addRange(NumberUtils.toDouble(field.getParameters().getExpressions().get(i - 1).toString()),
-					NumberUtils.toDouble(field.getParameters().getExpressions().get(i).toString()));
+			range.addRange(NumberUtils.toDouble(field.getParameters().getExpressions().get(i - 1).toString()), NumberUtils.toDouble(field.getParameters().getExpressions().get(i).toString()));
 		}
 		return range;
 	}
 
-
 	/**
 	 * Create count aggregation.
-	 * @param field The count function
+	 * 
+	 * @param field
+	 *            The count function
 	 * @return AggregationBuilder use to count result
 	 */
-	private AbstractAggregationBuilder makeCountAgg(DbColumn field) {
-
+	private AbstractAggregationBuilder makeCountAgg(DbColumn field, Function function) {
+		Expression expression=function.getParameters().getExpressions().get(1);
 		// Cardinality is approximate DISTINCT.
-		if ("DISTINCT".equals(field.getOption())) {
-			return AggregationBuilders.cardinality(field.getAlias()).precisionThreshold(40000).field(field.getParams().get(0).value.toString());
+		if ("DISTINCT".equals(expression.toString())) {
+			return AggregationBuilders.cardinality(field.getColumnName()).precisionThreshold(40000).field(field.getFieldCode());
 		}
-
-		String fieldName = field.getParams().get(0).value.toString();
-
-		// In case of count(*) we use '_index' as field parameter to count all documents
+		String fieldName = function.getParameters().getExpressions().get(0).toString();
 		if ("*".equals(fieldName)) {
-			return AggregationBuilders.count(field.getAlias()).field("_index");
-		}
-		else {
-			return AggregationBuilders.count(field.getAlias()).field(fieldName);
+			return AggregationBuilders.count(field.getColumnName()).field("_index");
+		} else {
+			return AggregationBuilders.count(field.getColumnName()).field(field.getFieldCode());
 		}
 	}
 
@@ -269,19 +272,19 @@ public class AggMaker {
 	 * @param field
 	 * @return
 	 */
-	private AbstractAggregationBuilder makeTopHitsAgg(DbColumn field) {
-		TopHitsBuilder topHits = AggregationBuilders.topHits(field.getAlias());
-		List<KVValue> params = field.getParams();
-		for (KVValue kv : params) {
-			switch (kv.key) {
+	private AbstractAggregationBuilder makeTopHitsAgg(DbColumn field, Function function) {
+		TopHitsBuilder topHits = AggregationBuilders.topHits(field.getColumnName());
+		for (Expression expression : function.getParameters().getExpressions()) {
+			String[] kv = expression.toString().split(":");
+			switch (kv[0]) {
 			case "from":
-				topHits.setFrom((int) kv.value);
+				topHits.setFrom(NumberUtils.toInt(kv[1]));
 				break;
 			case "size":
-				topHits.setSize((int) kv.value);
+				topHits.setSize(NumberUtils.toInt(kv[1]));
 				break;
 			default:
-				topHits.addSort(kv.key, SortOrder.valueOf(kv.value.toString().toUpperCase()));
+				topHits.addSort(kv[0], SortOrder.valueOf(kv[1].toUpperCase()));
 				break;
 			}
 		}

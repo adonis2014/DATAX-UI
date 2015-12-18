@@ -5,6 +5,7 @@ import java.util.List;
 import net.iharding.Constants;
 
 import org.elasticsearch.index.query.QueryBuilder;
+import org.elasticsearch.search.aggregations.AggregationBuilder;
 import org.elasticsearch.search.sort.SortBuilder;
 /**
  * es查询请求封装
@@ -17,11 +18,19 @@ public class ESSearchRequest implements EHRequestInf{
 	private String indexName;
 	private String[] typeNames;
 	private QueryBuilder qb;
+	private AggregationBuilder<?> aggBuilder;
 	private List<SortBuilder> sorts;
 	private long from=0l;
 	private long size=50l;
 	private String[] fetchSourceColumns;
 	
+	
+	public AggregationBuilder<?> getAggBuilder() {
+		return aggBuilder;
+	}
+	public void setAggBuilder(AggregationBuilder<?> aggBuilder) {
+		this.aggBuilder = aggBuilder;
+	}
 	public long getFrom() {
 		return from;
 	}
