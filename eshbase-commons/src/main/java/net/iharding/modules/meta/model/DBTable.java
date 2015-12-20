@@ -30,7 +30,7 @@ import org.hibernate.annotations.NotFoundAction;
  * @version 2015-12-01
  */
 @Entity
-@Table(name = "meta_table")
+@Table(name = "meta_dbtable")
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class DBTable extends IdEntity {
 

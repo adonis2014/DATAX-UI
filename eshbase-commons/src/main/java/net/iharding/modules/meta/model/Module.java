@@ -21,6 +21,8 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.annotations.NotFound;
 import org.hibernate.annotations.NotFoundAction;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 /**
  * 模块对象Entity
  * @author Joe.zhang
@@ -28,6 +30,7 @@ import org.hibernate.annotations.NotFoundAction;
  */
 @Entity
 @Table(name = "meta_module")
+@JsonIgnoreProperties(value = { "tables"})
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class Module extends IdEntity {
 

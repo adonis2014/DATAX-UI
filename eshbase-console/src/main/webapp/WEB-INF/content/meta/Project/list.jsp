@@ -77,14 +77,29 @@ $(document).ready(function() {
 
 			 	{cName:"projectName",cValue:"项目名称"},
 
-			 	{cName:"createbyId",cValue:"建立者"},
+			 	{cName:"creater",cValue:"建立者",format:function(i,value,item){
+					 if(App.isNundef(value)){
+						 return value.name;
+					 }
+				 }},
 
-			 	{cName:"updatebyId",cValue:"更新者"},
-
-			 	{cName:"createDate",cValue:"建立时间"},
-
-			 	{cName:"updateDate",cValue:"更新时间"},
-
+			 	{cName:"updater",cValue:"更新者",format:function(i,value,item){
+					 if(App.isNundef(value)){
+						 return value.name;
+					 }
+				 }},
+			 	{cName:"createDate",cValue:"建立时间",format:function(i,value,item){
+					 if(App.isNundef(value)){
+						 return new Date(value).format("yyyy-MM-dd hh:mm:ss");
+					 }
+					 return value;
+				 }},
+			 	{cName:"updateDate",cValue:"更新时间",format:function(i,value,item){
+					 if(App.isNundef(value)){
+						 return new Date(value).format("yyyy-MM-dd hh:mm:ss");
+					 }
+					 return value;
+				 }},
 			  	{cName:"remark",cValue:"备注"}
 		 ]
 	);

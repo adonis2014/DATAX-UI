@@ -7,14 +7,21 @@ import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OrderBy;
 import javax.persistence.Table;
 
 import net.iharding.core.orm.IdEntity;
 
+import org.guess.sys.model.User;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.hibernate.annotations.NotFound;
+import org.hibernate.annotations.NotFoundAction;
+
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 /**
  * 数据源Entity
@@ -23,6 +30,7 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
  */
 @Entity
 @Table(name = "meta_project")
+@JsonIgnoreProperties(value = { "dataSources","modules"})
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class Project extends IdEntity {
 
@@ -43,13 +51,20 @@ public class Project extends IdEntity {
 	/**
 	 * 最后更新人
 	 */
-	@Column(name="updateby_id")
-	private Long updatebyId;
+	@ManyToOne(cascade = { CascadeType.PERSIST, CascadeType.MERGE },targetEntity = User.class,fetch = FetchType.LAZY)
+	@JoinColumn(name="updateby_id")
+	@NotFound(action = NotFoundAction.IGNORE)
+	@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
+	private User updater;
+	
 	/**
 	 * 建立人
 	 */
-	@Column(name="createby_id")
-	private Long createbyId;
+	@ManyToOne(cascade = { CascadeType.PERSIST, CascadeType.MERGE },targetEntity = User.class,fetch = FetchType.LAZY)
+	@JoinColumn(name="createby_id")
+	@NotFound(action = NotFoundAction.IGNORE)
+	@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
+	private User creater;
 	/**
 	 * 最后更新时间
 	 */
@@ -73,6 +88,16 @@ public class Project extends IdEntity {
 	@OrderBy("id ASC")
 	private Set<DataSource> dataSources;
 	
+	
+	
+	public User getCreater() {
+		return creater;
+	}
+
+	public void setCreater(User creater) {
+		this.creater = creater;
+	}
+
 	public String getProjectCode() {
 		return projectCode;
 	}
@@ -97,22 +122,15 @@ public class Project extends IdEntity {
 		this.remark = remark;
 	}
 	
-	public Long getUpdatebyId() {
-		return updatebyId;
+	
+	public User getUpdater() {
+		return updater;
 	}
 
-	public void setUpdatebyId(Long updatebyId) {
-		this.updatebyId = updatebyId;
-	}
-	
-	public Long getCreatebyId() {
-		return createbyId;
+	public void setUpdater(User updater) {
+		this.updater = updater;
 	}
 
-	public void setCreatebyId(Long createbyId) {
-		this.createbyId = createbyId;
-	}
-	
 	public Date getUpdateDate() {
 		return updateDate;
 	}
