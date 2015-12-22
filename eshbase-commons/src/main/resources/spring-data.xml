@@ -72,7 +72,7 @@
         <property name="packagesToScan">
             <list>
                 <value>org.guess.sys.model</value>
-                <value>org.guess.showcase.workflow.model</value>
+                <value>org.guess.showcase</value>
                 <value>net.iharding.modules</value>
             </list>
         </property>

@@ -1,8 +1,10 @@
 package net.iharding.modules.meta.dao.impl;
 
-import org.guess.core.orm.hibernate.HibernateDao;
 import net.iharding.modules.meta.dao.ProjectDao;
 import net.iharding.modules.meta.model.Project;
+
+import org.guess.core.orm.hibernate.HibernateDao;
+import org.hibernate.Session;
 import org.springframework.stereotype.Repository;
 
 /**
@@ -16,4 +18,9 @@ import org.springframework.stereotype.Repository;
 @Repository
 public class ProjectDaoImpl extends HibernateDao<Project,Long> implements ProjectDao {
 
+	@Override
+	public void save(Project project) {
+		Session session = getSession();
+		session.merge(project);
+	}
 }

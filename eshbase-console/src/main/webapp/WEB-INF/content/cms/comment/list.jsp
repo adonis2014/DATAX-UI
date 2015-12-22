@@ -2,13 +2,13 @@
 <%@ include file="/WEB-INF/content/common/common.jsp"%>
 <html>
 <head>
-<title>项目对象列表</title>
+<title>评论列表</title>
 </head>
 <body>
 	<div class="page-content">
 		<div class="container-fluid">
 			<!-- 页面导航 -->
-			<tool:navBar pageTitle="项目对象列表" pageTitleContent="内容管理-项目对象管理-项目对象列表" titleIcon="icon-home"/>
+			<tool:navBar pageTitle="评论列表" pageTitleContent="内容管理-评论管理-评论列表" titleIcon="icon-home"/>
 			<!-- 主体内容 -->
 			<div class="row-fluid">
 				<div class="span12">
@@ -29,7 +29,7 @@
 	                                 	<div class="span7 ">
 		                                    <div class="control-group">
 		                                       <div class="controls">
-		                                          <input type="text" id="filters" class="m-wrap span12" placeholder="项目编码,项目名称,备注">
+		                                          <input type="text" id="filters" class="m-wrap span12" placeholder="内容,名称,ip地址">
 		                                       </div>
 		                                    </div>
 	                                 	</div>
@@ -47,7 +47,14 @@
 	                                 	</div>
 									</div>
 								</form>
-								<tool:operBtns modelKey="role"></tool:operBtns>
+								<div class="span4 pull-right">
+									<a class="btn red" href="javascript:void(0);" onclick="Page.deleteObj();">
+										删除<i class="icon-trash"></i>
+									</a>
+									<a class="btn blue" href="javascript:void(0);" onclick="Page.viewObj();">
+										详细<i class="icon-search"></i>
+									</a>
+								</div>
 							</div>
 							<table class="table table-striped table-bordered table-hover" id="sample_1">
 								
@@ -62,52 +69,30 @@
 <script type="text/javascript">
 $(document).ready(function() {
 	
-	App.activeMenu("meta/Project/list");
+	App.activeMenu("cms/comment/list");
 	
 	Page.initData(
 		{
-			url:"${ctx}/meta/Project/page",
+			url:"${ctx}/cms/comment/page",
 			pageNo : 1,
 			pageSize : 10,
 			tableId : "#sample_1"
 		},
 		null,
-		[
-			 	{cName:"projectCode",cValue:"项目编码"},
-
-			 	{cName:"projectName",cValue:"项目名称"},
-
-			 	{cName:"creater",cValue:"建立者",format:function(i,value,item){
-					 if(App.isNundef(value)){
-						 return value.name;
-					 }
-				 }},
-
-			 	{cName:"updater",cValue:"更新者",format:function(i,value,item){
-					 if(App.isNundef(value)){
-						 return value.name;
-					 }
-				 }},
-			 	{cName:"createDate",cValue:"建立时间",format:function(i,value,item){
-					 if(App.isNundef(value)){
-						 return new Date(value).format("yyyy-MM-dd hh:mm:ss");
-					 }
-					 return value;
-				 }},
-			 	{cName:"updateDate",cValue:"更新时间",format:function(i,value,item){
-					 if(App.isNundef(value)){
-						 return new Date(value).format("yyyy-MM-dd hh:mm:ss");
-					 }
-					 return value;
-				 }},
-			  	{cName:"remark",cValue:"备注"}
+		[{cName:"name",cValue:"评论者昵称"},
+		 {cName:"content",cValue:"内容"},
+		 {cName:"url",cValue:"url"},
+		 {cName:"email",cValue:"邮箱"},
+		 {cName:"createDate",cValue:"日期",format:function(i,value,item){
+			return new Date(value).format("yyyy-MM-dd hh:mm:ss");
+		 }},
 		 ]
 	);
 });
 
 function doQuery(){
 	var queryObj = {
-			search_LIKES_projectCode_OR_projectName_OR_remark : App.isEqPlacehoder($("#filters"))
+			search_LIKES_content_OR_name : App.isEqPlacehoder($("#filters"))
 		};
 	Page.doQuery(queryObj);
 }

@@ -1,8 +1,15 @@
 package net.iharding.modules.meta.service.impl;
 
-import org.guess.core.service.BaseServiceImpl;
+import java.util.Date;
+
+import net.iharding.modules.meta.dao.ProjectDao;
 import net.iharding.modules.meta.model.Project;
 import net.iharding.modules.meta.service.ProjectService;
+
+import org.guess.core.service.BaseServiceImpl;
+import org.guess.sys.model.User;
+import org.guess.sys.util.UserUtil;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 /**
@@ -16,4 +23,27 @@ import org.springframework.stereotype.Service;
 @Service
 public class ProjectServiceImpl extends BaseServiceImpl<Project, Long> implements ProjectService {
 
+	@Autowired
+	private ProjectDao projectDao;
+	
+	@Override
+	public void save(Project project) throws Exception {
+		if(project.getId() != null){
+			
+			Project dbProject = projectDao.get(project.getId());
+			
+			//保留发表者以及发表提起
+			project.setCreater(dbProject.getCreater());
+			project.setCreateDate(dbProject.getCreateDate());
+			//更新者
+			User cuser = UserUtil.getCurrentUser();
+			project.setUpdater(cuser);
+			project.setUpdateDate(new Date());
+		}else{
+			project.setCreater(UserUtil.getCurrentUser());
+			project.setCreateDate(new Date());
+		}
+		super.save(project);
+	}
+	
 }

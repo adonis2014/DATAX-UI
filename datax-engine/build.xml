@@ -6,6 +6,7 @@
 		</classpath>
 	</taskdef>
 
+	<property name="package.dir" value="target" />
 	<property name="engine.dir" value="engine" />
 	<property name="plugins.dir" value="plugins" />
 	<property name="common.dir" value="common" />
