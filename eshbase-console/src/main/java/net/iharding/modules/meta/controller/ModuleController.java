@@ -20,9 +20,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class ModuleController extends BaseController<Module>{
 
 	{
-		editView = "/meta/module/edit";
-		listView = "/meta/module/list";
-		showView = "/meta/module/show";
+		editView = "/meta/Module/edit";
+		listView = "/meta/Module/list";
+		showView = "/meta/Module/show";
 	}
 	
 	@Autowired

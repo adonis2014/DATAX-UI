@@ -2,13 +2,13 @@
 <%@ include file="/WEB-INF/content/common/common.jsp"%>
 <html>
 <head>
-<title>数据源对象列表</title>
+<title>数据字典列表</title>
 </head>
 <body>
 	<div class="page-content">
 		<div class="container-fluid">
 			<!-- 页面导航 -->
-			<tool:navBar pageTitle="数据源对象列表" pageTitleContent="内容管理-数据源对象管理-数据源对象列表" titleIcon="icon-home"/>
+			<tool:navBar pageTitle="数据字典列表" pageTitleContent="内容管理-数据字典管理-数据字典列表" titleIcon="icon-home"/>
 			<!-- 主体内容 -->
 			<div class="row-fluid">
 				<div class="span12">
@@ -29,7 +29,7 @@
 	                                 	<div class="span7 ">
 		                                    <div class="control-group">
 		                                       <div class="controls">
-		                                          <input type="text" id="filters" class="m-wrap span12" placeholder="项目ID,jdbc driver classname,jdbc登录密码,jdbc连接url,数据库类别,jdbc用户,schema名称,db名称,建立者,更新者,建立世间,更新世间,备注">
+		                                          <input type="text" id="filters" class="m-wrap span12" placeholder="字典类别,实际值,显示名,排序id,备注">
 		                                       </div>
 		                                    </div>
 	                                 	</div>
@@ -62,36 +62,33 @@
 <script type="text/javascript">
 $(document).ready(function() {
 	
-	App.activeMenu("meta/DataSource/list");
+	App.activeMenu("sys/dict/list");
 	
 	Page.initData(
 		{
-			url:"${ctx}/meta/DataSource/page",
+			url:"${ctx}/sys/dict/page",
 			pageNo : 1,
 			pageSize : 10,
 			tableId : "#sample_1"
 		},
 		null,
 		[
-		 	{cName:"dbName",cValue:"db名"},
-		 	{cName:"schemaName",cValue:"schema"},
-		 	{cName:"project",cValue:"项目",format:function(i,value,item){
-				  var $a = $('<a data-original-title="点击访问" data-placement="right" class="tooltips" href="../Project/show/'+item.project.id+'" >'+item.project.projectName+'</a>');
-				  return $a;
-			  }},
-			 	{cName:"driverCLassName",cValue:"class"},
-			 	{cName:"jdbcUser",cValue:"用户"},
-			 	{cName:"jdbcPassword",cValue:"登录密码"},
-			 	{cName:"jdbcUrl",cValue:"url"},
-			 	{cName:"dbType",cValue:"类别"},
-			 	{cName:"remark",cValue:"备注"}
+			 	{cName:"codeType",cValue:"字典类别"},
+
+			 	{cName:"codeValue",cValue:"实际值"},
+
+			 	{cName:"codeName",cValue:"显示名"},
+
+			 	{cName:"sortId",cValue:"排序id"},
+
+			  	{cName:"remark",cValue:"备注"}
 		 ]
 	);
 });
 
 function doQuery(){
 	var queryObj = {
-			search_LIKES_project_OR_driverCLassName_OR_jdbcPassword_OR_jdbcUrl_OR_dbType_OR_jdbcUser_OR_schemaName_OR_dbName_OR_createbyId_OR_updatebyId_OR_createDate_OR_updateDate_OR_remark : App.isEqPlacehoder($("#filters"))
+			search_LIKES_codeType_OR_codeValue_OR_codeName_OR_sortId_OR_remark : App.isEqPlacehoder($("#filters"))
 		};
 	Page.doQuery(queryObj);
 }

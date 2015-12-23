@@ -30,51 +30,11 @@
 								
 								<input type="hidden" value="${obj.id}" name="id">
 								<div class="control-group">
-									<label class="control-label">项目ID:</label>
+									<label class="control-label">项目:</label>
 									<div class="controls">
 										<input type="text" class="span6 m-wrap"
 											validate="{required:true}"
-											name="project" value="${obj.project }" />
-									</div>
-								</div>
-								<div class="control-group">
-									<label class="control-label">jdbc driver classname:</label>
-									<div class="controls">
-										<input type="text" class="span6 m-wrap"
-											validate="{required:true}"
-											name="driverCLassName" value="${obj.driverCLassName }" />
-									</div>
-								</div>
-								<div class="control-group">
-									<label class="control-label">jdbc登录密码:</label>
-									<div class="controls">
-										<input type="text" class="span6 m-wrap"
-											validate="{required:true}"
-											name="jdbcPassword" value="${obj.jdbcPassword }" />
-									</div>
-								</div>
-								<div class="control-group">
-									<label class="control-label">jdbc连接url:</label>
-									<div class="controls">
-										<input type="text" class="span6 m-wrap"
-											validate="{required:true}"
-											name="jdbcUrl" value="${obj.jdbcUrl }" />
-									</div>
-								</div>
-								<div class="control-group">
-									<label class="control-label">数据库类别:</label>
-									<div class="controls">
-										<input type="text" class="span6 m-wrap"
-											validate="{required:true}"
-											name="dbType" value="${obj.dbType }" />
-									</div>
-								</div>
-								<div class="control-group">
-									<label class="control-label">jdbc用户:</label>
-									<div class="controls">
-										<input type="text" class="span6 m-wrap"
-											validate="{required:true}"
-											name="jdbcUser" value="${obj.jdbcUser }" />
+											name="project" value="${obj.project.projectName}" />
 									</div>
 								</div>
 								<div class="control-group">
@@ -91,6 +51,46 @@
 										<input type="text" class="span6 m-wrap"
 											validate="{required:true}"
 											name="dbName" value="${obj.dbName }" />
+									</div>
+								</div>
+								<div class="control-group">
+									<label class="control-label">jdbc driver classname:</label>
+									<div class="controls">
+										<input type="text" class="span6 m-wrap"
+											validate="{required:true}"
+											name="driverCLassName" value="${obj.driverCLassName }" />
+									</div>
+								</div>
+								<div class="control-group">
+									<label class="control-label">jdbc连接url:</label>
+									<div class="controls">
+										<input type="text" class="span6 m-wrap"
+											validate="{required:true}"
+											name="jdbcUrl" value="${obj.jdbcUrl }" />
+									</div>
+								</div>
+								<div class="control-group">
+									<label class="control-label">jdbc用户:</label>
+									<div class="controls">
+										<input type="text" class="span6 m-wrap"
+											validate="{required:true}"
+											name="jdbcUser" value="${obj.jdbcUser }" />
+									</div>
+								</div>
+								<div class="control-group">
+									<label class="control-label">jdbc登录密码:</label>
+									<div class="controls">
+										<input type="text" class="span6 m-wrap"
+											validate="{required:true}"
+											name="jdbcPassword" value="${obj.jdbcPassword }" />
+									</div>
+								</div>
+								<div class="control-group">
+									<label class="control-label">数据库类别:</label>
+									<div class="controls">
+										<input type="text" class="span6 m-wrap"
+											validate="{required:true}"
+											name="dbType" value="${obj.dbType }" />
 									</div>
 								</div>
 								<div class="control-group">

@@ -34,12 +34,24 @@ public class CodeGenerate {
 		// 目录生成结构：{packageName}/{moduleName}/{dao,entity,service,web}/{subModuleName}/{className}
 
 		// packageName
-		// 包名，这里如果更改包名，请在applicationContext.xml和srping-mvc.xml中配置base-package、packagesToScan属性，来指定多个（共4处需要修改）。
+		// 包名，这里如果更改包名，请在applicationContext.xml和spring-mvc.xml中配置base-package、packagesToScan属性，来指定多个（共4处需要修改）。
 		String packageName = "net.iharding.modules";
 		List<Field> fields = new ArrayList<Field>();
 		
 		String classAuthor = "Joe.zhang"; // 类作者，例：
-		String moduleName = "meta"; // 模块名，例：sys
+		String moduleName = "sys"; // 模块名，例：sys
+		String className = "MultiLang"; // 类名，例：user
+//		String functionName = "数据字典"; // 功能名，例：用户
+//		fields.add(new Field("codeType", "字典类别", "Long"));
+//		fields.add(new Field("codeValue", "实际值", "String"));
+//		fields.add(new Field("codeName", "显示名", "String"));
+//		fields.add(new Field("sortId", "排序id", "Integer"));
+		
+		String functionName = "多国语言"; // 功能名，例：用户
+		fields.add(new Field("langCode", "编码", "String"));
+		fields.add(new Field("langKey", "key", "String"));
+		fields.add(new Field("langContent", "内容", "String"));
+		
 //		String className = "Project"; // 类名，例：user
 //		String functionName = "项目对象"; // 功能名，例：用户
 //		fields.add(new Field("projectCode", "项目编码", "String"));
@@ -60,12 +72,12 @@ public class CodeGenerate {
 //		fields.add(new Field("tablePname", "逻辑名", "String"));
 //		fields.add(new Field("tableType", "表类别", "Integer"));
 		
-		String className = "DBIndex"; // 类名，例：user
-		String functionName = "索引对象"; // 功能名，例：用户
-		fields.add(new Field("dbtable", "数据表", "DBTable"));
-		fields.add(new Field("index_name", "索引库名", "String"));
-		fields.add(new Field("type_name", "索引表名", "String"));
-		fields.add(new Field("indexType", "索引类别", "Integer"));
+//		String className = "DBIndex"; // 类名，例：user
+//		String functionName = "索引对象"; // 功能名，例：用户
+//		fields.add(new Field("dbtable", "数据表", "DBTable"));
+//		fields.add(new Field("index_name", "索引库名", "String"));
+//		fields.add(new Field("type_name", "索引表名", "String"));
+//		fields.add(new Field("indexType", "索引类别", "Integer"));
 		
 //		fields.add(new Field("moduleName", "模块名", "String"));
 		
@@ -93,11 +105,11 @@ public class CodeGenerate {
 //		fields.add(new Field("required", "是否必须", "String")); 
 //		fields.add(new Field("format", "格式", "String")); 
 
-		fields.add(new Field("createbyId", "建立者", "Long"));
-		fields.add(new Field("updatebyId", "更新者", "Long"));
-		fields.add(new Field("createDate", "建立世间", "Date"));
-		fields.add(new Field("updateDate", "更新世间", "Date"));
-		fields.add(new Field("remark", "备注", "String"));
+//		fields.add(new Field("createbyId", "建立者", "Long"));
+//		fields.add(new Field("updatebyId", "更新者", "Long"));
+//		fields.add(new Field("createDate", "建立时间", "Date"));
+//		fields.add(new Field("updateDate", "更新时间", "Date"));
+//		fields.add(new Field("remark", "备注", "String"));
 
 		// 是否启用生成工具
 		Boolean isEnable = true;
@@ -131,7 +143,7 @@ public class CodeGenerate {
 
 		// 模板文件路径
 		String tplPath = StringUtils.replace(projectPath.getAbsolutePath()
-				+ "/src/main/generator/org/guess/generate/temp", "/", separator);
+				+ "/src/main/java/org/guess/generate/temp", "/", separator);
 		logger.info("Template Path: {}", tplPath);
 
 		// Java文件路径

@@ -15,10 +15,13 @@ import javax.persistence.Table;
 
 import net.iharding.core.orm.IdEntity;
 
+import org.guess.sys.model.User;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.annotations.NotFound;
 import org.hibernate.annotations.NotFoundAction;
+
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 /**
  * 数据源Entity
@@ -27,6 +30,7 @@ import org.hibernate.annotations.NotFoundAction;
  */
 @Entity
 @Table(name = "meta_datasource")
+@JsonIgnoreProperties(value = { "tables"})
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class DataSource extends IdEntity {
 
@@ -76,13 +80,19 @@ public class DataSource extends IdEntity {
 	/**
 	 * 最后更新人
 	 */
-	@Column(name="updateby_id")
-	private Long updatebyId;
+	@ManyToOne(cascade = { CascadeType.PERSIST, CascadeType.MERGE },targetEntity = User.class,fetch = FetchType.LAZY)
+	@JoinColumn(name="updateby_id")
+	@NotFound(action = NotFoundAction.IGNORE)
+	@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
+	private User updater;
 	/**
 	 * 建立人
 	 */
-	@Column(name="createby_id")
-	private Long createbyId;
+	@ManyToOne(cascade = { CascadeType.PERSIST, CascadeType.MERGE },targetEntity = User.class,fetch = FetchType.LAZY)
+	@JoinColumn(name="createby_id")
+	@NotFound(action = NotFoundAction.IGNORE)
+	@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
+	private User creater;
 	/**
 	 * 最后更新时间
 	 */
@@ -182,25 +192,23 @@ public class DataSource extends IdEntity {
 	public void setDbType(Integer dbType) {
 		this.dbType = dbType;
 	}
-	
-	
-	public Long getUpdatebyId() {
-		return updatebyId;
+		
+	public User getUpdater() {
+		return updater;
 	}
 
-	public void setUpdatebyId(Long updatebyId) {
-		this.updatebyId = updatebyId;
-	}
-	
-	@Column(name="createby_id")
-	public Long getCreatebyId() {
-		return createbyId;
+	public void setUpdater(User updater) {
+		this.updater = updater;
 	}
 
-	public void setCreatebyId(Long createbyId) {
-		this.createbyId = createbyId;
+	public User getCreater() {
+		return creater;
 	}
-	
+
+	public void setCreater(User creater) {
+		this.creater = creater;
+	}
+
 	@Column(name="update_date")
 	public Date getUpdateDate() {
 		return updateDate;

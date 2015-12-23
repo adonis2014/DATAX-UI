@@ -77,7 +77,7 @@ var Page = {
 		$.each(cols, function(i, item) {
 			var sortStr = item.noSort ? ""
 					: "class='sorting' onclick='Page.sorting(this)'";
-			theadTr.append($("<th " + sortStr + "></th>").attr("cName",
+			theadTr.append($("<th " + sortStr + " ></th>").attr("cName",
 					item.cName).html(item.cValue));
 		});
 		//判断菜单数组长度如果不为空才添加操作列

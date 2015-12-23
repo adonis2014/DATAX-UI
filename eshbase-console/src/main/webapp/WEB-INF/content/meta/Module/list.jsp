@@ -29,7 +29,7 @@
 	                                 	<div class="span7 ">
 		                                    <div class="control-group">
 		                                       <div class="controls">
-		                                          <input type="text" id="filters" class="m-wrap span12" placeholder="项目,模块编码,模块名,包名,建立者,更新者,建立世间,更新世间,备注">
+		                                          <input type="text" id="filters" class="m-wrap span12" placeholder="模块编码,模块名,包名,备注">
 		                                       </div>
 		                                    </div>
 	                                 	</div>
@@ -73,22 +73,39 @@ $(document).ready(function() {
 		},
 		null,
 		[
-			 	{cName:"project",cValue:"项目"},
-
+			 	{cName:"project",cValue:"项目",format:function(i,value,item){
+					  var $a = $('<a data-original-title="点击访问" data-placement="right" class="tooltips" href="../Project/show/'+item.project.id+'" >'+item.project.projectName+'</a>');
+					  return $a;
+				  }},
+			 	{cName:"datasource",cValue:"数据源",format:function(i,value,item){
+					  var $a = $('<a data-original-title="点击访问" data-placement="right" class="tooltips" href="../DataSource/show/'+item.datasource.id+'" >'+item.datasource.dbName+'</a>');
+					  return $a;
+				  }},
 			 	{cName:"moduleCode",cValue:"模块编码"},
-
 			 	{cName:"moduleName",cValue:"模块名"},
-
 			 	{cName:"packageName",cValue:"包名"},
-
-			 	{cName:"createbyId",cValue:"建立者"},
-
-			 	{cName:"updatebyId",cValue:"更新者"},
-
-			 	{cName:"createDate",cValue:"建立世间"},
-
-			 	{cName:"updateDate",cValue:"更新世间"},
-
+			 	{cName:"createbyId",cValue:"建立者",format:function(i,value,item){
+					 if(App.isNundef(value)){
+						 return value.name;
+					 }
+				 }},
+			 	{cName:"updatebyId",cValue:"更新者",format:function(i,value,item){
+					 if(App.isNundef(value)){
+						 return value.name;
+					 }
+				 }},
+			 	{cName:"createDate",cValue:"建立时间",format:function(i,value,item){
+					 if(App.isNundef(value)){
+						 return new Date(value).format("yyyy-MM-dd hh:mm:ss");
+					 }
+					 return value;
+				 }},
+			 	{cName:"updateDate",cValue:"更新时间",format:function(i,value,item){
+					 if(App.isNundef(value)){
+						 return new Date(value).format("yyyy-MM-dd hh:mm:ss");
+					 }
+					 return value;
+				 }},
 			  	{cName:"remark",cValue:"备注"}
 		 ]
 	);
@@ -96,7 +113,7 @@ $(document).ready(function() {
 
 function doQuery(){
 	var queryObj = {
-			search_LIKES_project_OR_moduleCode_OR_moduleName_OR_packageName_OR_createbyId_OR_updatebyId_OR_createDate_OR_updateDate_OR_remark : App.isEqPlacehoder($("#filters"))
+			search_LIKES_moduleCode_OR_moduleName_OR_packageName_OR_remark : App.isEqPlacehoder($("#filters"))
 		};
 	Page.doQuery(queryObj);
 }
