@@ -11,6 +11,7 @@ import javax.servlet.jsp.tagext.TagSupport;
 import net.iharding.modules.sys.service.DictService;
 
 import org.apache.commons.lang.StringUtils;
+import org.guess.core.utils.spring.SpringContextUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.google.gson.Gson;
@@ -50,7 +51,7 @@ public class DictSelectTag extends TagSupport {
 		this.dictCondition = dicCondition;
 	}
 	@Autowired
-	private static DictService systemService;
+	private static DictService dictService;
 
 	public int doStartTag() throws JspTagException {
 		return EVAL_PAGE;
@@ -277,9 +278,8 @@ public class DictSelectTag extends TagSupport {
 	       if(dictCondition!=null){
 	           sql+=dictCondition;
 	       }
-		systemService = ApplicationContextUtil.getContext().getBean(
-				SystemService.class);
-		List<Map<String, Object>> list = systemService.findForJdbc(sql);
+		dictService = SpringContextUtil.getBean(DictService.class);
+		List<Map<String, Object>> list = dictService.findForJdbc(sql);
 		return list;
 	}
 
