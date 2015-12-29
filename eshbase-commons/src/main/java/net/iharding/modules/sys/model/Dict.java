@@ -1,5 +1,6 @@
 package net.iharding.modules.sys.model;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 
@@ -21,18 +22,22 @@ public class Dict extends IdEntity {
 	/**
 	 * 字典类别
 	 */
+	@Column(name="code_type")
 	private Long codeType;
 	/**
 	 * 实际值
 	 */
+	@Column(name="code_value")
 	private String codeValue;
 	/**
 	 * 显示名
 	 */
+	@Column(name="code_name")
 	private String codeName;
 	/**
 	 * 排序id
 	 */
+	@Column(name="sort_id")
 	private Integer sortId;
 	/**
 	 * 备注

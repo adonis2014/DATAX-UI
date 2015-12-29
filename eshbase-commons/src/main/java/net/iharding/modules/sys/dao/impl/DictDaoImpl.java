@@ -1,8 +1,9 @@
 package net.iharding.modules.sys.dao.impl;
 
-import org.guess.core.orm.hibernate.HibernateDao;
 import net.iharding.modules.sys.dao.DictDao;
 import net.iharding.modules.sys.model.Dict;
+
+import org.guess.core.orm.hibernate.NativeSqlQueryHibernateDao;
 import org.springframework.stereotype.Repository;
 
 /**
@@ -14,6 +15,7 @@ import org.springframework.stereotype.Repository;
 *
 */
 @Repository
-public class DictDaoImpl extends HibernateDao<Dict,Long> implements DictDao {
+public class DictDaoImpl extends NativeSqlQueryHibernateDao<Dict,Long> implements DictDao {
+
 
 }

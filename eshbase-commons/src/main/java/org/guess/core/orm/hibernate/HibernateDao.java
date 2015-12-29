@@ -35,6 +35,9 @@ import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.hibernate.internal.CriteriaImpl;
 import org.hibernate.transform.ResultTransformer;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.jdbc.core.JdbcTemplate;
 
 import com.google.common.collect.Maps;
 
@@ -68,6 +71,9 @@ public class HibernateDao<T, ID extends Serializable> extends
 	public HibernateDao(Class<T> entityClass) {
 		super(entityClass);
 	}
+	
+	
+	
 
 	// -- 分页查询函数 --//
 

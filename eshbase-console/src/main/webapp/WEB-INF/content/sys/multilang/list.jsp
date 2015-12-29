@@ -18,8 +18,8 @@
 								<i class="icon-globe"></i>列表
 							</h4>
 							<div class="tools">
-								<a href="javascript:;" class="collapse"></a><a
-									href="javascript:;" class="remove"></a>
+								<a href="javascript:;" class="collapse"></a>
+								<a href="javascript:;" class="remove"></a>
 							</div>
 						</div>
 						<div class="portlet-body">
@@ -36,9 +36,7 @@
 	                                 	<div class="span5 ">
 		                                    <div class="control-group">
 		                                       <div class="controls">
-		                                         <a class="btn blue" href="javascript:void(0)" onclick="javascript:doQuery();">
-		                                         	<i class="icon-search"></i>
-		                                         	查询</a>
+		                                         <a class="btn blue" href="javascript:void(0)" onclick="javascript:doQuery();"><i class="icon-search"></i>查询</a>
 		                                         <button type="reset" class="btn" onclick="javascript:Page.clearQuery();">
 		                                         	<i class="icon-trash"></i>清空
 		                                         </button>
@@ -62,18 +60,18 @@
 <script type="text/javascript">
 $(document).ready(function() {
 	
-	App.activeMenu("sys/multiLang/list");
+	App.activeMenu("sys/multilang/list");
 	
 	Page.initData(
 		{
-			url:"${ctx}/sys/multiLang/page",
+			url:"${ctx}/sys/multilang/page",
 			pageNo : 1,
 			pageSize : 10,
 			tableId : "#sample_1"
 		},
 		null,
 		[
-			 	{cName:"langCode",cValue:"编码"},
+			 	{cName:"langCode",cValue:"语言编码"},
 
 			 	{cName:"langKey",cValue:"key"},
 

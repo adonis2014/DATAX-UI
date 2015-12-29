@@ -6,11 +6,13 @@
 <title>${pageTitle }</title>
 </head>
 <body>
+<%@ include file="/WEB-INF/content/meta/Project/selProject.jsp" %>
+
 	<div class="page-content">
 		<div class="container-fluid">
 			<!-- 页面导航 -->
 			<tool:navBar pageTitle="${pageTitle }"
-				pageTitleContent="内容管理-{functionName}管理-${pageTitle }" titleIcon="icon-home" />
+				pageTitleContent="数据源管理-{functionName}管理-${pageTitle }" titleIcon="icon-home" />
 			<!-- 主体内容 -->
 			<div class="row-fluid">
 				<div class="span12">
@@ -34,7 +36,7 @@
 									<div class="controls">
 										<input type="text" class="span6 m-wrap"
 											validate="{required:true}"
-											name="project" value="${obj.project.projectName}" />
+											name="project" value="${obj.project.projectName}" readonly="readonly" onfocus="showProject()" />
 									</div>
 								</div>
 								<div class="control-group">
@@ -93,38 +95,32 @@
 											name="dbType" value="${obj.dbType }" />
 									</div>
 								</div>
+								<c:if test="${not empty obj}">
 								<div class="control-group">
 									<label class="control-label">建立者:</label>
 									<div class="controls">
-										<input type="text" class="span6 m-wrap"
-											validate="{required:true}"
-											name="createbyId" value="${obj.createbyId }" />
+										${obj.creater.name}
 									</div>
 								</div>
 								<div class="control-group">
 									<label class="control-label">更新者:</label>
 									<div class="controls">
-										<input type="text" class="span6 m-wrap"
-											validate="{required:true}"
-											name="updatebyId" value="${obj.updatebyId }" />
+										${obj.updater.name}
 									</div>
 								</div>
 								<div class="control-group">
-									<label class="control-label">建立世间:</label>
+									<label class="control-label">建立时间:</label>
 									<div class="controls">
-										<input type="text" class="span6 m-wrap"
-											validate="{required:true}"
-											name="createDate" value="${obj.createDate }" />
+										${obj.createDate }
 									</div>
 								</div>
 								<div class="control-group">
-									<label class="control-label">更新世间:</label>
+									<label class="control-label">更新时间:</label>
 									<div class="controls">
-										<input type="text" class="span6 m-wrap"
-											validate="{required:true}"
-											name="updateDate" value="${obj.updateDate }" />
+										${obj.updateDate }
 									</div>
 								</div>
+								</c:if>
 								<div class="control-group">
 									<label class="control-label">备注:</label>
 									<div class="controls">
@@ -151,6 +147,18 @@
 	$(function(){
 		App.activeMenu("meta/dataSource/list");
 	});
+	function showProject(){
+		$("#projectList").modal();
+	}
+	function selProject(obj){
+		var flag = Page.selectsPrompt();
+		if(!flag) return;
+		
+		$obj = $("#tree_1").find("a.selected:first");
+		$('#projectList').modal('hide');
+		$('input[id=caName]').val($obj.text());
+		$('input[id=caId]').val($obj.attr("data-id"));
+	}
 </script>
 </body>
 </html>

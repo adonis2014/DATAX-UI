@@ -72,7 +72,7 @@ var Page = {
 		var thead = $("<thead></thead>");
 		var theadTr = $("<tr></tr>");
 		//checkbox
-		theadTr.append($("<th></th>").append($("<input type='checkbox' onclick='javascript:Page.checkAllItems(this);'>")));
+			theadTr.append($("<th></th>").append($("<input type='checkbox' onclick='javascript:Page.checkAllItems(this);'>")));
 		
 		$.each(cols, function(i, item) {
 			var sortStr = item.noSort ? ""
@@ -106,7 +106,6 @@ var Page = {
 		var tbody = $(Page.defaultVal.tableId + " tbody:first").empty();
 		$.each(pageData.data, function(i, item) {
 			var tr = $("<tr></tr>");
-			//checkbox
 			tr.append($("<td></td>").append($("<input type='checkbox' data-id="+item.id+">")));
 			$.each(Page.defaultCols, function(j, col) {
 				if (col.format) {

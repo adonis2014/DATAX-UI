@@ -1,6 +1,7 @@
 package org.guess.core.orm.hibernate;
 
 import com.google.common.collect.Maps;
+
 import org.guess.core.orm.Page;
 import org.guess.core.orm.PageRequest;
 import org.guess.core.utils.AssertUtils;
@@ -65,6 +66,13 @@ public class NativeSqlQueryHibernateDao<T, ID extends Serializable> extends Hibe
         map.put("list",list);
         return map;
     }
+    
+
+	public List<Map<String, Object>> findForJdbc(String sql, Object... objs) {
+		 SQLQuery query = createSqlQuery(sql, objs);
+		 List<Map<String,Object>> list = query.setResultTransformer(Transformers.ALIAS_TO_ENTITY_MAP).list();
+		return list;
+	}
 
     protected long countSqlResult(final String sql, final Object... values) {
         String countSql = prepareCountHql(sql);
