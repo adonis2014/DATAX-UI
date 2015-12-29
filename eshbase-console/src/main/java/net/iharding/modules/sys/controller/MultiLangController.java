@@ -16,13 +16,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 *
 */
 @Controller
-@RequestMapping("/sys/multiLang")
+@RequestMapping("/sys/multilang")
 public class MultiLangController extends BaseController<MultiLang>{
 
 	{
-		editView = "/sys/multiLang/edit";
-		listView = "/sys/multiLang/list";
-		showView = "/sys/multiLang/show";
+		editView = "/sys/multilang/edit";
+		listView = "/sys/multilang/list";
+		showView = "/sys/multilang/show";
 	}
 	
 	@Autowired

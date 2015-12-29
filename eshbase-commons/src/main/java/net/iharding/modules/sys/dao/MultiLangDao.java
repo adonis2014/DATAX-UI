@@ -1,6 +1,7 @@
 package net.iharding.modules.sys.dao;
 
 import org.guess.core.orm.EntityDao;
+
 import net.iharding.modules.sys.model.MultiLang;
 
 /**
@@ -12,5 +13,9 @@ import net.iharding.modules.sys.model.MultiLang;
 *
 */
 public interface MultiLangDao extends EntityDao<MultiLang, Long>{
+
+	String get(String langKey, String langArg);
+
+	String getLang(String lang_key);
 	
 }

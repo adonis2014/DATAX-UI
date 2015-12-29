@@ -152,7 +152,7 @@ public class DynamicTask {
 		File file = null;
 		SAXReader saxReader = new SAXReader();
 		try {
-			URI url = DynamicTask.class.getClassLoader().getResource("spring-mvc-timeTask.xml").toURI();
+			URI url = DynamicTask.class.getClassLoader().getResource("spring-timeTask.xml").toURI();
 			file = new File(url.getPath());
 			document = saxReader.read(new FileInputStream(file));
 		} catch (Exception e) {

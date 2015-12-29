@@ -10,7 +10,7 @@
 		<div class="container-fluid">
 			<!-- 页面导航 -->
 			<tool:navBar pageTitle="${pageTitle }"
-				pageTitleContent="内容管理-{functionName}管理-${pageTitle }" titleIcon="icon-home" />
+				pageTitleContent="内容管理-多国语言管理-${pageTitle }" titleIcon="icon-home" />
 			<!-- 主体内容 -->
 			<div class="row-fluid">
 				<div class="span12">
@@ -25,8 +25,7 @@
 							</div>
 						</div>
 						<div class="portlet-body form">
-							<form action="${ctx}/sys/multiLang/edit" class="form-horizontal form_sync"
-								method="post" id="form1">
+							<form action="${ctx}/sys/multilang/edit" class="form-horizontal form_sync" method="post" id="form1">
 								
 								<input type="hidden" value="${obj.id}" name="id">
 								<div class="control-group">
