@@ -20,11 +20,11 @@
 		<property name="concurrent" value="true" />
 	</bean>
 	
-	<bean id="taskDemoService" class="com.lotuseed.core.timer.Job">
+	<bean id="taskDemoService" class="net.iharding.core.timer.Job">
 		
 	</bean>
 
-	<bean id="taskDemoServiceTaskCronTrigger" class="com.lotuseed.core.timer.DataBaseCronTriggerBean">
+	<bean id="taskDemoServiceTaskCronTrigger" class="net.iharding.core.timer.DataBaseCronTriggerBean">
 		<property name="jobDetail" ref="taskDemoServiceTaskJob" />
 		<property name="cronExpression" value="0 0/1 * * * ?" />
 	</bean>
@@ -34,7 +34,7 @@
 
 	<!-- 定时任务调度器 -->
 	<bean id="schedulerFactory" lazy-init="false" autowire="no"
-		class="com.lotuseed.core.timer.DataBaseSchedulerFactoryBean">
+		class="net.iharding.core.timer.DataBaseSchedulerFactoryBean">
 		<property name="triggers">
 			<list>
 				<ref bean="taskDemoServiceTaskCronTrigger" />

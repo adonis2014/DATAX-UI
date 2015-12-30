@@ -16,4 +16,6 @@ public interface MultiLangService extends BaseService<MultiLang, Long>{
 
 	public String getLang(String langKey, String langArg);
 
+	public String getLang(String lang_key);
+
 }

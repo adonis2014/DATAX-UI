@@ -1,8 +1,10 @@
 package net.iharding.modules.sys.dao.impl;
 
 import org.guess.core.orm.hibernate.HibernateDao;
+
 import net.iharding.modules.sys.dao.MultiLangDao;
 import net.iharding.modules.sys.model.MultiLang;
+
 import org.springframework.stereotype.Repository;
 
 /**
@@ -15,5 +17,17 @@ import org.springframework.stereotype.Repository;
 */
 @Repository
 public class MultiLangDaoImpl extends HibernateDao<MultiLang,Long> implements MultiLangDao {
+
+	@Override
+	public String get(String langKey, String langArg) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public String getLang(String lang_key) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 
 }

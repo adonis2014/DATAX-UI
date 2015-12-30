@@ -8,7 +8,10 @@ import javax.servlet.jsp.JspTagException;
 import javax.servlet.jsp.JspWriter;
 import javax.servlet.jsp.tagext.TagSupport;
 
+import net.iharding.core.model.SysDict;
 import net.iharding.modules.sys.service.DictService;
+import net.iharding.utils.MutiLangUtils;
+import net.iharding.utils.SysDictUtils;
 
 import org.apache.commons.lang.StringUtils;
 import org.guess.core.utils.spring.SpringContextUtil;
@@ -114,31 +117,30 @@ public class DictSelectTag extends TagSupport {
 				sb.append("</select>");
 			}
 		} else {
-			TSTypegroup typeGroup = TSTypegroup.allTypeGroups.get(this.typeGroupCode.toLowerCase());
-			List<TSType> types = TSTypegroup.allTypes.get(this.typeGroupCode.toLowerCase());
+			SysDict dict =SysDictUtils.getRootDict().get(this.typeGroupCode.toLowerCase());
 			if (hasLabel) {
 				sb.append("<div class=\"" + divClass + "\">");
 				sb.append("<label class=\"" + labelClass + "\" >");
 			}
-			if (typeGroup != null) {
+			if (dict != null) {
 				if (hasLabel) {
 					if (StringUtils.isBlank(this.title)) {
-						this.title = MutiLangUtil.getMutiLangInstance().getLang(typeGroup.getTypegroupname());
+						this.title = MutiLangUtils.getMutiLangInstance().getLang(dict.getCodeValue());
 					}
 					sb.append(this.title + ":");
 					sb.append("</label>");
 				}
 				if ("radio".equals(type)) {
-					for (TSType type : types) {
-						radio(type.getTypename(), type.getTypecode(), sb);
+					for (SysDict type : dict.getDicts()) {
+						radio(type.getCodeName(), type.getCodeValue(), sb);
 					}
 				} else if ("checkbox".equals(type)) {
-					for (TSType type : types) {
-						checkbox(type.getTypename(), type.getTypecode(), sb);
+					for (SysDict type : dict.getDicts()) {
+						checkbox(type.getCodeName(), type.getCodeValue(), sb);
 					}
 				}else if ("text".equals(type)) {
-					for (TSType type : types) {
-						text(type.getTypename(), type.getTypecode(), sb);
+					for (SysDict type : dict.getDicts()) {
+						text(type.getCodeName(), type.getCodeValue(), sb);
 					}
 				} else {
 					sb.append("<select name=\"" + field + "\"");
@@ -155,8 +157,8 @@ public class DictSelectTag extends TagSupport {
 					}
 					sb.append(">");
 					select("common.please.select", "", sb);
-					for (TSType type : types) {
-						select(type.getTypename(), type.getTypecode(), sb);
+					for (SysDict type : dict.getDicts()) {
+						select(type.getCodeName(), type.getCodeValue(), sb);
 					}
 					sb.append("</select>");
 				}
@@ -176,7 +178,7 @@ public class DictSelectTag extends TagSupport {
 	 */
 	private void text(String name, String code, StringBuffer sb) {
 		if (code.equals(this.defaultVal)) {
-			sb.append("<input name='"+field+"'"+" id='"+id+"' value='" + MutiLangUtil.getMutiLangInstance().getLang(name) + "' readOnly = 'readOnly' />");
+			sb.append("<input name='"+field+"'"+" id='"+id+"' value='" + MutiLangUtils.getMutiLangInstance().getLang(name) + "' readOnly = 'readOnly' />");
 		} else {
 		}
 	}
@@ -207,7 +209,7 @@ public class DictSelectTag extends TagSupport {
 			}
 			sb.append(" />");
 		}
-		sb.append(MutiLangUtil.getMutiLangInstance().getLang(name));
+		sb.append(MutiLangUtils.getMutiLangInstance().getLang(name));
 	}
 
 	/**
@@ -245,7 +247,7 @@ public class DictSelectTag extends TagSupport {
 			}
 			sb.append(" />");
 		}
-		sb.append(MutiLangUtil.getMutiLangInstance().getLang(name));
+		sb.append(MutiLangUtils.getMutiLangInstance().getLang(name));
 	}
 
 	/**
@@ -263,7 +265,7 @@ public class DictSelectTag extends TagSupport {
 		} else {
 			sb.append(" <option value=\"" + code + "\">");
 		}
-		sb.append(MutiLangUtil.getMutiLangInstance().getLang(name));
+		sb.append(MutiLangUtils.getMutiLangInstance().getLang(name));
 		sb.append(" </option>");
 	}
 
