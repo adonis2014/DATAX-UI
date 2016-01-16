@@ -11,7 +11,7 @@ public class SysDict extends Dict {
 	
 	public SysDict(Dict dict){
 		this.setCodeName(dict.getCodeName());
-		this.setCodeType(dict.getCodeType());
+//		this.setCodeType(dict.getCodeType());
 		this.setCodeValue(dict.getCodeValue());
 		this.setId(dict.getId());
 		this.setRemark(dict.getRemark());
@@ -41,7 +41,7 @@ public class SysDict extends Dict {
 	
 	private void loadDicts(Long parentId,SysDict sysdict,List<Dict> dicts){
 		for(Dict dict:dicts){
-			if (dict.getCodeType()==parentId){
+			if (dict.getParent()!=null && dict.getParent().getId()==parentId){
 				SysDict sdict=new SysDict(dict);
 				loadDicts(sdict.getId(),sdict,dicts);
 				sysdict.addDict(sdict);

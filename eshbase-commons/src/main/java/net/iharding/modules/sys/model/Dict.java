@@ -1,13 +1,26 @@
 package net.iharding.modules.sys.model;
 
+
+import java.util.List;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.OrderBy;
 import javax.persistence.Table;
 
 import net.iharding.core.orm.IdEntity;
 
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.hibernate.annotations.NotFound;
+import org.hibernate.annotations.NotFoundAction;
+
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 /**
  * 数据字典Entity
@@ -16,6 +29,7 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
  */
 @Entity
 @Table(name = "sys_dict")
+@JsonIgnoreProperties(value = { "parent" })
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class Dict extends IdEntity {
 
@@ -24,6 +38,7 @@ public class Dict extends IdEntity {
 	 */
 	@Column(name="code_type")
 	private Long codeType;
+
 	/**
 	 * 实际值
 	 */
@@ -44,12 +59,33 @@ public class Dict extends IdEntity {
 	 */
 	private String remark;
 	
-	public Long getCodeType() {
-		return codeType;
+	/** 父资源 */
+	@ManyToOne(targetEntity = Dict.class,fetch = FetchType.LAZY)
+    @JoinColumn(name = "code_type",updatable=false,insertable=false)
+    @NotFound(action=NotFoundAction.IGNORE)
+	@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
+	private Dict parent;
+	/** 子资源 */
+	@OneToMany(targetEntity=Dict.class,fetch = FetchType.LAZY,cascade=CascadeType.ALL)
+	@JoinColumn(name="code_type",updatable=false,insertable=false)
+	@OrderBy("sort_id ASC")
+	/*@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)*/
+	private List<Dict> childDict;
+	
+	public Dict getParent() {
+		return parent;
 	}
 
-	public void setCodeType(Long codeType) {
-		this.codeType = codeType;
+	public void setParent(Dict parent) {
+		this.parent = parent;
+	}
+
+	public List<Dict> getChildDict() {
+		return childDict;
+	}
+
+	public void setChildDict(List<Dict> childDict) {
+		this.childDict = childDict;
 	}
 	
 	public String getCodeValue() {
