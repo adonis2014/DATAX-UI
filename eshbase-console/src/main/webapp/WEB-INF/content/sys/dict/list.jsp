@@ -103,10 +103,10 @@
         if (pId != null) {
             tr.addClass("treegrid-parent-" + pId);
         }
-        tr.append($("<td></td>").html(item.name));
-        tr.append($("<td></td>").html(item.resString));
+        tr.append($("<td></td>").html(item.codeName));
+        tr.append($("<td></td>").html(item.codeValue));
         tr.append($("<td></td>").html($("<i class=" + item.icon + "></i>")));
-        tr.append($("<td></td>").html(item.permsString));
+        tr.append($("<td></td>").html(item.codeName));
         tr.append($("<td></td>").html(item.orderNo));
         tr.append($("<td></td>").html(item.remark));
         if (btns.length > 0) {

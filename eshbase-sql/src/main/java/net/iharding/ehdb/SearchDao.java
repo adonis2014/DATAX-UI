@@ -1,16 +1,18 @@
 package net.iharding.ehdb;
 
-import java.sql.SQLFeatureNotSupportedException;
 import java.util.HashSet;
 import java.util.Set;
 
-import net.iharding.ehdb.ehsql.ESSearchRequest;
+import net.iharding.core.model.Response;
 import net.iharding.ehdb.ehsql.SQLRequest;
 import net.iharding.ehdb.exception.ErrorSqlException;
 import net.iharding.ehdb.exception.NotSupportedException;
 import net.iharding.ehdb.query.ESActionFactory;
+import net.iharding.utils.ElasticSearchUtils;
+import net.iharding.utils.HBaseUtils;
 import net.sf.jsqlparser.JSQLParserException;
 
+import org.apache.hadoop.hbase.client.Connection;
 import org.elasticsearch.client.Client;
 
 
@@ -27,10 +29,13 @@ public class SearchDao {
 	}
 
 	private Client client = null;
+	
+	public  Connection connection =null;  
 
 
-	public SearchDao(Client client) {
+	public SearchDao(Client client,Connection connection) {
 		this.client = client;
+		this.connection=connection;
 	}
 
 
@@ -45,9 +50,35 @@ public class SearchDao {
 	 * @throws SqlParseException
 	 */
 	public SQLRequest explain(String sql) throws JSQLParserException, NotSupportedException, ErrorSqlException  {
-
-		QueryAction query = ESActionFactory.create(client, sql);
+		QueryAction query = ESActionFactory.create(client,connection, sql);
 		return query.explain();
+	}
+	/**
+	 * 执行sql，返回结果
+	 * @param sql
+	 * @return
+	 * @throws JSQLParserException
+	 * @throws NotSupportedException
+	 * @throws ErrorSqlException
+	 */
+	public  Response<?> extcute(String sql) throws JSQLParserException, NotSupportedException, ErrorSqlException  {
+		QueryAction query = ESActionFactory.create(client,connection, sql);
+		return query.extcute();
+	}
+	
+	/**
+	 * 
+	 * @param args
+	 */
+	public static void main(String[] args) {
+		
+		SearchDao sdao=new SearchDao(ElasticSearchUtils.getClient(),HBaseUtils.getHBaseConnection());
+		try {
+			System.out.println(sdao.explain("select * from da.user_figure"));
+		}  catch (Exception e) {
+			e.printStackTrace();
+		}
+		
 	}
 
 }

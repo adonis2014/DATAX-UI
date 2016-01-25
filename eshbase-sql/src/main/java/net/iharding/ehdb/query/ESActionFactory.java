@@ -24,6 +24,7 @@ import net.sf.jsqlparser.statement.select.SelectBody;
 import net.sf.jsqlparser.statement.truncate.Truncate;
 import net.sf.jsqlparser.statement.update.Update;
 
+import org.apache.hadoop.hbase.client.Connection;
 import org.elasticsearch.client.Client;
 
 public class ESActionFactory {
@@ -36,7 +37,7 @@ public class ESActionFactory {
 	 * @return Query object.
 	 * @throws ErrorSqlException 
 	 */
-	public static QueryAction create(Client client, String sql) throws JSQLParserException,NotSupportedException, ErrorSqlException {
+	public static QueryAction create(Client client,Connection connection, String sql) throws JSQLParserException,NotSupportedException, ErrorSqlException {
 		Statement stmt = CCJSqlParserUtil.parse(sql);
 		if (stmt instanceof Select) {
 			Select select=(Select) stmt;
