@@ -56,7 +56,7 @@ public class RestSqlAction extends BaseRestHandler {
 		if (sql == null) {
 			sql = request.content().toUtf8();
 		}
-		SearchDao searchDao = new SearchDao(client);
+		SearchDao searchDao = new SearchDao(client,HBaseUtils.getHBaseConnection());
 		//获取解析sql为ES request对象
 		SQLRequest actionRequest = searchDao.explain(sql);
 
