@@ -1,8 +1,10 @@
 package net.iharding.modules.meta.dao.impl;
 
-import org.guess.core.orm.hibernate.HibernateDao;
 import net.iharding.modules.meta.dao.DataSourceDao;
 import net.iharding.modules.meta.model.DataSource;
+
+import org.guess.core.orm.hibernate.HibernateDao;
+import org.hibernate.Session;
 import org.springframework.stereotype.Repository;
 
 /**
@@ -16,4 +18,10 @@ import org.springframework.stereotype.Repository;
 @Repository
 public class DataSourceDaoImpl extends HibernateDao<DataSource,Long> implements DataSourceDao {
 
+	
+	@Override
+	public void save(DataSource datasource) {
+		Session session = getSession();
+		session.merge(datasource);
+	}
 }

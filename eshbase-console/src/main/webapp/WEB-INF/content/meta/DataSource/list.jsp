@@ -79,7 +79,7 @@ $(document).ready(function() {
 				  var $a = $('<a data-original-title="点击访问" data-placement="right" class="tooltips" href="../Project/show/'+item.project.id+'" >'+item.project.projectName+'</a>');
 				  return $a;
 			  }},
-			 	{cName:"driverCLassName",cValue:"class"},
+			 	{cName:"driverClassName",cValue:"class"},
 			 	{cName:"jdbcUser",cValue:"用户"},
 			 	{cName:"jdbcPassword",cValue:"登录密码"},
 			 	{cName:"jdbcUrl",cValue:"url"},

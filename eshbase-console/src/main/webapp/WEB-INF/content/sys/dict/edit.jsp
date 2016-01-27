@@ -6,6 +6,8 @@
 <title>${pageTitle }</title>
 </head>
 <body>
+
+	<%@ include file="/WEB-INF/content/sys/dict/tree.jsp" %>
 	<div class="page-content">
 		<div class="container-fluid">
 			<!-- 页面导航 -->
@@ -20,8 +22,8 @@
 								<i class="icon-reorder"></i>请填写表单
 							</h4>
 							<div class="tools">
-								<a href="javascript:;" class="collapse"></a> <a
-									href="javascript:;" class="remove"></a>
+								<a href="javascript:;" class="collapse"></a> 
+								<a href="javascript:;" class="remove"></a>
 							</div>
 						</div>
 						<div class="portlet-body form">
@@ -29,12 +31,12 @@
 								method="post" id="form1">
 								
 								<input type="hidden" value="${obj.id}" name="id">
+								<input type="hidden" value="${obj.parent.id }" name=parent.id id="parentId">
+							
 								<div class="control-group">
 									<label class="control-label">字典类别:</label>
 									<div class="controls">
-										<input type="text" class="span6 m-wrap"
-											validate="{required:true}"
-											name="codeType" value="${obj.codeType }" />
+										<input id="parentName" type="text" class="span6 m-wrap" value="${obj.parent.codeName }" onfocus="javascript:showTree();"/>
 									</div>
 								</div>
 								<div class="control-group">
@@ -83,10 +85,24 @@
 		</div>
 	</div>
 <%@ include file="/WEB-INF/content/common/plugins/jquery-validation.jsp"%>
+<%@ include file="/WEB-INF/content/common/plugins/bootstrap-tree.jsp"%>
 <script type="text/javascript">
 	$(function(){
 		App.activeMenu("sys/dict/list");
 	});
+	function showTree(){
+		$("#dictTree").modal();
+	}
+	
+	function selDict(){
+		
+		$obj = $("#tree_1").find("a.selected:first");
+		
+		$('#dictTree').modal('hide');
+		
+		$('#parentName').val($obj.text());
+		$('#parentId').val($obj.attr("data-id"));
+	}
 </script>
 </body>
 </html>

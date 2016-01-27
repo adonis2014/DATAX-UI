@@ -3,6 +3,8 @@ package net.iharding.core.model;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.lang3.math.NumberUtils;
+
 import net.iharding.modules.sys.model.Dict;
 
 public class SysDict extends Dict {
@@ -41,7 +43,7 @@ public class SysDict extends Dict {
 	
 	private void loadDicts(Long parentId,SysDict sysdict,List<Dict> dicts){
 		for(Dict dict:dicts){
-			if (dict.getParent()!=null && dict.getParent().getId()==parentId){
+			if (dict.getCodeType().longValue()==parentId.longValue()){
 				SysDict sdict=new SysDict(dict);
 				loadDicts(sdict.getId(),sdict,dicts);
 				sysdict.addDict(sdict);
@@ -49,12 +51,17 @@ public class SysDict extends Dict {
 		}
 	}
 
-	public SysDict get(String lowerCase) {
+	public SysDict get(String id) {
+		if (dicts==null)return null;
+		SysDict theDict=null;
 		for(SysDict dict:dicts){
-			if (dict.getCodeValue().equalsIgnoreCase(lowerCase)){
+			if (dict.getId().longValue()==NumberUtils.toLong(id)){
 				return dict;
 			}else{
-				return dict.get(lowerCase);
+				theDict=dict.get(id);
+				if ( theDict!=null){
+					return theDict;
+				}
 			}
 		}
 		return null;

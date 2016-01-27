@@ -14,6 +14,8 @@ import net.sf.jsqlparser.JSQLParserException;
 
 import org.apache.hadoop.hbase.client.Connection;
 import org.elasticsearch.client.Client;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 
 public class SearchDao {
@@ -71,7 +73,8 @@ public class SearchDao {
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		
+	    ApplicationContext context = new ClassPathXmlApplicationContext("spring-data.xml");
+	    context.getBean("dataSource");
 		SearchDao sdao=new SearchDao(ElasticSearchUtils.getClient(),HBaseUtils.getHBaseConnection());
 		try {
 			System.out.println(sdao.explain("select * from da.user_figure"));

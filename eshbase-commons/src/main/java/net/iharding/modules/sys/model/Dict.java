@@ -104,6 +104,14 @@ public class Dict extends IdEntity {
 		this.codeName = codeName;
 	}
 	
+	public Long getCodeType() {
+		return codeType;
+	}
+
+	public void setCodeType(Long codeType) {
+		this.codeType = codeType;
+	}
+
 	public Integer getSortId() {
 		return sortId;
 	}

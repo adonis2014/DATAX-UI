@@ -56,6 +56,10 @@ public interface Constants {
      * 一级菜单grade标识
      */
     int FIRST_MENU = 1;
+    /*
+     * 数据字典第一级标记
+     */
+    long FIRST_CODE_TYPE = -1l;
     
     /**
      * 二级菜单grade标识

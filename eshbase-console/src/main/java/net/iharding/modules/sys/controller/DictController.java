@@ -5,6 +5,7 @@ import java.util.List;
 import net.iharding.modules.sys.model.Dict;
 import net.iharding.modules.sys.service.DictService;
 
+import org.guess.core.Constants;
 import org.guess.core.web.BaseController;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -38,14 +39,14 @@ public class DictController extends BaseController<Dict>{
 	@RequestMapping(method = RequestMethod.GET, value = "/tree")
 	@ResponseBody
 	public List<Dict> tree() throws Exception {
-		List<Dict> res = dictService.getAll();
+		List<Dict> res =dictService.findBy("codeType", Constants.FIRST_CODE_TYPE, "sortId", true);
 		return res;
 	}
 
 	@RequestMapping(method = RequestMethod.GET, value = "/showTree")
 	@ResponseBody
 	public List<Dict> showTree() throws Exception {
-		List<Dict> res = dictService.getAll();
+		List<Dict> res = dictService.findBy("codeType", Constants.FIRST_CODE_TYPE, "sortId", true);
 		return res;
 	}
 
@@ -65,6 +66,7 @@ public class DictController extends BaseController<Dict>{
 
 	@Override
 	public String create(Dict object) throws Exception {
-		return super.create(object);
+		dictService.save(object);
+		return REDIRECT + listView;
 	}
 }

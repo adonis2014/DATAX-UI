@@ -51,7 +51,7 @@ public class DefaultQueryAction extends QueryAction {
 		psel=(PlainSelect)select.getSelectBody();
 		//获取table信息
 		Table table=(Table)psel.getFromItem();
-		List<DBTable> tables=tableService.findBy("tableName", table.getName());
+		List<DBTable> tables=tableService.findBy("tableName",table.getSchemaName()+"."+ table.getName());
 		if (tables==null || tables.size()>0){
 			throw new ErrorSqlException("元数据库中找不到该表定义！");
 		}else{

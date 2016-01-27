@@ -10,7 +10,6 @@ import javax.servlet.jsp.tagext.TagSupport;
 
 import net.iharding.core.model.SysDict;
 import net.iharding.modules.sys.service.DictService;
-import net.iharding.utils.MutiLangUtils;
 import net.iharding.utils.SysDictUtils;
 
 import org.apache.commons.lang.StringUtils;
@@ -24,14 +23,13 @@ import com.google.gson.Gson;
  * 
  * 选择下拉框
  * 
- * @author: lianglaiyang
  * @date： 日期：2013-04-18
  * @version 1.0
  */
 public class DictSelectTag extends TagSupport {
 
 	private static final long serialVersionUID = 1;
-	private String typeGroupCode; // 数据字典类型
+	private String codeType; // 数据字典类型
 	private String field; // 选择表单的Name EAMPLE:<select name="selectName" id = ""
 							// />
 	private String id; // 选择表单ID EAMPLE:<select name="selectName" id = "" />
@@ -117,7 +115,7 @@ public class DictSelectTag extends TagSupport {
 				sb.append("</select>");
 			}
 		} else {
-			SysDict dict =SysDictUtils.getRootDict().get(this.typeGroupCode.toLowerCase());
+			SysDict dict =SysDictUtils.getRootDict().get(this.codeType.toLowerCase());
 			if (hasLabel) {
 				sb.append("<div class=\"" + divClass + "\">");
 				sb.append("<label class=\"" + labelClass + "\" >");
@@ -125,7 +123,7 @@ public class DictSelectTag extends TagSupport {
 			if (dict != null) {
 				if (hasLabel) {
 					if (StringUtils.isBlank(this.title)) {
-						this.title = MutiLangUtils.getMutiLangInstance().getLang(dict.getCodeValue());
+						this.title = dict.getCodeName();
 					}
 					sb.append(this.title + ":");
 					sb.append("</label>");
@@ -156,7 +154,7 @@ public class DictSelectTag extends TagSupport {
 						sb.append(" id=\"" + id + "\"");
 					}
 					sb.append(">");
-					select("common.please.select", "", sb);
+					select("请选择", "", sb);
 					for (SysDict type : dict.getDicts()) {
 						select(type.getCodeName(), type.getCodeValue(), sb);
 					}
@@ -178,8 +176,7 @@ public class DictSelectTag extends TagSupport {
 	 */
 	private void text(String name, String code, StringBuffer sb) {
 		if (code.equals(this.defaultVal)) {
-			sb.append("<input name='"+field+"'"+" id='"+id+"' value='" + MutiLangUtils.getMutiLangInstance().getLang(name) + "' readOnly = 'readOnly' />");
-		} else {
+			sb.append("<input name='"+field+"'"+" id='"+id+"' value='" + name + "' readOnly = 'readOnly' />");
 		}
 	}
 
@@ -209,7 +206,7 @@ public class DictSelectTag extends TagSupport {
 			}
 			sb.append(" />");
 		}
-		sb.append(MutiLangUtils.getMutiLangInstance().getLang(name));
+		sb.append(name);
 	}
 
 	/**
@@ -240,14 +237,13 @@ public class DictSelectTag extends TagSupport {
 			}
 			sb.append(" />");
 		} else {
-			sb.append("<input type=\"checkbox\" name=\"" + field
-					+ "\" value=\"" + code + "\"");
+			sb.append("<input type=\"checkbox\" name=\"" + field + "\" value=\"" + code + "\"");
 			if (!StringUtils.isBlank(this.id)) {
 				sb.append(" id=\"" + id + "\"");
 			}
 			sb.append(" />");
 		}
-		sb.append(MutiLangUtils.getMutiLangInstance().getLang(name));
+		sb.append(name);
 	}
 
 	/**
@@ -265,7 +261,7 @@ public class DictSelectTag extends TagSupport {
 		} else {
 			sb.append(" <option value=\"" + code + "\">");
 		}
-		sb.append(MutiLangUtils.getMutiLangInstance().getLang(name));
+		sb.append(name);
 		sb.append(" </option>");
 	}
 
@@ -285,12 +281,12 @@ public class DictSelectTag extends TagSupport {
 		return list;
 	}
 
-	public String getTypeGroupCode() {
-		return typeGroupCode;
+	public String getCodeType() {
+		return codeType;
 	}
 
-	public void setTypeGroupCode(String typeGroupCode) {
-		this.typeGroupCode = typeGroupCode;
+	public void setCodeType(String codeType) {
+		this.codeType = codeType;
 	}
 
 	public String getId() {

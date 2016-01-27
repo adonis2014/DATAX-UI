@@ -15,8 +15,8 @@ public class SysDictUtils {
     	if (rootDict==null){
     		Dict dict=new Dict();
     		dict.setId(-1l);
-    		dict.setCodeName("root");
-    		dict.setCodeValue("root");
+    		dict.setCodeName("");
+    		dict.setCodeValue("-1");
     		rootDict=new SysDict(dict);
     		try {
 				rootDict.loadAllDicts(getDictServInstance().getAll());

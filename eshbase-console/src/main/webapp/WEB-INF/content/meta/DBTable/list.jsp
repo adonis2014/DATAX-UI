@@ -8,7 +8,7 @@
 	<div class="page-content">
 		<div class="container-fluid">
 			<!-- 页面导航 -->
-			<tool:navBar pageTitle="表对象列表" pageTitleContent="内容管理-表对象管理-表对象列表" titleIcon="icon-home"/>
+			<tool:navBar pageTitle="表对象列表" pageTitleContent="元数据管理-表对象管理-表对象列表" titleIcon="icon-home"/>
 			<!-- 主体内容 -->
 			<div class="row-fluid">
 				<div class="span12">
@@ -62,11 +62,11 @@
 <script type="text/javascript">
 $(document).ready(function() {
 	
-	App.activeMenu("meta/dBTable/list");
+	App.activeMenu("meta/DBTable/list");
 	
 	Page.initData(
 		{
-			url:"${ctx}/meta/dBTable/page",
+			url:"${ctx}/meta/DBTable/page",
 			pageNo : 1,
 			pageSize : 10,
 			tableId : "#sample_1"

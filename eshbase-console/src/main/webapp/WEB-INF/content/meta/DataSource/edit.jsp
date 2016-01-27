@@ -12,7 +12,7 @@
 		<div class="container-fluid">
 			<!-- 页面导航 -->
 			<tool:navBar pageTitle="${pageTitle }"
-				pageTitleContent="数据源管理-{functionName}管理-${pageTitle }" titleIcon="icon-home" />
+				pageTitleContent="数据源管理-${pageTitle }" titleIcon="icon-home" />
 			<!-- 主体内容 -->
 			<div class="row-fluid">
 				<div class="span12">
@@ -27,16 +27,15 @@
 							</div>
 						</div>
 						<div class="portlet-body form">
-							<form action="${ctx}/meta/dataSource/edit" class="form-horizontal form_sync"
-								method="post" id="form1">
-								
-								<input type="hidden" value="${obj.id}" name="id">
+							<form action="${ctx}/meta/DataSource/edit" class="form-horizontal form_sync" method="post" id="form1">
+								<input type="hidden" value="${obj.id}" name="id"/>
+								<input type="hidden" value="${obj.project.id}" name="project.id" id="projectId"/>
 								<div class="control-group">
 									<label class="control-label">项目:</label>
 									<div class="controls">
 										<input type="text" class="span6 m-wrap"
 											validate="{required:true}"
-											name="project" value="${obj.project.projectName}" readonly="readonly" onfocus="showProject()" />
+											name="project.projectName" id="projectName" value="${obj.project.projectName}" readonly="readonly" onfocus="showProject()" />
 									</div>
 								</div>
 								<div class="control-group">
@@ -60,7 +59,7 @@
 									<div class="controls">
 										<input type="text" class="span6 m-wrap"
 											validate="{required:true}"
-											name="driverCLassName" value="${obj.driverCLassName }" />
+											name="driverClassName" value="${obj.driverClassName }" />
 									</div>
 								</div>
 								<div class="control-group">
@@ -90,9 +89,7 @@
 								<div class="control-group">
 									<label class="control-label">数据库类别:</label>
 									<div class="controls">
-										<input type="text" class="span6 m-wrap"
-											validate="{required:true}"
-											name="dbType" value="${obj.dbType }" />
+									<mytags:dictSelect field="dbType" id="dbType" defaultVal="${obj.dbType}" hasLabel="false" codeType="10" />
 									</div>
 								</div>
 								<c:if test="${not empty obj}">
@@ -154,10 +151,10 @@
 		var flag = Page.selectsPrompt();
 		if(!flag) return;
 		
-		$obj = $("#tree_1").find("a.selected:first");
+		var obj = $("#sample_1").find("td :checkbox:checked");
+		$('input[id=projectName]').val(obj.first().attr("data-text"));
+		$('input[id=projectId]').val(flag);
 		$('#projectList').modal('hide');
-		$('input[id=caName]').val($obj.text());
-		$('input[id=caId]').val($obj.attr("data-id"));
 	}
 </script>
 </body>

@@ -16,9 +16,8 @@
                 <div class="portlet box green">
                     <div class="portlet-title">
                         <h4>
-                            <i class="icon-globe"></i>数据字典树
+                            <i class="icon-globe"></i>数据字典
                         </h4>
-
                         <div class="tools">
                             <a href="javascript:;" class="collapse"></a>
                             <a href="javascript:;" class="remove"></a>
@@ -27,8 +26,8 @@
                     <div class="portlet-body">
                         <div>
                             <div class="btn-group">
-                                <shiro:hasPermission name="sys:resource:add">
-                                    <a class="btn green" href="${ctx}/sys/resource/create">
+                                <shiro:hasPermission name="sys:dict:add">
+                                    <a class="btn green" href="${ctx}/sys/dict/create">
                                         添加 <i class="icon-plus"></i>
                                     </a>
                                 </shiro:hasPermission>
@@ -38,11 +37,12 @@
                             <table id="treeTable" class="table table-striped table-bordered table-hover tree">
                                 <thead>
                                 <tr id="dataTr">
-                                    <th>字典类别</th>
-                                    <th>实际值</th>
+                                    <th>ID</th>
                                     <th>显示名</th>
+                                    <th>实际值</th>
                                     <th>排序编号</th>
                                     <th>备注</th>
+                                   
                                 </tr>
                                 </thead>
                                 <tbody id="treeBody">
@@ -61,10 +61,12 @@
 
     //根据权限添加按钮
     var btns = [];
-    <shiro:hasPermission name="sys:resource:del">
+    <shiro:hasPermission name="sys:dict:del">
     btns.push({clickFn: "del(this)", name: "删除", icon: "icon-trash"});
     </shiro:hasPermission>
-
+    <shiro:hasPermission name="sys:dict:update">
+    btns.push({clickFn: "edit(this)", name: "修改", icon: "icon-pencil"});
+    </shiro:hasPermission>
     $(document).ready(function () {
         App.activeMenu("sys/dict/list");
         initTree();
@@ -83,9 +85,9 @@
             success: function (data) {
                 $.each(data, function (i, item) {
                     $("#treeBody").append(fillData(item, null));
-                    $.each(item.childRes, function (j, cd) {
+                    $.each(item.childDict, function (j, cd) {
                         $("#treeBody").append(fillData(cd, item.id));
-                        $.each(cd.childRes, function (n, m) {
+                        $.each(cd.childDict, function (n, m) {
                             $("#treeBody").append(fillData(m, cd.id));
                         });
                     });
@@ -103,11 +105,10 @@
         if (pId != null) {
             tr.addClass("treegrid-parent-" + pId);
         }
+        tr.append($("<td></td>").html(item.id));
         tr.append($("<td></td>").html(item.codeName));
         tr.append($("<td></td>").html(item.codeValue));
-        tr.append($("<td></td>").html($("<i class=" + item.icon + "></i>")));
-        tr.append($("<td></td>").html(item.codeName));
-        tr.append($("<td></td>").html(item.orderNo));
+        tr.append($("<td></td>").html(item.sortId));
         tr.append($("<td></td>").html(item.remark));
         if (btns.length > 0) {
             tr.append($("<td></td>").html(operBtn(item.id)));
@@ -125,17 +126,22 @@
     }
 
     
-
+    //编辑
+    function edit(obj) {
+        var id = $(obj).closest("tr").attr("id");
+        window.location.href = ctx + "/sys/dict/update/" + id;
+    }
+    
     //删除
     function del(obj) {
         var id = $(obj).closest("tr").attr("id");
-        window.location.href = ctx + "/sys/resource/delete/" + id;
+        window.location.href = ctx + "/sys/dict/delete/" + id;
     }
 
     //详细
     function show(obj) {
         var id = $(obj).closest("tr").attr("id");
-        window.location.href = ctx + "/sys/resource/show/" + id;
+        window.location.href = ctx + "/sys/dict/show/" + id;
     }
 
     function registerTdOnclickEvent() {

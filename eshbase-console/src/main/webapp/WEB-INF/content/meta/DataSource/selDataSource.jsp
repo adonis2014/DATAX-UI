@@ -1,28 +1,31 @@
 <%@ page contentType="text/html;charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/content/common/common.jsp"%>
 <%@ include file="/WEB-INF/content/common/plugins/page.jsp"%>
-
 <script type="text/javascript">
 	$(function(){
 		Page.initData(
 				{
-					url:"${ctx}/meta/Project/page",
+					url:"${ctx}/meta/DataSource/page",
 					pageNo : 1,
 					pageSize : 10,
 					checkboxType : 1,
-					colName : "projectName",
+					colName : "dbName",
 					tableId : "#sample_1"
 				},
 				null,
 				[
-					 	{cName:"projectCode",cValue:"项目编码"},
-					 	{cName:"projectName",cValue:"项目名称"},
-					 	{cName:"creater",cValue:"建立者",format:function(i,value,item){
-							 if(App.isNundef(value)){
-								 return value.name;
-							 }
-						 }},
-					 	{cName:"remark",cValue:"备注"}
+					{cName:"dbName",cValue:"db名"},
+				 	{cName:"schemaName",cValue:"schema"},
+				 	{cName:"project",cValue:"项目",format:function(i,value,item){
+						  var $a = $('<a data-original-title="点击访问" data-placement="right" class="tooltips" href="../Project/show/'+item.project.id+'" >'+item.project.projectName+'</a>');
+						  return $a;
+					  }},
+				 	{cName:"driverClassName",cValue:"class"},
+				 	{cName:"jdbcUser",cValue:"用户"},
+				 	{cName:"jdbcPassword",cValue:"登录密码"},
+				 	{cName:"jdbcUrl",cValue:"url"},
+				 	{cName:"dbType",cValue:"类别"},
+				 	{cName:"remark",cValue:"备注"}
 				 ]
 			);
 	});
