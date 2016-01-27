@@ -38,7 +38,7 @@ public class DictSelectTag extends TagSupport {
 	private String labelClass; // Label样式
 	private String title; // label显示值
 	private boolean hasLabel = true; // 是否显示label
-	private String type;// 控件类型select|radio|checkbox
+	private String type;// 控件类型select|radio|checkbox|text|label
 	private String dictTable;// 自定义字典表
 	private String dictField;// 自定义字典表的匹配字段-字典的编码值
 	private String dictText;// 自定义字典表的显示文本-字典的显示值
@@ -94,7 +94,15 @@ public class DictSelectTag extends TagSupport {
 					text(map.get("text").toString(), map.get("field")
 							.toString(), sb);
 				}
-			}else {
+			} else if("label".equals(type)){
+				for (Map<String, Object> map : list) {
+					label(map.get("text").toString(), map.get("field").toString(), sb);
+				}
+			} else if("map".equals(type)){
+				for (Map<String, Object> map : list) {
+					map(map.get("text").toString(), map.get("field").toString(), sb);
+				}
+			}else { 
 				sb.append("<select name=\"" + field + "\"");
 				//增加扩展属性
 				if (!StringUtils.isBlank(this.extendJson)) {
@@ -140,7 +148,15 @@ public class DictSelectTag extends TagSupport {
 					for (SysDict type : dict.getDicts()) {
 						text(type.getCodeName(), type.getCodeValue(), sb);
 					}
-				} else {
+				}  else if("label".equals(type)){
+					for (SysDict type : dict.getDicts()) {
+						label(type.getCodeName(), type.getCodeValue(), sb);
+					}
+				} else if("map".equals(type)){
+					for (SysDict type : dict.getDicts()) {
+						map(type.getCodeName(), type.getCodeValue(), sb);
+					}
+				}else {
 					sb.append("<select name=\"" + field + "\"");
 					//增加扩展属性
 					if (!StringUtils.isBlank(this.extendJson)) {
@@ -148,7 +164,7 @@ public class DictSelectTag extends TagSupport {
 						Map<String, String> mp = gson.fromJson(extendJson, Map.class);
 						for(Map.Entry<String, String> entry: mp.entrySet()) { 
 							sb.append(" "+entry.getKey()+"=\"" + entry.getValue() + "\"");
-							} 
+						} 
 					}
 					if (!StringUtils.isBlank(this.id)) {
 						sb.append(" id=\"" + id + "\"");
@@ -165,9 +181,13 @@ public class DictSelectTag extends TagSupport {
 				}
 			}
 		}
-
 		return sb;
 	}
+	
+	private void map(String codeName, String codeValue, StringBuffer sb) {
+		sb.append(field+".put('"+codeValue+"', '"+codeName+"');");
+	}
+
 	/**
 	 * 文本框方法
 	 * @param name
@@ -177,6 +197,14 @@ public class DictSelectTag extends TagSupport {
 	private void text(String name, String code, StringBuffer sb) {
 		if (code.equals(this.defaultVal)) {
 			sb.append("<input name='"+field+"'"+" id='"+id+"' value='" + name + "' readOnly = 'readOnly' />");
+		}
+	}
+	
+	
+	
+	private void label(String name, String code, StringBuffer sb) {
+		if (code.equals(this.defaultVal)) {
+			sb.append( name);
 		}
 	}
 

@@ -33,9 +33,7 @@
 								<div class="control-group">
 									<label class="control-label">项目:</label>
 									<div class="controls">
-										<input type="text" class="span6 m-wrap"
-											validate="{required:true}"
-											name="project.projectName" id="projectName" value="${obj.project.projectName}" readonly="readonly" onfocus="showProject()" />
+										<input type="text" class="span6 m-wrap" validate="{required:true}"	name="project.projectName" id="projectName" value="${obj.project.projectName}" readonly="readonly" onfocus="showProject()" />
 									</div>
 								</div>
 								<div class="control-group">

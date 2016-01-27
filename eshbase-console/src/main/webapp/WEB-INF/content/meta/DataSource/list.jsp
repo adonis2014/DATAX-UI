@@ -59,8 +59,12 @@
 		</div>
 	</div>
 <%@ include file="/WEB-INF/content/common/plugins/page.jsp"%>
+<script type="text/javascript" src="${ctx}/assets/js/map.js"></script>
+
 <script type="text/javascript">
 $(document).ready(function() {
+	var dbtypeMap = new Map();  
+	<mytags:dictSelect field="dbtypeMap" id="dbtypeMap" type="map" hasLabel="false" codeType="10" />
 	
 	App.activeMenu("meta/DataSource/list");
 	
@@ -83,7 +87,9 @@ $(document).ready(function() {
 			 	{cName:"jdbcUser",cValue:"用户"},
 			 	{cName:"jdbcPassword",cValue:"登录密码"},
 			 	{cName:"jdbcUrl",cValue:"url"},
-			 	{cName:"dbType",cValue:"类别"},
+			 	{cName:"dbType",cValue:"类别",format:function(i,value,item){
+			 		return dbtypeMap.get(item.dbType);
+			 	}},
 			 	{cName:"remark",cValue:"备注"}
 		 ]
 	);

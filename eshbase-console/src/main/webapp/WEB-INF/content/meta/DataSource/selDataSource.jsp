@@ -1,8 +1,11 @@
 <%@ page contentType="text/html;charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/content/common/common.jsp"%>
 <%@ include file="/WEB-INF/content/common/plugins/page.jsp"%>
+<script type="text/javascript" src="${ctx}/assets/js/map.js"></script>
 <script type="text/javascript">
 	$(function(){
+		var dbtypeMap = new Map();  
+		<mytags:dictSelect field="dbtypeMap" id="dbtypeMap" type="map" hasLabel="false" codeType="10" />
 		Page.initData(
 				{
 					url:"${ctx}/meta/DataSource/page",
@@ -21,20 +24,15 @@
 						  return $a;
 					  }},
 				 	{cName:"driverClassName",cValue:"class"},
-				 	{cName:"jdbcUser",cValue:"用户"},
-				 	{cName:"jdbcPassword",cValue:"登录密码"},
-				 	{cName:"jdbcUrl",cValue:"url"},
-				 	{cName:"dbType",cValue:"类别"},
+				 	{cName:"dbType",cValue:"类别",format:function(i,value,item){
+				 		return dbtypeMap.get(item.dbType);
+				 	}},
 				 	{cName:"remark",cValue:"备注"}
 				 ]
 			);
 	});
-	
-
-	
-
 </script>
-<div id="projectList" class="modal hide fade" role="dialog"
+<div id="datasourceList" class="modal hide fade" role="dialog"
 	aria-labelledby="myModalLabel" aria-hidden="true">
 	<div class="modal-header">
 		<button type="button" class="close" data-dismiss="modal"
@@ -46,7 +44,7 @@
 		</table>
 	</div>
 	<div class="modal-footer">
-		<button type="button" class="btn green" onclick="javascript:selProject();">确定</button>
+		<button type="button" class="btn green" onclick="javascript:selDataSource();">确定</button>
 		<button type="button red" class="btn" data-dismiss="modal"
 			aria-hidden="true">关闭</button>
 	</div>
