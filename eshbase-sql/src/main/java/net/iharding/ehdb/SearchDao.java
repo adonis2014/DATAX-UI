@@ -75,6 +75,7 @@ public class SearchDao {
 	public static void main(String[] args) {
 	    ApplicationContext context = new ClassPathXmlApplicationContext("spring-data.xml");
 	    context.getBean("dataSource");
+
 		SearchDao sdao=new SearchDao(ElasticSearchUtils.getClient(),HBaseUtils.getHBaseConnection());
 		try {
 			System.out.println(sdao.explain("select * from da.user_figure"));

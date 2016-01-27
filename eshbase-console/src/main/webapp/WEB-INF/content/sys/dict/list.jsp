@@ -109,6 +109,7 @@
         tr.append($("<td></td>").html(item.codeName));
         tr.append($("<td></td>").html(item.codeValue));
         tr.append($("<td></td>").html(item.sortId));
+
         tr.append($("<td></td>").html(item.remark));
         if (btns.length > 0) {
             tr.append($("<td></td>").html(operBtn(item.id)));
