@@ -85,7 +85,7 @@ $(document).ready(function() {
 
 			 	{cName:"store",cValue:"是否存储"},
 
-			 	{cName:"doc_values",cValue:"es doc类型"},
+			 	{cName:"doc_values",cValue:"docvalue"},
 
 			 	{cName:"index",cValue:"是否索引"},
 

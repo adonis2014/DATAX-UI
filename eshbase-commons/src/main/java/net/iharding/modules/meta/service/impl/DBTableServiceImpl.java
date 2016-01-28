@@ -1,8 +1,15 @@
 package net.iharding.modules.meta.service.impl;
 
-import org.guess.core.service.BaseServiceImpl;
+import java.util.Date;
+
+import net.iharding.modules.meta.dao.DBTableDao;
 import net.iharding.modules.meta.model.DBTable;
 import net.iharding.modules.meta.service.DBTableService;
+
+import org.guess.core.service.BaseServiceImpl;
+import org.guess.sys.model.User;
+import org.guess.sys.util.UserUtil;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 /**
@@ -15,5 +22,30 @@ import org.springframework.stereotype.Service;
 */
 @Service
 public class DBTableServiceImpl extends BaseServiceImpl<DBTable, Long> implements DBTableService {
-
+	
+	@Autowired
+	private DBTableDao dbTableDao; 
+	
+	@Override
+	public void save(DBTable dbtable) throws Exception {
+		if(dbtable.getId() != null){
+			
+			DBTable table = dbTableDao.get(dbtable.getId());
+			
+			//保留发表者以及发表提起
+			dbtable.setCreatebyId(table.getCreatebyId());
+			dbtable.setCreateDate(table.getCreateDate());
+			//更新者
+			User cuser = UserUtil.getCurrentUser();
+			dbtable.setUpdatebyId(cuser.getId());
+			dbtable.setUpdateDate(new Date());
+		}else{
+			User cuser = UserUtil.getCurrentUser();
+			dbtable.setCreatebyId(cuser.getId());
+			dbtable.setCreateDate(new Date());
+			dbtable.setUpdatebyId(cuser.getId());
+			dbtable.setUpdateDate(new Date());
+		}
+		super.save(dbtable);
+	}
 }

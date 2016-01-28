@@ -54,20 +54,20 @@
 								<div class="control-group">
 									<label class="control-label">表类别:</label>
 									<div class="controls">
-										<input type="text" class="span6 m-wrap" validate="{required:true}" name="tableType" value="${obj.tableType }" />
+										<mytags:dictSelect field="tableType" id="tableType" defaultVal="${obj.tableType}" hasLabel="false" codeType="12" />
 									</div>
 								</div>
 								<c:if test="${not empty obj}">
 								<div class="control-group">
 									<label class="control-label">建立者:</label>
 									<div class="controls">
-										${obj.creater.name}
+										${creater.name}
 									</div>
 								</div>
 								<div class="control-group">
 									<label class="control-label">更新者:</label>
 									<div class="controls">
-										${obj.updater.name}
+										${updater.name}
 									</div>
 								</div>
 								<div class="control-group">

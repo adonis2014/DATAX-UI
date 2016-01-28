@@ -59,9 +59,12 @@
 		</div>
 	</div>
 <%@ include file="/WEB-INF/content/common/plugins/page.jsp"%>
+<script type="text/javascript" src="${ctx}/assets/js/map.js"></script>
 <script type="text/javascript">
 $(document).ready(function() {
-	
+	var tabletypeMap = new Map();  
+	<mytags:dictSelect field="tabletypeMap" id="tabletypeMap" type="map" hasLabel="false" codeType="12" />
+
 	App.activeMenu("meta/DBTable/list");
 	
 	Page.initData(
@@ -73,24 +76,28 @@ $(document).ready(function() {
 		},
 		null,
 		[
-			 	{cName:"datasource",cValue:"数据源"},
-
+			 	{cName:"datasource",cValue:"数据源",format:function(i,value,item){
+					  var $a = $('<a data-original-title="点击访问" data-placement="right" class="tooltips" href="../DataSource/show/'+item.datasource.id+'" >'+item.datasource.dbName+'</a>');
+					  return $a;
+				  }},
 			 	{cName:"className",cValue:"类名"},
-
 			 	{cName:"tableName",cValue:"表名"},
-
 			 	{cName:"tablePname",cValue:"逻辑名"},
-
-			 	{cName:"tableType",cValue:"表类别"},
-
-			 	{cName:"createbyId",cValue:"建立者"},
-
-			 	{cName:"updatebyId",cValue:"更新者"},
-
-			 	{cName:"createDate",cValue:"建立世间"},
-
-			 	{cName:"updateDate",cValue:"更新世间"},
-
+			 	{cName:"tableType",cValue:"表类别",format:function(i,value,item){
+			 		return tabletypeMap.get(item.tableType);
+			 	}},
+			 	{cName:"createDate",cValue:"建立时间",format:function(i,value,item){
+					 if(App.isNundef(value)){
+						 return new Date(value).format("yyyy-MM-dd hh:mm:ss");
+					 }
+					 return value;
+				 }},
+			 	{cName:"updateDate",cValue:"更新时间",format:function(i,value,item){
+					 if(App.isNundef(value)){
+						 return new Date(value).format("yyyy-MM-dd hh:mm:ss");
+					 }
+					 return value;
+				 }},
 			  	{cName:"remark",cValue:"备注"}
 		 ]
 	);

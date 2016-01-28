@@ -23,6 +23,8 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.annotations.NotFound;
 import org.hibernate.annotations.NotFoundAction;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 /**
  * 表对象Entity
  * 
@@ -31,6 +33,7 @@ import org.hibernate.annotations.NotFoundAction;
  */
 @Entity
 @Table(name = "meta_dbtable")
+@JsonIgnoreProperties(value = { "columns","modules","dbIndexs"})
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class DBTable extends IdEntity {
 
@@ -40,6 +43,7 @@ public class DBTable extends IdEntity {
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "datasource_id")
 	@NotFound(action = NotFoundAction.IGNORE)
+	@JsonIgnoreProperties(value = { "creater","project","updater","tables"})
 	@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 	private DataSource datasource;
 	/**
@@ -93,11 +97,11 @@ public class DBTable extends IdEntity {
 	@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 	private Set<Module> modules = new HashSet<Module>(0);
 
-	@OneToMany(targetEntity = DbColumn.class, fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@OneToMany(targetEntity = DbColumn.class, fetch = FetchType.LAZY, cascade = CascadeType.ALL,mappedBy="dbtable")
 	@OrderBy("id ASC")
 	private Set<DbColumn> columns;
 	
-	@OneToMany(targetEntity = DBIndex.class, fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@OneToMany(targetEntity = DBIndex.class, fetch = FetchType.LAZY, cascade = CascadeType.ALL,mappedBy="dbtable")
 	@OrderBy("id ASC")
 	private Set<DBIndex> dbIndexs;
 	

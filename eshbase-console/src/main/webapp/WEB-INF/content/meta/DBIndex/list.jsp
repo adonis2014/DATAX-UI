@@ -77,7 +77,7 @@ $(document).ready(function() {
 
 			 	{cName:"index_name",cValue:"索引库名"},
 
-			 	{cName:"type_name",cValue:"索引表名"},
+			 	{cName:"type_name",cValue:"索引名"},
 
 			 	{cName:"indexType",cValue:"索引类别"},
 

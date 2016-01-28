@@ -9,7 +9,7 @@ import net.iharding.modules.sys.model.Dict;
 
 public class SysDict extends Dict {
 
-	private List<SysDict> dicts;
+	private List<SysDict> dicts=new ArrayList<SysDict>();
 	
 	public SysDict(Dict dict){
 		this.setCodeName(dict.getCodeName());

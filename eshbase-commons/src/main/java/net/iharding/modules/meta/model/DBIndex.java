@@ -1,12 +1,16 @@
 package net.iharding.modules.meta.model;
 
 import java.util.Date;
+import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.OrderBy;
 import javax.persistence.Table;
 
 import net.iharding.core.orm.IdEntity;
@@ -74,6 +78,10 @@ public class DBIndex extends IdEntity {
 	 */
 	@Column(name="remark")
 	private String remark;
+	
+	@OneToMany(targetEntity = DbColumn.class, fetch = FetchType.LAZY, cascade = CascadeType.ALL,mappedBy="dbindex")
+	@OrderBy("id ASC")
+	private Set<DbColumn> columns;
 	
 	public DBTable getDbtable() {
 		return dbtable;
