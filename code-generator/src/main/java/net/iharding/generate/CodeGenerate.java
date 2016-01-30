@@ -39,18 +39,54 @@ public class CodeGenerate {
 		List<Field> fields = new ArrayList<Field>();
 		
 		String classAuthor = "Joe.zhang"; // 类作者，例：
-		String moduleName = "sys"; // 模块名，例：sys
-		String className = "MultiLang"; // 类名，例：user
+		String moduleName = "etl"; // 模块名，例：sys    
+		String className = "EtlTaskParam"; // 类名，例：user
+		String functionName = "任务参数"; // 功能名，例：用户
+		fields.add(new Field("taskId", "任务ID", "Long"));
+		fields.add(new Field("pluginParamId", "插件参数ID", "Long"));
+		fields.add(new Field("paramKey", "参数Key", "String"));
+		fields.add(new Field("paramValue", "参数值", "String"));
+		fields.add(new Field("remark", "备注", "String"));
+		
+//		fields.add(new Field("pluginId", "插件ID", "Long"));
+//		fields.add(new Field("taskParamId", "任务参数ID", "Long"));
+//		fields.add(new Field("name", "插件名", "String"));
+//		fields.add(new Field("mandatory", "是否必须", "Integer"));
+//		fields.add(new Field("default", "默认值", "String"));
+//		fields.add(new Field("isColumn", "是否列", "Integer"));
+//		fields.add(new Field("description", "备注", "String"));
+		
+//		fields.add(new Field("jobName", "调度作业名", "String"));
+//		fields.add(new Field("nextExeDate", "下次执行时间", "Date"));
+//		fields.add(new Field("cronTrigger", "调度设置", "String"));
+//		fields.add(new Field("status", "状态", "Integer"));
+//		
+//		fields.add(new Field("taskName", "任务名", "String"));
+//		fields.add(new Field("jobId", "调度id", "Integer"));
+//		fields.add(new Field("pluginId", "插件id", "Integer"));
+		
 //		String functionName = "数据字典"; // 功能名，例：用户
 //		fields.add(new Field("codeType", "字典类别", "Long"));
 //		fields.add(new Field("codeValue", "实际值", "String"));
 //		fields.add(new Field("codeName", "显示名", "String"));
 //		fields.add(new Field("sortId", "排序id", "Integer"));
+
+//		String functionName = "ETL插件"; // 功能名，例：用户
+//		fields.add(new Field("pluginName", "插件名", "String"));
+//		fields.add(new Field("pluginType", "插件类别", "Integer"));
+//		fields.add(new Field("className", "类名", "String"));
+//		fields.add(new Field("version", "版本", "String"));
+//		fields.add(new Field("target", "数据源目标", "String"));
+//		fields.add(new Field("jarName", "jar包名", "String"));
+//		fields.add(new Field("remark", "备注", "Integer"));
+//		fields.add(new Field("maxThreadNum", "线程数", "Integer"));
+//		fields.add(new Field("checkLabel", "启用标记", "Integer"));
 		
-		String functionName = "多国语言"; // 功能名，例：用户
-		fields.add(new Field("langCode", "编码", "String"));
-		fields.add(new Field("langKey", "key", "String"));
-		fields.add(new Field("langContent", "内容", "String"));
+
+//		String functionName = "多国语言"; // 功能名，例：用户
+//		fields.add(new Field("langCode", "编码", "String"));
+//		fields.add(new Field("langKey", "key", "String"));
+//		fields.add(new Field("langContent", "内容", "String"));
 		
 //		String className = "Project"; // 类名，例：user
 //		String functionName = "项目对象"; // 功能名，例：用户
@@ -109,6 +145,7 @@ public class CodeGenerate {
 //		fields.add(new Field("updatebyId", "更新者", "Long"));
 //		fields.add(new Field("createDate", "建立时间", "Date"));
 //		fields.add(new Field("updateDate", "更新时间", "Date"));
+//		fields.add(new Field("checkLabel", "启用标记", "Integer"));
 //		fields.add(new Field("remark", "备注", "String"));
 
 		// 是否启用生成工具

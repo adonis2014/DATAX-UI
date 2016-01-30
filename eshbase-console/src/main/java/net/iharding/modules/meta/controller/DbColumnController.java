@@ -1,11 +1,14 @@
 package net.iharding.modules.meta.controller;
 
-import org.guess.core.web.BaseController;
 import net.iharding.modules.meta.model.DbColumn;
 import net.iharding.modules.meta.service.DbColumnService;
+
+import org.guess.core.web.BaseController;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 
 /**
 * 
@@ -27,4 +30,16 @@ public class DbColumnController extends BaseController<DbColumn>{
 	
 	@Autowired
 	private DbColumnService dbColumnService;
+	
+	@RequestMapping(method = RequestMethod.GET, value = "/setCheckLabel/{id}")
+	public String setCheckLabel(@PathVariable("id") Long id) throws Exception {
+		DbColumn obj = dbColumnService.get(id);
+		if (obj.getCheckLabel()==0){
+			obj.setCheckLabel(1);
+		}else{
+			obj.setCheckLabel(0);
+		}
+		dbColumnService.save(obj);
+		return this.list();
+	}
 }

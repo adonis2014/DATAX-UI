@@ -104,6 +104,17 @@ public class DBTable extends IdEntity {
 	@OneToMany(targetEntity = DBIndex.class, fetch = FetchType.LAZY, cascade = CascadeType.ALL,mappedBy="dbtable")
 	@OrderBy("id ASC")
 	private Set<DBIndex> dbIndexs;
+
+	@Column(name="check_label")
+	private int checkLabel;
+	
+	public int getCheckLabel() {
+		return checkLabel;
+	}
+
+	public void setCheckLabel(int checkLabel) {
+		this.checkLabel = checkLabel;
+	}
 	
 	public DBIndex getDBIndex(int indexType){
 		if (dbIndexs!=null && dbIndexs.size()>0){

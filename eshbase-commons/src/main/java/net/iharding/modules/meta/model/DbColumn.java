@@ -98,6 +98,17 @@ public class DbColumn extends IdEntity {
 	@Column(name="remark")
 	private String remark;
 	
+	@Column(name="check_label")
+	private int checkLabel;
+	
+	public int getCheckLabel() {
+		return checkLabel;
+	}
+
+	public void setCheckLabel(int checkLabel) {
+		this.checkLabel = checkLabel;
+	}
+
 	public String getFamilyName() {
 		return familyName;
 	}

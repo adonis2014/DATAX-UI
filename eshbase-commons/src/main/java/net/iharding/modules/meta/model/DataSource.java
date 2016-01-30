@@ -108,6 +108,18 @@ public class DataSource extends IdEntity {
 	@OrderBy("id ASC")
 	private Set<DBTable> tables;
 	
+	@Column(name="check_label")
+	private int checkLabel;
+	
+	public int getCheckLabel() {
+		return checkLabel;
+	}
+
+	public void setCheckLabel(int checkLabel) {
+		this.checkLabel = checkLabel;
+	}
+
+	
 	public Set<DBTable> getTables() {
 		return tables;
 	}

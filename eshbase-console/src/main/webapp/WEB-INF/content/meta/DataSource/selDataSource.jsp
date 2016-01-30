@@ -37,7 +37,7 @@
 	<div class="modal-header">
 		<button type="button" class="close" data-dismiss="modal"
 			aria-hidden="true">&times;</button>
-		<h3>选择项目</h3>
+		<h3>选择数据源</h3>
 	</div>
 	<div class="modal-body">
 		<table class="table table-striped table-bordered table-hover" id="sample_1">

@@ -20,6 +20,8 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.annotations.NotFound;
 import org.hibernate.annotations.NotFoundAction;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 /**
  * 索引对象Entity
  * @author Joe.zhang
@@ -27,6 +29,7 @@ import org.hibernate.annotations.NotFoundAction;
  */
 @Entity
 @Table(name = "meta_dbindex")
+@JsonIgnoreProperties(value = {"hibernateLazyInitializer","handler", "columns"})
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class DBIndex extends IdEntity {
 
@@ -36,6 +39,7 @@ public class DBIndex extends IdEntity {
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name="table_id")
 	@NotFound(action = NotFoundAction.EXCEPTION)
+	@JsonIgnoreProperties(value = { "hibernateLazyInitializer","handler","datasource"})
 	@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 	private DBTable dbtable;
 	/**
@@ -43,6 +47,7 @@ public class DBIndex extends IdEntity {
 	 */
 	@Column(name="index_name")
 	private String index_name;
+	
 	/**
 	 * 索引表名
 	 */
@@ -82,6 +87,18 @@ public class DBIndex extends IdEntity {
 	@OneToMany(targetEntity = DbColumn.class, fetch = FetchType.LAZY, cascade = CascadeType.ALL,mappedBy="dbindex")
 	@OrderBy("id ASC")
 	private Set<DbColumn> columns;
+	
+	@Column(name="check_label")
+	private int checkLabel;
+	
+	public int getCheckLabel() {
+		return checkLabel;
+	}
+
+	public void setCheckLabel(int checkLabel) {
+		this.checkLabel = checkLabel;
+	}
+
 	
 	public DBTable getDbtable() {
 		return dbtable;
@@ -123,6 +140,14 @@ public class DBIndex extends IdEntity {
 		this.createbyId = createbyId;
 	}
 	
+	public Set<DbColumn> getColumns() {
+		return columns;
+	}
+
+	public void setColumns(Set<DbColumn> columns) {
+		this.columns = columns;
+	}
+
 	public Long getUpdatebyId() {
 		return updatebyId;
 	}

@@ -62,18 +62,21 @@
 <script type="text/javascript">
 $(document).ready(function() {
 	
-	App.activeMenu("meta/dBIndex/list");
+	App.activeMenu("meta/DBIndex/list");
 	
 	Page.initData(
 		{
-			url:"${ctx}/meta/dBIndex/page",
+			url:"${ctx}/meta/DBIndex/page",
 			pageNo : 1,
 			pageSize : 10,
 			tableId : "#sample_1"
 		},
 		null,
 		[
-			 	{cName:"dbtable",cValue:"数据表"},
+			 	{cName:"dbtable",cValue:"数据表",format:function(i,value,item){
+					  var $a = $('<a data-original-title="点击访问" data-placement="right" class="tooltips" href="../Dbtable/show/'+item.dbtable.id+'" >'+item.dbtable.tablePname+'</a>');
+					  return $a;
+				  }},
 
 			 	{cName:"index_name",cValue:"索引库名"},
 
