@@ -8,7 +8,7 @@
 	<div class="page-content">
 		<div class="container-fluid">
 			<!-- 页面导航 -->
-			<tool:navBar pageTitle="调度作业日志列表" pageTitleContent="内容管理-调度作业日志管理-调度作业日志列表" titleIcon="icon-home"/>
+			<tool:navBar pageTitle="调度作业日志列表" pageTitleContent="ETL管理-调度作业日志管理-调度作业日志列表" titleIcon="icon-home"/>
 			<!-- 主体内容 -->
 			<div class="row-fluid">
 				<div class="span12">
@@ -62,11 +62,11 @@
 <script type="text/javascript">
 $(document).ready(function() {
 	
-	App.activeMenu("etl/etlJobLog/list");
+	App.activeMenu("etl/EtlJobLog/list");
 	
 	Page.initData(
 		{
-			url:"${ctx}/etl/etlJobLog/page",
+			url:"${ctx}/etl/EtlJobLog/page",
 			pageNo : 1,
 			pageSize : 10,
 			tableId : "#sample_1"

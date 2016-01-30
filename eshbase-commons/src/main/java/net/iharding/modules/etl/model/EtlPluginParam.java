@@ -1,12 +1,19 @@
 package net.iharding.modules.etl.model;
 
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import net.iharding.core.orm.IdEntity;
 
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.hibernate.annotations.NotFound;
+import org.hibernate.annotations.NotFoundAction;
 
 /**
  * 插件参数Entity
@@ -14,18 +21,19 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
  * @version 2016-01-30
  */
 @Entity
-@Table(name = "etl_etlPluginParam")
+@Table(name = "etl_plugin_param")
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class EtlPluginParam extends IdEntity {
 
 	/**
 	 * 插件ID
 	 */
-	private Long pluginId;
-	/**
-	 * 任务参数ID
-	 */
-	private Long taskParamId;
+	@ManyToOne(cascade = { CascadeType.PERSIST, CascadeType.MERGE },targetEntity = EtlPlugin.class,fetch = FetchType.LAZY)
+	@JoinColumn(name="plugin_id")
+	@NotFound(action = NotFoundAction.IGNORE)
+	@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
+	private EtlPlugin plugin;
+	
 	/**
 	 * 插件名
 	 */
@@ -37,32 +45,26 @@ public class EtlPluginParam extends IdEntity {
 	/**
 	 * 默认值
 	 */
+	@Column(name="default")
 	private String defaultValue;
 	/**
 	 * 是否列
 	 */
+	@Column(name="is_column")
 	private Integer isColumn;
 	/**
 	 * 备注
 	 */
 	private String description;
 	
-	public Long getPluginId() {
-		return pluginId;
+	public EtlPlugin getPlugin() {
+		return plugin;
 	}
 
-	public void setPluginId(Long pluginId) {
-		this.pluginId = pluginId;
-	}
-	
-	public Long getTaskParamId() {
-		return taskParamId;
+	public void setPlugin(EtlPlugin plugin) {
+		this.plugin = plugin;
 	}
 
-	public void setTaskParamId(Long taskParamId) {
-		this.taskParamId = taskParamId;
-	}
-	
 	public String getName() {
 		return name;
 	}

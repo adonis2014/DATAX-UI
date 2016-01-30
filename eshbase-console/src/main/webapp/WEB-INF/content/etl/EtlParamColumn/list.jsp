@@ -8,7 +8,7 @@
 	<div class="page-content">
 		<div class="container-fluid">
 			<!-- 页面导航 -->
-			<tool:navBar pageTitle="列对应参数列表" pageTitleContent="内容管理-列对应参数管理-列对应参数列表" titleIcon="icon-home"/>
+			<tool:navBar pageTitle="列对应参数列表" pageTitleContent="ETL管理-列对应参数管理-列对应参数列表" titleIcon="icon-home"/>
 			<!-- 主体内容 -->
 			<div class="row-fluid">
 				<div class="span12">
@@ -62,11 +62,11 @@
 <script type="text/javascript">
 $(document).ready(function() {
 	
-	App.activeMenu("etl/etlParamColumn/list");
+	App.activeMenu("etl/EtlParamColumn/list");
 	
 	Page.initData(
 		{
-			url:"${ctx}/etl/etlParamColumn/page",
+			url:"${ctx}/etl/EtlParamColumn/page",
 			pageNo : 1,
 			pageSize : 10,
 			tableId : "#sample_1"

@@ -2,13 +2,21 @@ package net.iharding.modules.etl.model;
 
 import java.util.Date;
 
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import net.iharding.core.orm.IdEntity;
 
+import org.guess.sys.model.User;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.hibernate.annotations.NotFound;
+import org.hibernate.annotations.NotFoundAction;
 
 /**
  * 调度作业日志Entity
@@ -16,39 +24,50 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
  * @version 2016-01-30
  */
 @Entity
-@Table(name = "etl_etlJobLog")
+@Table(name = "etl_job_log")
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class EtlJobLog extends IdEntity {
 
 	/**
 	 * 任务ID
 	 */
-	private Long taskId;
+	@ManyToOne(cascade = { CascadeType.PERSIST, CascadeType.MERGE },targetEntity = EtlTask.class,fetch = FetchType.LAZY)
+	@JoinColumn(name="task_id")
+	@NotFound(action = NotFoundAction.IGNORE)
+	@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
+	private EtlTask task;
 	/**
 	 * 记录时间
 	 */
+	@Column(name="log_time")
 	private Date logTime;
 	/**
 	 * 日志内容
 	 */
+	@Column(name="log_content")
 	private String logContent;
 	/**
 	 * 状态
 	 */
+	@Column(name="log_type")
 	private Integer logType;
 	/**
-	 * 建立者
+	 * 建立人
 	 */
-	private Long createbyId;
+	@ManyToOne(cascade = { CascadeType.PERSIST, CascadeType.MERGE },targetEntity = User.class,fetch = FetchType.LAZY)
+	@JoinColumn(name="createby_id")
+	@NotFound(action = NotFoundAction.IGNORE)
+	@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
+	private User creater;
 	
-	public Long getTaskId() {
-		return taskId;
+	public EtlTask getTask() {
+		return task;
 	}
 
-	public void setTaskId(Long taskId) {
-		this.taskId = taskId;
+	public void setTask(EtlTask task) {
+		this.task = task;
 	}
-	
+
 	public Date getLogTime() {
 		return logTime;
 	}
@@ -72,13 +91,13 @@ public class EtlJobLog extends IdEntity {
 	public void setLogType(Integer logType) {
 		this.logType = logType;
 	}
-	
-	public Long getCreatebyId() {
-		return createbyId;
+
+	public User getCreater() {
+		return creater;
 	}
 
-	public void setCreatebyId(Long createbyId) {
-		this.createbyId = createbyId;
+	public void setCreater(User creater) {
+		this.creater = creater;
 	}
 	
 	

@@ -16,13 +16,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 *
 */
 @Controller
-@RequestMapping("/etl/etlPlugin")
+@RequestMapping("/etl/EtlPlugin")
 public class EtlPluginController extends BaseController<EtlPlugin>{
 
 	{
-		editView = "/etl/etlPlugin/edit";
-		listView = "/etl/etlPlugin/list";
-		showView = "/etl/etlPlugin/show";
+		editView = "/etl/EtlPlugin/edit";
+		listView = "/etl/EtlPlugin/list";
+		showView = "/etl/EtlPlugin/show";
 	}
 	
 	@Autowired

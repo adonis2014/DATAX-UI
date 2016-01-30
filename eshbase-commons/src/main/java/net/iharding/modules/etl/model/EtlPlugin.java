@@ -1,6 +1,13 @@
 package net.iharding.modules.etl.model;
 
+import java.util.Set;
+
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.OneToMany;
+import javax.persistence.OrderBy;
 import javax.persistence.Table;
 
 import net.iharding.core.orm.IdEntity;
@@ -14,21 +21,24 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
  * @version 2016-01-29
  */
 @Entity
-@Table(name = "etl_etlPlugin")
+@Table(name = "etl_plugin")
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class EtlPlugin extends IdEntity {
 
 	/**
 	 * 插件名
 	 */
+	@Column(name="plugin_name")
 	private String pluginName;
 	/**
 	 * 插件类别
 	 */
+	@Column(name="plugin_type")
 	private Integer pluginType;
 	/**
 	 * 类名
 	 */
+	@Column(name="class_name")
 	private String className;
 	/**
 	 * 版本
@@ -41,6 +51,7 @@ public class EtlPlugin extends IdEntity {
 	/**
 	 * jar包名
 	 */
+	@Column(name="jar_name")
 	private String jarName;
 	/**
 	 * 备注
@@ -49,11 +60,21 @@ public class EtlPlugin extends IdEntity {
 	/**
 	 * 线程数
 	 */
+	@Column(name="maxthreadnum")
 	private Integer maxThreadNum;
 	/**
 	 * 启用标记
 	 */
+	@Column(name="check_label")
 	private Integer checkLabel;
+	
+	@OneToMany(targetEntity=EtlTask.class,fetch = FetchType.LAZY,cascade=CascadeType.ALL,mappedBy="plugin")
+	@OrderBy("id ASC")
+	private Set<EtlTask> tasks;
+	
+	@OneToMany(targetEntity=EtlPluginParam.class,fetch = FetchType.LAZY,cascade=CascadeType.ALL,mappedBy="plugin")
+	@OrderBy("id ASC")
+	private Set<EtlPluginParam> pluginParams;
 	
 	public String getPluginName() {
 		return pluginName;

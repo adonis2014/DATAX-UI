@@ -10,6 +10,7 @@
 		<pattern>/cms/*</pattern>
 		<pattern>/file/*</pattern>
 		<pattern>/meta/*</pattern>
+		<pattern>/etl/*</pattern>
 		<pattern>/mobile/*</pattern>
 		<pattern>/workflow/*</pattern>
         <pattern>/chat/*</pattern>

@@ -1,5 +1,6 @@
 package net.iharding.modules.etl.model;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 
@@ -14,25 +15,29 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
  * @version 2016-01-30
  */
 @Entity
-@Table(name = "etl_etlParamColumn")
+@Table(name = "etl_param_column")
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class EtlParamColumn extends IdEntity {
 
 	/**
 	 * 任务ID
 	 */
+	@Column(name="task_id")
 	private Long taskId;
 	/**
 	 * 任务参数ID
 	 */
+	@Column(name="task_param_id")
 	private Long taskParamId;
 	/**
 	 * 列名
 	 */
+	@Column(name="column_name")
 	private String columnName;
 	/**
 	 * 列序列
 	 */
+	@Column(name="column_value_index")
 	private String columnValueIndex;
 	/**
 	 * 备注

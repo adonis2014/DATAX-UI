@@ -1,14 +1,26 @@
 package net.iharding.modules.etl.model;
 
 import java.util.Date;
+import java.util.Set;
 
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.OrderBy;
 import javax.persistence.Table;
 
 import net.iharding.core.orm.IdEntity;
+import net.iharding.modules.meta.model.DBTable;
 
+import org.guess.sys.model.User;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.hibernate.annotations.NotFound;
+import org.hibernate.annotations.NotFoundAction;
 
 /**
  * ETL调度作业Entity
@@ -16,50 +28,68 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
  * @version 2016-01-30
  */
 @Entity
-@Table(name = "etl_etlJob")
+@Table(name = "etl_job")
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class EtlJob extends IdEntity {
 
 	/**
 	 * 调度作业名
 	 */
+	@Column(name="job_name")
 	private String jobName;
 	/**
 	 * 下次执行时间
 	 */
+	@Column(name="next_exe_date")
 	private Date nextExeDate;
 	/**
 	 * 调度设置
 	 */
+	@Column(name="cron_trigger")
 	private String cronTrigger;
 	/**
 	 * 状态
 	 */
 	private Integer status;
 	/**
-	 * 建立者
+	 * 最后更新人
 	 */
-	private Long createbyId;
+	@ManyToOne(cascade = { CascadeType.PERSIST, CascadeType.MERGE },targetEntity = User.class,fetch = FetchType.LAZY)
+	@JoinColumn(name="updateby_id")
+	@NotFound(action = NotFoundAction.IGNORE)
+	@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
+	private User updater;
 	/**
-	 * 更新者
+	 * 建立人
 	 */
-	private Long updatebyId;
+	@ManyToOne(cascade = { CascadeType.PERSIST, CascadeType.MERGE },targetEntity = User.class,fetch = FetchType.LAZY)
+	@JoinColumn(name="createby_id")
+	@NotFound(action = NotFoundAction.IGNORE)
+	@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
+	private User creater;
 	/**
 	 * 建立时间
 	 */
+	@Column(name="create_date")
 	private Date createDate;
 	/**
 	 * 更新时间
 	 */
+	@Column(name="update_date")
 	private Date updateDate;
 	/**
 	 * 启用标记
 	 */
+	@Column(name="check_label")
 	private Integer checkLabel;
 	/**
 	 * 备注
 	 */
 	private String remark;
+	
+	@OneToMany(targetEntity=EtlTask.class,fetch = FetchType.LAZY,cascade=CascadeType.ALL,mappedBy="job")
+	@OrderBy("id ASC")
+	private Set<EtlTask> tasks;
 	
 	public String getJobName() {
 		return jobName;
@@ -93,22 +123,22 @@ public class EtlJob extends IdEntity {
 		this.status = status;
 	}
 	
-	public Long getCreatebyId() {
-		return createbyId;
+	public User getUpdater() {
+		return updater;
 	}
 
-	public void setCreatebyId(Long createbyId) {
-		this.createbyId = createbyId;
-	}
-	
-	public Long getUpdatebyId() {
-		return updatebyId;
+	public void setUpdater(User updater) {
+		this.updater = updater;
 	}
 
-	public void setUpdatebyId(Long updatebyId) {
-		this.updatebyId = updatebyId;
+	public User getCreater() {
+		return creater;
 	}
-	
+
+	public void setCreater(User creater) {
+		this.creater = creater;
+	}
+
 	public Date getCreateDate() {
 		return createDate;
 	}
@@ -139,6 +169,14 @@ public class EtlJob extends IdEntity {
 
 	public void setRemark(String remark) {
 		this.remark = remark;
+	}
+
+	public Set<EtlTask> getTasks() {
+		return tasks;
+	}
+
+	public void setTasks(Set<EtlTask> tasks) {
+		this.tasks = tasks;
 	}
 	
 	

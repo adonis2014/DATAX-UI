@@ -16,13 +16,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 *
 */
 @Controller
-@RequestMapping("/etl/etlParamColumn")
+@RequestMapping("/etl/EtlParamColumn")
 public class EtlParamColumnController extends BaseController<EtlParamColumn>{
 
 	{
-		editView = "/etl/etlParamColumn/edit";
-		listView = "/etl/etlParamColumn/list";
-		showView = "/etl/etlParamColumn/show";
+		editView = "/etl/EtlParamColumn/edit";
+		listView = "/etl/EtlParamColumn/list";
+		showView = "/etl/EtlParamColumn/show";
 	}
 	
 	@Autowired

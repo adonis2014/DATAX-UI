@@ -16,13 +16,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 *
 */
 @Controller
-@RequestMapping("/etl/etlJob")
+@RequestMapping("/etl/EtlJob")
 public class EtlJobController extends BaseController<EtlJob>{
 
 	{
-		editView = "/etl/etlJob/edit";
-		listView = "/etl/etlJob/list";
-		showView = "/etl/etlJob/show";
+		editView = "/etl/EtlJob/edit";
+		listView = "/etl/EtlJob/list";
+		showView = "/etl/EtlJob/show";
 	}
 	
 	@Autowired
