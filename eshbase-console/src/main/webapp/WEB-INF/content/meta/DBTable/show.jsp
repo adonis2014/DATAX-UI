@@ -10,7 +10,7 @@
 	<div class="page-content">
 		<div class="container-fluid">
 			<!-- 页面导航 -->
-			<tool:navBar pageTitle="${pageTitle }" pageTitleContent="内容管理-表单管理-${pageTitle }" titleIcon="icon-home" />
+			<tool:navBar pageTitle="${pageTitle }" pageTitleContent="元数据管理-表单管理-${pageTitle }" titleIcon="icon-home" />
 			<!-- 主体内容 -->
 			<div class="row-fluid">
 				<div class="span12">

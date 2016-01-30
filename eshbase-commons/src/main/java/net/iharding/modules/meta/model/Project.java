@@ -88,7 +88,17 @@ public class Project extends IdEntity {
 	@OrderBy("id ASC")
 	private Set<DataSource> dataSources;
 	
+	@Column(name="check_label")
+	private int checkLabel;
 	
+	public int getCheckLabel() {
+		return checkLabel;
+	}
+
+	public void setCheckLabel(int checkLabel) {
+		this.checkLabel = checkLabel;
+	}
+
 	
 	public User getCreater() {
 		return creater;

@@ -103,6 +103,18 @@ public class Module extends IdEntity {
 	@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 	private Set<DBTable> tables = new HashSet<DBTable>(0);
 	
+	@Column(name="check_label")
+	private int checkLabel;
+	
+	public int getCheckLabel() {
+		return checkLabel;
+	}
+
+	public void setCheckLabel(int checkLabel) {
+		this.checkLabel = checkLabel;
+	}
+
+	
 	public String getPackageName() {
 		return packageName;
 	}

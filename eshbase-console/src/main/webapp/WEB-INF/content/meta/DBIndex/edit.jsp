@@ -6,103 +6,85 @@
 <title>${pageTitle }</title>
 </head>
 <body>
+	<%@ include file="/WEB-INF/content/meta/DBTable/selTable.jsp"%>
 	<div class="page-content">
 		<div class="container-fluid">
 			<!-- 页面导航 -->
-			<tool:navBar pageTitle="${pageTitle }"
-				pageTitleContent="内容管理-{functionName}管理-${pageTitle }" titleIcon="icon-home" />
+			<tool:navBar pageTitle="${pageTitle }" pageTitleContent="元素据管理-索引管理-${pageTitle }" titleIcon="icon-home" />
 			<!-- 主体内容 -->
 			<div class="row-fluid">
 				<div class="span12">
 					<div class="portlet box blue">
 						<div class="portlet-title">
 							<h4>
-								<i class="icon-reorder"></i>请填写表单
+								<i class="icon-reorder">请填写表单</i>
 							</h4>
 							<div class="tools">
-								<a href="javascript:;" class="collapse"></a> <a
-									href="javascript:;" class="remove"></a>
+								<a href="javascript:;" class="collapse"></a> <a href="javascript:;" class="remove"></a>
 							</div>
 						</div>
 						<div class="portlet-body form">
-							<form action="${ctx}/meta/dBIndex/edit" class="form-horizontal form_sync"
-								method="post" id="form1">
-								
-								<input type="hidden" value="${obj.id}" name="id">
+							<form action="${ctx}/meta/DBIndex/edit" class="form-horizontal form_sync" method="post" id="form1">
+								<input type="hidden" value="${obj.id}" name="id"> 
+								<input type="hidden" value="${obj.dbtable.id}" name="dbtable.id" id="tableId"/>
 								<div class="control-group">
 									<label class="control-label">数据表:</label>
 									<div class="controls">
-										<input type="text" class="span6 m-wrap"
-											validate="{required:true}"
-											name="dbtable" value="${obj.dbtable }" />
+										<input type="text" class="span6 m-wrap" validate="{required:true}" id="dbtable" name="dbtable.tablePname" value="${obj.dbtable.tablePname}" readonly="readonly" onfocus="showTable()" />
 									</div>
 								</div>
 								<div class="control-group">
 									<label class="control-label">索引库名:</label>
 									<div class="controls">
-										<input type="text" class="span6 m-wrap"
-											validate="{required:true}"
-											name="index_name" value="${obj.index_name }" />
+										<input type="text" class="span6 m-wrap" validate="{required:true}" name="index_name" value="${obj.index_name }" />
 									</div>
 								</div>
 								<div class="control-group">
 									<label class="control-label">索引表名:</label>
 									<div class="controls">
-										<input type="text" class="span6 m-wrap"
-											validate="{required:true}"
-											name="type_name" value="${obj.type_name }" />
+										<input type="text" class="span6 m-wrap" validate="{required:true}" name="type_name" value="${obj.type_name }" />
 									</div>
 								</div>
 								<div class="control-group">
 									<label class="control-label">索引类别:</label>
 									<div class="controls">
-										<input type="text" class="span6 m-wrap"
-											validate="{required:true}"
-											name="indexType" value="${obj.indexType }" />
+										<mytags:dictSelect field="indexType" id="indexType" defaultVal="${obj.indexType}" hasLabel="false" codeType="13" />
 									</div>
 								</div>
+								<c:if test="${not empty obj}">
 								<div class="control-group">
 									<label class="control-label">建立者:</label>
 									<div class="controls">
-										<input type="text" class="span6 m-wrap"
-											validate="{required:true}"
-											name="createbyId" value="${obj.createbyId }" />
+										${creater.name}
 									</div>
 								</div>
 								<div class="control-group">
 									<label class="control-label">更新者:</label>
 									<div class="controls">
-										<input type="text" class="span6 m-wrap"
-											validate="{required:true}"
-											name="updatebyId" value="${obj.updatebyId }" />
+										${updater.name}
 									</div>
 								</div>
 								<div class="control-group">
-									<label class="control-label">建立世间:</label>
+									<label class="control-label">建立时间:</label>
 									<div class="controls">
-										<input type="text" class="span6 m-wrap"
-											validate="{required:true}"
-											name="createDate" value="${obj.createDate }" />
+										${obj.createDate }
 									</div>
 								</div>
 								<div class="control-group">
-									<label class="control-label">更新世间:</label>
+									<label class="control-label">更新时间:</label>
 									<div class="controls">
-										<input type="text" class="span6 m-wrap"
-											validate="{required:true}"
-											name="updateDate" value="${obj.updateDate }" />
+										${obj.updateDate }
 									</div>
 								</div>
+								</c:if>
 								<div class="control-group">
 									<label class="control-label">备注:</label>
 									<div class="controls">
-										<input type="text" class="span6 m-wrap"
-											validate="{required:true}"
-											name="remark" value="${obj.remark }" />
+										<input type="text" class="span6 m-wrap" validate="{required:true}" name="remark" value="${obj.remark }" />
 									</div>
 								</div>
-								
-								
+
+
 								<div class="form-actions">
 									<button type="submit" class="btn blue">提交</button>
 									<a class='btn' href="${header.Referer }">返回</a>
@@ -114,11 +96,24 @@
 			</div>
 		</div>
 	</div>
-<%@ include file="/WEB-INF/content/common/plugins/jquery-validation.jsp"%>
-<script type="text/javascript">
-	$(function(){
-		App.activeMenu("meta/dBIndex/list");
-	});
-</script>
+	<%@ include file="/WEB-INF/content/common/plugins/jquery-validation.jsp"%>
+	<script type="text/javascript">
+		$(function() {
+			App.activeMenu("meta/dBIndex/list");
+		});
+		function showTable() {
+			$("#tableList").modal();
+		}
+		function selTable(obj) {
+			var flag = Page.selectsPrompt();
+			if (!flag)
+				return;
+
+			var obj = $("#sample_1").find("td :checkbox:checked");
+			$('input[id=dbtable]').val(obj.first().attr("data-text"));
+			$('input[id=tableId]').val(flag);
+			$('#tableList').modal('hide');
+		}
+	</script>
 </body>
 </html>

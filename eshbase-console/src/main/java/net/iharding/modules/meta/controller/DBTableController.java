@@ -1,5 +1,7 @@
 package net.iharding.modules.meta.controller;
 
+import java.util.Date;
+
 import javax.validation.Valid;
 
 import net.iharding.modules.meta.model.DBTable;
@@ -7,6 +9,7 @@ import net.iharding.modules.meta.service.DBTableService;
 
 import org.guess.core.web.BaseController;
 import org.guess.sys.service.UserService;
+import org.guess.sys.util.UserUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -64,5 +67,19 @@ public class DBTableController extends BaseController<DBTable>{
 		if (obj.getCreatebyId()!=null)mav.addObject("creater", userService.get(obj.getCreatebyId()));
 		if (obj.getUpdatebyId()!=null)mav.addObject("updater", userService.get(obj.getUpdatebyId()));
 		return mav;
+	}
+	
+	@RequestMapping(method = RequestMethod.GET, value = "/setCheckLabel/{id}")
+	public String setCheckLabel(@PathVariable("id") Long id) throws Exception {
+		DBTable obj = dbTableService.get(id);
+		if (obj.getCheckLabel()==0){
+			obj.setCheckLabel(1);
+		}else{
+			obj.setCheckLabel(0);
+		}
+		obj.setUpdateDate(new Date());
+		obj.setUpdatebyId(UserUtil.getCurrentUser().getId());
+		dbTableService.save(obj);
+		return this.list();
 	}
 }
