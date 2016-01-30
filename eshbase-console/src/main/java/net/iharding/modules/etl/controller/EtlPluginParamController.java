@@ -23,7 +23,7 @@ public class EtlPluginParamController extends BaseController<EtlPluginParam>{
 		editView = "/etl/EtlPluginParam/edit";
 		listView = "/etl/EtlPluginParam/list";
 		showView = "/etl/EtlPluginParam/show";
-	}
+}
 	
 	@Autowired
 	private EtlPluginParamService etlPluginParamService;

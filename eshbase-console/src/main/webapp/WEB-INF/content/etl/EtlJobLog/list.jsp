@@ -8,6 +8,7 @@
 	<div class="page-content">
 		<div class="container-fluid">
 			<!-- 页面导航 -->
+
 			<tool:navBar pageTitle="调度作业日志列表" pageTitleContent="ETL管理-调度作业日志管理-调度作业日志列表" titleIcon="icon-home"/>
 			<!-- 主体内容 -->
 			<div class="row-fluid">

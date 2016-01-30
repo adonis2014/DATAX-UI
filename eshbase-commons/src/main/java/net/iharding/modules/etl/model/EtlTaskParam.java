@@ -21,7 +21,6 @@ public class EtlTaskParam extends IdEntity {
 	/**
 	 * 任务ID
 	 */
-	
 	private Long taskId;
 	/**
 	 * 插件参数ID

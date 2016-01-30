@@ -1,5 +1,6 @@
 package net.iharding.modules.etl.model;
 
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
