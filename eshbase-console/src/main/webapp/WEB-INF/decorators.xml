@@ -11,6 +11,7 @@
 		<pattern>/file/*</pattern>
 		<pattern>/meta/*</pattern>
 		<pattern>/etl/*</pattern>
+		<pattern>/job/*</pattern>
 		<pattern>/mobile/*</pattern>
 		<pattern>/workflow/*</pattern>
         <pattern>/chat/*</pattern>

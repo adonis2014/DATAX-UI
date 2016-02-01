@@ -39,14 +39,71 @@ public class CodeGenerate {
 		List<Field> fields = new ArrayList<Field>();
 		
 		String classAuthor = "Joe.zhang"; // 类作者，例：
-		String moduleName = "etl"; // 模块名，例：sys    
-		String className = "EtlTaskParam"; // 类名，例：user
-		String functionName = "任务参数"; // 功能名，例：用户
-		fields.add(new Field("taskId", "任务ID", "Long"));
-		fields.add(new Field("pluginParamId", "插件参数ID", "Long"));
-		fields.add(new Field("paramKey", "参数Key", "String"));
-		fields.add(new Field("paramValue", "参数值", "String"));
-		fields.add(new Field("remark", "备注", "String"));
+		String moduleName = "job"; // 模块名，例：sys  
+		String className = "JobTaskDefine"; // 类名，例：user
+		String functionName = "作业任务"; // 功能名，例：用户
+		fields.add(new Field("machineId", "作业终端ID", "Long"));
+		fields.add(new Field("workerId", "作业执行ID", "Long"));
+		fields.add(new Field("regId", "注册中心ID", "Long"));
+		fields.add(new Field("status", "状态", "Integer"));
+		
+		
+//		String className = "JobWorker"; // 类名，例：user
+//		String functionName = "作业执行定义"; // 功能名，例：用户
+//		fields.add(new Field("name", "名称", "String"));
+//		fields.add(new Field("jobClassId", "作业类ID", "Long"));
+//		fields.add(new Field("logicName", "逻辑名", "String"));
+//		fields.add(new Field("jobClassName", "作业类名", "String"));
+//		fields.add(new Field("shardingTotalCount", "作业分片总数", "Integer"));
+//		fields.add(new Field("cron", "作业启动时间的cron表达式", "String"));
+//		fields.add(new Field("shardingItemParameters", "分片序列号和个性化参数对照表", "String"));
+//		fields.add(new Field("jobParameter", "作业自定义参数", "String"));
+//		fields.add(new Field("monitorExecution", "监控作业执行时状态", "Integer"));
+//		fields.add(new Field("processCountInterval", "统计作业处理数据数量的间隔时间", "Integer"));
+//		fields.add(new Field("dataProcessThread", "处理数据的并发线程数", "Integer"));
+//		fields.add(new Field("fetchDataCount", "每次抓取的数据量", "Integer"));
+//		fields.add(new Field("maxtimeDiff", "最大容忍的本机与注册中心的时间误差秒数", "Integer"));
+//		fields.add(new Field("failover", "是否开启失效转移", "Integer"));
+//		fields.add(new Field("misfire", "是否开启misfire", "Integer"));
+//		fields.add(new Field("shardingStrategyClass", "作业分片策略实现类全路径", "String"));
+//		fields.add(new Field("disabled", "作业是否禁止启动", "Integer"));
+//		fields.add(new Field("overwrite", "本地配置是否可覆盖注册中心配置", "Integer"));
+		
+		
+//		String className = "RegCenter"; // 类名，例：user
+//		String functionName = "注册中心"; // 功能名，例：用户
+//		fields.add(new Field("name", "名称", "String"));
+//		fields.add(new Field("zkQuorumPeer", "ZK列表", "String"));
+//		fields.add(new Field("nameSpace", "命名空间", "String"));
+//		fields.add(new Field("baseSleepTime", "待重试间隔时间", "Integer"));
+//		fields.add(new Field("maxSleepTime", "待重试间隔时间最大值", "Integer"));
+//		fields.add(new Field("maxRetries", "最大重试次数", "Integer"));
+//		fields.add(new Field("loginCert", "登录凭证", "String"));
+		
+//		String className = "Machine"; // 类名，例：user
+//		String functionName = "作业终端"; // 功能名，例：用户
+//		fields.add(new Field("machineName", "终端名", "String"));
+//		fields.add(new Field("address", "终端地址", "String"));
+//		fields.add(new Field("sshPort", "ssh端口", "Integer"));
+//		fields.add(new Field("loginName", "登录名", "String"));
+//		fields.add(new Field("loginPassword", "登录密码", "String"));
+//		fields.add(new Field("userDir", "工作路径", "String"));
+		
+//		String className = "JobClass"; // 类名，例：user
+//		String functionName = "作业类信息"; // 功能名，例：用户
+//		fields.add(new Field("name", "作业名", "String"));
+//		fields.add(new Field("jobType", "作业类型", "Integer"));
+//		fields.add(new Field("className", "类名", "String"));
+//		fields.add(new Field("version", "版本", "String"));
+//		fields.add(new Field("productId", "作业产品ID", "String"));
+		
+//		String className = "EtlTaskParam"; // 类名，例：user
+//		String functionName = "任务参数"; // 功能名，例：用户
+//		fields.add(new Field("taskId", "任务ID", "Long"));
+//		fields.add(new Field("pluginParamId", "插件参数ID", "Long"));
+//		fields.add(new Field("paramKey", "参数Key", "String"));
+//		fields.add(new Field("paramValue", "参数值", "String"));
+//		fields.add(new Field("remark", "备注", "String"));
 		
 //		fields.add(new Field("pluginId", "插件ID", "Long"));
 //		fields.add(new Field("taskParamId", "任务参数ID", "Long"));
@@ -141,12 +198,12 @@ public class CodeGenerate {
 //		fields.add(new Field("required", "是否必须", "String")); 
 //		fields.add(new Field("format", "格式", "String")); 
 
-//		fields.add(new Field("createbyId", "建立者", "Long"));
-//		fields.add(new Field("updatebyId", "更新者", "Long"));
-//		fields.add(new Field("createDate", "建立时间", "Date"));
-//		fields.add(new Field("updateDate", "更新时间", "Date"));
-//		fields.add(new Field("checkLabel", "启用标记", "Integer"));
-//		fields.add(new Field("remark", "备注", "String"));
+		fields.add(new Field("createbyId", "建立者", "Long"));
+		fields.add(new Field("updatebyId", "更新者", "Long"));
+		fields.add(new Field("createDate", "建立时间", "Date"));
+		fields.add(new Field("updateDate", "更新时间", "Date"));
+		fields.add(new Field("checkLabel", "启用标记", "Integer"));
+		fields.add(new Field("remark", "备注", "String"));
 
 		// 是否启用生成工具
 		Boolean isEnable = true;
