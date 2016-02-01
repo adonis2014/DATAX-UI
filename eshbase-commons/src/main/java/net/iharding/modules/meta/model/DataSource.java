@@ -109,13 +109,13 @@ public class DataSource extends IdEntity {
 	private Set<DBTable> tables;
 	
 	@Column(name="check_label")
-	private int checkLabel;
+	private Integer checkLabel;
 	
-	public int getCheckLabel() {
+	public Integer getCheckLabel() {
 		return checkLabel;
 	}
 
-	public void setCheckLabel(int checkLabel) {
+	public void setCheckLabel(Integer checkLabel) {
 		this.checkLabel = checkLabel;
 	}
 

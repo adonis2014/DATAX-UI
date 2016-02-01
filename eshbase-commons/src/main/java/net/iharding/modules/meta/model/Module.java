@@ -104,13 +104,13 @@ public class Module extends IdEntity {
 	private Set<DBTable> tables = new HashSet<DBTable>(0);
 	
 	@Column(name="check_label")
-	private int checkLabel;
+	private Integer checkLabel;
 	
-	public int getCheckLabel() {
+	public Integer getCheckLabel() {
 		return checkLabel;
 	}
 
-	public void setCheckLabel(int checkLabel) {
+	public void setCheckLabel(Integer checkLabel) {
 		this.checkLabel = checkLabel;
 	}
 
