@@ -1,8 +1,10 @@
 package net.iharding.modules.job.dao.impl;
 
-import org.guess.core.orm.hibernate.HibernateDao;
 import net.iharding.modules.job.dao.JobClassDao;
 import net.iharding.modules.job.model.JobClass;
+
+import org.guess.core.orm.hibernate.HibernateDao;
+import org.hibernate.Session;
 import org.springframework.stereotype.Repository;
 
 /**
@@ -15,5 +17,9 @@ import org.springframework.stereotype.Repository;
 */
 @Repository
 public class JobClassDaoImpl extends HibernateDao<JobClass,Long> implements JobClassDao {
-
+	@Override
+	public void save(JobClass jobClass) {
+		Session session = getSession();
+		session.merge(jobClass);
+	}
 }

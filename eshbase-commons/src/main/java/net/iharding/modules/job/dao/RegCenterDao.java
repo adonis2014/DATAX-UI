@@ -1,6 +1,7 @@
 package net.iharding.modules.job.dao;
 
 import org.guess.core.orm.EntityDao;
+
 import net.iharding.modules.job.model.RegCenter;
 
 /**
@@ -12,5 +13,7 @@ import net.iharding.modules.job.model.RegCenter;
 *
 */
 public interface RegCenterDao extends EntityDao<RegCenter, Long>{
+
+	public RegCenter getByName(String name);
 	
 }

@@ -1,11 +1,18 @@
 package net.iharding.modules.job.controller;
 
-import org.guess.core.web.BaseController;
+import java.util.Date;
+
 import net.iharding.modules.job.model.JobClass;
 import net.iharding.modules.job.service.JobClassService;
+
+import org.guess.core.web.BaseController;
+import org.guess.sys.util.UserUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 /**
 * 
@@ -27,4 +34,19 @@ public class JobClassController extends BaseController<JobClass>{
 	
 	@Autowired
 	private JobClassService jobClassService;
+	
+	@RequestMapping(method = RequestMethod.POST, value = "setCheckLabel")
+	@ResponseBody
+	public int setCheckLabel(@RequestParam("id") Long id) throws Exception {
+		JobClass obj = jobClassService.get(id);
+		if (obj.getCheckLabel()==null || obj.getCheckLabel()==0){
+			obj.setCheckLabel(1);
+		}else{
+			obj.setCheckLabel(0);
+		}
+		obj.setUpdateDate(new Date());
+		obj.setUpdater(UserUtil.getCurrentUser());
+		jobClassService.save(obj);
+		return obj.getCheckLabel();
+	}
 }

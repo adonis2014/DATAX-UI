@@ -57,11 +57,14 @@
 		</div>
 	</div>
 	<%@ include file="/WEB-INF/content/common/plugins/page.jsp"%>
+	<script type="text/javascript" src="${ctx}/assets/js/map.js"></script>
 	<script type="text/javascript">
 		$(document).ready(function() {
-
+			var checkLabelMap = new Map();  
+			<mytags:dictSelect field="checkLabelMap" id="checkLabelMap" type="map" hasLabel="false" codeType="17" />
+			var classTypeMap = new Map();  
+			<mytags:dictSelect field="classTypeMap" id="classTypeMap" type="map" hasLabel="false" codeType="19" />
 			App.activeMenu("job/JobClass/list");
-
 			Page.initData({
 				url : "${ctx}/job/JobClass/page",
 				pageNo : 1,
@@ -71,12 +74,12 @@
 				cName : "name",
 				cValue : "作业名"
 			},
-
 			{
 				cName : "jobType",
-				cValue : "作业类型"
+				cValue : "作业类型",format:function(i,value,item){
+			 		return classTypeMap.get(item.jobType);
+			 	}
 			},
-
 			{
 				cName : "className",
 				cValue : "类名"
@@ -91,38 +94,69 @@
 				cName : "productId",
 				cValue : "作业产品ID"
 			},
-
-			{
-				cName : "createbyId",
-				cValue : "建立者"
-			},
-
-			{
-				cName : "updatebyId",
-				cValue : "更新者"
-			},
-
 			{
 				cName : "createDate",
-				cValue : "建立时间"
+				cValue : "建立时间",format:function(i,value,item){
+					 if(App.isNundef(value)){
+						 return new Date(value).format("yyyy-MM-dd");
+					 }
+					 return value;
+				 }
 			},
 
 			{
 				cName : "updateDate",
-				cValue : "更新时间"
+				cValue : "更新时间",format:function(i,value,item){
+					 if(App.isNundef(value)){
+						 return new Date(value).format("yyyy-MM-dd");
+					 }
+					 return value;
+				 }
 			},
 
 			{
 				cName : "checkLabel",
-				cValue : "启用标记"
-			},
-
-			{
-				cName : "remark",
-				cValue : "备注"
+				cValue : "启用标记",format:function(i,value,item){
+					<shiro:hasPermission name="job:JobClass:changeJobClassCL">
+					 var $a = $('<a href="javascript:void(0)" data-id="'+item.id+'" data-placement="right"  onclick="javascript:changeJobClassCL(this)"></a>');
+					 if(value === 1){
+						 return $a.clone().attr("data-original-title","点击禁用").addClass("green").html('<i class="icon-unlock"></i>&nbsp;&nbsp;  已启用');
+					 }
+					 return $a.attr("data-original-title","点击启用").addClass("grey").html('<i class="icon-lock"></i>&nbsp;&nbsp;  已禁用');
+				 	</shiro:hasPermission>
+				 	if(value == 1){
+					 	return "<span class='label label-success'>已启用</span>";
+					 }
+				 	return "<span class='label label-danger'>已禁用</span>";
+				}
 			} ]);
 		});
 
+		function changeJobClassCL(obj){
+			var callback = function(result){
+				if(!result){
+					return;
+				}
+				blockUI();
+				$.ajax({
+					type : "POST",
+					dataType : "json",
+					url : Page.subUrl()+"/setCheckLabel",
+					data : {"id":$(obj).attr("data-id")},
+					success : function(data){
+						if(data == 1){
+							$(obj).removeAttr("data-original-title").attr("data-original-title","点击禁用").removeClass("grey").addClass("green").html('<i class="icon-unlock"></i>启用');
+						}else{
+							$(obj).removeAttr("data-original-title").attr("data-original-title","点击启用").removeClass("green").addClass("grey").html('<i class="icon-lock"></i>禁用');
+						}
+						unBlockUI();
+					}
+				});
+			};
+			App.confirm(callback);
+			
+		}
+		
 		function doQuery() {
 			var queryObj = {
 				search_LIKES_name_OR_jobType_OR_className_OR_version_OR_productId_OR_createbyId_OR_updatebyId_OR_createDate_OR_updateDate_OR_checkLabel_OR_remark : App

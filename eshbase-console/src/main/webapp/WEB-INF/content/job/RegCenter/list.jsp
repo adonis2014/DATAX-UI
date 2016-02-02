@@ -104,16 +104,45 @@
 				cValue : "登录凭证"
 			}, {
 				cName : "checkLabel",
-				cValue : "启用标记",format:function(i,value,item){
-			 		return checkLabelMap.get(item.checkLabel);
-			 	}
-			},
-
-			{
-				cName : "remark",
-				cValue : "备注"
+				cValue : "标记",format:function(i,value,item){
+					<shiro:hasPermission name="job:RegCenter:connectRegCenter">
+					 var $a = $('<a href="javascript:void(0)" data-id="'+item.id+'" data-placement="right"  onclick="javascript:connectRegCenter(this)"></a>');
+					 if(value === 1){
+						 return $a.clone().attr("data-original-title","点击断开").html('<input type="button" value="断开"/>&nbsp;已连接');
+					 }
+					 return $a.attr("data-original-title","点击连接").html('<input type="button" value="连接"/>&nbsp;已断开');
+				 	</shiro:hasPermission>
+					 if(value == 1){
+					 	return "<span class='label label-success'>已连接</span>";
+					 }
+				 	return "<span class='label label-danger'>已断开</span>";
+			 }
 			} ]);
 		});
+		
+		function connectRegCenter(obj){
+			var callback = function(result){
+				if(!result){
+					return;
+				}
+				blockUI();
+				$.ajax({
+					type : "POST",
+					dataType : "json",
+					url : Page.subUrl()+"/connect",
+					data : {"id":$(obj).attr("data-id")},
+					success : function(data){
+						if(data == 1){
+							$(obj).removeAttr("data-original-title").attr("data-original-title","点击断开").removeClass("grey").addClass("green").html('<i class="icon-unlock"></i>已连接');
+						}else{
+							$(obj).removeAttr("data-original-title").attr("data-original-title","点击连接").removeClass("green").addClass("grey").html('<i class="icon-lock"></i>已断开');
+						}
+						unBlockUI();
+					}
+				});
+			};
+			App.confirm(callback);
+		}
 
 		function doQuery() {
 			var queryObj = {

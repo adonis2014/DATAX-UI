@@ -65,45 +65,52 @@
 								<div class="control-group">
 									<label class="control-label">登录凭证:</label>
 									<div class="controls">
-										<input type="text" class="span6 m-wrap"  name="loginCert" value="${obj.loginCert }" />
+										<input type="text" class="span6 m-wrap" name="loginCert" value="${obj.loginCert }" />
 									</div>
 								</div>
 								<c:if test="${not empty obj}">
-								<div class="control-group">
-									<label class="control-label">建立者:</label>
-									<div class="controls">
-										${obj.creater.name}
+									<div class="row-fluid">
+										<div class="span6 ">
+											<div class="control-group">
+												<label class="control-label">建立者:</label>
+												<div class="controls">${obj.creater.name}</div>
+											</div>
+										</div>
+										<div class="span6 ">
+											<div class="control-group">
+												<label class="control-label">更新者:</label>
+												<div class="controls">${obj.updater.name}</div>
+											</div>
+										</div>
 									</div>
-								</div>
-								<div class="control-group">
-									<label class="control-label">更新者:</label>
-									<div class="controls">
-										${obj.updater.name}
+									<div class="row-fluid">
+										<div class="span6 ">
+											<div class="control-group">
+												<label class="control-label">建立时间:</label>
+												<div class="controls">${obj.createDate }</div>
+											</div>
+										</div>
+										<div class="span6 ">
+											<div class="control-group">
+												<label class="control-label">更新时间:</label>
+												<div class="controls">${obj.updateDate }</div>
+											</div>
+										</div>
 									</div>
-								</div>
-								<div class="control-group">
-									<label class="control-label">建立时间:</label>
-									<div class="controls">
-										${obj.createDate }
+									<div class="row-fluid">
+										<div class="span6 ">
+									<div class="control-group">
+										<label class="control-label">启用标记:</label>
+										<div class="controls">
+											<mytags:dictSelect field="checkLabelMap" id="checkLabelMap" type="label" hasLabel="false" codeType="17" defaultVal="${obj.checkLabel }" />
+										</div>
 									</div>
-								</div>
-								<div class="control-group">
-									<label class="control-label">更新时间:</label>
-									<div class="controls">
-										${obj.updateDate }
-									</div>
-								</div>
-								<div class="control-group">
-									<label class="control-label">启用标记:</label>
-									<div class="controls">
-									<mytags:dictSelect field="checkLabelMap" id="checkLabelMap" type="label" hasLabel="false" codeType="17" defaultVal="${obj.checkLabel }"/>
-									</div>
-								</div>
+									</div></div>
 								</c:if>
 								<div class="control-group">
 									<label class="control-label">备注:</label>
 									<div class="controls">
-										<input type="text" class="span6 m-wrap"  name="remark" value="${obj.remark }" />
+										<input type="text" class="span6 m-wrap" name="remark" value="${obj.remark }" />
 									</div>
 								</div>
 

@@ -23,4 +23,9 @@ public class RegCenterDaoImpl extends HibernateDao<RegCenter,Long> implements Re
 		Session session = getSession();
 		session.merge(regCenter);
 	}
+
+	@Override
+	public RegCenter getByName(String name) {
+		return this.findUniqueBy("name",name);
+	}
 }

@@ -24,7 +24,6 @@
 						</div>
 						<div class="portlet-body form">
 							<form action="${ctx}/job/JobClass/edit" class="form-horizontal form_sync" method="post" id="form1">
-
 								<input type="hidden" value="${obj.id}" name="id">
 								<div class="control-group">
 									<label class="control-label">作业名:</label>
@@ -35,7 +34,7 @@
 								<div class="control-group">
 									<label class="control-label">作业类型:</label>
 									<div class="controls">
-										<input type="text" class="span6 m-wrap" validate="{required:true}" name="jobType" value="${obj.jobType }" />
+										<mytags:dictSelect field="jobType" id="jobType" defaultVal="${obj.jobType}" hasLabel="false" codeType="19" />
 									</div>
 								</div>
 								<div class="control-group">
@@ -56,44 +55,38 @@
 										<input type="text" class="span6 m-wrap" validate="{required:true}" name="productId" value="${obj.productId }" />
 									</div>
 								</div>
+								<c:if test="${not empty obj}">
 								<div class="control-group">
 									<label class="control-label">建立者:</label>
 									<div class="controls">
-										<input type="text" class="span6 m-wrap" validate="{required:true}" name="createbyId" value="${obj.createbyId }" />
+										${obj.creater.name}
 									</div>
 								</div>
 								<div class="control-group">
 									<label class="control-label">更新者:</label>
 									<div class="controls">
-										<input type="text" class="span6 m-wrap" validate="{required:true}" name="updatebyId" value="${obj.updatebyId }" />
+										${obj.updater.name}
 									</div>
 								</div>
 								<div class="control-group">
 									<label class="control-label">建立时间:</label>
 									<div class="controls">
-										<input type="text" class="span6 m-wrap" validate="{required:true}" name="createDate" value="${obj.createDate }" />
+										${obj.createDate }
 									</div>
 								</div>
 								<div class="control-group">
 									<label class="control-label">更新时间:</label>
 									<div class="controls">
-										<input type="text" class="span6 m-wrap" validate="{required:true}" name="updateDate" value="${obj.updateDate }" />
+										${obj.updateDate }
 									</div>
 								</div>
-								<div class="control-group">
-									<label class="control-label">启用标记:</label>
-									<div class="controls">
-										<input type="text" class="span6 m-wrap" validate="{required:true}" name="checkLabel" value="${obj.checkLabel }" />
-									</div>
-								</div>
+								</c:if>
 								<div class="control-group">
 									<label class="control-label">备注:</label>
 									<div class="controls">
 										<input type="text" class="span6 m-wrap" validate="{required:true}" name="remark" value="${obj.remark }" />
 									</div>
 								</div>
-
-
 								<div class="form-actions">
 									<button type="submit" class="btn blue">提交</button>
 									<a class='btn' href="${header.Referer }">返回</a>
