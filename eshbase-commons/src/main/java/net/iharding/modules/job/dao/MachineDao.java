@@ -1,6 +1,7 @@
 package net.iharding.modules.job.dao;
 
 import org.guess.core.orm.EntityDao;
+
 import net.iharding.modules.job.model.Machine;
 
 /**
@@ -12,5 +13,7 @@ import net.iharding.modules.job.model.Machine;
 *
 */
 public interface MachineDao extends EntityDao<Machine, Long>{
+
+	public Machine get(String serverIp);
 	
 }

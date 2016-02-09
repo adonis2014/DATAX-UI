@@ -6,7 +6,11 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import javax.annotation.Resource;
 
+import net.iharding.modules.job.dao.JobTaskDefineDao;
+import net.iharding.modules.job.dao.JobWorkerDao;
+import net.iharding.modules.job.dao.MachineDao;
 import net.iharding.modules.job.dao.RegCenterDao;
+import net.iharding.modules.job.model.Machine;
 import net.iharding.modules.job.model.RegCenter;
 import net.iharding.modules.job.service.RegCenterService;
 
@@ -17,11 +21,14 @@ import org.guess.sys.util.UserUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.dangdang.ddframe.job.console.domain.JobBriefInfo;
 import com.dangdang.ddframe.job.console.domain.RegistryCenterClient;
 import com.dangdang.ddframe.job.console.domain.ServerBriefInfo;
+import com.dangdang.ddframe.job.console.domain.ServerBriefInfo.ServerBriefStatus;
 import com.dangdang.ddframe.job.console.repository.zookeeper.CuratorRepository;
 import com.dangdang.ddframe.job.console.service.JobDimensionService;
 import com.dangdang.ddframe.job.console.service.ServerDimensionService;
+import com.dangdang.ddframe.job.console.util.SessionCuratorClient;
 
 /**
  * 
@@ -36,6 +43,19 @@ public class RegCenterServiceImpl extends BaseServiceImpl<RegCenter, Long> imple
 
 	@Autowired
 	private RegCenterDao regCenterDao;
+	
+	@Autowired
+	private MachineDao machineDao;
+	
+	
+	@Autowired
+	private JobWorkerDao jobWorkerDao;
+	
+	@Autowired
+	private JobTaskDefineDao jobTaskDefineDao;
+	
+	
+	
 
 	@Resource
 	private CuratorRepository curatorRepository;
@@ -44,6 +64,9 @@ public class RegCenterServiceImpl extends BaseServiceImpl<RegCenter, Long> imple
 	
 	@Resource
     private ServerDimensionService serverDimensionService;
+	
+	@Resource
+	private JobDimensionService jobDimensionService;
 	
 	@Override
 	public void save(RegCenter regCenter) throws Exception {
@@ -113,11 +136,36 @@ public class RegCenterServiceImpl extends BaseServiceImpl<RegCenter, Long> imple
 		regCenter.setUpdateDate(new Date());
 		regCenter.setCheckLabel(1);
 		regCenterDao.save(regCenter);
+		SessionCuratorClient.setCuratorClient(client);
 		//读取注册相关信息，包括作业终端和调度任务,并更新或者新建作业终端和作业信息
 		Collection<ServerBriefInfo> servers=serverDimensionService.getAllServersBriefInfo();
+		//作业服务器数据更新
 		for(ServerBriefInfo serv:servers){
-			//todo
-//			serv.getServerIp()
+			Machine machine=machineDao.get(serv.getServerIp());
+			if (machine==null){
+				machine=new Machine();
+				machine.setUpdater(cuser);
+				machine.setUpdateDate(new Date());
+				machine.setCreater(cuser);
+				machine.setCreateDate(new Date());
+			}else{
+				machine.setUpdater(cuser);
+				machine.setUpdateDate(new Date());
+			}
+			machine.setAddress(serv.getServerIp());
+			machine.setHostName(serv.getServerHostName());
+			if (serv.getStatus()==ServerBriefStatus.OK){
+				machine.setCheckLabel(1);
+			}else if  (serv.getStatus()==ServerBriefStatus.PARTIAL_ALIVE){
+				machine.setCheckLabel(2);
+			}else if  (serv.getStatus()==ServerBriefStatus.ALL_CRASHED){
+				machine.setCheckLabel(0);
+			}
+			machineDao.save(machine);
+		}
+		Collection<JobBriefInfo> jobs=jobDimensionService.getAllJobsBriefInfo();
+		for(JobBriefInfo thejob:jobs){
+			
 		}
 		return result;
 	}

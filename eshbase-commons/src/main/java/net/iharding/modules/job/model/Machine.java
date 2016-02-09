@@ -37,6 +37,9 @@ public class Machine extends IdEntity {
 	 * 终端地址
 	 */
 	private String address;
+	
+	@Column(name="host_name")
+	private String hostName;
 	/**
 	 * ssh端口
 	 */
@@ -83,6 +86,8 @@ public class Machine extends IdEntity {
 	 */
 	@Column(name="update_date")
 	private Date updateDate;
+	
+	
 	/**
 	 * 启用标记
 	 */
@@ -101,6 +106,14 @@ public class Machine extends IdEntity {
 		this.machineName = machineName;
 	}
 	
+	public String getHostName() {
+		return hostName;
+	}
+
+	public void setHostName(String hostName) {
+		this.hostName = hostName;
+	}
+
 	public String getAddress() {
 		return address;
 	}

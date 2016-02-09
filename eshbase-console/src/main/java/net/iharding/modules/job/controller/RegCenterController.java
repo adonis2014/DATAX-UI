@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.ModelAndView;
 
 import com.dangdang.ddframe.job.console.domain.RegistryCenterClient;
 
@@ -62,9 +63,24 @@ public class RegCenterController extends BaseController<RegCenter> {
 	 * @return
 	 */
 	@RequestMapping(value = "connect", method = RequestMethod.POST)
-	public boolean connect(@RequestParam("id") Long id) {
-		setClientToSession(regCenterService.connect(id), session);
-		return true;
+	public ModelAndView connect(@RequestParam("id") Long id)  throws Exception{
+		regCenterService.connect(id);
+		return show(id);
+	}
+	
+	/**
+	 * 展示
+	 * @param id
+	 * @return
+	 * @throws Exception
+	 */
+	@RequestMapping(value = "/show/{id}")
+	public ModelAndView show(@PathVariable("id") Long id) throws Exception{
+		RegCenter object = regCenterService.get(id);
+		regCenterService.connect(object);
+		ModelAndView mav = new ModelAndView(showView);
+		mav.addObject("obj", object);
+		return mav;
 	}
 
 	private boolean setClientToSession(final RegistryCenterClient client, final HttpSession session) {

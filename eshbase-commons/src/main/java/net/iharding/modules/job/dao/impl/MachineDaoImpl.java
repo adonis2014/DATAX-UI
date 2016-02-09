@@ -1,8 +1,12 @@
 package net.iharding.modules.job.dao.impl;
 
 import org.guess.core.orm.hibernate.HibernateDao;
+import org.hibernate.Session;
+
 import net.iharding.modules.job.dao.MachineDao;
 import net.iharding.modules.job.model.Machine;
+import net.iharding.modules.job.model.RegCenter;
+
 import org.springframework.stereotype.Repository;
 
 /**
@@ -15,5 +19,16 @@ import org.springframework.stereotype.Repository;
 */
 @Repository
 public class MachineDaoImpl extends HibernateDao<Machine,Long> implements MachineDao {
+
+	@Override
+	public Machine get(String serverIp) {
+		return this.findUniqueBy("address",serverIp);
+	}
+	
+//	@Override
+//	public void save(Machine machine) {
+//		Session session = getSession();
+//		session.merge(machine);
+//	}
 
 }

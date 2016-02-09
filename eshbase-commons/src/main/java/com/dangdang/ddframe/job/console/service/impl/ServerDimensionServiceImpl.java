@@ -48,7 +48,7 @@ public class ServerDimensionServiceImpl implements ServerDimensionService {
         Map<String, String> serverHostMap = new HashMap<>();
         Map<String, Boolean> serverAlivedCountMap = new HashMap<>();
         Map<String, Boolean> serverCrashedCountMap = new HashMap<>();
-        List<String> jobs = curatorRepository.getChildren("/");
+        List<String> jobs = curatorRepository.getChildren("");
         for (String jobName : jobs) {
             List<String> servers = curatorRepository.getChildren(JobNodePath.getServerNodePath(jobName));
             for (String server : servers) {
