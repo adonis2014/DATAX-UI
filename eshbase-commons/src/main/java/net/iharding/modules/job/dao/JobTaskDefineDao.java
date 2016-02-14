@@ -1,6 +1,7 @@
 package net.iharding.modules.job.dao;
 
 import org.guess.core.orm.EntityDao;
+
 import net.iharding.modules.job.model.JobTaskDefine;
 
 /**
@@ -12,5 +13,14 @@ import net.iharding.modules.job.model.JobTaskDefine;
 *
 */
 public interface JobTaskDefineDao extends EntityDao<JobTaskDefine, Long>{
+
+/**
+ * 根据机器，jobworker,注册中心获取任务定义
+ * @param machineId
+ * @param jobWprkerId
+ * @param regCenterId
+ * @return
+ */
+	public JobTaskDefine get(Long machineId, Long jobWprkerId, Long regCenterId);
 	
 }

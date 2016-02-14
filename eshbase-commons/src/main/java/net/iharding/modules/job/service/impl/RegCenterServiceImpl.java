@@ -6,10 +6,14 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import javax.annotation.Resource;
 
+import net.iharding.modules.job.dao.JobClassDao;
 import net.iharding.modules.job.dao.JobTaskDefineDao;
 import net.iharding.modules.job.dao.JobWorkerDao;
 import net.iharding.modules.job.dao.MachineDao;
 import net.iharding.modules.job.dao.RegCenterDao;
+import net.iharding.modules.job.model.JobClass;
+import net.iharding.modules.job.model.JobTaskDefine;
+import net.iharding.modules.job.model.JobWorker;
 import net.iharding.modules.job.model.Machine;
 import net.iharding.modules.job.model.RegCenter;
 import net.iharding.modules.job.service.RegCenterService;
@@ -22,6 +26,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.dangdang.ddframe.job.console.domain.JobBriefInfo;
+import com.dangdang.ddframe.job.console.domain.JobServer;
+import com.dangdang.ddframe.job.console.domain.JobServer.ServerStatus;
+import com.dangdang.ddframe.job.console.domain.JobSettings;
 import com.dangdang.ddframe.job.console.domain.RegistryCenterClient;
 import com.dangdang.ddframe.job.console.domain.ServerBriefInfo;
 import com.dangdang.ddframe.job.console.domain.ServerBriefInfo.ServerBriefStatus;
@@ -54,8 +61,8 @@ public class RegCenterServiceImpl extends BaseServiceImpl<RegCenter, Long> imple
 	@Autowired
 	private JobTaskDefineDao jobTaskDefineDao;
 	
-	
-	
+	@Autowired
+	private JobClassDao jobClassDao;
 
 	@Resource
 	private CuratorRepository curatorRepository;
@@ -165,7 +172,94 @@ public class RegCenterServiceImpl extends BaseServiceImpl<RegCenter, Long> imple
 		}
 		Collection<JobBriefInfo> jobs=jobDimensionService.getAllJobsBriefInfo();
 		for(JobBriefInfo thejob:jobs){
-			
+			JobSettings jobset=jobDimensionService.getJobSettings(thejob.getJobName());
+			//调度任务基本信息
+			JobClass jobc=jobClassDao.get(jobset.getJobClass());
+			if (jobc==null){
+				jobc=new JobClass();
+				jobc.setUpdater(cuser);
+				jobc.setUpdateDate(new Date());
+				jobc.setCreater(cuser);
+				jobc.setCreateDate(new Date());
+			}else{
+				jobc.setUpdater(cuser);
+				jobc.setUpdateDate(new Date());
+			}
+			jobc.setClassName(jobset.getJobClass());
+			jobc.setName(jobset.getJobName());
+			jobc.setProductId(jobset.getJobName());
+			jobc.setVersion("1.0");
+			jobc.setRemark(jobset.getDescription());
+			jobc.setCheckLabel(1);
+			jobClassDao.save(jobc);
+			//调度任务设置信息
+			JobWorker jobw=jobWorkerDao.get(jobset.getJobName());
+			if (jobw==null){
+				jobw=new JobWorker();
+				jobw.setUpdater(cuser);
+				jobw.setUpdateDate(new Date());
+				jobw.setCreater(cuser);
+				jobw.setCreateDate(new Date());
+			}else{
+				jobw.setUpdater(cuser);
+				jobw.setUpdateDate(new Date());
+			}
+			jobw.setJobClassName(jobset.getJobClass());
+			jobw.setName(jobset.getJobName());
+			jobw.setCron(jobset.getCron());
+			jobw.setShardingTotalCount(jobset.getShardingTotalCount());
+			jobw.setShardingItemParameters(jobset.getShardingItemParameters());
+			jobw.setJobParameter(jobset.getJobParameter());
+			if (jobset.isMonitorExecution())jobw.setMonitorExecution(1);
+			jobw.setProcessCountInterval(jobset.getProcessCountIntervalSeconds());
+			jobw.setDataProcessThread(jobset.getConcurrentDataProcessThreadCount());
+			jobw.setFetchDataCount(jobset.getFetchDataCount());
+			jobw.setMaxtimeDiff(jobset.getMaxTimeDiffSeconds());
+			if (jobset.isMisfire())jobw.setMisfire(1);
+			if (jobset.isFailover())jobw.setFailover(1);
+			jobw.setShardingStrategyClass(jobset.getJobShardingStrategyClass());
+			jobw.setRemark(jobset.getDescription());
+			jobWorkerDao.save(jobw);
+			Collection<JobServer> jobServers=jobDimensionService.getServers(thejob.getJobName());
+			for(JobServer jobsvr:jobServers){
+				//设置调度任务在服务器执行信息
+				Machine tmpMachine=machineDao.get(jobsvr.getIp());
+				if (tmpMachine!=null && jobw.getId()!=null){
+					JobTaskDefine jobtd=jobTaskDefineDao.get(tmpMachine.getId(),jobw.getId(),regCenter.getId());
+					if (jobtd==null){
+						jobtd=new JobTaskDefine();
+						jobtd.setUpdater(cuser);
+						jobtd.setUpdateDate(new Date());
+						jobtd.setCreater(cuser);
+						jobtd.setCreateDate(new Date());
+						jobtd.setMachineId(tmpMachine.getId());
+						jobtd.setRegId(regCenter.getId());
+						jobtd.setWorkerId(jobw.getId());
+					}else{
+						jobtd.setUpdater(cuser);
+						jobtd.setUpdateDate(new Date());
+					}
+					jobtd.setSharding(jobsvr.getSharding());
+					if (ServerStatus.CRASHED==jobsvr.getStatus()){
+						jobtd.setStatus(-3);
+					}else if (ServerStatus.READY==jobsvr.getStatus()){
+						jobtd.setStatus(0);
+					}else if (ServerStatus.RUNNING==jobsvr.getStatus()){
+						jobtd.setStatus(1);
+					}else if (ServerStatus.DISABLED==jobsvr.getStatus()){
+						jobtd.setStatus(-1);
+					}else if (ServerStatus.STOPED==jobsvr.getStatus()){
+						jobtd.setStatus(-2);
+					}
+					jobtd.setCheckLabel(1);
+					jobtd.setRemark(jobsvr.getJobName()+"-"+jobsvr.getIp()+"-"+jobsvr.getHostName());
+					jobtd.setProcessFailureCount(jobsvr.getProcessFailureCount());
+					jobtd.setProcessSuccessCount(jobsvr.getProcessSuccessCount());
+					if (jobsvr.isLeader())jobtd.setIslead(1);else jobtd.setIslead(0);
+					if (jobsvr.isLeaderStoped())jobtd.setIsleadstop(1);else jobtd.setIsleadstop(0);
+					jobTaskDefineDao.save(jobtd);
+				}
+			}
 		}
 		return result;
 	}

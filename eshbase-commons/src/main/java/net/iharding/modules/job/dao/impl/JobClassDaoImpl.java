@@ -17,9 +17,15 @@ import org.springframework.stereotype.Repository;
 */
 @Repository
 public class JobClassDaoImpl extends HibernateDao<JobClass,Long> implements JobClassDao {
+	
 	@Override
 	public void save(JobClass jobClass) {
 		Session session = getSession();
 		session.merge(jobClass);
+	}
+
+	@Override
+	public JobClass get(String jobClass) {
+		return  this.findUniqueBy("className",jobClass);
 	}
 }

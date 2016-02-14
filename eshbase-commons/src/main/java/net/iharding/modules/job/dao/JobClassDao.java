@@ -1,6 +1,7 @@
 package net.iharding.modules.job.dao;
 
 import org.guess.core.orm.EntityDao;
+
 import net.iharding.modules.job.model.JobClass;
 
 /**
@@ -12,5 +13,7 @@ import net.iharding.modules.job.model.JobClass;
 *
 */
 public interface JobClassDao extends EntityDao<JobClass, Long>{
+
+	public JobClass get(String jobClass);
 	
 }

@@ -82,7 +82,61 @@ public class JobTaskDefine extends IdEntity {
 	 * 备注
 	 */
 	private String remark;
+	@Column(name="sharding")
+	private String sharding;
+
+	private Integer islead;
 	
+	private Integer isleadstop;
+	
+	@Column(name="process_failure_count")
+	private Integer processFailureCount;
+	
+	@Column(name="process_success_count")
+	private Integer processSuccessCount;
+	
+	
+	
+	public String getSharding() {
+		return sharding;
+	}
+
+	public void setSharding(String sharding) {
+		this.sharding = sharding;
+	}
+
+	public Integer getIslead() {
+		return islead;
+	}
+
+	public void setIslead(Integer islead) {
+		this.islead = islead;
+	}
+
+	public Integer getIsleadstop() {
+		return isleadstop;
+	}
+
+	public void setIsleadstop(Integer isleadstop) {
+		this.isleadstop = isleadstop;
+	}
+
+	public Integer getProcessFailureCount() {
+		return processFailureCount;
+	}
+
+	public void setProcessFailureCount(Integer processFailureCount) {
+		this.processFailureCount = processFailureCount;
+	}
+
+	public Integer getProcessSuccessCount() {
+		return processSuccessCount;
+	}
+
+	public void setProcessSuccessCount(Integer processSuccessCount) {
+		this.processSuccessCount = processSuccessCount;
+	}
+
 	public Long getMachineId() {
 		return machineId;
 	}

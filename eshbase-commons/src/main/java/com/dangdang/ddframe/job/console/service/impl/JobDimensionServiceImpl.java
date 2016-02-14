@@ -46,7 +46,7 @@ public class JobDimensionServiceImpl implements JobDimensionService {
     
     @Override
     public Collection<JobBriefInfo> getAllJobsBriefInfo() {
-        List<String> jobNames = curatorRepository.getChildren("/");
+        List<String> jobNames = curatorRepository.getChildren("");
         List<JobBriefInfo> result = new ArrayList<>(jobNames.size());
         for (String each : jobNames) {
             JobBriefInfo jobBriefInfo = new JobBriefInfo();

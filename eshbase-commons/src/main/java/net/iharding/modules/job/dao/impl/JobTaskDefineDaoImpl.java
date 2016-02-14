@@ -1,8 +1,12 @@
 package net.iharding.modules.job.dao.impl;
 
 import org.guess.core.orm.hibernate.HibernateDao;
+import org.hibernate.criterion.Criterion;
+import org.hibernate.criterion.Restrictions;
+
 import net.iharding.modules.job.dao.JobTaskDefineDao;
 import net.iharding.modules.job.model.JobTaskDefine;
+
 import org.springframework.stereotype.Repository;
 
 /**
@@ -15,5 +19,13 @@ import org.springframework.stereotype.Repository;
 */
 @Repository
 public class JobTaskDefineDaoImpl extends HibernateDao<JobTaskDefine,Long> implements JobTaskDefineDao {
+
+	@Override
+	public JobTaskDefine get(Long machineId, Long jobWprkerId, Long regCenterId) {
+		Criterion criterion1 = Restrictions.eq("machineId", machineId);
+		Criterion criterion2 = Restrictions.eq("workerId", jobWprkerId);
+		Criterion criterion3 = Restrictions.eq("regId", regCenterId);
+		return this.findUnique(criterion1,criterion2,criterion3);
+	}
 
 }

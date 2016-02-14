@@ -4,6 +4,7 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -17,6 +18,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.io.DefaultResourceLoader;
 
+import com.dangdang.ddframe.job.console.domain.ExecutionInfo.ExecutionStatus;
 import com.google.common.collect.Maps;
 
 import freemarker.template.Configuration;
@@ -40,12 +42,23 @@ public class CodeGenerate {
 		
 		String classAuthor = "Joe.zhang"; // 类作者，例：
 		String moduleName = "job"; // 模块名，例：sys  
-		String className = "JobTaskDefine"; // 类名，例：user
-		String functionName = "作业任务"; // 功能名，例：用户
-		fields.add(new Field("machineId", "作业终端ID", "Long"));
+		String className = "JobExecutionInfo"; // 类名，例：user
+		String functionName = "作业任务日志"; // 功能名，例：用户
 		fields.add(new Field("workerId", "作业执行ID", "Long"));
-		fields.add(new Field("regId", "注册中心ID", "Long"));
-		fields.add(new Field("status", "状态", "Integer"));
+		fields.add(new Field("item", "分片项", "Integer"));
+		fields.add(new Field("failoverIp", "失败跳转", "Integer"));
+		fields.add(new Field("status", "状态", "String"));
+		fields.add(new Field("lastBeginTime", "最后启动时间", "Date"));
+		fields.add(new Field("nextFireTime", "下次触发时间", "Date"));
+		fields.add(new Field("lastCompleteTime", "最后完成时间", "Date"));
+		
+//		
+//		String className = "JobTaskDefine"; // 类名，例：user
+//		String functionName = "作业任务"; // 功能名，例：用户
+//		fields.add(new Field("machineId", "作业终端ID", "Long"));
+//		fields.add(new Field("workerId", "作业执行ID", "Long"));
+//		fields.add(new Field("regId", "注册中心ID", "Long"));
+//		fields.add(new Field("status", "状态", "Integer"));
 		
 		
 //		String className = "JobWorker"; // 类名，例：user

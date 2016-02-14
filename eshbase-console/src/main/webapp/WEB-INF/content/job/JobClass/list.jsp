@@ -145,9 +145,9 @@
 					data : {"id":$(obj).attr("data-id")},
 					success : function(data){
 						if(data == 1){
-							$(obj).removeAttr("data-original-title").attr("data-original-title","点击禁用").removeClass("grey").addClass("green").html('<i class="icon-unlock"></i>启用');
+							$(obj).removeAttr("data-original-title").attr("data-original-title","点击禁用").removeClass("grey").addClass("green").html('<i class="icon-unlock"></i>已启用');
 						}else{
-							$(obj).removeAttr("data-original-title").attr("data-original-title","点击启用").removeClass("green").addClass("grey").html('<i class="icon-lock"></i>禁用');
+							$(obj).removeAttr("data-original-title").attr("data-original-title","点击启用").removeClass("green").addClass("grey").html('<i class="icon-lock"></i>已禁用');
 						}
 						unBlockUI();
 					}

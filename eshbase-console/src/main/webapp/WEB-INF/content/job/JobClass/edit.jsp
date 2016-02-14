@@ -25,6 +25,7 @@
 						<div class="portlet-body form">
 							<form action="${ctx}/job/JobClass/edit" class="form-horizontal form_sync" method="post" id="form1">
 								<input type="hidden" value="${obj.id}" name="id">
+								<input type="hidden" value="${obj.checkLabel}" name="checkLabel">
 								<div class="control-group">
 									<label class="control-label">作业名:</label>
 									<div class="controls">
@@ -84,7 +85,7 @@
 								<div class="control-group">
 									<label class="control-label">备注:</label>
 									<div class="controls">
-										<input type="text" class="span6 m-wrap" validate="{required:true}" name="remark" value="${obj.remark }" />
+										<input type="text" class="span6 m-wrap"  name="remark" value="${obj.remark }" />
 									</div>
 								</div>
 								<div class="form-actions">
