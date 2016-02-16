@@ -62,8 +62,8 @@ public class RegCenterController extends BaseController<RegCenter> {
 	 * @param id
 	 * @return
 	 */
-	@RequestMapping(value = "connect", method = RequestMethod.POST)
-	public ModelAndView connect(@RequestParam("id") Long id)  throws Exception{
+	@RequestMapping(value = "connect/{id}", method = RequestMethod.GET)
+	public ModelAndView connect(@PathVariable("id") Long id)  throws Exception{
 		regCenterService.connect(id);
 		return show(id);
 	}
@@ -77,7 +77,6 @@ public class RegCenterController extends BaseController<RegCenter> {
 	@RequestMapping(value = "/show/{id}")
 	public ModelAndView show(@PathVariable("id") Long id) throws Exception{
 		RegCenter object = regCenterService.get(id);
-		regCenterService.connect(object);
 		ModelAndView mav = new ModelAndView(showView);
 		mav.addObject("obj", object);
 		return mav;

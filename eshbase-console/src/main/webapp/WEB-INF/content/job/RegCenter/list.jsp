@@ -126,20 +126,7 @@
 					return;
 				}
 				blockUI();
-				$.ajax({
-					type : "POST",
-					dataType : "json",
-					url : Page.subUrl()+"/connect",
-					data : {"id":$(obj).attr("data-id")},
-					success : function(data){
-						if(data == 1){
-							$(obj).removeAttr("data-original-title").attr("data-original-title","点击断开").removeClass("grey").addClass("green").html('<i class="icon-unlock"></i>已连接');
-						}else{
-							$(obj).removeAttr("data-original-title").attr("data-original-title","点击连接").removeClass("green").addClass("grey").html('<i class="icon-lock"></i>已断开');
-						}
-						unBlockUI();
-					}
-				});
+				self.location.href="${ctx}/job/RegCenter/connect/"+$(obj).attr("data-id");
 			};
 			App.confirm(callback);
 		}
