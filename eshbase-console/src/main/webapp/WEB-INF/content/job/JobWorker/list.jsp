@@ -73,19 +73,10 @@
 				cValue : "名称"
 			},
 
-			{
-				cName : "jobClassId",
-				cValue : "作业类ID"
-			},
 
 			{
 				cName : "logicName",
 				cValue : "逻辑名"
-			},
-
-			{
-				cName : "jobClassName",
-				cValue : "作业类名"
 			},
 
 			{
@@ -97,95 +88,14 @@
 				cName : "cron",
 				cValue : "作业启动时间的cron表达式"
 			},
-
-			{
-				cName : "shardingItemParameters",
-				cValue : "分片序列号和个性化参数对照表"
-			},
-
-			{
-				cName : "jobParameter",
-				cValue : "作业自定义参数"
-			},
-
 			{
 				cName : "monitorExecution",
 				cValue : "监控作业执行时状态"
 			},
 
 			{
-				cName : "processCountInterval",
-				cValue : "统计作业处理数据数量的间隔时间"
-			},
-
-			{
-				cName : "dataProcessThread",
-				cValue : "处理数据的并发线程数"
-			},
-
-			{
-				cName : "fetchDataCount",
-				cValue : "每次抓取的数据量"
-			},
-
-			{
-				cName : "maxtimeDiff",
-				cValue : "最大容忍的本机与注册中心的时间误差秒数"
-			},
-
-			{
-				cName : "failover",
-				cValue : "是否开启失效转移"
-			},
-
-			{
-				cName : "misfire",
-				cValue : "是否开启misfire"
-			},
-
-			{
-				cName : "shardingStrategyClass",
-				cValue : "作业分片策略实现类全路径"
-			},
-
-			{
-				cName : "disabled",
-				cValue : "作业是否禁止启动"
-			},
-
-			{
-				cName : "overwrite",
-				cValue : "本地配置是否可覆盖注册中心配置"
-			},
-
-			{
-				cName : "createbyId",
-				cValue : "建立者"
-			},
-
-			{
-				cName : "updatebyId",
-				cValue : "更新者"
-			},
-
-			{
-				cName : "createDate",
-				cValue : "建立时间"
-			},
-
-			{
-				cName : "updateDate",
-				cValue : "更新时间"
-			},
-
-			{
 				cName : "checkLabel",
 				cValue : "启用标记"
-			},
-
-			{
-				cName : "remark",
-				cValue : "备注"
 			} ]);
 		});
 

@@ -77,7 +77,7 @@
 	</div>
 	<script type="text/javascript">
 		$(function() {
-			App.activeMenu("/job/RegCenter/list");
+			App.activeMenu("job/RegCenter/list");
 		});
 	</script>
 </body>
