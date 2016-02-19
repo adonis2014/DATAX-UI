@@ -31,18 +31,38 @@ public class JobTaskDefine extends IdEntity {
 	/**
 	 * 作业终端ID
 	 */
-	@Column(name="machine_id")
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name="machine_id")
+	@NotFound(action = NotFoundAction.IGNORE)
+	@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
+	private Machine machine;
+	
+	@Column(name="machine_id",insertable = false, updatable = false)
 	private Long machineId;
 	/**
 	 * 作业执行ID
 	 */
-	@Column(name="worker_id")
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name="worker_id")
+	@NotFound(action = NotFoundAction.IGNORE)
+	@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
+	private JobWorker worker;
+	
+	@Column(name="worker_id",insertable = false, updatable = false)
 	private Long workerId;
 	/**
 	 * 注册中心ID
 	 */
-	@Column(name="reg_id")
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name="reg_id")
+	@NotFound(action = NotFoundAction.IGNORE)
+	@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
+	private RegCenter regCenter;
+	
+	@Column(name="reg_id",insertable = false, updatable = false)
 	private Long regId;
+	
+	
 	/**
 	 * 状态
 	 */
@@ -136,7 +156,7 @@ public class JobTaskDefine extends IdEntity {
 	public void setProcessSuccessCount(Integer processSuccessCount) {
 		this.processSuccessCount = processSuccessCount;
 	}
-
+	
 	public Long getMachineId() {
 		return machineId;
 	}
@@ -144,7 +164,7 @@ public class JobTaskDefine extends IdEntity {
 	public void setMachineId(Long machineId) {
 		this.machineId = machineId;
 	}
-	
+
 	public Long getWorkerId() {
 		return workerId;
 	}
@@ -152,7 +172,7 @@ public class JobTaskDefine extends IdEntity {
 	public void setWorkerId(Long workerId) {
 		this.workerId = workerId;
 	}
-	
+
 	public Long getRegId() {
 		return regId;
 	}
@@ -160,7 +180,31 @@ public class JobTaskDefine extends IdEntity {
 	public void setRegId(Long regId) {
 		this.regId = regId;
 	}
-	
+
+	public Machine getMachine() {
+		return machine;
+	}
+
+	public void setMachine(Machine machine) {
+		this.machine = machine;
+	}
+
+	public JobWorker getWorker() {
+		return worker;
+	}
+
+	public void setWorker(JobWorker worker) {
+		this.worker = worker;
+	}
+
+	public RegCenter getRegCenter() {
+		return regCenter;
+	}
+
+	public void setRegCenter(RegCenter regCenter) {
+		this.regCenter = regCenter;
+	}
+
 	public Integer getStatus() {
 		return status;
 	}

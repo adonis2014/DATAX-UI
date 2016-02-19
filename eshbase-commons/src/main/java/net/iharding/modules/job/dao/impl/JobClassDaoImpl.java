@@ -8,16 +8,16 @@ import org.hibernate.Session;
 import org.springframework.stereotype.Repository;
 
 /**
-* 
-* @ClassName: JobClass
-* @Description: JobClassdaoImpl
-* @author Joe.zhang
-* @date  2016-1-31 16:56:20
-*
-*/
+ * 
+ * @ClassName: JobClass
+ * @Description: JobClassdaoImpl
+ * @author Joe.zhang
+ * @date 2016-1-31 16:56:20
+ * 
+ */
 @Repository
-public class JobClassDaoImpl extends HibernateDao<JobClass,Long> implements JobClassDao {
-	
+public class JobClassDaoImpl extends HibernateDao<JobClass, Long> implements JobClassDao {
+
 	@Override
 	public void save(JobClass jobClass) {
 		Session session = getSession();
@@ -26,6 +26,6 @@ public class JobClassDaoImpl extends HibernateDao<JobClass,Long> implements JobC
 
 	@Override
 	public JobClass get(String jobClass) {
-		return  this.findUniqueBy("className",jobClass);
+		return this.findUniqueBy("className", jobClass);
 	}
 }

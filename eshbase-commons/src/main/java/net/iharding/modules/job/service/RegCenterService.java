@@ -1,10 +1,15 @@
 package net.iharding.modules.job.service;
 
+import java.util.List;
+
+import net.iharding.modules.job.model.JobTaskDefine;
+import net.iharding.modules.job.model.JobWorker;
+import net.iharding.modules.job.model.Machine;
+import net.iharding.modules.job.model.RegCenter;
+
 import org.guess.core.service.BaseService;
 
 import com.dangdang.ddframe.job.console.domain.RegistryCenterClient;
-
-import net.iharding.modules.job.model.RegCenter;
 
 /**
  * 
@@ -22,7 +27,7 @@ public interface RegCenterService extends BaseService<RegCenter, Long> {
 	 * @param name
 	 * @return
 	 */
-	RegistryCenterClient connect(String name);
+	public RegistryCenterClient connect(String name);
 
 	/**
 	 * 连接注册中心，更新作业终端和作业任务状态信息
@@ -30,7 +35,7 @@ public interface RegCenterService extends BaseService<RegCenter, Long> {
 	 * @param rc
 	 * @return
 	 */
-	RegistryCenterClient connect(RegCenter rc);
+	public RegistryCenterClient connect(RegCenter rc);
 
 	/**
 	 * 连接注册中心，更新作业终端和作业任务状态信息
@@ -38,6 +43,12 @@ public interface RegCenterService extends BaseService<RegCenter, Long> {
 	 * @param id
 	 * @return
 	 */
-	RegistryCenterClient connect(Long id);
+	public RegistryCenterClient connect(Long id);
+
+	public List<Machine> getMachines(Long id);
+
+	public List<JobWorker> getJobWorkers(Long id);
+
+	public List<JobTaskDefine> getJobTaskDefines(Long id);
 
 }

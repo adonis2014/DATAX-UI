@@ -9,7 +9,7 @@
 	<div class="page-content">
 		<div class="container-fluid">
 			<!-- 页面导航 -->
-			<tool:navBar pageTitle="${pageTitle }" pageTitleContent="作业管理-{functionName}管理-${pageTitle }" titleIcon="icon-home" />
+			<tool:navBar pageTitle="${pageTitle }" pageTitleContent="作业管理-作业类注册管理-${pageTitle }" titleIcon="icon-home" />
 			<!-- 主体内容 -->
 			<div class="row-fluid">
 				<div class="span12">
@@ -26,68 +26,40 @@
 							<form action="${ctx}/job/JobClass/edit" class="form-horizontal form_sync" method="post" id="form1">
 								<input type="hidden" value="${obj.id}" name="id">
 								<input type="hidden" value="${obj.checkLabel}" name="checkLabel">
-								<div class="control-group">
-									<label class="control-label">作业名:</label>
-									<div class="controls">
-										<input type="text" class="span6 m-wrap" validate="{required:true}" name="name" value="${obj.name }" />
-									</div>
-								</div>
-								<div class="control-group">
-									<label class="control-label">作业类型:</label>
-									<div class="controls">
-										<mytags:dictSelect field="jobType" id="jobType" defaultVal="${obj.jobType}" hasLabel="false" codeType="19" />
-									</div>
-								</div>
-								<div class="control-group">
-									<label class="control-label">类名:</label>
-									<div class="controls">
-										<input type="text" class="span6 m-wrap" validate="{required:true}" name="className" value="${obj.className }" />
-									</div>
-								</div>
-								<div class="control-group">
-									<label class="control-label">版本:</label>
-									<div class="controls">
-										<input type="text" class="span6 m-wrap" validate="{required:true}" name="version" value="${obj.version }" />
-									</div>
-								</div>
-								<div class="control-group">
-									<label class="control-label">作业产品ID:</label>
-									<div class="controls">
-										<input type="text" class="span6 m-wrap" validate="{required:true}" name="productId" value="${obj.productId }" />
-									</div>
-								</div>
+								<table class="dbform" width="100%">
+									<tr>
+										<td class="fieldtitle">作业名:</td>
+										<td class="fieldvalue"><input type="text"  validate="{required:true}" name="name" value="${obj.name }" /></td>
+										<td class="fieldtitle">作业类型:</td>
+										<td class="fieldvalue"><mytags:dictSelect field="jobType" id="jobType" defaultVal="${obj.jobType}" hasLabel="false" codeType="19" /></td>
+									</tr>
+									<tr>
+										<td class="fieldtitle">类名:</td>
+										<td class="fieldvalue"><input type="text"  validate="{required:true}" name="className" value="${obj.className }" /></td>
+										<td class="fieldtitle">版本:</td>
+										<td class="fieldvalue"><input type="text"  validate="{required:true}" name="version" value="${obj.version }" /></td>
+									</tr>
+									<tr>
+										<td class="fieldtitle">作业产品ID:</td>
+										<td class="fieldvalue"><input type="text"  validate="{required:true}" name="productId" value="${obj.productId }" /></td>
+										<td class="fieldtitle">备注:</td>
+										<td class="fieldvalue"><input type="text"   name="remark" value="${obj.remark }" /></td>
+									</tr>
 								<c:if test="${not empty obj}">
-								<div class="control-group">
-									<label class="control-label">建立者:</label>
-									<div class="controls">
-										${obj.creater.name}
-									</div>
-								</div>
-								<div class="control-group">
-									<label class="control-label">更新者:</label>
-									<div class="controls">
-										${obj.updater.name}
-									</div>
-								</div>
-								<div class="control-group">
-									<label class="control-label">建立时间:</label>
-									<div class="controls">
-										${obj.createDate }
-									</div>
-								</div>
-								<div class="control-group">
-									<label class="control-label">更新时间:</label>
-									<div class="controls">
-										${obj.updateDate }
-									</div>
-								</div>
+								<tr>
+										<td class="fieldtitle">建立者:</td>
+										<td class="fieldvalue"><input type="text"  name="t" readonly="readonly" value="${obj.creater.name}" /></td>
+										<td class="fieldtitle">更新者:</label>
+										<td class="fieldvalue"><input type="text"  name="t" readonly="readonly" value="${obj.updater.name}" /></td>
+									</tr>
+									<tr>
+										<td class="fieldtitle">建立时间:</td>
+										<td class="fieldvalue"><input type="text"  name="t" readonly="readonly" value="${obj.createDate }" /></td>
+										<td class="fieldtitle">更新时间:</td>
+										<td class="fieldvalue"><input type="text"  name="t" readonly="readonly" value="${obj.updateDate}" /></td>
+									</tr>
 								</c:if>
-								<div class="control-group">
-									<label class="control-label">备注:</label>
-									<div class="controls">
-										<input type="text" class="span6 m-wrap"  name="remark" value="${obj.remark }" />
-									</div>
-								</div>
+								</table>
 								<div class="form-actions">
 									<button type="submit" class="btn blue">提交</button>
 									<a class='btn' href="${header.Referer }">返回</a>

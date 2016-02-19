@@ -1,5 +1,7 @@
 package net.iharding.modules.job.dao;
 
+import java.util.List;
+
 import org.guess.core.orm.EntityDao;
 
 import net.iharding.modules.job.model.JobWorker;
@@ -15,5 +17,7 @@ import net.iharding.modules.job.model.JobWorker;
 public interface JobWorkerDao extends EntityDao<JobWorker, Long>{
 
 	public JobWorker get(String jobName);
+
+	public List<JobWorker> findByRegCenter(Long regId);
 	
 }

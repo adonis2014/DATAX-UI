@@ -29,7 +29,7 @@
 											<div class="control-group">
 												<div class="controls">
 													<input type="text" id="filters" class="m-wrap span12"
-														placeholder="名称,作业类ID,逻辑名,作业类名,作业分片总数,作业启动时间的cron表达式,分片序列号和个性化参数对照表,作业自定义参数,监控作业执行时状态,统计作业处理数据数量的间隔时间,处理数据的并发线程数,每次抓取的数据量,最大容忍的本机与注册中心的时间误差秒数,是否开启失效转移,是否开启misfire,作业分片策略实现类全路径,作业是否禁止启动,本地配置是否可覆盖注册中心配置,建立者,更新者,建立时间,更新时间,启用标记,备注">
+														placeholder="名称,作业类ID,逻辑名,作业类名,作业分片总数,作业启动时间的cron表达式,分片序列号和个性化参数对照表,作业自定义参数,监控作业执行时状态,统计作业处理数据数量的间隔时间,处理数据的并发线程数,每次抓取的数据量,最大容忍的本机与注册中心的时间误差秒数,是否开启失效转移,是否开启misfire,作业分片策略实现类全路径,作业是否禁止启动,本地配置是否可覆盖注册中心配置,备注">
 												</div>
 											</div>
 										</div>
@@ -101,7 +101,7 @@
 
 		function doQuery() {
 			var queryObj = {
-				search_LIKES_name_OR_jobClassId_OR_logicName_OR_jobClassName_OR_shardingTotalCount_OR_cron_OR_shardingItemParameters_OR_jobParameter_OR_monitorExecution_OR_processCountInterval_OR_dataProcessThread_OR_fetchDataCount_OR_maxtimeDiff_OR_failover_OR_misfire_OR_shardingStrategyClass_OR_disabled_OR_overwrite_OR_createbyId_OR_updatebyId_OR_createDate_OR_updateDate_OR_checkLabel_OR_remark : App
+				search_LIKES_name_OR_jobClassId_OR_logicName_OR_jobClassName_OR_shardingTotalCount_OR_cron_OR_shardingItemParameters_OR_jobParameter_OR_monitorExecution_OR_processCountInterval_OR_dataProcessThread_OR_fetchDataCount_OR_maxtimeDiff_OR_failover_OR_misfire_OR_shardingStrategyClass_OR_disabled_OR_overwrite_OR_checkLabel_OR_remark : App
 						.isEqPlacehoder($("#filters"))
 			};
 			Page.doQuery(queryObj);

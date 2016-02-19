@@ -2,6 +2,7 @@ package net.iharding.modules.job.service.impl;
 
 import java.util.Collection;
 import java.util.Date;
+import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 
 import javax.annotation.Resource;
@@ -127,10 +128,10 @@ public class RegCenterServiceImpl extends BaseServiceImpl<RegCenter, Long> imple
 	@Override
 	public RegistryCenterClient connect(RegCenter regCenter) {
 		RegistryCenterClient result = new RegistryCenterClient(regCenter.getName());
-		RegistryCenterClient clientInCache = findInCache(regCenter.getName());
-		if (null != clientInCache) {
-			return clientInCache;
-		}
+//		RegistryCenterClient clientInCache = findInCache(regCenter.getName());
+//		if (null != clientInCache) {
+//			return clientInCache;
+//		}
 		//连接zookServer，获取client对象
 		CuratorFramework client = curatorRepository.connect(regCenter.getZkQuorumPeer(), regCenter.getNameSpace(), regCenter.getLoginCert());
 		if (null == client) {
@@ -232,9 +233,9 @@ public class RegCenterServiceImpl extends BaseServiceImpl<RegCenter, Long> imple
 						jobtd.setUpdateDate(new Date());
 						jobtd.setCreater(cuser);
 						jobtd.setCreateDate(new Date());
-						jobtd.setMachineId(tmpMachine.getId());
-						jobtd.setRegId(regCenter.getId());
-						jobtd.setWorkerId(jobw.getId());
+						jobtd.setMachine(tmpMachine);
+						jobtd.setRegCenter(regCenter);
+						jobtd.setWorker(jobw);
 					}else{
 						jobtd.setUpdater(cuser);
 						jobtd.setUpdateDate(new Date());
@@ -252,7 +253,7 @@ public class RegCenterServiceImpl extends BaseServiceImpl<RegCenter, Long> imple
 						jobtd.setStatus(-2);
 					}
 					jobtd.setCheckLabel(1);
-					jobtd.setRemark(jobsvr.getJobName()+"-"+jobsvr.getIp()+"-"+jobsvr.getHostName());
+					jobtd.setRemark(thejob.getJobName()+"-"+jobsvr.getIp()+"-"+jobsvr.getHostName());
 					jobtd.setProcessFailureCount(jobsvr.getProcessFailureCount());
 					jobtd.setProcessSuccessCount(jobsvr.getProcessSuccessCount());
 					if (jobsvr.isLeader())jobtd.setIslead(1);else jobtd.setIslead(0);
@@ -271,6 +272,21 @@ public class RegCenterServiceImpl extends BaseServiceImpl<RegCenter, Long> imple
 			return new RegistryCenterClient(id.toString());
 		}
 		return connect(regCenter);
+	}
+
+	@Override
+	public List<Machine> getMachines(Long id) {
+		return machineDao.findByRegCenter(id);
+	}
+
+	@Override
+	public List<JobWorker> getJobWorkers(Long id) {
+		return jobWorkerDao.findByRegCenter(id);
+	}
+
+	@Override
+	public List<JobTaskDefine> getJobTaskDefines(Long id) {
+		return jobTaskDefineDao.findByRegCenter(id);
 	}
 
 }

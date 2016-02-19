@@ -62,7 +62,7 @@
 <script type="text/javascript">
 $(document).ready(function() {
 	
-	App.activeMenu("job/jobTaskDefine/list");
+	App.activeMenu("job/JobTaskDefine/list");
 	
 	Page.initData(
 		{

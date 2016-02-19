@@ -80,12 +80,7 @@
 			 		return classTypeMap.get(item.jobType);
 			 	}
 			},
-			{
-				cName : "className",
-				cValue : "类名"
-			},
-
-			{
+						{
 				cName : "version",
 				cValue : "版本"
 			},

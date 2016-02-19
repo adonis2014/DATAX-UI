@@ -1,21 +1,22 @@
 package net.iharding.modules.job.controller;
 
-import java.util.Date;
+import java.util.List;
 
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
+import net.iharding.modules.job.model.JobTaskDefine;
+import net.iharding.modules.job.model.JobWorker;
+import net.iharding.modules.job.model.Machine;
 import net.iharding.modules.job.model.RegCenter;
 import net.iharding.modules.job.service.RegCenterService;
 
 import org.guess.core.web.BaseController;
-import org.guess.sys.util.UserUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.dangdang.ddframe.job.console.domain.RegistryCenterClient;
@@ -25,6 +26,7 @@ import com.dangdang.ddframe.job.console.domain.RegistryCenterClient;
  * @ClassName: RegCenter
  * @Description: RegCenterController
  * @author Joe.zhang
+ * @param <Machine>
  * @date 2016-1-31 17:15:41
  * 
  */
@@ -79,6 +81,12 @@ public class RegCenterController extends BaseController<RegCenter> {
 		RegCenter object = regCenterService.get(id);
 		ModelAndView mav = new ModelAndView(showView);
 		mav.addObject("obj", object);
+		List<Machine> machines=regCenterService.getMachines(id);
+		mav.addObject("machines", machines);
+		List<JobWorker> workers=regCenterService.getJobWorkers(id);
+		mav.addObject("workers", workers);
+		List<JobTaskDefine> taskDefines=regCenterService.getJobTaskDefines(id);
+		mav.addObject("taskDefines", taskDefines);
 		return mav;
 	}
 
