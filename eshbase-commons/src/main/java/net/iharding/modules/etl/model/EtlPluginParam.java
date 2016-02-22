@@ -39,6 +39,8 @@ public class EtlPluginParam extends IdEntity {
 	 * 插件名
 	 */
 	private String name;
+	
+	private String range;
 	/**
 	 * 是否必须
 	 */
@@ -58,6 +60,14 @@ public class EtlPluginParam extends IdEntity {
 	 */
 	private String description;
 	
+	public String getRange() {
+		return range;
+	}
+
+	public void setRange(String range) {
+		this.range = range;
+	}
+
 	public EtlPlugin getPlugin() {
 		return plugin;
 	}

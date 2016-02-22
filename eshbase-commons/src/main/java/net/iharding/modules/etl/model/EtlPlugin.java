@@ -56,7 +56,7 @@ public class EtlPlugin extends IdEntity {
 	/**
 	 * 备注
 	 */
-	private Integer remark;
+	private String remark;
 	/**
 	 * 线程数
 	 */
@@ -76,6 +76,24 @@ public class EtlPlugin extends IdEntity {
 	@OrderBy("id ASC")
 	private Set<EtlPluginParam> pluginParams;
 	
+	
+	
+	public Set<EtlTask> getTasks() {
+		return tasks;
+	}
+
+	public void setTasks(Set<EtlTask> tasks) {
+		this.tasks = tasks;
+	}
+
+	public Set<EtlPluginParam> getPluginParams() {
+		return pluginParams;
+	}
+
+	public void setPluginParams(Set<EtlPluginParam> pluginParams) {
+		this.pluginParams = pluginParams;
+	}
+
 	public String getPluginName() {
 		return pluginName;
 	}
@@ -124,11 +142,11 @@ public class EtlPlugin extends IdEntity {
 		this.jarName = jarName;
 	}
 	
-	public Integer getRemark() {
+	public String getRemark() {
 		return remark;
 	}
 
-	public void setRemark(Integer remark) {
+	public void setRemark(String remark) {
 		this.remark = remark;
 	}
 	

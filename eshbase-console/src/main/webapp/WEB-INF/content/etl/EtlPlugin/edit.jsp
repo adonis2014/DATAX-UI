@@ -23,62 +23,75 @@
 							</div>
 						</div>
 						<div class="portlet-body form">
-							<form action="${ctx}/etl/etlPlugin/edit" class="form-horizontal form_sync" method="post" id="form1">
-
+							<form action="${ctx}/etl/EtlPlugin/edit" class="form-horizontal form_sync" method="post" id="form1">
 								<input type="hidden" value="${obj.id}" name="id">
-								<div class="control-group">
-									<label class="control-label">插件名:</label>
-									<div class="controls">
-										<input type="text" class="span6 m-wrap" validate="{required:true}" name="pluginName" value="${obj.pluginName }" />
-									</div>
-								</div>
-								<div class="control-group">
-									<label class="control-label">插件类别:</label>
-									<div class="controls">
-										<input type="text" class="span6 m-wrap" validate="{required:true}" name="pluginType" value="${obj.pluginType }" />
-									</div>
-								</div>
-								<div class="control-group">
-									<label class="control-label">类名:</label>
-									<div class="controls">
-										<input type="text" class="span6 m-wrap" validate="{required:true}" name="className" value="${obj.className }" />
-									</div>
-								</div>
-								<div class="control-group">
-									<label class="control-label">版本:</label>
-									<div class="controls">
-										<input type="text" class="span6 m-wrap" validate="{required:true}" name="version" value="${obj.version }" />
-									</div>
-								</div>
-								<div class="control-group">
-									<label class="control-label">数据源目标:</label>
-									<div class="controls">
-										<input type="text" class="span6 m-wrap" validate="{required:true}" name="target" value="${obj.target }" />
-									</div>
-								</div>
-								<div class="control-group">
-									<label class="control-label">jar包名:</label>
-									<div class="controls">
-										<input type="text" class="span6 m-wrap" validate="{required:true}" name="jarName" value="${obj.jarName }" />
-									</div>
-								</div>
-								<div class="control-group">
-									<label class="control-label">最大线程数:</label>
-									<div class="controls">
-										<input type="text" class="span6 m-wrap" validate="{required:true}" name="maxThreadNum" value="${obj.maxThreadNum }" />
-									</div>
-								</div>
-								<div class="control-group">
-									<label class="control-label">备注:</label>
-									<div class="controls">
-										<input type="text" class="span6 m-wrap" validate="{required:true}" name="remark" value="${obj.remark }" />
-									</div>
-								</div>
-								<div class="form-actions">
-									<button type="submit" class="btn blue">提交</button>
+									<table class="dbform" width="100%">
+										<tr>
+											<td class="fieldtitle">插件名:</td>
+											<td class="fieldvalue"><input type="text"  validate="{required:true}" name="pluginName" value="${obj.pluginName }" /></td>
+											<td class="fieldtitle">插件类别:</td>
+											<td class="fieldvalue"><mytags:dictSelect field="pluginType" id="pluginType" type="select" hasLabel="false" defaultVal="${obj.pluginType}" codeType="1031" /></td>
+										</tr>
+										<tr>	
+											<td class="fieldtitle">类名:</td>
+											<td class="fieldvalue"><input type="text"  validate="{required:true}" name="className" value="${obj.className }" /></td>
+											<td class="fieldtitle">版本:</td>
+											<td class="fieldvalue"><input type="text"  validate="{required:true}" name="version" value="${obj.version }" /></td>
+										</tr>
+										<tr>	
+											<td class="fieldtitle">数据源目标:</td>
+											<td class="fieldvalue"><input type="text"  validate="{required:true}" name="target" value="${obj.target }" /></td>
+											<td class="fieldtitle">jar包名:</td>
+											<td class="fieldvalue"><input type="text"  validate="{required:true}" name="jarName" value="${obj.jarName }" /></td>
+										</tr>
+										<tr>	
+											<td class="fieldtitle">最大线程数:</td>
+											<td class="fieldvalue"><input type="text"  validate="{required:true}" name="maxThreadNum" value="${obj.maxThreadNum }" /></td>
+											<td class="fieldtitle">备注:</td>
+											<td class="fieldvalue"><input type="text"  validate="{required:true}" name="remark" value="${obj.remark }" /></td>
+										</tr>
+										<tr>	
+											<td style="text-align:center;" colspan="4"><button type="submit" class="btn blue">提交</button>
 									<a class='btn' href="${header.Referer }">返回</a>
-								</div>
+											</td>
+										</tr>
+								</table>
 							</form>
+						</div>
+						<div class="portlet-title">
+							<h4>
+								<i class="icon-reorder"></i>参数
+							</h4>
+							<div class="tools">
+								
+							</div>
+						</div>
+						<div class="portlet-body form">
+							<table width="100%" class="dbgrid">
+									<thead>
+										<tr>
+											<th>名称</th>
+											<th>范围</th>
+											<th>是否必须</th>
+											<th>默认值</th>
+											<th>是否列</th>
+											<th>备注</th>
+											<th>操作 </th>
+										</tr>
+									</thead>
+									<tbody>
+									<c:forEach items="${obj.pluginParams}" var="param">
+									<tr>
+										<td>${param.name}</td>
+										<td>${param.range}</td>
+										<td>${param.mandatory}</td>
+										<td>${param.defaultValue}</td>
+									    <td><mytags:dictSelect field="checkLabelMap" id="checkLabelMap" type="label" hasLabel="false" codeType="17" defaultVal="${param.isColumn}"/></td>
+										<td>${param.description}</td>
+									</tr>
+									</c:forEach>
+									</tbody>
+								</table>
 						</div>
 					</div>
 				</div>

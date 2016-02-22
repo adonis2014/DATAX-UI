@@ -59,11 +59,13 @@
 		</div>
 	</div>
 <%@ include file="/WEB-INF/content/common/plugins/page.jsp"%>
+<script type="text/javascript" src="${ctx}/assets/js/map.js"></script>
+
 <script type="text/javascript">
 $(document).ready(function() {
-	
+	var pluginTypeMap = new Map();  
+	<mytags:dictSelect field="pluginTypeMap" id="pluginTypeMap" type="map" hasLabel="false" codeType="1031" />
 	App.activeMenu("etl/EtlPlugin/list");
-	
 	Page.initData(
 		{
 			url:"${ctx}/etl/EtlPlugin/page",
@@ -74,25 +76,33 @@ $(document).ready(function() {
 		null,
 		[
 			 	{cName:"pluginName",cValue:"插件名"},
-
-			 	{cName:"pluginType",cValue:"插件类别"},
-
-			 	{cName:"className",cValue:"类名"},
-
+			 	{cName:"pluginType",cValue:"插件类别",format:function(i,value,item){
+			 		return pluginTypeMap.get(item.pluginType);
+			 	}},
 			 	{cName:"version",cValue:"版本"},
-
 			 	{cName:"target",cValue:"数据源目标"},
-
 			 	{cName:"jarName",cValue:"jar包名"},
-
 			 	{cName:"remark",cValue:"备注"},
-
-			 	{cName:"maxThreadNum",cValue:"线程数"},
-
-			  	{cName:"checkLabel",cValue:"启用标记"}
+			  	{cName:"checkLabel",cValue:"启用标记",format:function(i,value,item){
+					<shiro:hasPermission name="etl:EtlPlugin:check">
+					 var $a = $('<a href="javascript:void(0)" data-id="'+item.id+'" data-placement="right"   onclick="javascript:check(this)" ></a>');
+					 if(value === 1){
+						 return $a.clone().attr("data-original-title","点击停用").html('&nbsp;已启用');
+					 }
+					 return $a.attr("data-original-title","点击启用").html('&nbsp;已停用');
+				 	</shiro:hasPermission>
+					 if(value == 1){
+					 	return "<span class='label label-success'>已启用</span>";
+					 }
+				 	return "<span class='label label-danger'>已停用</span>";
+			 }}
 		 ]
 	);
 });
+
+function check(obj){
+	self.location.href="${ctx}/etl/EtlPlugin/setCheckLabel/"+$(obj).attr("data-id");
+}
 
 function doQuery(){
 	var queryObj = {

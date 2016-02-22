@@ -1,8 +1,15 @@
 package net.iharding.modules.etl.service.impl;
 
+import java.util.List;
+
 import org.guess.core.service.BaseServiceImpl;
+
+import net.iharding.modules.etl.dao.EtlPluginParamDao;
 import net.iharding.modules.etl.model.EtlPlugin;
+import net.iharding.modules.etl.model.EtlPluginParam;
 import net.iharding.modules.etl.service.EtlPluginService;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 /**
@@ -15,5 +22,16 @@ import org.springframework.stereotype.Service;
 */
 @Service
 public class EtlPluginServiceImpl extends BaseServiceImpl<EtlPlugin, Long> implements EtlPluginService {
+	
+	@Autowired
+	private EtlPluginParamDao pluginParamDao;
 
+
+
+	@Override
+	public List<EtlPluginParam> getPluginParams(long pluginId) {
+		return pluginParamDao.getPluginParams(pluginId);
+	}
+	
+	
 }
