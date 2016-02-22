@@ -86,10 +86,19 @@
 										<td>${param.range}</td>
 										<td>${param.mandatory}</td>
 										<td>${param.defaultValue}</td>
-									    <td><mytags:dictSelect field="checkLabelMap" id="checkLabelMap" type="label" hasLabel="false" codeType="17" defaultVal="${param.isColumn}"/></td>
+									    <td><mytags:dictSelect field="isColumn" id="isColumn" type="label" hasLabel="false" codeType="17" defaultVal="${param.isColumn}"/></td>
 										<td>${param.description}</td>
 									</tr>
 									</c:forEach>
+									<tr>
+										<td><input type="text"  validate="{required:true}" name="name"/></td>
+										<td><input type="text"  validate="{required:true}" name="range"/></td>
+										<td><input type="text"  validate="{required:true}" name="mandatory"/></td>
+										<td><input type="text"  validate="{required:true}" name="defaultValue"/></td>
+									    <td><mytags:dictSelect field="isColumn" id="isColumn" type="select" hasLabel="false" codeType="17" defaultVal="${param.isColumn}"/></td>
+										<td><input type="text"  validate="{required:true}" name="description"/></td>
+									
+									</tr>
 									</tbody>
 								</table>
 						</div>
