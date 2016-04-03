@@ -37,20 +37,20 @@
 											name="jobName" value="${obj.jobName }" />
 									</div>
 								</div>
-								<div class="control-group">
-									<label class="control-label">下次执行时间:</label>
-									<div class="controls">
-										<input type="text" class="span6 m-wrap"
-											validate="{required:true}"
-											name="nextExeDate" value="${obj.nextExeDate }" />
-									</div>
-								</div>
+								
 								<div class="control-group">
 									<label class="control-label">调度设置:</label>
 									<div class="controls">
 										<input type="text" class="span6 m-wrap"
 											validate="{required:true}"
 											name="cronTrigger" value="${obj.cronTrigger }" />
+									</div>
+								</div>
+								<c:if test="${not empty obj}">
+								<div class="control-group">
+									<label class="control-label">下次执行时间:</label>
+									<div class="controls">
+										${obj.nextExeDate}
 									</div>
 								</div>
 								<div class="control-group">
@@ -64,17 +64,13 @@
 								<div class="control-group">
 									<label class="control-label">建立者:</label>
 									<div class="controls">
-										<input type="text" class="span6 m-wrap"
-											validate="{required:true}"
-											name="createbyId" value="${obj.createbyId }" />
+										${obj.creater.name}
 									</div>
 								</div>
 								<div class="control-group">
 									<label class="control-label">更新者:</label>
 									<div class="controls">
-										<input type="text" class="span6 m-wrap"
-											validate="{required:true}"
-											name="updatebyId" value="${obj.updatebyId }" />
+										${obj.updater.name}
 									</div>
 								</div>
 								<div class="control-group">
@@ -96,11 +92,11 @@
 								<div class="control-group">
 									<label class="control-label">启用标记:</label>
 									<div class="controls">
-										<input type="text" class="span6 m-wrap"
-											validate="{required:true}"
-											name="checkLabel" value="${obj.checkLabel }" />
+									<mytags:dictSelect field="checkLabel" id="checkLabel" type="label" hasLabel="false" defaultVal="${obj.checkLabel}" codeType="17" />
+									
 									</div>
 								</div>
+								</c:if>
 								<div class="control-group">
 									<label class="control-label">备注:</label>
 									<div class="controls">

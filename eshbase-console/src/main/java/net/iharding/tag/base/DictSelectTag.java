@@ -44,6 +44,25 @@ public class DictSelectTag extends TagSupport {
 	private String dictText;// 自定义字典表的显示文本-字典的显示值
 	private String extendJson;//扩展参数
 	private String dictCondition;
+	private String styleText;
+	private boolean hasPSel=true;
+	
+	public boolean isHasPSel() {
+		return hasPSel;
+	}
+
+	public void setHasPSel(boolean hasPSel) {
+		this.hasPSel = hasPSel;
+	}
+
+	public String getStyleText() {
+		return styleText;
+	}
+
+	public void setStyleText(String styleText) {
+		this.styleText = styleText;
+	}
+
 	public String getDictCondition() {
 		return dictCondition;
 	}
@@ -103,7 +122,7 @@ public class DictSelectTag extends TagSupport {
 					map(map.get("text").toString(), map.get("field").toString(), sb);
 				}
 			}else { 
-				sb.append("<select name=\"" + field + "\"");
+				sb.append("<select  name=\"" + field + "\"");
 				//增加扩展属性
 				if (!StringUtils.isBlank(this.extendJson)) {
 					Gson gson = new Gson();
@@ -115,8 +134,13 @@ public class DictSelectTag extends TagSupport {
 				if (!StringUtils.isBlank(this.id)) {
 					sb.append(" id=\"" + id + "\"");
 				}
+				if (!StringUtils.isBlank(this.styleText)) {
+					sb.append(" style=\"" + styleText + "\"");
+				}
 				sb.append(">");
-				select("common.please.select", "", sb);
+				if (hasPSel){
+					select("common.please.select", "", sb);
+				}
 				for (Map<String, Object> map : list) {
 					select(map.get("text").toString(), map.get("field").toString(), sb);
 				}
@@ -169,8 +193,13 @@ public class DictSelectTag extends TagSupport {
 					if (!StringUtils.isBlank(this.id)) {
 						sb.append(" id=\"" + id + "\"");
 					}
+					if (!StringUtils.isBlank(this.styleText)) {
+						sb.append(" style=\"" + styleText + "\"");
+					}
 					sb.append(">");
-					select("请选择", "", sb);
+					if (hasPSel){
+						select("请选择", "", sb);
+					}
 					for (SysDict type : dict.getDicts()) {
 						select(type.getCodeName(), type.getCodeValue(), sb);
 					}

@@ -4,6 +4,7 @@
 <html>
 <head>
 <title>${pageTitle }</title>
+
 </head>
 <body>
 	<div class="page-content">
@@ -66,6 +67,8 @@
 								
 							</div>
 						</div>
+						<form action="${ctx}/etl/EtlPluginParam/edit" class="form-horizontal form_sync" method="post" id="form1">
+								<input type="hidden" value="${obj.id}" name="plugin.id">
 						<div class="portlet-body form">
 							<table width="100%" class="dbgrid">
 									<thead>
@@ -80,28 +83,30 @@
 										</tr>
 									</thead>
 									<tbody>
-									<c:forEach items="${obj.pluginParams}" var="param">
+									<c:forEach items="${obj.pluginParams}" var="pparam">
 									<tr>
-										<td>${param.name}</td>
-										<td>${param.range}</td>
-										<td>${param.mandatory}</td>
-										<td>${param.defaultValue}</td>
-									    <td><mytags:dictSelect field="isColumn" id="isColumn" type="label" hasLabel="false" codeType="17" defaultVal="${param.isColumn}"/></td>
-										<td>${param.description}</td>
+										<td>${pparam.name}</td>
+										<td>${pparam.range}</td>
+										<td><mytags:dictSelect field="mandatory" id="mandatory" type="label" hasLabel="false" codeType="1002" defaultVal="${pparam.mandatory}"/></td>
+										<td>${pparam.defaultValue}</td>
+									    <td><mytags:dictSelect field="isColumn" id="isColumn" type="label" hasLabel="false" codeType="1002" defaultVal="${pparam.isColumn}"/></td>
+										<td>${pparam.description}</td>
+										<td><button type="button" class="btn blue" onclick="javascript:delParam(${pparam.id});">删除</button></td>
 									</tr>
 									</c:forEach>
 									<tr>
-										<td><input type="text"  validate="{required:true}" name="name"/></td>
-										<td><input type="text"  validate="{required:true}" name="range"/></td>
-										<td><input type="text"  validate="{required:true}" name="mandatory"/></td>
-										<td><input type="text"  validate="{required:true}" name="defaultValue"/></td>
-									    <td><mytags:dictSelect field="isColumn" id="isColumn" type="select" hasLabel="false" codeType="17" defaultVal="${param.isColumn}"/></td>
-										<td><input type="text"  validate="{required:true}" name="description"/></td>
-									
+										<td><input type="text" style="width:60px;"  validate="{required:true}" name="name"/></td>
+										<td><input type="text" style="width:60px;"   validate="{required:true}" name="range"/></td>
+										<td><mytags:dictSelect field="mandatory" hasPSel="false"   styleText="width:60px;" id="mandatory" type="select" hasLabel="false" codeType="1002" defaultVal="1" /></td>
+										<td><input type="text" style="width:60px;"   validate="{required:true}" name="defaultValue"/></td>
+									    <td><mytags:dictSelect field="isColumn" hasPSel="false"  styleText="width:60px;" id="isColumn" type="select" hasLabel="false" codeType="1002" defaultVal="1" /></td>
+										<td><input type="text"  style="width:60px;" validate="{required:true}" name="description"/></td>
+										<td><button type="submit" class="btn blue">添加</button></td>
 									</tr>
 									</tbody>
 								</table>
 						</div>
+						</form>
 					</div>
 				</div>
 			</div>
@@ -112,6 +117,9 @@
 		$(function() {
 			App.activeMenu("etl/EtlPlugin/list");
 		});
+		function delParam(id){
+			self.location.href="${ctx}/etl/EtlPluginParam/delete/"+id;
+		}
 	</script>
 </body>
 </html>

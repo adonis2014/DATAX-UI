@@ -16,6 +16,7 @@
 		<pattern>/workflow/*</pattern>
         <pattern>/chat/*</pattern>
          <pattern>/finance/*</pattern>
+         <pattern>/druid/*</pattern>
 	</decorator>
 	
 	<!-- CMS博客主题 -->

@@ -16,6 +16,8 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.annotations.NotFound;
 import org.hibernate.annotations.NotFoundAction;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 /**
  * 插件参数Entity
  * @author Joe.zhang
@@ -23,6 +25,7 @@ import org.hibernate.annotations.NotFoundAction;
  */
 @Entity
 @Table(name = "etl_plugin_param")
+@JsonIgnoreProperties(value = { "plugin"})
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class EtlPluginParam extends IdEntity {
 
@@ -48,7 +51,7 @@ public class EtlPluginParam extends IdEntity {
 	/**
 	 * 默认值
 	 */
-	@Column(name="default")
+	@Column(name="defaultvalue")
 	private String defaultValue;
 	/**
 	 * 是否列

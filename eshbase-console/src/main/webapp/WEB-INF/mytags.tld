@@ -46,6 +46,12 @@
 			<description>默认选择的Value</description>
 		</attribute>
 		<attribute>
+			<name>styleText</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+			<description>style 样式</description>
+		</attribute>
+		<attribute>
 			<name>divClass</name>
 			<required>false</required>
 			<rtexprvalue>true</rtexprvalue>
@@ -68,6 +74,12 @@
 			<rtexprvalue>true</rtexprvalue>
 			<description>是否显示Label</description>
 		</attribute>
+		<attribute>
+			<name>hasPSel</name>
+			<rtexprvalue>true</rtexprvalue>
+			<description>是否显示请选择</description>
+		</attribute>
+		
 		<attribute>
 			<name>type</name>
 			<rtexprvalue>true</rtexprvalue>
