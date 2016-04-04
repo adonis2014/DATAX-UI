@@ -1,6 +1,7 @@
 package net.iharding.modules.etl.model;
 
 import java.util.Date;
+import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -8,6 +9,8 @@ import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.OrderBy;
 import javax.persistence.Table;
 
 import net.iharding.core.orm.IdEntity;
@@ -86,6 +89,18 @@ public class EtlTask extends IdEntity {
 	@Column(name="check_label")
 	private Integer checkLabel;
 	
+	@OneToMany(targetEntity=EtlTaskParam.class,fetch = FetchType.LAZY,cascade=CascadeType.ALL,mappedBy="task")
+	@OrderBy("id ASC")
+	private Set<EtlTaskParam> taskParams;
+	
+	public Set<EtlTaskParam> getTaskParams() {
+		return taskParams;
+	}
+
+	public void setTaskParams(Set<EtlTaskParam> taskParams) {
+		this.taskParams = taskParams;
+	}
+
 	public String getTaskName() {
 		return taskName;
 	}

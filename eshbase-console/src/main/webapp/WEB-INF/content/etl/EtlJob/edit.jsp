@@ -148,9 +148,7 @@
 			alert(obj.first().attr("data-type"));
 			$('input[id=plugin]').val(obj.first().attr("data-text"));
 			$('input[id=pluginId]').val(flag);
-			
 			$('input[id=pluginType]').val(obj.first().attr("data-type"));
-			
 			$('#pluginList').modal('hide');
 	}
 </script>

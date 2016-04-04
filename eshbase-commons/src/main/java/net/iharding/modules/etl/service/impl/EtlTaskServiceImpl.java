@@ -2,6 +2,7 @@ package net.iharding.modules.etl.service.impl;
 
 import java.util.Date;
 
+import net.iharding.modules.etl.dao.EtlPluginDao;
 import net.iharding.modules.etl.dao.EtlTaskDao;
 import net.iharding.modules.etl.model.EtlTask;
 import net.iharding.modules.etl.service.EtlTaskService;
@@ -26,18 +27,22 @@ public class EtlTaskServiceImpl extends BaseServiceImpl<EtlTask, Long> implement
 	@Autowired
 	private EtlTaskDao etlTaskDao;
 	
+	@Autowired
+	private EtlPluginDao etlPluginDao;
+	
 	@Override
 	public void save(EtlTask etlTask) throws Exception {
 		if (etlTask.getId() != null) {
 			EtlTask rc = etlTaskDao.get(etlTask.getId());
-
-			// 保留发表者以及发表提起
-			etlTask.setCreater(rc.getCreater());
-			etlTask.setCreateDate(rc.getCreateDate());
+			rc.setCheckLabel(etlTask.getCheckLabel());
+			rc.setTaskName(etlTask.getTaskName());
+			rc.setRemark(etlTask.getRemark());
+			if (etlTask.getPlugin()!=null)rc.setPlugin(etlPluginDao.get(etlTask.getPlugin().getId()));
 			// 更新者
 			User cuser = UserUtil.getCurrentUser();
-			etlTask.setUpdater(cuser);
-			etlTask.setUpdateDate(new Date());
+			rc.setUpdater(cuser);
+			rc.setUpdateDate(new Date());
+			super.save(rc);
 		} else {
 			User cuser = UserUtil.getCurrentUser();
 			etlTask.setUpdater(cuser);
@@ -45,7 +50,7 @@ public class EtlTaskServiceImpl extends BaseServiceImpl<EtlTask, Long> implement
 			etlTask.setCreater(cuser);
 			etlTask.setCreateDate(new Date());
 			etlTask.setCheckLabel(0);
+			super.save(etlTask);
 		}
-		super.save(etlTask);
 	}
 }

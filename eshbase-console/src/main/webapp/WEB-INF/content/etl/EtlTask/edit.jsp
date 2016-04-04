@@ -6,6 +6,7 @@
 <title>${pageTitle }</title>
 </head>
 <body>
+<%@ include file="/WEB-INF/content/etl/EtlPlugin/selPlugin.jsp" %>
 	<div class="page-content">
 		<div class="container-fluid">
 			<!-- 页面导航 -->
@@ -27,17 +28,19 @@
 						</div>
 						<div class="portlet-body form">
 							<form action="${ctx}/etl/EtlTask/edit" class="form-horizontal form_sync" method="post" id="form1">
-								<input type="hidden" value="${obj.id}" name="id">
+								<input type="hidden" value="${obj.id}" name="id"/>
+								<input type="hidden" value="${obj.job.id}" name="job.id" id="jobId"/>
+								<input type="hidden" value="${obj.plugin.id}" name="plugin.id" id="pluginId"/>
 								<table class="dbform" width="100%">
 									<tr>
 										<td class="fieldtitle">任务名:</td>
 										<td class="fieldvalue"><input type="text"  validate="{required:true}" name="taskName" value="${obj.taskName }" /></td>
 										<td class="fieldtitle">调度工作:</td>
-										<td class="fieldvalue"><input type="text"  validate="{required:true}" name="jobId" value="${obj.job.jobName}" /></td>
+										<td class="fieldvalue">${obj.job.jobName}</td>
 									</tr>
 									<tr>
 										<td class="fieldtitle">插件:</td>
-										<td class="fieldvalue"><input type="text"  validate="{required:true}" name="pluginId" value="${obj.plugin.pluginName}" /></td>
+										<td class="fieldvalue"><input type="text"  validate="{required:true}" id="pluginName" name="plugin.pluginName" value="${obj.plugin.pluginName}"  onfocus="showPlugins()" /></td>
 										<c:if test="${not empty obj}">
 										<td class="fieldtitle">启用标记:</td>
 										<td class="fieldvalue"><mytags:dictSelect field="checkLabel" id="checkLabel" type="label" hasLabel="false" defaultVal="${obj.checkLabel}" codeType="17" /></td>
@@ -52,16 +55,16 @@
 										<td class="fieldtitle">建立时间:</td>
 										<td class="fieldvalue">${obj.createDate }</td>
 										<td class="fieldtitle">更新时间:</td>
-										<td class="fieldvalue">"${obj.updateDate }</td>
+										<td class="fieldvalue">${obj.updateDate }</td>
 									</tr>
 									</c:if>
 									<c:if test="${empty obj}"></tr></c:if>
 									<tr>
 										<td class="fieldtitle">备注:</td>
-										<td class="fieldvalue" colspan="3"><input type="text"  validate="{required:true}" name="remark" value="${obj.remark }" /></td>
+										<td class="fieldvalue" colspan="3"><input type="text"   name="remark" value="${obj.remark }" /></td>
 									</tr>
 									<tr>
-										<td colspan="4" align="center">
+										<td colspan="4" style="text-align:center;" class="fieldvalue">
 										<button type="submit" class="btn blue">提交</button>
 									<a class='btn' href="${header.Referer }">返回</a>
 										</td>
@@ -69,6 +72,46 @@
 								</table>
 							</form>
 						</div>
+						<c:if test="${not empty obj}">
+						<div class="portlet-title">
+							<h4>
+								<i class="icon-reorder"></i>参数
+							</h4>
+							<div class="tools"></div>
+						</div>
+						<form action="${ctx}/etl/EtlTask/edit" class="form-horizontal form_sync" method="post" id="form1">
+								<input type="hidden" value="${obj.id}" name="job.id">
+								<input type="hidden" value="1" name="isEdit">
+						<div class="portlet-body form">
+							<table width="100%" class="dbgrid">
+									<thead>
+										<tr>
+											<th>插件参数ID</th>
+											<th>参数Key</th>
+											<th>参数值</th>
+											<th>备注</th>
+										</tr>
+									</thead>
+									<tbody>
+									<c:forEach items="${obj.taskParams}" var="param">
+									<tr>
+										<td>${param.pluginParamId}</td>
+										<td>${param.paramKey}</td>
+										<td><input type="text" value="${param.paramValue}"/></td>
+										<td>${param.remark}</td>
+									</tr>
+									</c:forEach>
+									<tr>
+										<td colspan="4" style="text-align:center;" class="fieldvalue">
+										<button type="button" onclick="generateParams(${obj.id});" class="btn blue">自动生成</button>
+										<button type="submit" class="btn blue">提交</button>
+										<a class='btn' href="${header.Referer }">返回</a></td>
+									</tr>
+									</tbody>
+								</table>
+						</div>
+						</form>
+						</c:if>
 					</div>
 				</div>
 			</div>
@@ -79,6 +122,19 @@
 	$(function(){
 		App.activeMenu("etl/EtlTask/list");
 	});
+	function showPlugins() {
+		$("#pluginList").modal();
+	}
+	function selPlugin(obj) {
+			var flag = Page.selectsPrompt();
+			if (!flag)
+				return;
+			var obj = $("#sample_1").find("td :checkbox:checked");
+			$('input[id=pluginName]').val(obj.first().attr("data-text"));
+			$('input[id=pluginId]').val(flag);
+			$('#pluginList').modal('hide');
+	}
+	
 </script>
 </body>
 </html>

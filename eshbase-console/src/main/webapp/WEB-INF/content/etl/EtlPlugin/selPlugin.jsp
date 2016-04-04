@@ -30,8 +30,7 @@
 			);
 	});
 </script>
-<div id="pluginList" class="modal hide fade" role="dialog"
-	aria-labelledby="myModalLabel" aria-hidden="true">
+<div id="pluginList" class="modal hide fade" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 	<div class="modal-header">
 		<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
 		<h3>选择插件</h3>
@@ -42,7 +41,6 @@
 	</div>
 	<div class="modal-footer">
 		<button type="button" class="btn green" onclick="javascript:selPlugin();">确定</button>
-		<button type="button red" class="btn" data-dismiss="modal"
-			aria-hidden="true">关闭</button>
+		<button type="button red" class="btn" data-dismiss="modal" aria-hidden="true">关闭</button>
 	</div>
 </div>
