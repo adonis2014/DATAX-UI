@@ -33,17 +33,7 @@ public class HbaseReader extends Reader {
 
 	private HBaseProxy proxy = null;
 
-	private String isSaveOneObj = "false";
 	
-	private String oneObjColName = "data";
-	
-	private String oneObjColumnNames = "";
-	
-	private List<String> ooColumnNames = null;
-	
-	private String oneObjName="EN_User";
-	
-	private String oneObjFamilyName="cf";
 
 	@Override
 	public List<PluginParam> split(PluginParam param) {
@@ -58,15 +48,10 @@ public class HbaseReader extends Reader {
 		this.tableName = this.param.getValue(ParamKey.htable);
 		this.columns = this.param.getValue(ParamKey.columns_key);
 		this.hbaseConf = this.param.getValue(ParamKey.hbase_conf);
-		this.isSaveOneObj =  param.getValue(ParamKey.isSaveOneObj, this.isSaveOneObj);
-		this.oneObjColName = param.getValue(ParamKey.oneObjColName, this.oneObjColName);
-		this.oneObjColumnNames = param.getValue(ParamKey.oneObjColumnNames, this.oneObjColumnNames);
-		this.ooColumnNames=Arrays.asList(oneObjColumnNames.split(","));
-		this.oneObjName=param.getValue(ParamKey.oneObjName,this.oneObjName);
-		this.oneObjFamilyName=param.getValue(ParamKey.oneObjFamilyName,this.oneObjFamilyName);
+		
 		
 		try {
-			proxy = HBaseProxy.newProxy(hbaseConf, tableName,isSaveOneObj,oneObjFamilyName,oneObjColName,ooColumnNames,oneObjName);
+			proxy = HBaseProxy.newProxy(hbaseConf, tableName);
 		} catch (IOException e) {
 			try {
 				if (null != proxy) {

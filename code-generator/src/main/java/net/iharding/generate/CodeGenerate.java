@@ -41,16 +41,36 @@ public class CodeGenerate {
 		List<Field> fields = new ArrayList<Field>();
 		
 		String classAuthor = "Joe.zhang"; // 类作者，例：
-		String moduleName = "job"; // 模块名，例：sys  
-		String className = "JobExecutionInfo"; // 类名，例：user
-		String functionName = "作业任务日志"; // 功能名，例：用户
-		fields.add(new Field("workerId", "作业执行ID", "Long"));
-		fields.add(new Field("item", "分片项", "Integer"));
-		fields.add(new Field("failoverIp", "失败跳转", "Integer"));
-		fields.add(new Field("status", "状态", "String"));
-		fields.add(new Field("lastBeginTime", "最后启动时间", "Date"));
-		fields.add(new Field("nextFireTime", "下次触发时间", "Date"));
-		fields.add(new Field("lastCompleteTime", "最后完成时间", "Date"));
+		String moduleName = "etl"; // 模块名，例：sys  
+		String className = "TaskColumn"; // 类名，例：user
+		String functionName = "数据字段转换定义"; // 功能名，例：用户
+		fields.add(new Field("dsDefineId", "数据源定义ID", "Long"));
+		fields.add(new Field("columnIdx","字段ID","Integer"));
+		fields.add(new Field("familyName","列族名","String"));		
+		fields.add(new Field("column_name","列名","String"));		
+		fields.add(new Field("fieldSourceType","原数据类别","Integer"));		
+		fields.add(new Field("fieldType","字段类别","Integer"));	
+		fields.add(new Field("functionName	","字段数据处理函数","String"));	
+		fields.add(new Field("pkFunctionName","关键字字段数据处理函数","String"));			
+		fields.add(new Field("script","字段处理脚本","String"));			
+		fields.add(new Field("script_type","脚本类别","String"));			
+		fields.add(new Field("class_name","自定义类名","String"));			
+		fields.add(new Field("sort_id","字段排序值","Integer"));		
+		fields.add(new Field("remark","备注","String"));			
+		
+//		fields.add(new Field("fileSplit", "数据分隔符", "String"));
+//		fields.add(new Field("dataType", "数据类型", "Integer"));
+//		fields.add(new Field("remark", "备注", "String"));
+		
+//		String className = "JobExecutionInfo"; // 类名，例：user
+//		String functionName = "作业任务日志"; // 功能名，例：用户
+//		fields.add(new Field("workerId", "作业执行ID", "Long"));
+//		fields.add(new Field("item", "分片项", "Integer"));
+//		fields.add(new Field("failoverIp", "失败跳转", "Integer"));
+//		fields.add(new Field("status", "状态", "String"));
+//		fields.add(new Field("lastBeginTime", "最后启动时间", "Date"));
+//		fields.add(new Field("nextFireTime", "下次触发时间", "Date"));
+//		fields.add(new Field("lastCompleteTime", "最后完成时间", "Date"));
 		
 //		
 //		String className = "JobTaskDefine"; // 类名，例：user
@@ -211,12 +231,12 @@ public class CodeGenerate {
 //		fields.add(new Field("required", "是否必须", "String")); 
 //		fields.add(new Field("format", "格式", "String")); 
 
-		fields.add(new Field("createbyId", "建立者", "Long"));
-		fields.add(new Field("updatebyId", "更新者", "Long"));
-		fields.add(new Field("createDate", "建立时间", "Date"));
-		fields.add(new Field("updateDate", "更新时间", "Date"));
-		fields.add(new Field("checkLabel", "启用标记", "Integer"));
-		fields.add(new Field("remark", "备注", "String"));
+//		fields.add(new Field("createbyId", "建立者", "Long"));
+//		fields.add(new Field("updatebyId", "更新者", "Long"));
+//		fields.add(new Field("createDate", "建立时间", "Date"));
+//		fields.add(new Field("updateDate", "更新时间", "Date"));
+//		fields.add(new Field("checkLabel", "启用标记", "Integer"));
+//		fields.add(new Field("remark", "备注", "String"));
 
 		// 是否启用生成工具
 		Boolean isEnable = true;

@@ -2,13 +2,13 @@
 <%@ include file="/WEB-INF/content/common/common.jsp"%>
 <html>
 <head>
-<title>ETL任务列表</title>
+<title>数据字段转换定义列表</title>
 </head>
 <body>
 	<div class="page-content">
 		<div class="container-fluid">
 			<!-- 页面导航 -->
-			<tool:navBar pageTitle="ETL任务列表" pageTitleContent="ETL管理-ETL任务管理-ETL任务列表" titleIcon="icon-home"/>
+			<tool:navBar pageTitle="数据字段转换定义列表" pageTitleContent="内容管理-数据字段转换定义管理-数据字段转换定义列表" titleIcon="icon-home"/>
 			<!-- 主体内容 -->
 			<div class="row-fluid">
 				<div class="span12">
@@ -29,7 +29,7 @@
 	                                 	<div class="span7 ">
 		                                    <div class="control-group">
 		                                       <div class="controls">
-		                                          <input type="text" id="filters" class="m-wrap span12" placeholder="任务名,调度id,插件id,建立者,更新者,建立时间,更新时间,备注">
+		                                          <input type="text" id="filters" class="m-wrap span12" placeholder="数据源定义ID,字段ID,列族名,列名,原数据类别,字段类别,字段数据处理函数,关键字字段数据处理函数,字段处理脚本,脚本类别,自定义类名,字段排序值,备注">
 		                                       </div>
 		                                    </div>
 	                                 	</div>
@@ -62,56 +62,40 @@
 <script type="text/javascript">
 $(document).ready(function() {
 	
-	App.activeMenu("etl/EtlTask/list");
+	App.activeMenu("etl/taskColumn/list");
 	
 	Page.initData(
 		{
-			url:"${ctx}/etl/EtlTask/page",
+			url:"${ctx}/etl/taskColumn/page",
 			pageNo : 1,
 			pageSize : 10,
 			tableId : "#sample_1"
 		},
 		null,
 		[
-			 	{cName:"taskName",cValue:"任务名"},
+			 	{cName:"dsDefineId",cValue:"数据源定义ID"},
 
-			 	{cName:"job",cValue:"调度工作",format:function(i,value,item){
-					 if(App.isNundef(value)){
-						 return value.jobName;
-					 }
-				 }},
+			 	{cName:"columnIdx",cValue:"字段ID"},
 
-			 	{cName:"plugin",cValue:"插件",format:function(i,value,item){
-					 if(App.isNundef(value)){
-						 return value.pluginName;
-					 }
-				 }},
+			 	{cName:"familyName",cValue:"列族名"},
 
-			 	{cName:"creater",cValue:"建立者",format:function(i,value,item){
-					 if(App.isNundef(value)){
-						 return value.name;
-					 }
-				 }},
+			 	{cName:"column_name",cValue:"列名"},
 
-			 	{cName:"updater",cValue:"更新者",format:function(i,value,item){
-					 if(App.isNundef(value)){
-						 return value.name;
-					 }
-				 }},
+			 	{cName:"fieldSourceType",cValue:"原数据类别"},
 
-			 	{cName:"createDate",cValue:"建立时间",format:function(i,value,item){
-					 if(App.isNundef(value)){
-						 return new Date(value).format("yyyy-MM-dd");
-					 }
-					 return value;
-				 }},
+			 	{cName:"fieldType",cValue:"字段类别"},
 
-			 	{cName:"updateDate",cValue:"更新时间",format:function(i,value,item){
-					 if(App.isNundef(value)){
-						 return new Date(value).format("yyyy-MM-dd");
-					 }
-					 return value;
-				 }},
+			 	{cName:"functionName	",cValue:"字段数据处理函数"},
+
+			 	{cName:"pkFunctionName",cValue:"关键字字段数据处理函数"},
+
+			 	{cName:"script",cValue:"字段处理脚本"},
+
+			 	{cName:"script_type",cValue:"脚本类别"},
+
+			 	{cName:"class_name",cValue:"自定义类名"},
+
+			 	{cName:"sort_id",cValue:"字段排序值"},
 
 			  	{cName:"remark",cValue:"备注"}
 		 ]
@@ -120,7 +104,7 @@ $(document).ready(function() {
 
 function doQuery(){
 	var queryObj = {
-			search_LIKES_taskName_OR_jobId_OR_pluginId_OR_createbyId_OR_updatebyId_OR_createDate_OR_updateDate_OR_remark : App.isEqPlacehoder($("#filters"))
+			search_LIKES_dsDefineId_OR_columnIdx_OR_familyName_OR_column_name_OR_fieldSourceType_OR_fieldType_OR_functionName	_OR_pkFunctionName_OR_script_OR_script_type_OR_class_name_OR_sort_id_OR_remark : App.isEqPlacehoder($("#filters"))
 		};
 	Page.doQuery(queryObj);
 }

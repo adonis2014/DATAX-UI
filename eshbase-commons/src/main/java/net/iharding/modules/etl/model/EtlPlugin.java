@@ -15,6 +15,8 @@ import net.iharding.core.orm.IdEntity;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 /**
  * ETL插件Entity
  * @author Joe.zhang
@@ -22,6 +24,7 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
  */
 @Entity
 @Table(name = "etl_plugin")
+@JsonIgnoreProperties(value = { "tasks"})
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class EtlPlugin extends IdEntity {
 

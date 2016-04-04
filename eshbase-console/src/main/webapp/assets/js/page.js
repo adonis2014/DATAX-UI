@@ -8,6 +8,7 @@ var Page = {
 		totalPages : 0,
 		checkboxType:0,
 		colName:"",
+		colDataType:"",
 		url : "",
 		tableId : ""
 	},
@@ -111,7 +112,7 @@ var Page = {
 			if (Page.defaultVal.checkboxType==0){
 				tr.append($("<td></td>").append($("<input type='checkbox' data-id="+item.id+">")));
 			}else if (Page.defaultVal.checkboxType==1){
-				tr.append($("<td></td>").append($("<input type='checkbox' data-id="+item.id+" data-text="+item[Page.defaultVal.colName]+">")));
+				tr.append($("<td></td>").append($("<input type='checkbox' data-id="+item.id+" data-text="+item[Page.defaultVal.colName]+" data-type="+item[Page.defaultVal.colDataType]+">")));
 			}
 			$.each(Page.defaultCols, function(j, col) {
 				if (col.format) {

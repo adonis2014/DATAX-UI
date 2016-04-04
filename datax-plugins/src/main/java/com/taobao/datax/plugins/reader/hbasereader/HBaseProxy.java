@@ -42,36 +42,19 @@ public class HBaseProxy {
 
 	private static final int SCAN_CACHE = 256;
 	
-	private String isSaveOneObj = "false";
-	
-	private String oneObjColName = "data";
-	
-	private List<String> ooColumnNames = null;
-	
-	private String oneObjName="EN_User";
-	
-	private String oneObjFamilyName="cf";
 
 	private Logger logger = Logger.getLogger(HBaseProxy.class);
 
-	public static HBaseProxy newProxy(String hbase_conf, String tableName, String isSaveOneObj, String oneObjFamilyName, String oneObjColName, List<String> ooColumnNames,
-			String oneObjName)throws IOException {
-		return new HBaseProxy(hbase_conf, tableName,isSaveOneObj,oneObjFamilyName,oneObjColName,ooColumnNames,
-				 oneObjName);
+	public static HBaseProxy newProxy(String hbase_conf, String tableName)throws IOException {
+		return new HBaseProxy(hbase_conf, tableName);
 	}
 
-	private HBaseProxy(String hbase_conf, String tableName, String isSaveOneObj, String oneObjFamilyName, String oneObjColName, List<String> ooColumnNames,
-			String oneObjName) throws IOException {
+	private HBaseProxy(String hbase_conf, String tableName) throws IOException {
 		Configuration conf = new Configuration();
 		conf.addResource(new Path(hbase_conf));
 		config = new Configuration(conf);
 		htable = new HTable(config, tableName);
 		admin = new HBaseAdmin(config);
-		this.isSaveOneObj=isSaveOneObj;
-		this.oneObjFamilyName=oneObjFamilyName;
-		this.oneObjColName=oneObjColName;
-		this.ooColumnNames=ooColumnNames;
-		this.oneObjName=oneObjName;
 		if (!this.check()) {
 			throw new IllegalStateException(
 					"DataX try to build HBaseProxy failed !");
@@ -128,9 +111,6 @@ public class HBaseProxy {
 			this.columns[idx] = column.split(":")[1].trim();
 			scan.addColumn(this.families[idx].getBytes(), this.columns[idx].getBytes());
 			idx++;
-		}
-		if ("true".equalsIgnoreCase(this.isSaveOneObj)){
-			scan.addColumn(this.oneObjFamilyName.getBytes(),this.oneObjColName.getBytes());
 		}
 		htable.setScannerCaching(SCAN_CACHE);
 		this.rs = htable.getScanner(this.scan);

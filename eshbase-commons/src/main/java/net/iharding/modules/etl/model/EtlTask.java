@@ -18,8 +18,6 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.annotations.NotFound;
 import org.hibernate.annotations.NotFoundAction;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-
 /**
  * ETL任务Entity
  * @author Joe.zhang
@@ -27,7 +25,6 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
  */
 @Entity
 @Table(name = "etl_task")
-@JsonIgnoreProperties(value = { "plugin"})
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class EtlTask extends IdEntity {
 
@@ -83,6 +80,12 @@ public class EtlTask extends IdEntity {
 	 */
 	private String remark;
 	
+	/**
+	 * 启用标记
+	 */
+	@Column(name="check_label")
+	private Integer checkLabel;
+	
 	public String getTaskName() {
 		return taskName;
 	}
@@ -91,6 +94,14 @@ public class EtlTask extends IdEntity {
 		this.taskName = taskName;
 	}
 	
+	public Integer getCheckLabel() {
+		return checkLabel;
+	}
+
+	public void setCheckLabel(Integer checkLabel) {
+		this.checkLabel = checkLabel;
+	}
+
 	public EtlJob getJob() {
 		return job;
 	}

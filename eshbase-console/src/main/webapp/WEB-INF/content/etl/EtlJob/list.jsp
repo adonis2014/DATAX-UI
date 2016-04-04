@@ -59,11 +59,16 @@
 		</div>
 	</div>
 <%@ include file="/WEB-INF/content/common/plugins/page.jsp"%>
+<script type="text/javascript" src="${ctx}/assets/js/map.js"></script>
+
 <script type="text/javascript">
 $(document).ready(function() {
 	
 	App.activeMenu("etl/EtlJob/list");
-	
+	var etlTypeMap = new Map();  
+	<mytags:dictSelect field="etlTypeMap" id="etlTypeMap" type="map" hasLabel="false" codeType="1034" />
+	var statusMap = new Map();  
+	<mytags:dictSelect field="statusMap" id="statusMap" type="map" hasLabel="false" codeType="1003" />
 	Page.initData(
 		{
 			url:"${ctx}/etl/EtlJob/page",
@@ -74,22 +79,59 @@ $(document).ready(function() {
 		null,
 		[
 			 	{cName:"jobName",cValue:"调度作业名"},
+			 	{cName:"etlType",cValue:"etl类别",format:function(i,value,item){
+			 		return etlTypeMap.get(item.etlType);
+			 	}},
 
-			 	{cName:"nextExeDate",cValue:"下次执行时间"},
+			 	{cName:"nextExeDate",cValue:"下次执行时间",format:function(i,value,item){
+					 if(App.isNundef(value)){
+						 return new Date(value).format("yyyy-MM-dd hh:mm:ss");
+					 }
+					 return value;
+				 }},
 
 			 	{cName:"cronTrigger",cValue:"调度设置"},
 
-			 	{cName:"status",cValue:"状态"},
+			 	{cName:"status",cValue:"状态",format:function(i,value,item){
+			 		return statusMap.get(item.status);
+			 	}},
 
-			 	{cName:"createbyId",cValue:"建立者"},
+			 	{cName:"creater",cValue:"建立者",format:function(i,value,item){
+					 if(App.isNundef(value)){
+						 return value.name;
+					 }
+				 }},
+				 {cName:"createDate",cValue:"建立时间",format:function(i,value,item){
+					 if(App.isNundef(value)){
+						 return new Date(value).format("yyyy-MM-dd");
+					 }
+					 return value;
+				 }},
+				 {cName:"updater",cValue:"更新者",format:function(i,value,item){
+					 if(App.isNundef(value)){
+						 return value.name;
+					 }
+				 }},
+			 	{cName:"updateDate",cValue:"更新时间",format:function(i,value,item){
+					 if(App.isNundef(value)){
+						 return new Date(value).format("yyyy-MM-dd");
+					 }
+					 return value;
+				 }},
 
-			 	{cName:"updatebyId",cValue:"更新者"},
-
-			 	{cName:"createDate",cValue:"建立时间"},
-
-			 	{cName:"updateDate",cValue:"更新时间"},
-
-			 	{cName:"checkLabel",cValue:"启用标记"},
+			 	{cName:"checkLabel",cValue:"启用标记",format:function(i,value,item){
+					<shiro:hasPermission name="etl:EtlJob:check">
+					 var $a = $('<a href="javascript:void(0)" data-id="'+item.id+'" data-placement="right"   onclick="javascript:check(this)" ></a>');
+					 if(value === 1){
+						 return $a.clone().attr("data-original-title","点击停用").html('&nbsp;已启用');
+					 }
+					 return $a.attr("data-original-title","点击启用").html('&nbsp;已停用');
+				 	</shiro:hasPermission>
+					 if(value == 1){
+					 	return "<span class='label label-success'>已启用</span>";
+					 }
+				 	return "<span class='label label-danger'>已停用</span>";
+			 }},
 
 			  	{cName:"remark",cValue:"备注"}
 		 ]

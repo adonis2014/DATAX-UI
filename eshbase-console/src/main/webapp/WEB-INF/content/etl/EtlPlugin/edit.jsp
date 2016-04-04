@@ -96,10 +96,10 @@
 									</c:forEach>
 									<tr>
 										<td><input type="text" style="width:60px;"  validate="{required:true}" name="name"/></td>
-										<td><input type="text" style="width:60px;"   validate="{required:true}" name="range"/></td>
-										<td><mytags:dictSelect field="mandatory" hasPSel="false"   styleText="width:60px;" id="mandatory" type="select" hasLabel="false" codeType="1002" defaultVal="1" /></td>
-										<td><input type="text" style="width:60px;"   validate="{required:true}" name="defaultValue"/></td>
-									    <td><mytags:dictSelect field="isColumn" hasPSel="false"  styleText="width:60px;" id="isColumn" type="select" hasLabel="false" codeType="1002" defaultVal="1" /></td>
+										<td><input type="text" style="width:60px;"   name="range"/></td>
+										<td><mytags:dictSelect field="mandatory" hasPSel="false"   styleText="width:60px;" id="mandatory" type="select" hasLabel="false" codeType="1002" defaultVal="0" /></td>
+										<td><input type="text" style="width:60px;"   name="defaultValue"/></td>
+									    <td><mytags:dictSelect field="isColumn" hasPSel="false"  styleText="width:60px;" id="isColumn" type="select" hasLabel="false" codeType="1002" defaultVal="0" /></td>
 										<td><input type="text"  style="width:60px;" validate="{required:true}" name="description"/></td>
 										<td><button type="submit" class="btn blue">添加</button></td>
 									</tr>

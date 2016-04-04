@@ -1,7 +1,6 @@
 package net.iharding.modules.etl.model;
 
 import java.util.Date;
-
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -15,13 +14,14 @@ import javax.persistence.OrderBy;
 import javax.persistence.Table;
 
 import net.iharding.core.orm.IdEntity;
-import net.iharding.modules.meta.model.DBTable;
 
 import org.guess.sys.model.User;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.annotations.NotFound;
 import org.hibernate.annotations.NotFoundAction;
+
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 /**
  * ETL调度作业Entity
@@ -30,6 +30,7 @@ import org.hibernate.annotations.NotFoundAction;
  */
 @Entity
 @Table(name = "etl_job")
+@JsonIgnoreProperties(value = { "tasks"})
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class EtlJob extends IdEntity {
 
@@ -52,6 +53,11 @@ public class EtlJob extends IdEntity {
 	 * 状态
 	 */
 	private Integer status;
+	/**
+	 * ETL类型
+	 */
+	@Column(name="etl_type")
+	private Integer etlType;
 	/**
 	 * 最后更新人
 	 */
@@ -100,6 +106,14 @@ public class EtlJob extends IdEntity {
 		this.jobName = jobName;
 	}
 	
+	public Integer getEtlType() {
+		return etlType;
+	}
+
+	public void setEtlType(Integer etlType) {
+		this.etlType = etlType;
+	}
+
 	public Date getNextExeDate() {
 		return nextExeDate;
 	}

@@ -1,8 +1,10 @@
 package net.iharding.modules.etl.dao.impl;
 
-import org.guess.core.orm.hibernate.HibernateDao;
 import net.iharding.modules.etl.dao.EtlJobDao;
 import net.iharding.modules.etl.model.EtlJob;
+
+import org.guess.core.orm.hibernate.HibernateDao;
+import org.hibernate.Session;
 import org.springframework.stereotype.Repository;
 
 /**
@@ -16,4 +18,10 @@ import org.springframework.stereotype.Repository;
 @Repository
 public class EtlJobDaoImpl extends HibernateDao<EtlJob,Long> implements EtlJobDao {
 
+	@Override
+	public void save(EtlJob etljob) {
+		Session session = getSession();
+		session.merge(etljob);
+	}
+	
 }

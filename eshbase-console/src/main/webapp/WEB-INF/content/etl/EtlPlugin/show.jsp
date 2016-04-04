@@ -23,62 +23,64 @@
 							</div>
 						</div>
 						<div class="portlet-body form">
-							<form action="${ctx}/etl/EtlPlugin/edit" class="form-horizontal form_sync" method="post" id="form1">
-
-								<input type="hidden" value="${obj.id}" name="id">
-								<div class="control-group">
-									<label class="control-label">插件名:</label>
-									<div class="controls">
-										<input type="text" class="span6 m-wrap" validate="{required:true}" name="pluginName" value="${obj.pluginName }" />
-									</div>
-								</div>
-								<div class="control-group">
-									<label class="control-label">插件类别:</label>
-									<div class="controls">
-										<input type="text" class="span6 m-wrap" validate="{required:true}" name="pluginType" value="${obj.pluginType }" />
-									</div>
-								</div>
-								<div class="control-group">
-									<label class="control-label">类名:</label>
-									<div class="controls">
-										<input type="text" class="span6 m-wrap" validate="{required:true}" name="className" value="${obj.className }" />
-									</div>
-								</div>
-								<div class="control-group">
-									<label class="control-label">版本:</label>
-									<div class="controls">
-										<input type="text" class="span6 m-wrap" validate="{required:true}" name="version" value="${obj.version }" />
-									</div>
-								</div>
-								<div class="control-group">
-									<label class="control-label">数据源目标:</label>
-									<div class="controls">
-										<input type="text" class="span6 m-wrap" validate="{required:true}" name="target" value="${obj.target }" />
-									</div>
-								</div>
-								<div class="control-group">
-									<label class="control-label">jar包名:</label>
-									<div class="controls">
-										<input type="text" class="span6 m-wrap" validate="{required:true}" name="jarName" value="${obj.jarName }" />
-									</div>
-								</div>
-								<div class="control-group">
-									<label class="control-label">最大线程数:</label>
-									<div class="controls">
-										<input type="text" class="span6 m-wrap" validate="{required:true}" name="maxThreadNum" value="${obj.maxThreadNum }" />
-									</div>
-								</div>
-								<div class="control-group">
-									<label class="control-label">备注:</label>
-									<div class="controls">
-										<input type="text" class="span6 m-wrap" validate="{required:true}" name="remark" value="${obj.remark }" />
-									</div>
-								</div>
-								<div class="form-actions">
-									<button type="submit" class="btn blue">提交</button>
-									<a class='btn' href="${header.Referer }">返回</a>
-								</div>
-							</form>
+							<table class="dbform" width="100%">
+								<tr>
+									<td class="fieldtitle">插件名:</td>
+									<td class="fieldvalue">${obj.pluginName }</td>
+									<td class="fieldtitle">插件类别:</td>
+									<td class="fieldvalue">${obj.pluginType }</td>
+								</tr>
+								<tr>
+									<td class="fieldtitle">类名:</td>
+									<td class="fieldvalue">${obj.className}</td>
+									<td class="fieldtitle">版本:</td>
+									<td class="fieldvalue">${obj.version }</td>
+								</tr>
+								<tr>
+									<td class="fieldtitle">数据源目标:</td>
+									<td class="fieldvalue">${obj.target }</td>
+									<td class="fieldtitle">jar包名:</td>
+									<td class="fieldvalue">${obj.jarName }</td>
+								</tr>
+								<tr>
+									<td class="fieldtitle">最大线程数:</td>
+									<td class="fieldvalue">${obj.maxThreadNum }</td>
+									<td class="fieldtitle">备注:</td>
+									<td class="fieldvalue">${obj.remark }</td>
+								</tr>
+							</table>
+						</div>
+						<div class="portlet-title">
+							<h4>
+								<i class="icon-reorder"></i>参数
+							</h4>
+							<div class="tools"></div>
+						</div>
+						<div class="portlet-body">
+							<table width="100%" class="dbgrid">
+								<thead>
+									<tr>
+										<th>名称</th>
+										<th>范围</th>
+										<th>是否必须</th>
+										<th>默认值</th>
+										<th>是否列</th>
+										<th>备注</th>
+									</tr>
+								</thead>
+								<tbody>
+									<c:forEach items="${obj.pluginParams}" var="pparam">
+										<tr>
+											<td>${pparam.name}</td>
+											<td>${pparam.range}</td>
+											<td><mytags:dictSelect field="mandatory" id="mandatory" type="label" hasLabel="false" codeType="1002" defaultVal="${pparam.mandatory}" /></td>
+											<td>${pparam.defaultValue}</td>
+											<td><mytags:dictSelect field="isColumn" id="isColumn" type="label" hasLabel="false" codeType="1002" defaultVal="${pparam.isColumn}" /></td>
+											<td>${pparam.description}</td>
+										</tr>
+									</c:forEach>
+								</tbody>
+							</table>
 						</div>
 					</div>
 				</div>

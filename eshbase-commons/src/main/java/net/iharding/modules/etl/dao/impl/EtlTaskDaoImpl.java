@@ -1,8 +1,10 @@
 package net.iharding.modules.etl.dao.impl;
 
-import org.guess.core.orm.hibernate.HibernateDao;
 import net.iharding.modules.etl.dao.EtlTaskDao;
 import net.iharding.modules.etl.model.EtlTask;
+
+import org.guess.core.orm.hibernate.HibernateDao;
+import org.hibernate.Session;
 import org.springframework.stereotype.Repository;
 
 /**
@@ -15,5 +17,9 @@ import org.springframework.stereotype.Repository;
 */
 @Repository
 public class EtlTaskDaoImpl extends HibernateDao<EtlTask,Long> implements EtlTaskDao {
-
+	@Override
+	public void save(EtlTask etlTask) {
+		Session session = getSession();
+		session.merge(etlTask);
+	}
 }

@@ -2,13 +2,13 @@
 <%@ include file="/WEB-INF/content/common/common.jsp"%>
 <html>
 <head>
-<title>ETL任务列表</title>
+<title>任务数据定义列表</title>
 </head>
 <body>
 	<div class="page-content">
 		<div class="container-fluid">
 			<!-- 页面导航 -->
-			<tool:navBar pageTitle="ETL任务列表" pageTitleContent="ETL管理-ETL任务管理-ETL任务列表" titleIcon="icon-home"/>
+			<tool:navBar pageTitle="任务数据定义列表" pageTitleContent="内容管理-任务数据定义管理-任务数据定义列表" titleIcon="icon-home"/>
 			<!-- 主体内容 -->
 			<div class="row-fluid">
 				<div class="span12">
@@ -29,7 +29,7 @@
 	                                 	<div class="span7 ">
 		                                    <div class="control-group">
 		                                       <div class="controls">
-		                                          <input type="text" id="filters" class="m-wrap span12" placeholder="任务名,调度id,插件id,建立者,更新者,建立时间,更新时间,备注">
+		                                          <input type="text" id="filters" class="m-wrap span12" placeholder="任务ID,数据分隔符,数据类型,备注,建立者,更新者,建立时间,更新时间,启用标记,备注">
 		                                       </div>
 		                                    </div>
 	                                 	</div>
@@ -62,56 +62,34 @@
 <script type="text/javascript">
 $(document).ready(function() {
 	
-	App.activeMenu("etl/EtlTask/list");
+	App.activeMenu("etl/taskDsDefine/list");
 	
 	Page.initData(
 		{
-			url:"${ctx}/etl/EtlTask/page",
+			url:"${ctx}/etl/taskDsDefine/page",
 			pageNo : 1,
 			pageSize : 10,
 			tableId : "#sample_1"
 		},
 		null,
 		[
-			 	{cName:"taskName",cValue:"任务名"},
+			 	{cName:"taskId",cValue:"任务ID"},
 
-			 	{cName:"job",cValue:"调度工作",format:function(i,value,item){
-					 if(App.isNundef(value)){
-						 return value.jobName;
-					 }
-				 }},
+			 	{cName:"fileSplit",cValue:"数据分隔符"},
 
-			 	{cName:"plugin",cValue:"插件",format:function(i,value,item){
-					 if(App.isNundef(value)){
-						 return value.pluginName;
-					 }
-				 }},
+			 	{cName:"dataType",cValue:"数据类型"},
 
-			 	{cName:"creater",cValue:"建立者",format:function(i,value,item){
-					 if(App.isNundef(value)){
-						 return value.name;
-					 }
-				 }},
+			 	{cName:"remark",cValue:"备注"},
 
-			 	{cName:"updater",cValue:"更新者",format:function(i,value,item){
-					 if(App.isNundef(value)){
-						 return value.name;
-					 }
-				 }},
+			 	{cName:"createbyId",cValue:"建立者"},
 
-			 	{cName:"createDate",cValue:"建立时间",format:function(i,value,item){
-					 if(App.isNundef(value)){
-						 return new Date(value).format("yyyy-MM-dd");
-					 }
-					 return value;
-				 }},
+			 	{cName:"updatebyId",cValue:"更新者"},
 
-			 	{cName:"updateDate",cValue:"更新时间",format:function(i,value,item){
-					 if(App.isNundef(value)){
-						 return new Date(value).format("yyyy-MM-dd");
-					 }
-					 return value;
-				 }},
+			 	{cName:"createDate",cValue:"建立时间"},
+
+			 	{cName:"updateDate",cValue:"更新时间"},
+
+			 	{cName:"checkLabel",cValue:"启用标记"},
 
 			  	{cName:"remark",cValue:"备注"}
 		 ]
@@ -120,7 +98,7 @@ $(document).ready(function() {
 
 function doQuery(){
 	var queryObj = {
-			search_LIKES_taskName_OR_jobId_OR_pluginId_OR_createbyId_OR_updatebyId_OR_createDate_OR_updateDate_OR_remark : App.isEqPlacehoder($("#filters"))
+			search_LIKES_taskId_OR_fileSplit_OR_dataType_OR_remark_OR_createbyId_OR_updatebyId_OR_createDate_OR_updateDate_OR_checkLabel_OR_remark : App.isEqPlacehoder($("#filters"))
 		};
 	Page.doQuery(queryObj);
 }

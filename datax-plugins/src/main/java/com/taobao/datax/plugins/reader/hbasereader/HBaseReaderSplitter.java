@@ -29,29 +29,13 @@ public class HBaseReaderSplitter extends Splitter {
 
 	private HBaseProxy proxy = null;
 	
-	private String isSaveOneObj = "false";
 	
-	private String oneObjColName = "data";
-	
-	private String oneObjColumnNames = "";
-	
-	private List<String> ooColumnNames = null;
-	
-	private String oneObjName="EN_User";
-	
-	private String oneObjFamilyName="cf";
 	@Override
 	public int init() {
 		this.tableName = this.param.getValue(ParamKey.htable);
 		this.columns = this.param.getValue(ParamKey.columns_key);
 		this.hbaseConf = this.param.getValue(ParamKey.hbase_conf);
 		this.rowkeyRange = this.param.getValue(ParamKey.rowkey_range, "");
-		this.isSaveOneObj =  param.getValue(ParamKey.isSaveOneObj, this.isSaveOneObj);
-		this.oneObjColName = param.getValue(ParamKey.oneObjColName, this.oneObjColName);
-		this.oneObjColumnNames = param.getValue(ParamKey.oneObjColumnNames, this.oneObjColumnNames);
-		this.ooColumnNames=Arrays.asList(oneObjColumnNames.split(","));
-		this.oneObjName=param.getValue(ParamKey.oneObjName,this.oneObjName);
-		this.oneObjFamilyName=param.getValue(ParamKey.oneObjFamilyName,this.oneObjFamilyName);
 		return PluginStatus.SUCCESS.value();
 	}
 
@@ -60,7 +44,7 @@ public class HBaseReaderSplitter extends Splitter {
 		List<PluginParam> ret = new ArrayList<PluginParam>();
 
 		try {
-			this.proxy = HBaseProxy.newProxy(hbaseConf, tableName,isSaveOneObj,oneObjFamilyName,oneObjColName,ooColumnNames,oneObjName);
+			this.proxy = HBaseProxy.newProxy(hbaseConf, tableName);
 
 			if (StringUtils.isBlank(rowkeyRange)) {
 				rowkeyRange  = ",";

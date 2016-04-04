@@ -61,45 +61,5 @@ public class ParamKey {
        * @default:1
        */
 	public final static String concurrency = "concurrency";
-	
-	 /*
-     * @name:isSaveOneObj 
-     * @description:是否分拆合并保存的字段
-     * @range:true,false
-     * @mandatory: false
-     * @default:true
-     */
-	public final static String isSaveOneObj = "isSaveOneObj";
-	
-	/*
-     * @name:oneObjColName 
-     * @description:合并保存的字段名
-     * @mandatory: false
-     * @default:data
-     */
-	public final static String oneObjColName = "oneObjColName";
-	
-	/*
-     * @name:oneObjName
-     * @description:合并保存的字段对应对象 EN_User-用户表
-     * @mandatory: false
-     * @default:EN_User
-     */
-	public final static String oneObjName = "oneObjName";
-	/*
-     * @name:oneObjColumnNames
-     * @description:需要分拆保存的字段名集合
-     * @mandatory: false
-     * @default:
-     */
-	public final static String oneObjColumnNames = "oneObjColumnNames";
-	/*
-     * @name:oneObjFamilyName
-     * @description:需要合并保存的列族名
-     * @mandatory: false
-     * @default:cf
-     */
-	public final static String oneObjFamilyName="oneObjFamilyName";
-
 
 }
