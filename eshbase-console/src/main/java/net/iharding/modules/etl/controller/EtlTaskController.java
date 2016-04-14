@@ -13,6 +13,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.servlet.ModelAndView;
 
 /**
 * 
@@ -67,6 +68,20 @@ public class EtlTaskController extends BaseController<EtlTask>{
 		}else{
 			return REDIRECT + listView;
 		}
+	}
+	
+	/**
+	 * 跳转到更新页面
+	 * @param id
+	 * @return
+	 * @throws Exception
+	 */
+	@RequestMapping(method = RequestMethod.GET, value = "/generateParams/{id}")
+	public ModelAndView generateParams(@PathVariable("id") Long id) throws Exception {
+		EtlTask obj = etlTaskService.generateParams(id);
+		ModelAndView mav = new ModelAndView(editView);
+		mav.addObject("obj", obj);
+		return mav;
 	}
 	
 }

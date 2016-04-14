@@ -21,6 +21,8 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.annotations.NotFound;
 import org.hibernate.annotations.NotFoundAction;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 /**
  * ETL任务Entity
  * @author Joe.zhang
@@ -28,6 +30,7 @@ import org.hibernate.annotations.NotFoundAction;
  */
 @Entity
 @Table(name = "etl_task")
+@JsonIgnoreProperties(value = { "taskParams"})
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class EtlTask extends IdEntity {
 

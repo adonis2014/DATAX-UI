@@ -1,10 +1,15 @@
 package net.iharding.modules.etl.service.impl;
 
 import java.util.Date;
+import java.util.List;
+import java.util.Set;
 
 import net.iharding.modules.etl.dao.EtlPluginDao;
 import net.iharding.modules.etl.dao.EtlTaskDao;
+import net.iharding.modules.etl.dao.EtlTaskParamDao;
+import net.iharding.modules.etl.model.EtlPluginParam;
 import net.iharding.modules.etl.model.EtlTask;
+import net.iharding.modules.etl.model.EtlTaskParam;
 import net.iharding.modules.etl.service.EtlTaskService;
 
 import org.guess.core.service.BaseServiceImpl;
@@ -30,6 +35,10 @@ public class EtlTaskServiceImpl extends BaseServiceImpl<EtlTask, Long> implement
 	@Autowired
 	private EtlPluginDao etlPluginDao;
 	
+	@Autowired
+	private EtlTaskParamDao etlTaskParamDao;
+	
+	
 	@Override
 	public void save(EtlTask etlTask) throws Exception {
 		if (etlTask.getId() != null) {
@@ -52,5 +61,35 @@ public class EtlTaskServiceImpl extends BaseServiceImpl<EtlTask, Long> implement
 			etlTask.setCheckLabel(0);
 			super.save(etlTask);
 		}
+	}
+	
+	private boolean checkHasParam(Set<EtlTaskParam> params,EtlPluginParam param){
+		for(EtlTaskParam tparam:params){
+			if (tparam.getPluginParamId()==param.getId()){
+				return true;
+			}
+		}
+		return false;
+	}
+
+	@Override
+	public EtlTask generateParams(Long taskId) {
+		EtlTask task= etlTaskDao.get(taskId);
+		Set<EtlPluginParam> params=task.getPlugin().getPluginParams();
+		for(EtlPluginParam param:params){
+			if (!checkHasParam(task.getTaskParams(),param)){
+				EtlTaskParam tparam=new EtlTaskParam();
+				tparam.setParamKey(param.getName());
+				tparam.setParamValue(param.getDefaultValue());
+				tparam.setPluginParamId(param.getId());
+				tparam.setRemark(param.getDescription());
+				tparam.setTask(task);
+				tparam.setTaskId(task.getId());
+				task.getTaskParams().add(tparam);
+				etlTaskParamDao.save(tparam);
+			}
+		}
+		etlTaskDao.save(task);
+		return task;
 	}
 }

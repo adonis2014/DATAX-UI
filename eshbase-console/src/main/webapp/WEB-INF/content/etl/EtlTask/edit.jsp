@@ -79,8 +79,8 @@
 							</h4>
 							<div class="tools"></div>
 						</div>
-						<form action="${ctx}/etl/EtlTask/edit" class="form-horizontal form_sync" method="post" id="form1">
-								<input type="hidden" value="${obj.id}" name="job.id">
+						<form action="${ctx}/etl/EtlTask/editParams" class="form-horizontal form_sync" method="post" id="form1">
+								<input type="hidden" value="${obj.id}" name="id">
 								<input type="hidden" value="1" name="isEdit">
 						<div class="portlet-body form">
 							<table width="100%" class="dbgrid">
@@ -93,12 +93,13 @@
 										</tr>
 									</thead>
 									<tbody>
-									<c:forEach items="${obj.taskParams}" var="param">
+									<c:forEach items="${obj.taskParams}" var="tparam">
+									<input type="text" value="${tparam.paramValue}"/>
 									<tr>
-										<td>${param.pluginParamId}</td>
-										<td>${param.paramKey}</td>
-										<td><input type="text" value="${param.paramValue}"/></td>
-										<td>${param.remark}</td>
+										<td>${tparam.pluginParamId}</td>
+										<td>${tparam.paramKey}</td>
+										<td><input type="text" value="${tparam.paramValue}"/></td>
+										<td>${tparam.remark}</td>
 									</tr>
 									</c:forEach>
 									<tr>
@@ -122,6 +123,9 @@
 	$(function(){
 		App.activeMenu("etl/EtlTask/list");
 	});
+	function generateParams(taskId){
+		self.location.href="${ctx}/etl/EtlTask/generateParams/"+taskId;
+	}
 	function showPlugins() {
 		$("#pluginList").modal();
 	}
