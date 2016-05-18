@@ -12,7 +12,7 @@
  Target Server Version : 90405
  File Encoding         : utf-8
 
- Date: 02/06/2016 10:49:43 AM
+ Date: 05/18/2016 20:06:23 PM
 */
 
 -- ----------------------------
@@ -54,7 +54,7 @@ ALTER TABLE "public"."seq_cms_site" OWNER TO "postgres";
 --  Sequence structure for seq_etl_job
 -- ----------------------------
 DROP SEQUENCE IF EXISTS "public"."seq_etl_job";
-CREATE SEQUENCE "public"."seq_etl_job" INCREMENT 1 START 45 MAXVALUE 9223372036854775807 MINVALUE 1 CACHE 1;
+CREATE SEQUENCE "public"."seq_etl_job" INCREMENT 1 START 47 MAXVALUE 9223372036854775807 MINVALUE 1 CACHE 1;
 ALTER TABLE "public"."seq_etl_job" OWNER TO "postgres";
 
 -- ----------------------------
@@ -75,28 +75,28 @@ ALTER TABLE "public"."seq_etl_param_column" OWNER TO "postgres";
 --  Sequence structure for seq_etl_plugin
 -- ----------------------------
 DROP SEQUENCE IF EXISTS "public"."seq_etl_plugin";
-CREATE SEQUENCE "public"."seq_etl_plugin" INCREMENT 1 START 45 MAXVALUE 9223372036854775807 MINVALUE 1 CACHE 1;
+CREATE SEQUENCE "public"."seq_etl_plugin" INCREMENT 1 START 59 MAXVALUE 9223372036854775807 MINVALUE 1 CACHE 1;
 ALTER TABLE "public"."seq_etl_plugin" OWNER TO "postgres";
 
 -- ----------------------------
 --  Sequence structure for seq_etl_plugin_param
 -- ----------------------------
 DROP SEQUENCE IF EXISTS "public"."seq_etl_plugin_param";
-CREATE SEQUENCE "public"."seq_etl_plugin_param" INCREMENT 1 START 45 MAXVALUE 9223372036854775807 MINVALUE 1 CACHE 1;
+CREATE SEQUENCE "public"."seq_etl_plugin_param" INCREMENT 1 START 53 MAXVALUE 9223372036854775807 MINVALUE 1 CACHE 1;
 ALTER TABLE "public"."seq_etl_plugin_param" OWNER TO "postgres";
 
 -- ----------------------------
 --  Sequence structure for seq_etl_task
 -- ----------------------------
 DROP SEQUENCE IF EXISTS "public"."seq_etl_task";
-CREATE SEQUENCE "public"."seq_etl_task" INCREMENT 1 START 45 MAXVALUE 9223372036854775807 MINVALUE 1 CACHE 1;
+CREATE SEQUENCE "public"."seq_etl_task" INCREMENT 1 START 48 MAXVALUE 9223372036854775807 MINVALUE 1 CACHE 1;
 ALTER TABLE "public"."seq_etl_task" OWNER TO "postgres";
 
 -- ----------------------------
 --  Sequence structure for seq_etl_task_param
 -- ----------------------------
 DROP SEQUENCE IF EXISTS "public"."seq_etl_task_param";
-CREATE SEQUENCE "public"."seq_etl_task_param" INCREMENT 1 START 45 MAXVALUE 9223372036854775807 MINVALUE 1 CACHE 1;
+CREATE SEQUENCE "public"."seq_etl_task_param" INCREMENT 1 START 49 MAXVALUE 9223372036854775807 MINVALUE 1 CACHE 1;
 ALTER TABLE "public"."seq_etl_task_param" OWNER TO "postgres";
 
 -- ----------------------------
@@ -107,17 +107,24 @@ CREATE SEQUENCE "public"."seq_finace" INCREMENT 1 START 1 MAXVALUE 9223372036854
 ALTER TABLE "public"."seq_finace" OWNER TO "postgres";
 
 -- ----------------------------
+--  Sequence structure for seq_job_execution_info
+-- ----------------------------
+DROP SEQUENCE IF EXISTS "public"."seq_job_execution_info";
+CREATE SEQUENCE "public"."seq_job_execution_info" INCREMENT 1 START 1 MAXVALUE 9999999999999999 MINVALUE 1 CACHE 1;
+ALTER TABLE "public"."seq_job_execution_info" OWNER TO "postgres";
+
+-- ----------------------------
 --  Sequence structure for seq_job_jobclass
 -- ----------------------------
 DROP SEQUENCE IF EXISTS "public"."seq_job_jobclass";
-CREATE SEQUENCE "public"."seq_job_jobclass" INCREMENT 1 START 46 MAXVALUE 9223372036854775807 MINVALUE 1 CACHE 1;
+CREATE SEQUENCE "public"."seq_job_jobclass" INCREMENT 1 START 51 MAXVALUE 9223372036854775807 MINVALUE 1 CACHE 1;
 ALTER TABLE "public"."seq_job_jobclass" OWNER TO "postgres";
 
 -- ----------------------------
 --  Sequence structure for seq_job_machine
 -- ----------------------------
 DROP SEQUENCE IF EXISTS "public"."seq_job_machine";
-CREATE SEQUENCE "public"."seq_job_machine" INCREMENT 1 START 45 MAXVALUE 9223372036854775807 MINVALUE 1 CACHE 1;
+CREATE SEQUENCE "public"."seq_job_machine" INCREMENT 1 START 52 MAXVALUE 9223372036854775807 MINVALUE 1 CACHE 1;
 ALTER TABLE "public"."seq_job_machine" OWNER TO "postgres";
 
 -- ----------------------------
@@ -131,14 +138,14 @@ ALTER TABLE "public"."seq_job_reg_center" OWNER TO "postgres";
 --  Sequence structure for seq_job_task_define
 -- ----------------------------
 DROP SEQUENCE IF EXISTS "public"."seq_job_task_define";
-CREATE SEQUENCE "public"."seq_job_task_define" INCREMENT 1 START 45 MAXVALUE 9223372036854775807 MINVALUE 1 CACHE 1;
+CREATE SEQUENCE "public"."seq_job_task_define" INCREMENT 1 START 57 MAXVALUE 9223372036854775807 MINVALUE 1 CACHE 1;
 ALTER TABLE "public"."seq_job_task_define" OWNER TO "postgres";
 
 -- ----------------------------
 --  Sequence structure for seq_job_worker
 -- ----------------------------
 DROP SEQUENCE IF EXISTS "public"."seq_job_worker";
-CREATE SEQUENCE "public"."seq_job_worker" INCREMENT 1 START 45 MAXVALUE 9223372036854775807 MINVALUE 1 CACHE 1;
+CREATE SEQUENCE "public"."seq_job_worker" INCREMENT 1 START 49 MAXVALUE 9223372036854775807 MINVALUE 1 CACHE 1;
 ALTER TABLE "public"."seq_job_worker" OWNER TO "postgres";
 
 -- ----------------------------
@@ -194,7 +201,7 @@ ALTER TABLE "public"."seq_oa_leave" OWNER TO "postgres";
 --  Sequence structure for seq_sys_dict
 -- ----------------------------
 DROP SEQUENCE IF EXISTS "public"."seq_sys_dict";
-CREATE SEQUENCE "public"."seq_sys_dict" INCREMENT 1 START 1029 MAXVALUE 9223372036854775807 MINVALUE 1 CACHE 1;
+CREATE SEQUENCE "public"."seq_sys_dict" INCREMENT 1 START 1038 MAXVALUE 9223372036854775807 MINVALUE 1 CACHE 1;
 ALTER TABLE "public"."seq_sys_dict" OWNER TO "postgres";
 
 -- ----------------------------
@@ -208,7 +215,7 @@ ALTER TABLE "public"."seq_sys_icon" OWNER TO "postgres";
 --  Sequence structure for seq_sys_log
 -- ----------------------------
 DROP SEQUENCE IF EXISTS "public"."seq_sys_log";
-CREATE SEQUENCE "public"."seq_sys_log" INCREMENT 1 START 255 MAXVALUE 9223372036854775807 MINVALUE 1 CACHE 1;
+CREATE SEQUENCE "public"."seq_sys_log" INCREMENT 1 START 452 MAXVALUE 9223372036854775807 MINVALUE 1 CACHE 1;
 ALTER TABLE "public"."seq_sys_log" OWNER TO "postgres";
 
 -- ----------------------------
@@ -222,7 +229,7 @@ ALTER TABLE "public"."seq_sys_multi_lang" OWNER TO "postgres";
 --  Sequence structure for seq_sys_res
 -- ----------------------------
 DROP SEQUENCE IF EXISTS "public"."seq_sys_res";
-CREATE SEQUENCE "public"."seq_sys_res" INCREMENT 1 START 80 MAXVALUE 9223372036854775807 MINVALUE 1 CACHE 1;
+CREATE SEQUENCE "public"."seq_sys_res" INCREMENT 1 START 83 MAXVALUE 9223372036854775807 MINVALUE 1 CACHE 1;
 ALTER TABLE "public"."seq_sys_res" OWNER TO "postgres";
 
 -- ----------------------------
@@ -2260,49 +2267,6 @@ WITH (OIDS=FALSE);
 ALTER TABLE "public"."act_re_model" OWNER TO "postgres";
 
 -- ----------------------------
---  Table structure for etl_param_column
--- ----------------------------
-DROP TABLE IF EXISTS "public"."etl_param_column";
-CREATE TABLE "public"."etl_param_column" (
-	"id" int8 NOT NULL DEFAULT nextval('seq_etl_param_column'::regclass),
-	"task_param_id" int8,
-	"task_id" int8,
-	"column_name" varchar(50) COLLATE "default",
-	"column_value_index" int4,
-	"remark" varchar(200) COLLATE "default"
-)
-WITH (OIDS=FALSE);
-ALTER TABLE "public"."etl_param_column" OWNER TO "postgres";
-
-COMMENT ON COLUMN "public"."etl_param_column"."task_param_id" IS '参数ID';
-
--- ----------------------------
---  Table structure for etl_job
--- ----------------------------
-DROP TABLE IF EXISTS "public"."etl_job";
-CREATE TABLE "public"."etl_job" (
-	"id" int8 NOT NULL DEFAULT nextval('seq_etl_job'::regclass),
-	"job_name" varchar(50) COLLATE "default",
-	"next_exe_date" date,
-	"cron_trigger" varchar(100) COLLATE "default",
-	"status" int2,
-	"create_date" date,
-	"update_date" date,
-	"createby_id" int8,
-	"updateby_id" int8,
-	"remark" varchar(200) COLLATE "default",
-	"check_label" int4
-)
-WITH (OIDS=FALSE);
-ALTER TABLE "public"."etl_job" OWNER TO "postgres";
-
-COMMENT ON TABLE "public"."etl_job" IS 'etl调度任务';
-COMMENT ON COLUMN "public"."etl_job"."id" IS 'job_id';
-COMMENT ON COLUMN "public"."etl_job"."job_name" IS '调度名称';
-COMMENT ON COLUMN "public"."etl_job"."remark" IS '备注';
-COMMENT ON COLUMN "public"."etl_job"."check_label" IS '启用标记';
-
--- ----------------------------
 --  Table structure for etl_plugin_param
 -- ----------------------------
 DROP TABLE IF EXISTS "public"."etl_plugin_param";
@@ -2312,7 +2276,7 @@ CREATE TABLE "public"."etl_plugin_param" (
 	"name" varchar(50) COLLATE "default",
 	"range" varchar(200) COLLATE "default",
 	"mandatory" int2,
-	"default" varchar(200) COLLATE "default",
+	"defaultvalue" varchar(200) COLLATE "default",
 	"is_column" int2,
 	"description" varchar(200) COLLATE "default"
 )
@@ -2323,9 +2287,20 @@ COMMENT ON COLUMN "public"."etl_plugin_param"."id" IS '参数ID';
 COMMENT ON COLUMN "public"."etl_plugin_param"."plugin_id" IS 'plugin 序号';
 COMMENT ON COLUMN "public"."etl_plugin_param"."name" IS '名称';
 COMMENT ON COLUMN "public"."etl_plugin_param"."range" IS '范围';
-COMMENT ON COLUMN "public"."etl_plugin_param"."default" IS '默认值';
+COMMENT ON COLUMN "public"."etl_plugin_param"."defaultvalue" IS '默认值';
 COMMENT ON COLUMN "public"."etl_plugin_param"."is_column" IS '是否字段 0-否 1-是';
 COMMENT ON COLUMN "public"."etl_plugin_param"."description" IS '备注';
+
+-- ----------------------------
+--  Records of etl_plugin_param
+-- ----------------------------
+BEGIN;
+INSERT INTO "public"."etl_plugin_param" VALUES ('49', '49', 'htable', '1-100', '1', 'DA.USER', '0', 'hbase表名');
+INSERT INTO "public"."etl_plugin_param" VALUES ('50', '49', 'hbase_conf', '1-100', '1', 'hbase-site.xml', '0', 'hbase配置文件');
+INSERT INTO "public"."etl_plugin_param" VALUES ('51', '49', 'encoding', '1-100', '1', 'UTF-8', '0', '编码');
+INSERT INTO "public"."etl_plugin_param" VALUES ('52', '49', 'rowkey_range', '', '0', '', '0', 'rowid范围');
+INSERT INTO "public"."etl_plugin_param" VALUES ('53', '49', 'concurrency', '1-100', '0', '1', '0', '线程数');
+COMMIT;
 
 -- ----------------------------
 --  Table structure for etl_task_param
@@ -2347,12 +2322,22 @@ COMMENT ON COLUMN "public"."etl_task_param"."id" IS '参数ID';
 COMMENT ON COLUMN "public"."etl_task_param"."plugin_param_id" IS '参数ID';
 
 -- ----------------------------
+--  Records of etl_task_param
+-- ----------------------------
+BEGIN;
+INSERT INTO "public"."etl_task_param" VALUES ('45', '47', '49', 'htable', 'DA.USER', 'hbase表名');
+INSERT INTO "public"."etl_task_param" VALUES ('46', '47', '50', 'hbase_conf', 'hbase-site.xml', 'hbase配置文件');
+INSERT INTO "public"."etl_task_param" VALUES ('47', '47', '51', 'encoding', 'UTF-8', '编码');
+INSERT INTO "public"."etl_task_param" VALUES ('48', '47', '52', 'rowkey_range', '', 'rowid范围');
+INSERT INTO "public"."etl_task_param" VALUES ('49', '47', '53', 'concurrency', '1', '线程数');
+COMMIT;
+
+-- ----------------------------
 --  Table structure for meta_datasource
 -- ----------------------------
 DROP TABLE IF EXISTS "public"."meta_datasource";
 CREATE TABLE "public"."meta_datasource" (
 	"id" int8 NOT NULL DEFAULT nextval('seq_meta_datasource'::regclass),
-	"project_id" int8,
 	"driver_class_name" varchar(200) COLLATE "default",
 	"jdbc_url" varchar(250) COLLATE "default",
 	"jdbc_user" varchar(50) COLLATE "default",
@@ -2372,7 +2357,6 @@ ALTER TABLE "public"."meta_datasource" OWNER TO "postgres";
 
 COMMENT ON TABLE "public"."meta_datasource" IS '数据源';
 COMMENT ON COLUMN "public"."meta_datasource"."id" IS '数据源ID';
-COMMENT ON COLUMN "public"."meta_datasource"."project_id" IS 'project_id';
 COMMENT ON COLUMN "public"."meta_datasource"."db_type" IS '数据库类别';
 COMMENT ON COLUMN "public"."meta_datasource"."remark" IS '备注';
 COMMENT ON COLUMN "public"."meta_datasource"."check_label" IS '启用标记';
@@ -2381,8 +2365,8 @@ COMMENT ON COLUMN "public"."meta_datasource"."check_label" IS '启用标记';
 --  Records of meta_datasource
 -- ----------------------------
 BEGIN;
-INSERT INTO "public"."meta_datasource" VALUES ('2', '2', 'org.postgresql.Driver', 'jdbc:postgresql://localhost/datax', 'postgres', 'iharding', '2', '2015-12-14', '2016-01-27', '5', '5', 'postgresql元数据库', 'datax', 'public', null);
-INSERT INTO "public"."meta_datasource" VALUES ('3', '1', 'org.apache.phoeinx', 'jdbc:phoeinx:localhost', 'dataanalyze', 'dataanalyze', '2', '2016-01-27', '2016-01-27', '5', '5', 'dfdf', 'DA', 'DA', null);
+INSERT INTO "public"."meta_datasource" VALUES ('2', 'org.postgresql.Driver', 'jdbc:postgresql://localhost/datax', 'postgres', 'iharding', '2', '2015-12-14', '2016-01-27', '5', '5', 'postgresql元数据库', 'datax', 'public', null);
+INSERT INTO "public"."meta_datasource" VALUES ('3', 'org.apache.phoeinx', 'jdbc:phoeinx:localhost', 'dataanalyze', 'dataanalyze', '2', '2016-01-27', '2016-01-27', '5', '5', 'dfdf', 'DA', 'DA', null);
 COMMIT;
 
 -- ----------------------------
@@ -2420,6 +2404,13 @@ COMMENT ON TABLE "public"."sys_dict" IS '数据字典表';
 --  Records of sys_dict
 -- ----------------------------
 BEGIN;
+INSERT INTO "public"."sys_dict" VALUES ('1033', '1031', '2', '写入插件', '2', '写入插件');
+INSERT INTO "public"."sys_dict" VALUES ('1034', '3', '302', 'ETL类别', '2', 'ETL类别');
+INSERT INTO "public"."sys_dict" VALUES ('1035', '1034', '1', '全量一次性迁移', '1', '全量一次性迁移');
+INSERT INTO "public"."sys_dict" VALUES ('1036', '1034', '2', '增量定时迁移', '2', '增量定时迁移任务');
+INSERT INTO "public"."sys_dict" VALUES ('1031', '3', '301', '插件类别', '1', '插件类别');
+INSERT INTO "public"."sys_dict" VALUES ('1037', '1034', '3', '全量一次性预处理', '3', '全量一次性预处理');
+INSERT INTO "public"."sys_dict" VALUES ('1038', '1034', '4', '增量调度预处理', '4', '增量调度预处理任务');
 INSERT INTO "public"."sys_dict" VALUES ('1', '-1', '1', '通用', '1', '通用');
 INSERT INTO "public"."sys_dict" VALUES ('801', '10', '1', '关系数据库', '1', '关系数据库');
 INSERT INTO "public"."sys_dict" VALUES ('802', '10', '2', 'HBase', '2', 'HBase数据库');
@@ -2428,7 +2419,6 @@ INSERT INTO "public"."sys_dict" VALUES ('804', '10', '4', 'ElasticSeach库', '4'
 INSERT INTO "public"."sys_dict" VALUES ('805', '10', '5', 'MongoDB数据库', '5', 'MongoDB数据库');
 INSERT INTO "public"."sys_dict" VALUES ('806', '10', '6', 'Solr库', '6', 'Solr库');
 INSERT INTO "public"."sys_dict" VALUES ('807', '10', '7', 'Kafka队列', '7', 'Kafka队列');
-INSERT INTO "public"."sys_dict" VALUES ('2', '-1', '2', '源数据相关', '2', '源数据相关');
 INSERT INTO "public"."sys_dict" VALUES ('10', '2', '1', '数据源类别', '1', '数据源类别');
 INSERT INTO "public"."sys_dict" VALUES ('12', '2', '3', '表类型', '3', '表类型');
 INSERT INTO "public"."sys_dict" VALUES ('11', '2', '2', '字段类型', '2', '字段类别');
@@ -2466,6 +2456,9 @@ INSERT INTO "public"."sys_dict" VALUES ('19', '1', '19', '作业类型', '19', '
 INSERT INTO "public"."sys_dict" VALUES ('1028', '19', '2', '实时作业', '2', 'ThroughputDataFlowElasticJob');
 INSERT INTO "public"."sys_dict" VALUES ('1027', '19', '1', '定时作业', '1', 'SimpleElasticJob');
 INSERT INTO "public"."sys_dict" VALUES ('1029', '19', '3', '序列作业', '3', 'SequenceDataFlowElasticJob');
+INSERT INTO "public"."sys_dict" VALUES ('2', '-1', '2', '元数据相关', '2', '元数据相关');
+INSERT INTO "public"."sys_dict" VALUES ('3', '-1', '3', 'ETL相关', '3', 'ETL相关');
+INSERT INTO "public"."sys_dict" VALUES ('1032', '1031', '1', '读取插件', '1', '读取插件');
 COMMIT;
 
 -- ----------------------------
@@ -2905,43 +2898,6 @@ INSERT INTO "public"."sys_multi_lang" VALUES ('user.name', '姓名2', 'zh_CN', '
 COMMIT;
 
 -- ----------------------------
---  Table structure for meta_dbtable
--- ----------------------------
-DROP TABLE IF EXISTS "public"."meta_dbtable";
-CREATE TABLE "public"."meta_dbtable" (
-	"id" int8 NOT NULL DEFAULT nextval('seq_meta_dbtable'::regclass),
-	"datasource_id" int8,
-	"table_name" varchar(100) NOT NULL COLLATE "default",
-	"table_pname" varchar(200) COLLATE "default",
-	"table_type" int2,
-	"remark" varchar(200) COLLATE "default",
-	"update_date" timestamp(6) NULL,
-	"create_date" timestamp(6) NULL,
-	"createby_id" int8,
-	"updateby_id" int8,
-	"class_name" varchar(200) COLLATE "default",
-	"check_label" int4
-)
-WITH (OIDS=FALSE);
-ALTER TABLE "public"."meta_dbtable" OWNER TO "postgres";
-
-COMMENT ON TABLE "public"."meta_dbtable" IS '表';
-COMMENT ON COLUMN "public"."meta_dbtable"."id" IS '表格ID';
-COMMENT ON COLUMN "public"."meta_dbtable"."datasource_id" IS '数据源ID';
-COMMENT ON COLUMN "public"."meta_dbtable"."table_pname" IS '物理名';
-COMMENT ON COLUMN "public"."meta_dbtable"."remark" IS '备注';
-COMMENT ON COLUMN "public"."meta_dbtable"."check_label" IS '生效标记';
-
--- ----------------------------
---  Records of meta_dbtable
--- ----------------------------
-BEGIN;
-INSERT INTO "public"."meta_dbtable" VALUES ('1', '3', 'da.user_figure', '用户标签表', '5', 'hbase用户标签表', '2016-01-28 17:27:55.164', '2016-01-25 19:53:11', '1', '5', 'UserFigure', null);
-INSERT INTO "public"."meta_dbtable" VALUES ('3', '2', 'ETL_PLUGIN_PARAM', '插件参数', '1', '插件参数', '2016-01-28 17:28:03.841', '2016-01-28 14:40:56.523', '5', '5', 'EtlPluginParam', null);
-INSERT INTO "public"."meta_dbtable" VALUES ('2', '2', 'ETL_PLUGIN', 'datax插件', '1', 'datax插件信息表', '2016-01-28 17:28:10.922', null, null, '5', 'EtlPlugin', null);
-COMMIT;
-
--- ----------------------------
 --  Table structure for sys_log
 -- ----------------------------
 DROP TABLE IF EXISTS "public"."sys_log";
@@ -3216,6 +3172,203 @@ INSERT INTO "public"."sys_log" VALUES ('252', '登录系统', '系统登录', '2
 INSERT INTO "public"."sys_log" VALUES ('253', '登录系统', '系统登录', '2016-02-02 10:49:21.733', '1', '5', '0:0:0:0:0:0:0:1');
 INSERT INTO "public"."sys_log" VALUES ('254', '登录系统', '系统登录', '2016-02-04 00:43:53.164', '1', '5', '0:0:0:0:0:0:0:1');
 INSERT INTO "public"."sys_log" VALUES ('255', '登录系统', '系统登录', '2016-02-04 22:06:08.336', '1', '5', '0:0:0:0:0:0:0:1');
+INSERT INTO "public"."sys_log" VALUES ('256', '登录系统', '系统登录', '2016-02-06 21:09:24.874', '1', '5', '0:0:0:0:0:0:0:1');
+INSERT INTO "public"."sys_log" VALUES ('257', '登录系统', '系统登录', '2016-02-06 21:28:29.796', '1', '5', '0:0:0:0:0:0:0:1');
+INSERT INTO "public"."sys_log" VALUES ('258', '登录系统', '系统登录', '2016-02-06 22:59:26.089', '1', '5', '0:0:0:0:0:0:0:1');
+INSERT INTO "public"."sys_log" VALUES ('259', '登录系统', '系统登录', '2016-02-06 23:03:48.863', '1', '5', '0:0:0:0:0:0:0:1');
+INSERT INTO "public"."sys_log" VALUES ('260', '登录系统', '系统登录', '2016-02-06 23:54:57.395', '1', '5', '0:0:0:0:0:0:0:1');
+INSERT INTO "public"."sys_log" VALUES ('261', '登录系统', '系统登录', '2016-02-07 00:00:08.11', '1', '5', '0:0:0:0:0:0:0:1');
+INSERT INTO "public"."sys_log" VALUES ('262', '登录系统', '系统登录', '2016-02-07 00:02:48.819', '1', '5', '0:0:0:0:0:0:0:1');
+INSERT INTO "public"."sys_log" VALUES ('263', '登录系统', '系统登录', '2016-02-07 00:08:37.921', '1', '5', '0:0:0:0:0:0:0:1');
+INSERT INTO "public"."sys_log" VALUES ('264', '登录系统', '系统登录', '2016-02-07 00:10:38.976', '1', '5', '0:0:0:0:0:0:0:1');
+INSERT INTO "public"."sys_log" VALUES ('265', '登录系统', '系统登录', '2016-02-07 00:12:58.541', '1', '5', '0:0:0:0:0:0:0:1');
+INSERT INTO "public"."sys_log" VALUES ('266', '登录系统', '系统登录', '2016-02-07 00:32:50.536', '1', '5', '0:0:0:0:0:0:0:1');
+INSERT INTO "public"."sys_log" VALUES ('267', '登录系统', '系统登录', '2016-02-07 00:35:03.64', '1', '5', '0:0:0:0:0:0:0:1');
+INSERT INTO "public"."sys_log" VALUES ('268', '登录系统', '系统登录', '2016-02-07 00:38:48.797', '1', '5', '0:0:0:0:0:0:0:1');
+INSERT INTO "public"."sys_log" VALUES ('269', '登录系统', '系统登录', '2016-02-07 00:43:27.78', '1', '5', '0:0:0:0:0:0:0:1');
+INSERT INTO "public"."sys_log" VALUES ('270', '登录系统', '系统登录', '2016-02-07 00:48:09.414', '1', '5', '0:0:0:0:0:0:0:1');
+INSERT INTO "public"."sys_log" VALUES ('271', '登录系统', '系统登录', '2016-02-07 11:48:03.188', '1', '5', '0:0:0:0:0:0:0:1');
+INSERT INTO "public"."sys_log" VALUES ('272', '登录系统', '系统登录', '2016-02-07 11:54:46.012', '1', '5', '0:0:0:0:0:0:0:1');
+INSERT INTO "public"."sys_log" VALUES ('273', '登录系统', '系统登录', '2016-02-07 11:58:57.206', '1', '5', '0:0:0:0:0:0:0:1');
+INSERT INTO "public"."sys_log" VALUES ('274', '登录系统', '系统登录', '2016-02-09 14:54:33.253', '1', '5', '0:0:0:0:0:0:0:1');
+INSERT INTO "public"."sys_log" VALUES ('275', '登录系统', '系统登录', '2016-02-09 14:58:44.506', '1', '5', '0:0:0:0:0:0:0:1');
+INSERT INTO "public"."sys_log" VALUES ('276', '登录系统', '系统登录', '2016-02-09 15:16:01.944', '1', '5', '0:0:0:0:0:0:0:1');
+INSERT INTO "public"."sys_log" VALUES ('277', '登录系统', '系统登录', '2016-02-09 18:04:35.56', '1', '5', '0:0:0:0:0:0:0:1');
+INSERT INTO "public"."sys_log" VALUES ('278', '登录系统', '系统登录', '2016-02-09 22:24:01.114', '1', '5', '0:0:0:0:0:0:0:1');
+INSERT INTO "public"."sys_log" VALUES ('279', '登录系统', '系统登录', '2016-02-14 23:53:24.6', '1', '5', '0:0:0:0:0:0:0:1');
+INSERT INTO "public"."sys_log" VALUES ('280', '登录系统', '系统登录', '2016-02-17 23:14:49.709', '1', '5', '0:0:0:0:0:0:0:1');
+INSERT INTO "public"."sys_log" VALUES ('281', '登录系统', '系统登录', '2016-02-18 09:39:29.736', '1', '5', '0:0:0:0:0:0:0:1');
+INSERT INTO "public"."sys_log" VALUES ('282', '登录系统', '系统登录', '2016-02-18 09:48:37.541', '1', '5', '0:0:0:0:0:0:0:1');
+INSERT INTO "public"."sys_log" VALUES ('283', '登录系统', '系统登录', '2016-02-18 09:54:35.004', '1', '5', '0:0:0:0:0:0:0:1');
+INSERT INTO "public"."sys_log" VALUES ('284', '登录系统', '系统登录', '2016-02-18 10:02:00.096', '1', '5', '0:0:0:0:0:0:0:1');
+INSERT INTO "public"."sys_log" VALUES ('285', '登录系统', '系统登录', '2016-02-18 10:36:31.569', '1', '5', '0:0:0:0:0:0:0:1');
+INSERT INTO "public"."sys_log" VALUES ('286', '退出系统', '系统登出', '2016-02-18 10:37:20.002', '1', '5', '0:0:0:0:0:0:0:1');
+INSERT INTO "public"."sys_log" VALUES ('287', '登录系统', '系统登录', '2016-02-18 10:37:21.191', '1', '5', '0:0:0:0:0:0:0:1');
+INSERT INTO "public"."sys_log" VALUES ('288', '登录系统', '系统登录', '2016-02-18 10:43:26.044', '1', '5', '0:0:0:0:0:0:0:1');
+INSERT INTO "public"."sys_log" VALUES ('289', '登录系统', '系统登录', '2016-02-18 10:46:13.409', '1', '5', '0:0:0:0:0:0:0:1');
+INSERT INTO "public"."sys_log" VALUES ('290', '登录系统', '系统登录', '2016-02-18 10:48:49.621', '1', '5', '0:0:0:0:0:0:0:1');
+INSERT INTO "public"."sys_log" VALUES ('291', '登录系统', '系统登录', '2016-02-18 11:02:43.759', '1', '5', '0:0:0:0:0:0:0:1');
+INSERT INTO "public"."sys_log" VALUES ('292', '登录系统', '系统登录', '2016-02-18 11:13:30.744', '1', '5', '0:0:0:0:0:0:0:1');
+INSERT INTO "public"."sys_log" VALUES ('293', '登录系统', '系统登录', '2016-02-18 11:16:18.213', '1', '5', '0:0:0:0:0:0:0:1');
+INSERT INTO "public"."sys_log" VALUES ('294', '登录系统', '系统登录', '2016-02-18 11:20:51.638', '1', '5', '0:0:0:0:0:0:0:1');
+INSERT INTO "public"."sys_log" VALUES ('295', '登录系统', '系统登录', '2016-02-18 14:13:01.502', '1', '5', '0:0:0:0:0:0:0:1');
+INSERT INTO "public"."sys_log" VALUES ('296', '登录系统', '系统登录', '2016-02-18 14:37:55.687', '1', '5', '0:0:0:0:0:0:0:1');
+INSERT INTO "public"."sys_log" VALUES ('297', '登录系统', '系统登录', '2016-02-18 15:03:05.858', '1', '5', '0:0:0:0:0:0:0:1');
+INSERT INTO "public"."sys_log" VALUES ('298', '登录系统', '系统登录', '2016-02-18 15:06:19.846', '1', '5', '0:0:0:0:0:0:0:1');
+INSERT INTO "public"."sys_log" VALUES ('299', '登录系统', '系统登录', '2016-02-18 15:10:43.283', '1', '5', '0:0:0:0:0:0:0:1');
+INSERT INTO "public"."sys_log" VALUES ('300', '登录系统', '系统登录', '2016-02-18 15:14:00.214', '1', '5', '0:0:0:0:0:0:0:1');
+INSERT INTO "public"."sys_log" VALUES ('301', '登录系统', '系统登录', '2016-02-18 15:18:42.025', '1', '5', '0:0:0:0:0:0:0:1');
+INSERT INTO "public"."sys_log" VALUES ('302', '登录系统', '系统登录', '2016-02-18 15:26:29.413', '1', '5', '0:0:0:0:0:0:0:1');
+INSERT INTO "public"."sys_log" VALUES ('303', '登录系统', '系统登录', '2016-02-18 15:35:09.266', '1', '5', '0:0:0:0:0:0:0:1');
+INSERT INTO "public"."sys_log" VALUES ('304', '登录系统', '系统登录', '2016-02-18 15:55:38.094', '1', '5', '0:0:0:0:0:0:0:1');
+INSERT INTO "public"."sys_log" VALUES ('305', '登录系统', '系统登录', '2016-02-18 16:02:12.836', '1', '5', '0:0:0:0:0:0:0:1');
+INSERT INTO "public"."sys_log" VALUES ('306', '登录系统', '系统登录', '2016-02-18 16:21:48.746', '1', '5', '0:0:0:0:0:0:0:1');
+INSERT INTO "public"."sys_log" VALUES ('307', '登录系统', '系统登录', '2016-02-18 16:30:19.473', '1', '5', '0:0:0:0:0:0:0:1');
+INSERT INTO "public"."sys_log" VALUES ('308', '登录系统', '系统登录', '2016-02-18 16:40:37.928', '1', '5', '0:0:0:0:0:0:0:1');
+INSERT INTO "public"."sys_log" VALUES ('309', '登录系统', '系统登录', '2016-02-18 16:49:54.975', '1', '5', '0:0:0:0:0:0:0:1');
+INSERT INTO "public"."sys_log" VALUES ('310', '登录系统', '系统登录', '2016-02-18 17:02:36.809', '1', '5', '0:0:0:0:0:0:0:1');
+INSERT INTO "public"."sys_log" VALUES ('311', '登录系统', '系统登录', '2016-02-18 17:16:58.683', '1', '5', '0:0:0:0:0:0:0:1');
+INSERT INTO "public"."sys_log" VALUES ('312', '登录系统', '系统登录', '2016-02-18 17:21:39.861', '1', '5', '0:0:0:0:0:0:0:1');
+INSERT INTO "public"."sys_log" VALUES ('313', '登录系统', '系统登录', '2016-02-18 17:26:41.47', '1', '5', '0:0:0:0:0:0:0:1');
+INSERT INTO "public"."sys_log" VALUES ('314', '退出系统', '系统登出', '2016-02-18 17:31:22.493', '1', '5', '0:0:0:0:0:0:0:1');
+INSERT INTO "public"."sys_log" VALUES ('315', '登录系统', '系统登录', '2016-02-18 17:31:23.458', '1', '5', '0:0:0:0:0:0:0:1');
+INSERT INTO "public"."sys_log" VALUES ('316', '登录系统', '系统登录', '2016-02-18 17:46:11.237', '1', '5', '0:0:0:0:0:0:0:1');
+INSERT INTO "public"."sys_log" VALUES ('317', '登录系统', '系统登录', '2016-02-18 18:14:21.42', '1', '5', '0:0:0:0:0:0:0:1');
+INSERT INTO "public"."sys_log" VALUES ('318', '登录系统', '系统登录', '2016-02-21 21:47:20.644', '1', '5', '0:0:0:0:0:0:0:1');
+INSERT INTO "public"."sys_log" VALUES ('319', '登录系统', '系统登录', '2016-02-21 23:30:48.168', '1', '5', '0:0:0:0:0:0:0:1');
+INSERT INTO "public"."sys_log" VALUES ('320', '登录系统', '系统登录', '2016-02-21 23:38:52.534', '1', '5', '0:0:0:0:0:0:0:1');
+INSERT INTO "public"."sys_log" VALUES ('321', '登录系统', '系统登录', '2016-02-21 23:43:04.908', '1', '5', '0:0:0:0:0:0:0:1');
+INSERT INTO "public"."sys_log" VALUES ('322', '登录系统', '系统登录', '2016-02-21 23:58:52.176', '1', '5', '0:0:0:0:0:0:0:1');
+INSERT INTO "public"."sys_log" VALUES ('323', '登录系统', '系统登录', '2016-02-22 00:02:37.837', '1', '5', '0:0:0:0:0:0:0:1');
+INSERT INTO "public"."sys_log" VALUES ('324', '登录系统', '系统登录', '2016-02-22 14:30:23.624', '1', '5', '0:0:0:0:0:0:0:1');
+INSERT INTO "public"."sys_log" VALUES ('325', '登录系统', '系统登录', '2016-02-22 14:33:11.122', '1', '5', '0:0:0:0:0:0:0:1');
+INSERT INTO "public"."sys_log" VALUES ('326', '登录系统', '系统登录', '2016-02-22 14:37:13.831', '1', '5', '0:0:0:0:0:0:0:1');
+INSERT INTO "public"."sys_log" VALUES ('327', '登录系统', '系统登录', '2016-02-22 14:45:20.945', '1', '5', '0:0:0:0:0:0:0:1');
+INSERT INTO "public"."sys_log" VALUES ('328', '登录系统', '系统登录', '2016-02-22 14:52:18.943', '1', '5', '0:0:0:0:0:0:0:1');
+INSERT INTO "public"."sys_log" VALUES ('329', '登录系统', '系统登录', '2016-02-22 15:02:48.021', '1', '5', '0:0:0:0:0:0:0:1');
+INSERT INTO "public"."sys_log" VALUES ('330', '登录系统', '系统登录', '2016-02-22 15:08:46.291', '1', '5', '0:0:0:0:0:0:0:1');
+INSERT INTO "public"."sys_log" VALUES ('331', '登录系统', '系统登录', '2016-02-22 15:26:47.896', '1', '5', '0:0:0:0:0:0:0:1');
+INSERT INTO "public"."sys_log" VALUES ('332', '退出系统', '系统登出', '2016-02-22 15:29:58.304', '1', '5', '0:0:0:0:0:0:0:1');
+INSERT INTO "public"."sys_log" VALUES ('333', '登录系统', '系统登录', '2016-02-22 15:29:59.267', '1', '5', '0:0:0:0:0:0:0:1');
+INSERT INTO "public"."sys_log" VALUES ('334', '登录系统', '系统登录', '2016-02-22 22:22:18.831', '1', '5', '0:0:0:0:0:0:0:1');
+INSERT INTO "public"."sys_log" VALUES ('335', '登录系统', '系统登录', '2016-02-22 22:33:05.174', '1', '5', '0:0:0:0:0:0:0:1');
+INSERT INTO "public"."sys_log" VALUES ('336', '登录系统', '系统登录', '2016-02-22 22:39:36.102', '1', '5', '0:0:0:0:0:0:0:1');
+INSERT INTO "public"."sys_log" VALUES ('337', '登录系统', '系统登录', '2016-02-22 22:41:39.815', '1', '5', '0:0:0:0:0:0:0:1');
+INSERT INTO "public"."sys_log" VALUES ('338', '登录系统', '系统登录', '2016-02-22 22:50:15.579', '1', '5', '0:0:0:0:0:0:0:1');
+INSERT INTO "public"."sys_log" VALUES ('339', '登录系统', '系统登录', '2016-02-22 22:59:26.11', '1', '5', '0:0:0:0:0:0:0:1');
+INSERT INTO "public"."sys_log" VALUES ('340', '登录系统', '系统登录', '2016-02-22 23:23:45.525', '1', '5', '0:0:0:0:0:0:0:1');
+INSERT INTO "public"."sys_log" VALUES ('341', '登录系统', '系统登录', '2016-02-22 23:27:37.676', '1', '5', '0:0:0:0:0:0:0:1');
+INSERT INTO "public"."sys_log" VALUES ('342', '登录系统', '系统登录', '2016-02-25 00:11:04.398', '1', '5', '0:0:0:0:0:0:0:1');
+INSERT INTO "public"."sys_log" VALUES ('343', '登录系统', '系统登录', '2016-03-03 11:19:12.717', '1', '5', '0:0:0:0:0:0:0:1');
+INSERT INTO "public"."sys_log" VALUES ('344', '登录系统', '系统登录', '2016-03-03 23:32:15.416', '1', '5', '0:0:0:0:0:0:0:1');
+INSERT INTO "public"."sys_log" VALUES ('345', '登录系统', '系统登录', '2016-03-25 10:20:16.716', '1', '5', '0:0:0:0:0:0:0:1');
+INSERT INTO "public"."sys_log" VALUES ('346', '登录系统', '系统登录', '2016-03-25 10:42:07.29', '1', '5', '0:0:0:0:0:0:0:1');
+INSERT INTO "public"."sys_log" VALUES ('347', '登录系统', '系统登录', '2016-03-25 10:46:35.211', '1', '5', '0:0:0:0:0:0:0:1');
+INSERT INTO "public"."sys_log" VALUES ('348', '登录系统', '系统登录', '2016-03-25 10:48:59.718', '1', '5', '0:0:0:0:0:0:0:1');
+INSERT INTO "public"."sys_log" VALUES ('349', '登录系统', '系统登录', '2016-03-25 10:54:18.058', '1', '5', '0:0:0:0:0:0:0:1');
+INSERT INTO "public"."sys_log" VALUES ('350', '登录系统', '系统登录', '2016-03-25 11:01:01.896', '1', '5', '0:0:0:0:0:0:0:1');
+INSERT INTO "public"."sys_log" VALUES ('351', '登录系统', '系统登录', '2016-03-25 11:01:01.896', '1', '5', '0:0:0:0:0:0:0:1');
+INSERT INTO "public"."sys_log" VALUES ('352', '登录系统', '系统登录', '2016-03-25 11:01:01.896', '1', '5', '0:0:0:0:0:0:0:1');
+INSERT INTO "public"."sys_log" VALUES ('353', '登录系统', '系统登录', '2016-03-25 11:09:22.95', '1', '5', '0:0:0:0:0:0:0:1');
+INSERT INTO "public"."sys_log" VALUES ('354', '登录系统', '系统登录', '2016-03-25 11:18:42.407', '1', '5', '0:0:0:0:0:0:0:1');
+INSERT INTO "public"."sys_log" VALUES ('355', '登录系统', '系统登录', '2016-03-25 11:22:57.193', '1', '5', '0:0:0:0:0:0:0:1');
+INSERT INTO "public"."sys_log" VALUES ('356', '登录系统', '系统登录', '2016-03-25 11:25:58.283', '1', '5', '0:0:0:0:0:0:0:1');
+INSERT INTO "public"."sys_log" VALUES ('357', '登录系统', '系统登录', '2016-03-25 11:47:12.206', '1', '5', '0:0:0:0:0:0:0:1');
+INSERT INTO "public"."sys_log" VALUES ('358', '登录系统', '系统登录', '2016-03-25 11:57:02.929', '1', '5', '0:0:0:0:0:0:0:1');
+INSERT INTO "public"."sys_log" VALUES ('359', '登录系统', '系统登录', '2016-03-25 12:00:34.428', '1', '5', '0:0:0:0:0:0:0:1');
+INSERT INTO "public"."sys_log" VALUES ('360', '登录系统', '系统登录', '2016-03-28 23:36:27.808', '1', '5', '0:0:0:0:0:0:0:1');
+INSERT INTO "public"."sys_log" VALUES ('361', '登录系统', '系统登录', '2016-03-29 00:02:16.064', '1', '5', '0:0:0:0:0:0:0:1');
+INSERT INTO "public"."sys_log" VALUES ('362', '登录系统', '系统登录', '2016-03-29 00:08:09.179', '1', '5', '0:0:0:0:0:0:0:1');
+INSERT INTO "public"."sys_log" VALUES ('363', '登录系统', '系统登录', '2016-03-29 00:13:36', '1', '5', '0:0:0:0:0:0:0:1');
+INSERT INTO "public"."sys_log" VALUES ('364', '登录系统', '系统登录', '2016-03-29 00:19:35.887', '1', '5', '0:0:0:0:0:0:0:1');
+INSERT INTO "public"."sys_log" VALUES ('365', '登录系统', '系统登录', '2016-03-29 00:23:24.969', '1', '5', '0:0:0:0:0:0:0:1');
+INSERT INTO "public"."sys_log" VALUES ('366', '登录系统', '系统登录', '2016-03-29 00:31:28.876', '1', '5', '0:0:0:0:0:0:0:1');
+INSERT INTO "public"."sys_log" VALUES ('367', '登录系统', '系统登录', '2016-03-29 00:34:28.498', '1', '5', '0:0:0:0:0:0:0:1');
+INSERT INTO "public"."sys_log" VALUES ('368', '登录系统', '系统登录', '2016-03-29 00:38:41.267', '1', '5', '0:0:0:0:0:0:0:1');
+INSERT INTO "public"."sys_log" VALUES ('369', '登录系统', '系统登录', '2016-03-29 00:43:40.983', '1', '5', '0:0:0:0:0:0:0:1');
+INSERT INTO "public"."sys_log" VALUES ('370', '登录系统', '系统登录', '2016-03-31 23:46:35.803', '1', '5', '0:0:0:0:0:0:0:1');
+INSERT INTO "public"."sys_log" VALUES ('371', '登录系统', '系统登录', '2016-03-31 23:57:10.887', '1', '5', '0:0:0:0:0:0:0:1');
+INSERT INTO "public"."sys_log" VALUES ('372', '登录系统', '系统登录', '2016-04-01 09:33:37.263', '1', '5', '0:0:0:0:0:0:0:1');
+INSERT INTO "public"."sys_log" VALUES ('373', '登录系统', '系统登录', '2016-04-03 23:44:45.553', '1', '5', '0:0:0:0:0:0:0:1');
+INSERT INTO "public"."sys_log" VALUES ('374', '登录系统', '系统登录', '2016-04-03 23:56:57.105', '1', '5', '0:0:0:0:0:0:0:1');
+INSERT INTO "public"."sys_log" VALUES ('375', '登录系统', '系统登录', '2016-04-04 00:14:13.61', '1', '5', '0:0:0:0:0:0:0:1');
+INSERT INTO "public"."sys_log" VALUES ('376', '登录系统', '系统登录', '2016-04-04 00:34:15.138', '1', '5', '0:0:0:0:0:0:0:1');
+INSERT INTO "public"."sys_log" VALUES ('377', '登录系统', '系统登录', '2016-04-04 00:38:44.941', '1', '5', '0:0:0:0:0:0:0:1');
+INSERT INTO "public"."sys_log" VALUES ('378', '登录系统', '系统登录', '2016-04-04 00:41:51.457', '1', '5', '0:0:0:0:0:0:0:1');
+INSERT INTO "public"."sys_log" VALUES ('379', '登录系统', '系统登录', '2016-04-04 00:50:26.884', '1', '5', '0:0:0:0:0:0:0:1');
+INSERT INTO "public"."sys_log" VALUES ('380', '登录系统', '系统登录', '2016-04-04 00:56:30.314', '1', '5', '0:0:0:0:0:0:0:1');
+INSERT INTO "public"."sys_log" VALUES ('381', '登录系统', '系统登录', '2016-04-04 01:02:18.481', '1', '5', '0:0:0:0:0:0:0:1');
+INSERT INTO "public"."sys_log" VALUES ('382', '登录系统', '系统登录', '2016-04-04 01:10:20.317', '1', '5', '0:0:0:0:0:0:0:1');
+INSERT INTO "public"."sys_log" VALUES ('383', '登录系统', '系统登录', '2016-04-04 09:23:16.679', '1', '5', '0:0:0:0:0:0:0:1');
+INSERT INTO "public"."sys_log" VALUES ('384', '登录系统', '系统登录', '2016-04-04 11:18:50.057', '1', '5', '0:0:0:0:0:0:0:1');
+INSERT INTO "public"."sys_log" VALUES ('385', '登录系统', '系统登录', '2016-04-04 11:31:09.694', '1', '5', '0:0:0:0:0:0:0:1');
+INSERT INTO "public"."sys_log" VALUES ('386', '登录系统', '系统登录', '2016-04-04 11:45:38.642', '1', '5', '0:0:0:0:0:0:0:1');
+INSERT INTO "public"."sys_log" VALUES ('387', '登录系统', '系统登录', '2016-04-04 12:50:50.232', '1', '5', '0:0:0:0:0:0:0:1');
+INSERT INTO "public"."sys_log" VALUES ('388', '登录系统', '系统登录', '2016-04-04 15:16:23.351', '1', '5', '0:0:0:0:0:0:0:1');
+INSERT INTO "public"."sys_log" VALUES ('389', '登录系统', '系统登录', '2016-04-04 15:24:22.833', '1', '5', '0:0:0:0:0:0:0:1');
+INSERT INTO "public"."sys_log" VALUES ('390', '登录系统', '系统登录', '2016-04-04 15:33:16.215', '1', '5', '0:0:0:0:0:0:0:1');
+INSERT INTO "public"."sys_log" VALUES ('391', '登录系统', '系统登录', '2016-04-04 15:50:37.648', '1', '5', '0:0:0:0:0:0:0:1');
+INSERT INTO "public"."sys_log" VALUES ('392', '登录系统', '系统登录', '2016-04-04 16:14:51.249', '1', '5', '0:0:0:0:0:0:0:1');
+INSERT INTO "public"."sys_log" VALUES ('393', '登录系统', '系统登录', '2016-04-04 16:17:49.73', '1', '5', '0:0:0:0:0:0:0:1');
+INSERT INTO "public"."sys_log" VALUES ('394', '登录系统', '系统登录', '2016-04-04 16:25:39.606', '1', '5', '0:0:0:0:0:0:0:1');
+INSERT INTO "public"."sys_log" VALUES ('395', '退出系统', '系统登出', '2016-04-04 16:26:22.824', '1', '5', '0:0:0:0:0:0:0:1');
+INSERT INTO "public"."sys_log" VALUES ('396', '登录系统', '系统登录', '2016-04-04 16:26:23.86', '1', '5', '0:0:0:0:0:0:0:1');
+INSERT INTO "public"."sys_log" VALUES ('397', '退出系统', '系统登出', '2016-04-04 16:29:09.745', '1', '5', '0:0:0:0:0:0:0:1');
+INSERT INTO "public"."sys_log" VALUES ('398', '登录系统', '系统登录', '2016-04-04 16:29:11.056', '1', '5', '0:0:0:0:0:0:0:1');
+INSERT INTO "public"."sys_log" VALUES ('399', '登录系统', '系统登录', '2016-04-04 16:31:49.11', '1', '5', '0:0:0:0:0:0:0:1');
+INSERT INTO "public"."sys_log" VALUES ('400', '退出系统', '系统登出', '2016-04-04 16:34:29.327', '1', '5', '0:0:0:0:0:0:0:1');
+INSERT INTO "public"."sys_log" VALUES ('401', '登录系统', '系统登录', '2016-04-04 16:34:30.609', '1', '5', '0:0:0:0:0:0:0:1');
+INSERT INTO "public"."sys_log" VALUES ('402', '退出系统', '系统登出', '2016-04-04 16:35:25.24', '1', '5', '0:0:0:0:0:0:0:1');
+INSERT INTO "public"."sys_log" VALUES ('403', '登录系统', '系统登录', '2016-04-04 16:35:26.654', '1', '5', '0:0:0:0:0:0:0:1');
+INSERT INTO "public"."sys_log" VALUES ('404', '登录系统', '系统登录', '2016-04-04 16:42:54.083', '1', '5', '0:0:0:0:0:0:0:1');
+INSERT INTO "public"."sys_log" VALUES ('405', '登录系统', '系统登录', '2016-04-04 16:46:18.691', '1', '5', '0:0:0:0:0:0:0:1');
+INSERT INTO "public"."sys_log" VALUES ('406', '登录系统', '系统登录', '2016-04-04 17:04:35.369', '1', '5', '0:0:0:0:0:0:0:1');
+INSERT INTO "public"."sys_log" VALUES ('407', '登录系统', '系统登录', '2016-04-04 17:18:33.735', '1', '5', '0:0:0:0:0:0:0:1');
+INSERT INTO "public"."sys_log" VALUES ('408', '登录系统', '系统登录', '2016-04-04 17:38:59.912', '1', '5', '0:0:0:0:0:0:0:1');
+INSERT INTO "public"."sys_log" VALUES ('409', '登录系统', '系统登录', '2016-04-04 18:22:11.981', '1', '5', '0:0:0:0:0:0:0:1');
+INSERT INTO "public"."sys_log" VALUES ('410', '登录系统', '系统登录', '2016-04-04 19:48:34.907', '1', '5', '0:0:0:0:0:0:0:1');
+INSERT INTO "public"."sys_log" VALUES ('411', '登录系统', '系统登录', '2016-04-04 19:52:18.202', '1', '5', '0:0:0:0:0:0:0:1');
+INSERT INTO "public"."sys_log" VALUES ('412', '登录系统', '系统登录', '2016-04-04 20:08:22.369', '1', '5', '0:0:0:0:0:0:0:1');
+INSERT INTO "public"."sys_log" VALUES ('413', '登录系统', '系统登录', '2016-04-04 20:12:11.155', '1', '5', '0:0:0:0:0:0:0:1');
+INSERT INTO "public"."sys_log" VALUES ('414', '登录系统', '系统登录', '2016-04-04 20:20:12.431', '1', '5', '0:0:0:0:0:0:0:1');
+INSERT INTO "public"."sys_log" VALUES ('415', '登录系统', '系统登录', '2016-04-04 20:45:34.485', '1', '5', '0:0:0:0:0:0:0:1');
+INSERT INTO "public"."sys_log" VALUES ('416', '登录系统', '系统登录', '2016-04-04 20:59:34.587', '1', '5', '0:0:0:0:0:0:0:1');
+INSERT INTO "public"."sys_log" VALUES ('417', '登录系统', '系统登录', '2016-04-04 21:21:36.047', '1', '5', '0:0:0:0:0:0:0:1');
+INSERT INTO "public"."sys_log" VALUES ('418', '登录系统', '系统登录', '2016-04-04 21:26:06.819', '1', '5', '0:0:0:0:0:0:0:1');
+INSERT INTO "public"."sys_log" VALUES ('419', '登录系统', '系统登录', '2016-04-04 21:57:32.779', '1', '5', '0:0:0:0:0:0:0:1');
+INSERT INTO "public"."sys_log" VALUES ('420', '登录系统', '系统登录', '2016-04-04 22:01:44.547', '1', '5', '0:0:0:0:0:0:0:1');
+INSERT INTO "public"."sys_log" VALUES ('421', '登录系统', '系统登录', '2016-04-04 22:09:55.029', '1', '5', '0:0:0:0:0:0:0:1');
+INSERT INTO "public"."sys_log" VALUES ('422', '登录系统', '系统登录', '2016-04-04 22:27:15.952', '1', '5', '0:0:0:0:0:0:0:1');
+INSERT INTO "public"."sys_log" VALUES ('423', '登录系统', '系统登录', '2016-04-04 22:29:44.616', '1', '5', '0:0:0:0:0:0:0:1');
+INSERT INTO "public"."sys_log" VALUES ('424', '登录系统', '系统登录', '2016-04-04 22:32:20.045', '1', '5', '0:0:0:0:0:0:0:1');
+INSERT INTO "public"."sys_log" VALUES ('425', '登录系统', '系统登录', '2016-04-04 22:38:56.334', '1', '5', '0:0:0:0:0:0:0:1');
+INSERT INTO "public"."sys_log" VALUES ('426', '登录系统', '系统登录', '2016-04-04 22:58:21.068', '1', '5', '0:0:0:0:0:0:0:1');
+INSERT INTO "public"."sys_log" VALUES ('427', '登录系统', '系统登录', '2016-04-10 17:03:00.971', '1', '5', '0:0:0:0:0:0:0:1');
+INSERT INTO "public"."sys_log" VALUES ('428', '登录系统', '系统登录', '2016-04-10 18:33:42.855', '1', '5', '0:0:0:0:0:0:0:1');
+INSERT INTO "public"."sys_log" VALUES ('429', '登录系统', '系统登录', '2016-04-10 21:33:45.35', '1', '5', '0:0:0:0:0:0:0:1');
+INSERT INTO "public"."sys_log" VALUES ('430', '登录系统', '系统登录', '2016-04-10 22:15:21.976', '1', '5', '0:0:0:0:0:0:0:1');
+INSERT INTO "public"."sys_log" VALUES ('431', '登录系统', '系统登录', '2016-04-10 22:22:16.263', '1', '5', '0:0:0:0:0:0:0:1');
+INSERT INTO "public"."sys_log" VALUES ('432', '登录系统', '系统登录', '2016-04-21 20:35:25.63', '1', '5', '0:0:0:0:0:0:0:1');
+INSERT INTO "public"."sys_log" VALUES ('433', '登录系统', '系统登录', '2016-04-21 22:31:20.653', '1', '5', '0:0:0:0:0:0:0:1');
+INSERT INTO "public"."sys_log" VALUES ('434', '登录系统', '系统登录', '2016-04-21 23:00:21.43', '1', '5', '0:0:0:0:0:0:0:1');
+INSERT INTO "public"."sys_log" VALUES ('435', '登录系统', '系统登录', '2016-04-21 23:02:42.336', '1', '5', '0:0:0:0:0:0:0:1');
+INSERT INTO "public"."sys_log" VALUES ('436', '登录系统', '系统登录', '2016-04-21 23:21:51.707', '1', '5', '0:0:0:0:0:0:0:1');
+INSERT INTO "public"."sys_log" VALUES ('437', '登录系统', '系统登录', '2016-05-04 23:18:36.662', '1', '5', '0:0:0:0:0:0:0:1');
+INSERT INTO "public"."sys_log" VALUES ('438', '登录系统', '系统登录', '2016-05-04 23:48:25.687', '1', '5', '0:0:0:0:0:0:0:1');
+INSERT INTO "public"."sys_log" VALUES ('439', '登录系统', '系统登录', '2016-05-06 00:44:38.442', '1', '5', '0:0:0:0:0:0:0:1');
+INSERT INTO "public"."sys_log" VALUES ('440', '登录系统', '系统登录', '2016-05-08 00:49:00.414', '1', '5', '0:0:0:0:0:0:0:1');
+INSERT INTO "public"."sys_log" VALUES ('441', '登录系统', '系统登录', '2016-05-08 01:01:47.932', '1', '5', '0:0:0:0:0:0:0:1');
+INSERT INTO "public"."sys_log" VALUES ('442', '登录系统', '系统登录', '2016-05-08 21:51:09.396', '1', '5', '0:0:0:0:0:0:0:1');
+INSERT INTO "public"."sys_log" VALUES ('443', '登录系统', '系统登录', '2016-05-08 23:28:06.691', '1', '5', '0:0:0:0:0:0:0:1');
+INSERT INTO "public"."sys_log" VALUES ('444', '登录系统', '系统登录', '2016-05-17 16:09:06.209', '1', '5', '0:0:0:0:0:0:0:1');
+INSERT INTO "public"."sys_log" VALUES ('445', '登录系统', '系统登录', '2016-05-17 16:14:13.729', '1', '5', '0:0:0:0:0:0:0:1');
+INSERT INTO "public"."sys_log" VALUES ('446', '登录系统', '系统登录', '2016-05-17 16:23:41.492', '1', '5', '0:0:0:0:0:0:0:1');
+INSERT INTO "public"."sys_log" VALUES ('447', '登录系统', '系统登录', '2016-05-17 16:26:10.893', '1', '5', '0:0:0:0:0:0:0:1');
+INSERT INTO "public"."sys_log" VALUES ('448', '登录系统', '系统登录', '2016-05-18 10:18:14.699', '1', '5', '0:0:0:0:0:0:0:1');
+INSERT INTO "public"."sys_log" VALUES ('449', '登录系统', '系统登录', '2016-05-18 10:30:01.064', '1', '5', '0:0:0:0:0:0:0:1');
+INSERT INTO "public"."sys_log" VALUES ('450', '登录系统', '系统登录', '2016-05-18 10:48:48.139', '1', '5', '0:0:0:0:0:0:0:1');
+INSERT INTO "public"."sys_log" VALUES ('451', '登录系统', '系统登录', '2016-05-18 10:54:08.421', '1', '5', '192.168.22.188');
+INSERT INTO "public"."sys_log" VALUES ('452', '登录系统', '系统登录', '2016-05-18 10:55:55.784', '1', '5', '0:0:0:0:0:0:0:1');
 COMMIT;
 
 -- ----------------------------
@@ -3286,8 +3439,8 @@ COMMENT ON COLUMN "public"."meta_project"."check_label" IS '启用标记';
 -- ----------------------------
 BEGIN;
 INSERT INTO "public"."meta_project" VALUES ('1', 'ehdbms', 'eshbase数据库', '2015-12-14 00:00:00', '2015-12-14 00:00:00', '5', '5', 'hbase,phoenix,elasticsearch数据库', null);
-INSERT INTO "public"."meta_project" VALUES ('2', 'MetaDBMS', '元数据库管理控制台', '2015-12-14 00:00:00', '2015-12-14 00:00:00', '5', '5', '元数据数据库', null);
 INSERT INTO "public"."meta_project" VALUES ('16', '00931', '343ddfuuuuuu', '2015-12-22 00:00:00', '2016-01-26 23:45:22.196', '5', '5', 'df', null);
+INSERT INTO "public"."meta_project" VALUES ('2', 'MetaDBMS', '管理控制台', '2015-12-14 00:00:00', '2016-05-18 10:56:18.207', '5', '5', '元数据数据库', null);
 COMMIT;
 
 -- ----------------------------
@@ -3317,6 +3470,27 @@ COMMENT ON COLUMN "public"."etl_plugin"."remark" IS '备注';
 COMMENT ON COLUMN "public"."etl_plugin"."check_label" IS '启用标记';
 
 -- ----------------------------
+--  Records of etl_plugin
+-- ----------------------------
+BEGIN;
+INSERT INTO "public"."etl_plugin" VALUES ('50', 'oraclereader', '1', 'com.taobao.datax.plugins.reader.oraclereader.OracleReader', '1.0', 'oracle', 'oraclereader-1.0.0.jar', '10', 'oracle reader', '1');
+INSERT INTO "public"."etl_plugin" VALUES ('51', 'sqlserverreader', '1', 'com.taobao.datax.plugins.reader.sqlserverreader.SqlServerReader', '1.0', 'sqlserver', 'sqlserverreader-1.0.0.jar', '10', 'sqlserver reader', '1');
+INSERT INTO "public"."etl_plugin" VALUES ('52', 'hdfsreader', '1', 'com.taobao.datax.plugins.reader.enhdfsreader.HDFSReader', '1.0', 'hdfs', 'hdfsreader-1.0.0.jar', '10', 'hdfs reader', '1');
+INSERT INTO "public"."etl_plugin" VALUES ('48', 'mongodbreader', '1', 'com.taobao.datax.plugins.reader.mongodbreader.MongoDBReader', '1.0', 'mongodb', 'mongodbreader-1.0.0.jar', '10', 'enmongodb reader', '1');
+INSERT INTO "public"."etl_plugin" VALUES ('53', 'agghbasewriter', '2', 'com.taobao.datax.plugins.writer.agghbasewriter.AGGHBaseWriter', '1.0', 'hbase', 'agghbasewriter-1.0.0.jar', '10', 'agghbase writer', '1');
+INSERT INTO "public"."etl_plugin" VALUES ('54', 'oraclewriter', '2', 'com.taobao.datax.plugins.writer.oraclewriter.OracleWriter', '1.0', 'oracle', 'oraclewriter-1.0.0.jar', '10', 'oracle writer', '1');
+INSERT INTO "public"."etl_plugin" VALUES ('55', 'mysqlwriter', '2', 'com.taobao.datax.plugins.writer.mysqlwriter.MysqlWriter', '1.0', 'mysql', 'mysqlwriter-1.0.0.jar', '10', 'mysql writer', '1');
+INSERT INTO "public"."etl_plugin" VALUES ('56', 'hbasewriter', '2', 'com.taobao.datax.plugins.writer.enhbasewriter.HBaseWriter', '1.0', 'hbase', 'hbasewriter-1.0.0.jar', '10', 'hbase writer', '1');
+INSERT INTO "public"."etl_plugin" VALUES ('57', 'eshbasewriter', '2', 'com.taobao.datax.plugins.writer.eshbasewriter.ESHBaseWriter', '1.0', 'eshbase', 'eshbasewriter-1.0.0.jar', '10', 'eshbase writer', '1');
+INSERT INTO "public"."etl_plugin" VALUES ('58', 'udawriter', '2', 'com.taobao.datax.plugins.writer.udawriter.UDAESHBaseWriter', '1.0', 'eshbase', 'udawriter-1.0.0.jar', '10', 'uda writer', '1');
+INSERT INTO "public"."etl_plugin" VALUES ('59', 'elasticsearchwriter', '2', 'com.taobao.datax.plugins.writer.elasticsearchwriter.ElasticSearchWriter', '1.0', 'elasticsearch ', 'elasticsearchwriter-1.0.0.jar', '10', 'elasticsearch writer', '1');
+INSERT INTO "public"."etl_plugin" VALUES ('47', 'elasticsearchreader', '1', 'com.taobao.datax.plugins.reader.elasticsearchreader.ElasticSearchReader', '1.0', 'elasticsearch', 'elasticsearchreader-1.0.0.jar', '10', 'elasticsearchreader', '1');
+INSERT INTO "public"."etl_plugin" VALUES ('46', 'hivereader', '1', 'com.taobao.datax.plugins.reader.hivereader.HiveReader', '1.0', 'hive', 'hivereader-1.0.0.jar', '10', 'hive数据读取插件', '1');
+INSERT INTO "public"."etl_plugin" VALUES ('45', 'mysqlreader', '1', 'com.taobao.datax.plugins.reader.mysqlreader.MysqlReader', '1.0', 'mysql', 'mysqlreader-1.0.0.jar', '10', 'mysql读取插件', '1');
+INSERT INTO "public"."etl_plugin" VALUES ('49', 'hbasereader', '1', 'com.taobao.datax.plugins.reader.enhbasereader.HbaseReader', '1.0', 'hbase', 'hbasereader-1.0.0.jar', '10', 'hbase数据读取插件', '1');
+COMMIT;
+
+-- ----------------------------
 --  Table structure for etl_task
 -- ----------------------------
 DROP TABLE IF EXISTS "public"."etl_task";
@@ -3341,6 +3515,15 @@ COMMENT ON COLUMN "public"."etl_task"."plugin_id" IS 'plugin 序号';
 COMMENT ON COLUMN "public"."etl_task"."check_label" IS '启用标记';
 
 -- ----------------------------
+--  Records of etl_task
+-- ----------------------------
+BEGIN;
+INSERT INTO "public"."etl_task" VALUES ('45', 'ssd', '45', '52', '2016-04-04', '2016-04-04', '5', '5', 'sd', '0');
+INSERT INTO "public"."etl_task" VALUES ('46', 'tr', '47', '49', '2016-04-04', '2016-04-04', '5', '5', 'ye', '0');
+INSERT INTO "public"."etl_task" VALUES ('47', 'gfg', '45', '49', '2016-04-04', '2016-04-04', '5', '5', 'tyyt', null);
+COMMIT;
+
+-- ----------------------------
 --  Table structure for etl_job_log
 -- ----------------------------
 DROP TABLE IF EXISTS "public"."etl_job_log";
@@ -3360,6 +3543,95 @@ COMMENT ON COLUMN "public"."etl_job_log"."log_type" IS '错误类型
 0-告警
 1-信息
 2-错误';
+
+-- ----------------------------
+--  Table structure for etl_task_ds_define
+-- ----------------------------
+DROP TABLE IF EXISTS "public"."etl_task_ds_define";
+CREATE TABLE "public"."etl_task_ds_define" (
+	"id" int8 NOT NULL DEFAULT nextval('seq_etl_param_column'::regclass),
+	"task_id" int8,
+	"remark" varchar(200) COLLATE "default",
+	"file_split" varchar COLLATE "default",
+	"data_type" int4
+)
+WITH (OIDS=FALSE);
+ALTER TABLE "public"."etl_task_ds_define" OWNER TO "postgres";
+
+-- ----------------------------
+--  Table structure for etl_job
+-- ----------------------------
+DROP TABLE IF EXISTS "public"."etl_job";
+CREATE TABLE "public"."etl_job" (
+	"id" int8 NOT NULL DEFAULT nextval('seq_etl_job'::regclass),
+	"job_name" varchar(50) COLLATE "default",
+	"next_exe_date" date,
+	"cron_trigger" varchar(100) COLLATE "default",
+	"status" int2,
+	"create_date" date,
+	"update_date" date,
+	"createby_id" int8,
+	"updateby_id" int8,
+	"remark" varchar(200) COLLATE "default",
+	"check_label" int4,
+	"etl_type" int4
+)
+WITH (OIDS=FALSE);
+ALTER TABLE "public"."etl_job" OWNER TO "postgres";
+
+COMMENT ON TABLE "public"."etl_job" IS 'etl调度任务';
+COMMENT ON COLUMN "public"."etl_job"."id" IS 'job_id';
+COMMENT ON COLUMN "public"."etl_job"."job_name" IS '调度名称';
+COMMENT ON COLUMN "public"."etl_job"."remark" IS '备注';
+COMMENT ON COLUMN "public"."etl_job"."check_label" IS '启用标记';
+COMMENT ON COLUMN "public"."etl_job"."etl_type" IS 'ETL类型，全量一次迁移，增量定时迁移等';
+
+-- ----------------------------
+--  Records of etl_job
+-- ----------------------------
+BEGIN;
+INSERT INTO "public"."etl_job" VALUES ('47', 'test', null, '0 0 0 * * * *', '0', '2016-04-04', '2016-04-04', '5', '5', 'test', '0', '2');
+INSERT INTO "public"."etl_job" VALUES ('46', 'user_increment_job', null, '0 5 0 * * * *', '0', '2016-04-04', '2016-04-04', '5', '5', '用户每天增量添加', '0', '2');
+INSERT INTO "public"."etl_job" VALUES ('45', 'user_all_job', null, '0 0 0 * * * *', '0', '2016-05-17', '2016-04-04', '5', '5', '基本用户数据全量迁移', '0', '1');
+COMMIT;
+
+-- ----------------------------
+--  Table structure for meta_dbtable
+-- ----------------------------
+DROP TABLE IF EXISTS "public"."meta_dbtable";
+CREATE TABLE "public"."meta_dbtable" (
+	"id" int8 NOT NULL DEFAULT nextval('seq_meta_dbtable'::regclass),
+	"db_id" int8,
+	"table_name" varchar(100) NOT NULL COLLATE "default",
+	"table_pname" varchar(200) COLLATE "default",
+	"table_type" int2,
+	"remark" varchar(200) COLLATE "default",
+	"update_date" timestamp(6) NULL,
+	"create_date" timestamp(6) NULL,
+	"createby_id" int8,
+	"updateby_id" int8,
+	"class_name" varchar(200) COLLATE "default",
+	"check_label" int4,
+	"job_exe_id" int8
+)
+WITH (OIDS=FALSE);
+ALTER TABLE "public"."meta_dbtable" OWNER TO "postgres";
+
+COMMENT ON TABLE "public"."meta_dbtable" IS '表';
+COMMENT ON COLUMN "public"."meta_dbtable"."id" IS '表格ID';
+COMMENT ON COLUMN "public"."meta_dbtable"."db_id" IS '数据源ID';
+COMMENT ON COLUMN "public"."meta_dbtable"."table_pname" IS '物理名';
+COMMENT ON COLUMN "public"."meta_dbtable"."remark" IS '备注';
+COMMENT ON COLUMN "public"."meta_dbtable"."check_label" IS '生效标记';
+
+-- ----------------------------
+--  Records of meta_dbtable
+-- ----------------------------
+BEGIN;
+INSERT INTO "public"."meta_dbtable" VALUES ('1', '3', 'da.user_figure', '用户标签表', '5', 'hbase用户标签表', '2016-01-28 17:27:55.164', '2016-01-25 19:53:11', '1', '5', 'UserFigure', null, null);
+INSERT INTO "public"."meta_dbtable" VALUES ('3', '2', 'ETL_PLUGIN_PARAM', '插件参数', '1', '插件参数', '2016-01-28 17:28:03.841', '2016-01-28 14:40:56.523', '5', '5', 'EtlPluginParam', null, null);
+INSERT INTO "public"."meta_dbtable" VALUES ('2', '2', 'ETL_PLUGIN', 'datax插件', '1', 'datax插件信息表', '2016-01-28 17:28:10.922', null, null, '5', 'EtlPlugin', null, null);
+COMMIT;
 
 -- ----------------------------
 --  Table structure for sys_test
@@ -3452,164 +3724,32 @@ INSERT INTO "public"."sys_user_role" VALUES ('9', '9');
 COMMIT;
 
 -- ----------------------------
---  Table structure for sys_role_res
+--  Table structure for meta_dbindex
 -- ----------------------------
-DROP TABLE IF EXISTS "public"."sys_role_res";
-CREATE TABLE "public"."sys_role_res" (
-	"role_id" int8 NOT NULL,
-	"res_id" int8 NOT NULL
+DROP TABLE IF EXISTS "public"."meta_dbindex";
+CREATE TABLE "public"."meta_dbindex" (
+	"id" int8 NOT NULL DEFAULT nextval('seq_meta_dbindex'::regclass),
+	"index_name" varchar COLLATE "default",
+	"type_name" varchar COLLATE "default",
+	"remark" varchar COLLATE "default",
+	"create_date" date,
+	"update_date" date,
+	"createby_id" int8,
+	"updateby_id" int8,
+	"index_type" int4,
+	"check_label" int4,
+	"job_exe_id" int8
 )
 WITH (OIDS=FALSE);
-ALTER TABLE "public"."sys_role_res" OWNER TO "postgres";
+ALTER TABLE "public"."meta_dbindex" OWNER TO "postgres";
+
+COMMENT ON COLUMN "public"."meta_dbindex"."check_label" IS '生效标记';
 
 -- ----------------------------
---  Records of sys_role_res
+--  Records of meta_dbindex
 -- ----------------------------
 BEGIN;
-INSERT INTO "public"."sys_role_res" VALUES ('1', '57');
-INSERT INTO "public"."sys_role_res" VALUES ('1', '33');
-INSERT INTO "public"."sys_role_res" VALUES ('1', '44');
-INSERT INTO "public"."sys_role_res" VALUES ('1', '76');
-INSERT INTO "public"."sys_role_res" VALUES ('1', '12');
-INSERT INTO "public"."sys_role_res" VALUES ('1', '21');
-INSERT INTO "public"."sys_role_res" VALUES ('1', '40');
-INSERT INTO "public"."sys_role_res" VALUES ('1', '69');
-INSERT INTO "public"."sys_role_res" VALUES ('1', '28');
-INSERT INTO "public"."sys_role_res" VALUES ('1', '34');
-INSERT INTO "public"."sys_role_res" VALUES ('1', '15');
-INSERT INTO "public"."sys_role_res" VALUES ('1', '4');
-INSERT INTO "public"."sys_role_res" VALUES ('1', '41');
-INSERT INTO "public"."sys_role_res" VALUES ('1', '9');
-INSERT INTO "public"."sys_role_res" VALUES ('1', '18');
-INSERT INTO "public"."sys_role_res" VALUES ('1', '62');
-INSERT INTO "public"."sys_role_res" VALUES ('1', '35');
-INSERT INTO "public"."sys_role_res" VALUES ('1', '70');
-INSERT INTO "public"."sys_role_res" VALUES ('1', '59');
-INSERT INTO "public"."sys_role_res" VALUES ('1', '29');
-INSERT INTO "public"."sys_role_res" VALUES ('1', '47');
-INSERT INTO "public"."sys_role_res" VALUES ('1', '50');
-INSERT INTO "public"."sys_role_res" VALUES ('1', '63');
-INSERT INTO "public"."sys_role_res" VALUES ('1', '24');
-INSERT INTO "public"."sys_role_res" VALUES ('1', '39');
-INSERT INTO "public"."sys_role_res" VALUES ('1', '65');
-INSERT INTO "public"."sys_role_res" VALUES ('1', '2');
-INSERT INTO "public"."sys_role_res" VALUES ('1', '1');
-INSERT INTO "public"."sys_role_res" VALUES ('1', '31');
-INSERT INTO "public"."sys_role_res" VALUES ('1', '71');
-INSERT INTO "public"."sys_role_res" VALUES ('1', '53');
-INSERT INTO "public"."sys_role_res" VALUES ('1', '54');
-INSERT INTO "public"."sys_role_res" VALUES ('1', '23');
-INSERT INTO "public"."sys_role_res" VALUES ('1', '10');
-INSERT INTO "public"."sys_role_res" VALUES ('1', '43');
-INSERT INTO "public"."sys_role_res" VALUES ('1', '66');
-INSERT INTO "public"."sys_role_res" VALUES ('1', '79');
-INSERT INTO "public"."sys_role_res" VALUES ('1', '13');
-INSERT INTO "public"."sys_role_res" VALUES ('1', '46');
-INSERT INTO "public"."sys_role_res" VALUES ('1', '11');
-INSERT INTO "public"."sys_role_res" VALUES ('1', '16');
-INSERT INTO "public"."sys_role_res" VALUES ('1', '68');
-INSERT INTO "public"."sys_role_res" VALUES ('1', '45');
-INSERT INTO "public"."sys_role_res" VALUES ('1', '74');
-INSERT INTO "public"."sys_role_res" VALUES ('1', '72');
-INSERT INTO "public"."sys_role_res" VALUES ('1', '22');
-INSERT INTO "public"."sys_role_res" VALUES ('1', '19');
-INSERT INTO "public"."sys_role_res" VALUES ('1', '25');
-INSERT INTO "public"."sys_role_res" VALUES ('1', '77');
-INSERT INTO "public"."sys_role_res" VALUES ('1', '8');
-INSERT INTO "public"."sys_role_res" VALUES ('1', '49');
-INSERT INTO "public"."sys_role_res" VALUES ('1', '78');
-INSERT INTO "public"."sys_role_res" VALUES ('1', '7');
-INSERT INTO "public"."sys_role_res" VALUES ('1', '61');
-INSERT INTO "public"."sys_role_res" VALUES ('1', '64');
-INSERT INTO "public"."sys_role_res" VALUES ('1', '55');
-INSERT INTO "public"."sys_role_res" VALUES ('1', '75');
-INSERT INTO "public"."sys_role_res" VALUES ('1', '30');
-INSERT INTO "public"."sys_role_res" VALUES ('6', '5');
-INSERT INTO "public"."sys_role_res" VALUES ('6', '28');
-INSERT INTO "public"."sys_role_res" VALUES ('6', '29');
-INSERT INTO "public"."sys_role_res" VALUES ('6', '30');
-INSERT INTO "public"."sys_role_res" VALUES ('6', '32');
-INSERT INTO "public"."sys_role_res" VALUES ('6', '33');
-INSERT INTO "public"."sys_role_res" VALUES ('6', '34');
-INSERT INTO "public"."sys_role_res" VALUES ('6', '35');
-INSERT INTO "public"."sys_role_res" VALUES ('6', '41');
-INSERT INTO "public"."sys_role_res" VALUES ('6', '52');
-INSERT INTO "public"."sys_role_res" VALUES ('7', '5');
-INSERT INTO "public"."sys_role_res" VALUES ('7', '28');
-INSERT INTO "public"."sys_role_res" VALUES ('7', '29');
-INSERT INTO "public"."sys_role_res" VALUES ('7', '30');
-INSERT INTO "public"."sys_role_res" VALUES ('7', '32');
-INSERT INTO "public"."sys_role_res" VALUES ('7', '33');
-INSERT INTO "public"."sys_role_res" VALUES ('7', '34');
-INSERT INTO "public"."sys_role_res" VALUES ('7', '35');
-INSERT INTO "public"."sys_role_res" VALUES ('7', '41');
-INSERT INTO "public"."sys_role_res" VALUES ('7', '52');
-INSERT INTO "public"."sys_role_res" VALUES ('8', '5');
-INSERT INTO "public"."sys_role_res" VALUES ('8', '46');
-INSERT INTO "public"."sys_role_res" VALUES ('8', '47');
-INSERT INTO "public"."sys_role_res" VALUES ('9', '1');
-INSERT INTO "public"."sys_role_res" VALUES ('9', '2');
-INSERT INTO "public"."sys_role_res" VALUES ('9', '3');
-INSERT INTO "public"."sys_role_res" VALUES ('9', '4');
-INSERT INTO "public"."sys_role_res" VALUES ('9', '5');
-INSERT INTO "public"."sys_role_res" VALUES ('9', '7');
-INSERT INTO "public"."sys_role_res" VALUES ('9', '8');
-INSERT INTO "public"."sys_role_res" VALUES ('9', '9');
-INSERT INTO "public"."sys_role_res" VALUES ('9', '10');
-INSERT INTO "public"."sys_role_res" VALUES ('9', '11');
-INSERT INTO "public"."sys_role_res" VALUES ('9', '12');
-INSERT INTO "public"."sys_role_res" VALUES ('9', '13');
-INSERT INTO "public"."sys_role_res" VALUES ('9', '14');
-INSERT INTO "public"."sys_role_res" VALUES ('9', '15');
-INSERT INTO "public"."sys_role_res" VALUES ('9', '16');
-INSERT INTO "public"."sys_role_res" VALUES ('9', '17');
-INSERT INTO "public"."sys_role_res" VALUES ('9', '18');
-INSERT INTO "public"."sys_role_res" VALUES ('9', '19');
-INSERT INTO "public"."sys_role_res" VALUES ('9', '20');
-INSERT INTO "public"."sys_role_res" VALUES ('9', '21');
-INSERT INTO "public"."sys_role_res" VALUES ('9', '22');
-INSERT INTO "public"."sys_role_res" VALUES ('9', '23');
-INSERT INTO "public"."sys_role_res" VALUES ('9', '24');
-INSERT INTO "public"."sys_role_res" VALUES ('9', '25');
-INSERT INTO "public"."sys_role_res" VALUES ('9', '28');
-INSERT INTO "public"."sys_role_res" VALUES ('9', '29');
-INSERT INTO "public"."sys_role_res" VALUES ('9', '30');
-INSERT INTO "public"."sys_role_res" VALUES ('9', '31');
-INSERT INTO "public"."sys_role_res" VALUES ('9', '32');
-INSERT INTO "public"."sys_role_res" VALUES ('9', '33');
-INSERT INTO "public"."sys_role_res" VALUES ('9', '34');
-INSERT INTO "public"."sys_role_res" VALUES ('9', '35');
-INSERT INTO "public"."sys_role_res" VALUES ('9', '36');
-INSERT INTO "public"."sys_role_res" VALUES ('9', '37');
-INSERT INTO "public"."sys_role_res" VALUES ('9', '39');
-INSERT INTO "public"."sys_role_res" VALUES ('9', '40');
-INSERT INTO "public"."sys_role_res" VALUES ('9', '41');
-INSERT INTO "public"."sys_role_res" VALUES ('9', '42');
-INSERT INTO "public"."sys_role_res" VALUES ('9', '43');
-INSERT INTO "public"."sys_role_res" VALUES ('9', '44');
-INSERT INTO "public"."sys_role_res" VALUES ('9', '45');
-INSERT INTO "public"."sys_role_res" VALUES ('9', '46');
-INSERT INTO "public"."sys_role_res" VALUES ('9', '47');
-INSERT INTO "public"."sys_role_res" VALUES ('9', '49');
-INSERT INTO "public"."sys_role_res" VALUES ('9', '50');
-INSERT INTO "public"."sys_role_res" VALUES ('9', '51');
-INSERT INTO "public"."sys_role_res" VALUES ('9', '52');
-INSERT INTO "public"."sys_role_res" VALUES ('1', '36');
-INSERT INTO "public"."sys_role_res" VALUES ('1', '80');
-INSERT INTO "public"."sys_role_res" VALUES ('1', '60');
-INSERT INTO "public"."sys_role_res" VALUES ('1', '3');
-INSERT INTO "public"."sys_role_res" VALUES ('1', '5');
-INSERT INTO "public"."sys_role_res" VALUES ('1', '42');
-INSERT INTO "public"."sys_role_res" VALUES ('1', '37');
-INSERT INTO "public"."sys_role_res" VALUES ('1', '20');
-INSERT INTO "public"."sys_role_res" VALUES ('1', '73');
-INSERT INTO "public"."sys_role_res" VALUES ('1', '51');
-INSERT INTO "public"."sys_role_res" VALUES ('1', '67');
-INSERT INTO "public"."sys_role_res" VALUES ('1', '52');
-INSERT INTO "public"."sys_role_res" VALUES ('1', '32');
-INSERT INTO "public"."sys_role_res" VALUES ('1', '58');
-INSERT INTO "public"."sys_role_res" VALUES ('1', '17');
-INSERT INTO "public"."sys_role_res" VALUES ('1', '14');
+INSERT INTO "public"."meta_dbindex" VALUES ('1', 'datacenter', 'USER_FIGURE', 'es索引表', '2015-12-14', '2015-12-14', '5', '5', '1', null, null);
 COMMIT;
 
 -- ----------------------------
@@ -3740,31 +3880,6 @@ INSERT INTO "public"."act_ge_bytearray" VALUES ('3', '1', 'leave/leave.bpmn', '1
 COMMIT;
 
 -- ----------------------------
---  Table structure for sys_role
--- ----------------------------
-DROP TABLE IF EXISTS "public"."sys_role";
-CREATE TABLE "public"."sys_role" (
-	"id" int8 NOT NULL,
-	"authorize" varchar(255) COLLATE "default",
-	"name" varchar(255) COLLATE "default",
-	"realname" varchar(255) COLLATE "default",
-	"remark" varchar(255) COLLATE "default"
-)
-WITH (OIDS=FALSE);
-ALTER TABLE "public"."sys_role" OWNER TO "postgres";
-
--- ----------------------------
---  Records of sys_role
--- ----------------------------
-BEGIN;
-INSERT INTO "public"."sys_role" VALUES ('6', null, 'deptLeader', '部门经理', '111');
-INSERT INTO "public"."sys_role" VALUES ('7', null, 'hr', '人力经理', '');
-INSERT INTO "public"."sys_role" VALUES ('8', null, 'bloger', '博客玩家', '');
-INSERT INTO "public"."sys_role" VALUES ('9', null, 'showcasers', '演示分配角色', '');
-INSERT INTO "public"."sys_role" VALUES ('1', null, 'superAdmin', '超级管理员', '拥有所有权限');
-COMMIT;
-
--- ----------------------------
 --  Table structure for cms_site
 -- ----------------------------
 DROP TABLE IF EXISTS "public"."cms_site";
@@ -3787,6 +3902,74 @@ ALTER TABLE "public"."cms_site" OWNER TO "postgres";
 BEGIN;
 INSERT INTO "public"."cms_site" VALUES ('1', '@copy2014', '个人博客', 'blog', 'blog', 'blog', 'blog', '个人博客');
 INSERT INTO "public"."cms_site" VALUES ('2', '@copy2014', '新闻网站', 'news', 'news', 'news', 'news thems', '新闻网站');
+COMMIT;
+
+-- ----------------------------
+--  Table structure for meta_module_object
+-- ----------------------------
+DROP TABLE IF EXISTS "public"."meta_module_object";
+CREATE TABLE "public"."meta_module_object" (
+	"module_id" int8 NOT NULL,
+	"object_id" int8 NOT NULL,
+	"object_type" int4 NOT NULL,
+	"remark" varchar COLLATE "default"
+)
+WITH (OIDS=FALSE);
+ALTER TABLE "public"."meta_module_object" OWNER TO "postgres";
+
+-- ----------------------------
+--  Table structure for sys_user
+-- ----------------------------
+DROP TABLE IF EXISTS "public"."sys_user";
+CREATE TABLE "public"."sys_user" (
+	"id" int8 NOT NULL DEFAULT nextval('seq_sys_user'::regclass),
+	"address" varchar(255) COLLATE "default",
+	"createdate" timestamp(6) NOT NULL,
+	"email" varchar(255) COLLATE "default",
+	"loginid" varchar(255) NOT NULL COLLATE "default",
+	"mobilephone" varchar(255) COLLATE "default",
+	"name" varchar(255) COLLATE "default",
+	"passwd" varchar(255) COLLATE "default",
+	"remark" varchar(255) COLLATE "default",
+	"status" varchar(255) NOT NULL COLLATE "default"
+)
+WITH (OIDS=FALSE);
+ALTER TABLE "public"."sys_user" OWNER TO "postgres";
+
+-- ----------------------------
+--  Records of sys_user
+-- ----------------------------
+BEGIN;
+INSERT INTO "public"."sys_user" VALUES ('4', '成都', '2013-03-07 00:00:00', 'sa@ww.cc', 'user2', '15222233426', '人力经理', '8d2209bf7ec9ac2eec597eb378a7cbf5', '123', '1');
+INSERT INTO "public"."sys_user" VALUES ('7', '成都', '2014-03-23 00:00:00', 'sa22@ww.cc', 'depman', '15369654627', '部门经理', '1fa11d49afc1479d1392df32c9cd7dd4', '你好', '1');
+INSERT INTO "public"."sys_user" VALUES ('8', '成都', '2014-05-24 00:00:00', 'sss@ss.cc', 'shenyc', '15236568954', '申鱼川', 'b3a92e2ce005f4cb00ceed9baa0d212c', '合作伙伴', '1');
+INSERT INTO "public"."sys_user" VALUES ('9', '成都', '2014-05-27 00:00:00', 'sss@ss.cc', 'showcase', '15236568954', '演示', '6747c1c2e26c5d41711d0cf0a284702b', '供演示使用', '1');
+INSERT INTO "public"."sys_user" VALUES ('5', '成都', '2014-03-14 00:00:00', '502876941@qq.com', 'admin', '15108276486', '超级管理员', 'f6fdffe48c908deb0f4c3bd36c032e72', '帅气的开发者', '1');
+COMMIT;
+
+-- ----------------------------
+--  Table structure for sys_role
+-- ----------------------------
+DROP TABLE IF EXISTS "public"."sys_role";
+CREATE TABLE "public"."sys_role" (
+	"id" int8 NOT NULL,
+	"authorize" varchar(255) COLLATE "default",
+	"name" varchar(255) COLLATE "default",
+	"realname" varchar(255) COLLATE "default",
+	"remark" varchar(255) COLLATE "default"
+)
+WITH (OIDS=FALSE);
+ALTER TABLE "public"."sys_role" OWNER TO "postgres";
+
+-- ----------------------------
+--  Records of sys_role
+-- ----------------------------
+BEGIN;
+INSERT INTO "public"."sys_role" VALUES ('6', null, 'deptLeader', '部门经理', '111');
+INSERT INTO "public"."sys_role" VALUES ('7', null, 'hr', '人力经理', '');
+INSERT INTO "public"."sys_role" VALUES ('8', null, 'bloger', '博客玩家', '');
+INSERT INTO "public"."sys_role" VALUES ('9', null, 'showcasers', '演示分配角色', '');
+INSERT INTO "public"."sys_role" VALUES ('1', null, 'superAdmin', '超级管理员', '拥有所有权限');
 COMMIT;
 
 -- ----------------------------
@@ -3836,7 +4019,6 @@ INSERT INTO "public"."sys_res" VALUES ('22', null, '3', 'icon-minus', '删除图
 INSERT INTO "public"."sys_res" VALUES ('23', null, '3', 'icon-pencil', '修改图标', '4', 'sys:icon:update', '', '/sys/icon/update', '19');
 INSERT INTO "public"."sys_res" VALUES ('24', null, '3', 'ztree_file2', '详细信息', '5', 'sys:user:show', '', '/sys/user/show', '2');
 INSERT INTO "public"."sys_res" VALUES ('25', null, '3', 'ztree_file2', '详细信息', '5', 'sys:role:show', '', '/sys/role/show', '3');
-INSERT INTO "public"."sys_res" VALUES ('28', null, '1', 'diy_icon_01_48', '数据迁移服务', '2', 'etl', '数据迁移ETL服务', '/etl', '5');
 INSERT INTO "public"."sys_res" VALUES ('30', null, '1', 'diy_icon_04_20', '工作流管理', '6', 'workflow', '', '/workflow', '5');
 INSERT INTO "public"."sys_res" VALUES ('31', null, '3', 'icon-key', '更改用户状态', '6', 'sys:user:changeUserStatus', '', '/sys/user/changeUserStatus', '2');
 INSERT INTO "public"."sys_res" VALUES ('32', null, '2', 'ztree_edit2', '待办', '1', 'workflow:todoTasks', '', '/workflow/todoTasks', '30');
@@ -3856,108 +4038,37 @@ INSERT INTO "public"."sys_res" VALUES ('47', null, '2', 'diy_icon_01_23', '内�
 INSERT INTO "public"."sys_res" VALUES ('49', null, '2', 'diy_icon_04_37', '栏目管理', '2', 'cms:category:list', '', '/cms/category/list', '46');
 INSERT INTO "public"."sys_res" VALUES ('50', null, '2', 'diy_icon_02_44', '站点管理', '1', 'cms:site:list', '', '/cms/site/list', '46');
 INSERT INTO "public"."sys_res" VALUES ('51', null, '2', 'diy_icon_01_28', '评论管理', '5', 'cms:comment', '', '/cms/comment/list', '46');
-INSERT INTO "public"."sys_res" VALUES ('62', null, '1', 'icon-cog', 'lotuseedata 演示', '1', 'lotuseed', 'lotuseedata 演示', '/lotuseed', '5');
-INSERT INTO "public"."sys_res" VALUES ('64', null, '2', 'icon-cog', '页面访问查询', '2', 'lotuseed:circleQuery', '', '/lotuseed/circleQuery', '62');
 INSERT INTO "public"."sys_res" VALUES ('65', null, '2', 'icon-cog', '项目管理', '0', 'meta:project', '项目管理', '/meta/Project/list', '41');
-INSERT INTO "public"."sys_res" VALUES ('45', null, '2', 'diy_icon_02_44', '表单管理', '3', 'meta:DBTable', '', '/meta/DBTable/list', '41');
+INSERT INTO "public"."sys_res" VALUES ('60', null, '2', 'icon-cog', 'ETL插件', '2', 'etl:EtlPlugin', '迁移插件管理', '/etl/EtlPlugin/list', '28');
 INSERT INTO "public"."sys_res" VALUES ('52', null, '2', 'diy_icon_01_30', '数据查询', '5', 'meta:dbquery', '', '/meta/DBQuery/list', '41');
 INSERT INTO "public"."sys_res" VALUES ('66', null, '2', 'icon-cog', '模块管理', '2', 'meta:module', '', '/meta/module/list', '41');
 INSERT INTO "public"."sys_res" VALUES ('53', null, '2', 'diy_icon_04_39', '字典管理', '6', 'sys:dict', '数据字典管理', '/sys/dict/list', '1');
 INSERT INTO "public"."sys_res" VALUES ('70', null, '3', 'icon-cog', '增加语言', '1', 'sys:multilang:add', '增加语言', '/sys/multilang/add', '54');
-INSERT INTO "public"."sys_res" VALUES ('63', null, '2', 'icon-cog', 'session查询', '1', 'lotuseed:sessionQuery', 'start session查询', '/lotuseed/sessionQuery', '62');
+INSERT INTO "public"."sys_res" VALUES ('28', null, '1', 'diy_icon_03_22', '数据迁移服务', '2', 'etl', '数据迁移ETL服务', '/etl', '5');
 INSERT INTO "public"."sys_res" VALUES ('68', null, '3', 'icon-cog', '字典删除', '2', 'sys:dict:del', '数据字典删除', '/sys/dict/del', '53');
 INSERT INTO "public"."sys_res" VALUES ('72', null, '3', 'icon-cog', '修改语言', '3', 'sys:multilang:update', '修改语言', '/sys/multilang/update', '54');
 INSERT INTO "public"."sys_res" VALUES ('69', null, '3', 'icon-cog', '修改字典', '3', 'sys:dict:update', '修改数据字典', '/sys/dict/update', '53');
 INSERT INTO "public"."sys_res" VALUES ('54', null, '2', 'diy_icon_04_06', '语言管理', '7', 'sys:multilang', '国际化语言管理', '/sys/multilang/list', '1');
-INSERT INTO "public"."sys_res" VALUES ('59', null, '2', 'icon-cog', 'cron trigger验证', '7', 'job:cron', '', '/job/cron', '55');
-INSERT INTO "public"."sys_res" VALUES ('60', null, '2', 'icon-cog', '迁移插件管理', '2', 'etl:EtlPlugin', '迁移插件管理', '/etl/EtlPlugin/list', '28');
-INSERT INTO "public"."sys_res" VALUES ('61', null, '2', 'icon-cog', '任务日志管理', '3', 'etl:EtlJobLog', '', '/etl/EtlJobLog/list', '28');
+INSERT INTO "public"."sys_res" VALUES ('61', null, '2', 'icon-cog', 'ETL日志', '4', 'etl:EtlJobLog', '', '/etl/EtlJobLog/list', '28');
+INSERT INTO "public"."sys_res" VALUES ('45', null, '2', 'diy_icon_02_44', '数据集管理', '3', 'meta:DBTable', '', '/meta/DBTable/list', '41');
 INSERT INTO "public"."sys_res" VALUES ('55', null, '1', 'icon-cog', '调度任务', '4', 'job:RegCenter', '', '/job/RegCenter/list', '5');
 INSERT INTO "public"."sys_res" VALUES ('58', null, '2', 'icon-cog', '注册中心', '1', 'job:RegCenter', '注册中心', '/job/RegCenter/list', '55');
+INSERT INTO "public"."sys_res" VALUES ('59', null, '2', 'icon-cog', 'cron trigger验证', '7', 'job:CronTest', '', '/job/CronTest/show', '55');
 INSERT INTO "public"."sys_res" VALUES ('67', null, '3', 'icon-cog', '字典添加', '1', 'sys:dict:add', '数据字典添加', '/sys/dict/add', '53');
 INSERT INTO "public"."sys_res" VALUES ('71', null, '3', 'icon-cog', '删除语言', '2', 'sys:multilang:del', '删除语言', '/sys/multilang/del', '54');
 INSERT INTO "public"."sys_res" VALUES ('73', null, '2', 'icon-cog', '索引管理', '4', 'meta:DBIndex', '索引管理', '/meta/DBIndex/list', '41');
-INSERT INTO "public"."sys_res" VALUES ('29', null, '2', 'diy_icon_01_29', '迁移任务管理', '1', 'etl:EtlJob', '', '/etl/EtlJob/list', '28');
 INSERT INTO "public"."sys_res" VALUES ('74', null, '3', 'icon-cog', '查看任务日志', '1', 'etl:EtlJobLog:show', '查看任务日志', '/etl/EtlJobLog/show', '61');
 INSERT INTO "public"."sys_res" VALUES ('75', null, '3', 'icon-cog', '删除日志', '2', 'etl:EtlJobLog:delete', '删除日志', '/etl/EtlJobLog/delete', '61');
-INSERT INTO "public"."sys_res" VALUES ('57', null, '2', 'icon-cog', '作业类管理', '2', 'job:JobClass', '作业类管理', '/job/JobClass/list', '55');
-INSERT INTO "public"."sys_res" VALUES ('76', null, '2', 'icon-cog', '作业执行定义', '3', 'job:JobWorker', '作业执行定义', '/job/JobWorker/list', '55');
-INSERT INTO "public"."sys_res" VALUES ('77', null, '2', 'icon-cog', '作业终端管理', '5', 'job:Machine', '作业终端管理', '/job/Machine/list', '55');
-INSERT INTO "public"."sys_res" VALUES ('78', null, '2', 'icon-cog', '作业任务管理', '6', 'job:JobTaskDefine', '作业任务管理', '/job/JobTaskDefine/list', '55');
 INSERT INTO "public"."sys_res" VALUES ('79', null, '3', 'icon-cog', '连接注册中心', '4', 'job:RegCenter:connectRegCenter', '连接注册中心', '/job/RegCenter/connectRegCenter', '58');
 INSERT INTO "public"."sys_res" VALUES ('80', null, '3', 'icon-cog', '启用作业类', '1', 'job:JobClass:changeJobClassCL', '启用作业类', '/job/JobClass/changeJobClassCL', '57');
-COMMIT;
-
--- ----------------------------
---  Table structure for meta_module_object
--- ----------------------------
-DROP TABLE IF EXISTS "public"."meta_module_object";
-CREATE TABLE "public"."meta_module_object" (
-	"module_id" int8 NOT NULL,
-	"object_id" int8 NOT NULL,
-	"object_type" int4 NOT NULL,
-	"remark" varchar COLLATE "default"
-)
-WITH (OIDS=FALSE);
-ALTER TABLE "public"."meta_module_object" OWNER TO "postgres";
-
--- ----------------------------
---  Table structure for sys_user
--- ----------------------------
-DROP TABLE IF EXISTS "public"."sys_user";
-CREATE TABLE "public"."sys_user" (
-	"id" int8 NOT NULL DEFAULT nextval('seq_sys_user'::regclass),
-	"address" varchar(255) COLLATE "default",
-	"createdate" timestamp(6) NOT NULL,
-	"email" varchar(255) COLLATE "default",
-	"loginid" varchar(255) NOT NULL COLLATE "default",
-	"mobilephone" varchar(255) COLLATE "default",
-	"name" varchar(255) COLLATE "default",
-	"passwd" varchar(255) COLLATE "default",
-	"remark" varchar(255) COLLATE "default",
-	"status" varchar(255) NOT NULL COLLATE "default"
-)
-WITH (OIDS=FALSE);
-ALTER TABLE "public"."sys_user" OWNER TO "postgres";
-
--- ----------------------------
---  Records of sys_user
--- ----------------------------
-BEGIN;
-INSERT INTO "public"."sys_user" VALUES ('4', '成都', '2013-03-07 00:00:00', 'sa@ww.cc', 'user2', '15222233426', '人力经理', '8d2209bf7ec9ac2eec597eb378a7cbf5', '123', '1');
-INSERT INTO "public"."sys_user" VALUES ('7', '成都', '2014-03-23 00:00:00', 'sa22@ww.cc', 'depman', '15369654627', '部门经理', '1fa11d49afc1479d1392df32c9cd7dd4', '你好', '1');
-INSERT INTO "public"."sys_user" VALUES ('8', '成都', '2014-05-24 00:00:00', 'sss@ss.cc', 'shenyc', '15236568954', '申鱼川', 'b3a92e2ce005f4cb00ceed9baa0d212c', '合作伙伴', '1');
-INSERT INTO "public"."sys_user" VALUES ('9', '成都', '2014-05-27 00:00:00', 'sss@ss.cc', 'showcase', '15236568954', '演示', '6747c1c2e26c5d41711d0cf0a284702b', '供演示使用', '1');
-INSERT INTO "public"."sys_user" VALUES ('5', '成都', '2014-03-14 00:00:00', '502876941@qq.com', 'admin', '15108276486', '超级管理员', 'f6fdffe48c908deb0f4c3bd36c032e72', '帅气的开发者', '1');
-COMMIT;
-
--- ----------------------------
---  Table structure for meta_dbindex
--- ----------------------------
-DROP TABLE IF EXISTS "public"."meta_dbindex";
-CREATE TABLE "public"."meta_dbindex" (
-	"id" int8 NOT NULL DEFAULT nextval('seq_meta_dbindex'::regclass),
-	"index_name" varchar COLLATE "default",
-	"type_name" varchar COLLATE "default",
-	"table_id" int8,
-	"remark" varchar COLLATE "default",
-	"create_date" date,
-	"update_date" date,
-	"createby_id" int8,
-	"updateby_id" int8,
-	"index_type" int4,
-	"check_label" int4
-)
-WITH (OIDS=FALSE);
-ALTER TABLE "public"."meta_dbindex" OWNER TO "postgres";
-
-COMMENT ON COLUMN "public"."meta_dbindex"."check_label" IS '生效标记';
-
--- ----------------------------
---  Records of meta_dbindex
--- ----------------------------
-BEGIN;
-INSERT INTO "public"."meta_dbindex" VALUES ('1', 'datacenter', 'USER_FIGURE', '1', 'es索引表', '2015-12-14', '2015-12-14', '5', '5', '1', null);
+INSERT INTO "public"."sys_res" VALUES ('81', null, '3', 'icon-cog', '启用', '1', 'etl:EtlPlugin:check', '启用插件', 'etl/EtlPlugin/check', '60');
+INSERT INTO "public"."sys_res" VALUES ('82', null, '3', 'diy_icon_01_13', '迁移任务启用', '1', 'etl:EtlJob:check', '迁移任务启用', 'etl/EtlJob/check', '29');
+INSERT INTO "public"."sys_res" VALUES ('76', null, '2', 'icon-cog', '作业设置', '2', 'job:JobWorker', '作业定义注册', '/job/JobWorker/list', '55');
+INSERT INTO "public"."sys_res" VALUES ('77', null, '2', 'icon-cog', '作业终端', '5', 'job:Machine', '作业终端管理', '/job/Machine/list', '55');
+INSERT INTO "public"."sys_res" VALUES ('57', null, '2', 'icon-cog', '作业实现类', '6', 'job:JobClass', '作业实现类注册', '/job/JobClass/list', '55');
+INSERT INTO "public"."sys_res" VALUES ('29', null, '2', 'diy_icon_01_29', 'ETL工作', '1', 'etl:EtlJob', '迁移工作管理', '/etl/EtlJob/list', '28');
+INSERT INTO "public"."sys_res" VALUES ('83', null, '2', 'diy_icon_01_22', 'ETL任务', '3', 'etl:EtlTask', ' 数据迁移工作管理', '/etl/EtlTask/list', '28');
+INSERT INTO "public"."sys_res" VALUES ('78', null, '2', 'icon-cog', '作业执行', '3', 'job:JobTaskDefine', '作业服务器执行控制', '/job/JobTaskDefine/list', '55');
 COMMIT;
 
 -- ----------------------------
@@ -3998,45 +4109,8 @@ COMMENT ON COLUMN "public"."job_jobclass"."check_label" IS '启用标记';
 --  Records of job_jobclass
 -- ----------------------------
 BEGIN;
-INSERT INTO "public"."job_jobclass" VALUES ('46', 'datax定时任务', '1', 'com.taobao.datax.engine.schedule.Engine', 'datax定时任务2', '1.0', '2016-02-01', '5', '2016-02-02', '5', 'datax', '1');
+INSERT INTO "public"."job_jobclass" VALUES ('51', 'simpleElasticDemoJob', null, 'com.dangdang.example.elasticjob.core.job.SimpleJobDemo', '', '1.0', '2016-05-18', '5', '2016-05-18', '5', 'simpleElasticDemoJob', '1');
 COMMIT;
-
--- ----------------------------
---  Table structure for job_machine
--- ----------------------------
-DROP TABLE IF EXISTS "public"."job_machine";
-CREATE TABLE "public"."job_machine" (
-	"id" int8 NOT NULL DEFAULT nextval('seq_job_machine'::regclass),
-	"machine_name" varchar(100) COLLATE "default",
-	"address" varchar(100) COLLATE "default",
-	"ssh_port" int4,
-	"login_name" varchar(50) COLLATE "default",
-	"login_password" varchar(50) COLLATE "default",
-	"user_dir" varchar(100) COLLATE "default",
-	"remark" varchar(200) COLLATE "default",
-	"create_date" date,
-	"update_date" date,
-	"createby_id" int8,
-	"updateby_id" int8,
-	"check_label" int4
-)
-WITH (OIDS=FALSE);
-ALTER TABLE "public"."job_machine" OWNER TO "postgres";
-
-COMMENT ON TABLE "public"."job_machine" IS '作业执行机器';
-COMMENT ON COLUMN "public"."job_machine"."id" IS 'id';
-COMMENT ON COLUMN "public"."job_machine"."machine_name" IS '机器名';
-COMMENT ON COLUMN "public"."job_machine"."address" IS '机器地址，hostname 或ip地址';
-COMMENT ON COLUMN "public"."job_machine"."ssh_port" IS '端口';
-COMMENT ON COLUMN "public"."job_machine"."login_name" IS '登录名';
-COMMENT ON COLUMN "public"."job_machine"."login_password" IS '登录密码';
-COMMENT ON COLUMN "public"."job_machine"."user_dir" IS '工作路径';
-COMMENT ON COLUMN "public"."job_machine"."remark" IS '备注';
-COMMENT ON COLUMN "public"."job_machine"."create_date" IS '建立日期';
-COMMENT ON COLUMN "public"."job_machine"."update_date" IS '最后更新日期';
-COMMENT ON COLUMN "public"."job_machine"."createby_id" IS '建立者';
-COMMENT ON COLUMN "public"."job_machine"."updateby_id" IS '最后更新者';
-COMMENT ON COLUMN "public"."job_machine"."check_label" IS '启用标记';
 
 -- ----------------------------
 --  Table structure for job_worker
@@ -4100,6 +4174,58 @@ COMMENT ON COLUMN "public"."job_worker"."remark" IS '备注描述';
 COMMENT ON COLUMN "public"."job_worker"."check_label" IS '启用标记';
 
 -- ----------------------------
+--  Records of job_worker
+-- ----------------------------
+BEGIN;
+INSERT INTO "public"."job_worker" VALUES ('49', 'simpleElasticDemoJob', null, null, 'com.dangdang.example.elasticjob.core.job.SimpleJobDemo', '10', '0/5 * * * * ?', '', 'dddd', '1', '300', '1', '1', '-1', '1', '1', '', null, null, '2016-05-18', '5', '2016-05-18', '5', '', null);
+COMMIT;
+
+-- ----------------------------
+--  Table structure for job_machine
+-- ----------------------------
+DROP TABLE IF EXISTS "public"."job_machine";
+CREATE TABLE "public"."job_machine" (
+	"id" int8 NOT NULL DEFAULT nextval('seq_job_machine'::regclass),
+	"machine_name" varchar(100) COLLATE "default",
+	"address" varchar(100) COLLATE "default",
+	"ssh_port" int4,
+	"login_name" varchar(50) COLLATE "default",
+	"login_password" varchar(50) COLLATE "default",
+	"user_dir" varchar(100) COLLATE "default",
+	"remark" varchar(200) COLLATE "default",
+	"create_date" date,
+	"update_date" date,
+	"createby_id" int8,
+	"updateby_id" int8,
+	"check_label" int4,
+	"host_name" varchar(50) COLLATE "default"
+)
+WITH (OIDS=FALSE);
+ALTER TABLE "public"."job_machine" OWNER TO "postgres";
+
+COMMENT ON TABLE "public"."job_machine" IS '作业执行机器';
+COMMENT ON COLUMN "public"."job_machine"."id" IS 'id';
+COMMENT ON COLUMN "public"."job_machine"."machine_name" IS '机器名';
+COMMENT ON COLUMN "public"."job_machine"."address" IS '机器地址，hostname 或ip地址';
+COMMENT ON COLUMN "public"."job_machine"."ssh_port" IS '端口';
+COMMENT ON COLUMN "public"."job_machine"."login_name" IS '登录名';
+COMMENT ON COLUMN "public"."job_machine"."login_password" IS '登录密码';
+COMMENT ON COLUMN "public"."job_machine"."user_dir" IS '工作路径';
+COMMENT ON COLUMN "public"."job_machine"."remark" IS '备注';
+COMMENT ON COLUMN "public"."job_machine"."create_date" IS '建立日期';
+COMMENT ON COLUMN "public"."job_machine"."update_date" IS '最后更新日期';
+COMMENT ON COLUMN "public"."job_machine"."createby_id" IS '建立者';
+COMMENT ON COLUMN "public"."job_machine"."updateby_id" IS '最后更新者';
+COMMENT ON COLUMN "public"."job_machine"."check_label" IS '启用标记';
+
+-- ----------------------------
+--  Records of job_machine
+-- ----------------------------
+BEGIN;
+INSERT INTO "public"."job_machine" VALUES ('52', null, '192.168.20.70', null, null, null, null, null, '2016-05-18', '2016-05-18', '5', '5', '1', 'MacBook-Pro.local');
+COMMIT;
+
+-- ----------------------------
 --  Table structure for job_task_define
 -- ----------------------------
 DROP TABLE IF EXISTS "public"."job_task_define";
@@ -4114,7 +4240,12 @@ CREATE TABLE "public"."job_task_define" (
 	"create_date" date,
 	"update_date" date,
 	"createby_id" int8,
-	"updateby_id" int8
+	"updateby_id" int8,
+	"sharding" varchar(200) COLLATE "default",
+	"islead" int4,
+	"isleadstop" int4,
+	"process_failure_count" int4,
+	"process_success_count" int4
 )
 WITH (OIDS=FALSE);
 ALTER TABLE "public"."job_task_define" OWNER TO "postgres";
@@ -4126,6 +4257,13 @@ COMMENT ON COLUMN "public"."job_task_define"."reg_id" IS '注册中心ID';
 COMMENT ON COLUMN "public"."job_task_define"."remark" IS '备注';
 COMMENT ON COLUMN "public"."job_task_define"."check_label" IS '启用标记';
 COMMENT ON COLUMN "public"."job_task_define"."status" IS '状态';
+
+-- ----------------------------
+--  Records of job_task_define
+-- ----------------------------
+BEGIN;
+INSERT INTO "public"."job_task_define" VALUES ('57', '52', '49', '1', 'simpleElasticDemoJob-192.168.20.70-MacBook-Pro.local', '1', '-2', '2016-05-18', '2016-05-18', '5', '5', '0,1,2,3,4,5,6,7,8,9', '1', '0', '0', '0');
+COMMIT;
 
 -- ----------------------------
 --  Table structure for job_reg_center
@@ -4170,8 +4308,321 @@ COMMENT ON COLUMN "public"."job_reg_center"."check_label" IS '启用标记';
 --  Records of job_reg_center
 -- ----------------------------
 BEGIN;
-INSERT INTO "public"."job_reg_center" VALUES ('1', 'localhost', 'localhost:2181', 'etl', '1000', '3000', '3', '', 'test', '2016-01-31', '5', '2016-01-31', '5', null);
+INSERT INTO "public"."job_reg_center" VALUES ('1', 'localhost', 'localhost:2181', 'etl', '1000', '3000', '3', '', 'test', '2016-01-31', '5', '2016-02-18', '5', null);
 COMMIT;
+
+-- ----------------------------
+--  Table structure for job_execution_info
+-- ----------------------------
+DROP TABLE IF EXISTS "public"."job_execution_info";
+CREATE TABLE "public"."job_execution_info" (
+	"id" int8 NOT NULL DEFAULT nextval('seq_job_execution_info'::regclass),
+	"item" int4,
+	"failover_ip" varchar(200) COLLATE "default",
+	"last_begin_time" date,
+	"last_complete_time" date,
+	"next_fire_time" date,
+	"status" varchar(20) COLLATE "default",
+	"worker_id" int8
+)
+WITH (OIDS=FALSE);
+ALTER TABLE "public"."job_execution_info" OWNER TO "postgres";
+
+COMMENT ON COLUMN "public"."job_execution_info"."item" IS '分片';
+COMMENT ON COLUMN "public"."job_execution_info"."failover_ip" IS '分片转移';
+COMMENT ON COLUMN "public"."job_execution_info"."last_begin_time" IS '上次作业开始时间';
+COMMENT ON COLUMN "public"."job_execution_info"."last_complete_time" IS '上次作业完成时间';
+COMMENT ON COLUMN "public"."job_execution_info"."next_fire_time" IS '下次作业运行时间';
+COMMENT ON COLUMN "public"."job_execution_info"."status" IS '状态';
+COMMENT ON COLUMN "public"."job_execution_info"."worker_id" IS '任务ID';
+
+-- ----------------------------
+--  Table structure for sys_role_res
+-- ----------------------------
+DROP TABLE IF EXISTS "public"."sys_role_res";
+CREATE TABLE "public"."sys_role_res" (
+	"role_id" int8 NOT NULL,
+	"res_id" int8 NOT NULL
+)
+WITH (OIDS=FALSE);
+ALTER TABLE "public"."sys_role_res" OWNER TO "postgres";
+
+-- ----------------------------
+--  Records of sys_role_res
+-- ----------------------------
+BEGIN;
+INSERT INTO "public"."sys_role_res" VALUES ('6', '5');
+INSERT INTO "public"."sys_role_res" VALUES ('6', '28');
+INSERT INTO "public"."sys_role_res" VALUES ('6', '29');
+INSERT INTO "public"."sys_role_res" VALUES ('6', '30');
+INSERT INTO "public"."sys_role_res" VALUES ('6', '32');
+INSERT INTO "public"."sys_role_res" VALUES ('6', '33');
+INSERT INTO "public"."sys_role_res" VALUES ('6', '34');
+INSERT INTO "public"."sys_role_res" VALUES ('6', '35');
+INSERT INTO "public"."sys_role_res" VALUES ('6', '41');
+INSERT INTO "public"."sys_role_res" VALUES ('6', '52');
+INSERT INTO "public"."sys_role_res" VALUES ('7', '5');
+INSERT INTO "public"."sys_role_res" VALUES ('7', '28');
+INSERT INTO "public"."sys_role_res" VALUES ('7', '29');
+INSERT INTO "public"."sys_role_res" VALUES ('7', '30');
+INSERT INTO "public"."sys_role_res" VALUES ('7', '32');
+INSERT INTO "public"."sys_role_res" VALUES ('7', '33');
+INSERT INTO "public"."sys_role_res" VALUES ('7', '34');
+INSERT INTO "public"."sys_role_res" VALUES ('7', '35');
+INSERT INTO "public"."sys_role_res" VALUES ('7', '41');
+INSERT INTO "public"."sys_role_res" VALUES ('7', '52');
+INSERT INTO "public"."sys_role_res" VALUES ('8', '5');
+INSERT INTO "public"."sys_role_res" VALUES ('8', '46');
+INSERT INTO "public"."sys_role_res" VALUES ('8', '47');
+INSERT INTO "public"."sys_role_res" VALUES ('9', '1');
+INSERT INTO "public"."sys_role_res" VALUES ('9', '2');
+INSERT INTO "public"."sys_role_res" VALUES ('9', '3');
+INSERT INTO "public"."sys_role_res" VALUES ('9', '4');
+INSERT INTO "public"."sys_role_res" VALUES ('9', '5');
+INSERT INTO "public"."sys_role_res" VALUES ('9', '7');
+INSERT INTO "public"."sys_role_res" VALUES ('9', '8');
+INSERT INTO "public"."sys_role_res" VALUES ('9', '9');
+INSERT INTO "public"."sys_role_res" VALUES ('9', '10');
+INSERT INTO "public"."sys_role_res" VALUES ('9', '11');
+INSERT INTO "public"."sys_role_res" VALUES ('9', '12');
+INSERT INTO "public"."sys_role_res" VALUES ('9', '13');
+INSERT INTO "public"."sys_role_res" VALUES ('9', '14');
+INSERT INTO "public"."sys_role_res" VALUES ('9', '15');
+INSERT INTO "public"."sys_role_res" VALUES ('9', '16');
+INSERT INTO "public"."sys_role_res" VALUES ('9', '17');
+INSERT INTO "public"."sys_role_res" VALUES ('9', '18');
+INSERT INTO "public"."sys_role_res" VALUES ('9', '19');
+INSERT INTO "public"."sys_role_res" VALUES ('9', '20');
+INSERT INTO "public"."sys_role_res" VALUES ('9', '21');
+INSERT INTO "public"."sys_role_res" VALUES ('9', '22');
+INSERT INTO "public"."sys_role_res" VALUES ('9', '23');
+INSERT INTO "public"."sys_role_res" VALUES ('9', '24');
+INSERT INTO "public"."sys_role_res" VALUES ('9', '25');
+INSERT INTO "public"."sys_role_res" VALUES ('9', '28');
+INSERT INTO "public"."sys_role_res" VALUES ('9', '29');
+INSERT INTO "public"."sys_role_res" VALUES ('9', '30');
+INSERT INTO "public"."sys_role_res" VALUES ('9', '31');
+INSERT INTO "public"."sys_role_res" VALUES ('9', '32');
+INSERT INTO "public"."sys_role_res" VALUES ('9', '33');
+INSERT INTO "public"."sys_role_res" VALUES ('9', '34');
+INSERT INTO "public"."sys_role_res" VALUES ('9', '35');
+INSERT INTO "public"."sys_role_res" VALUES ('9', '36');
+INSERT INTO "public"."sys_role_res" VALUES ('9', '37');
+INSERT INTO "public"."sys_role_res" VALUES ('9', '39');
+INSERT INTO "public"."sys_role_res" VALUES ('9', '40');
+INSERT INTO "public"."sys_role_res" VALUES ('9', '41');
+INSERT INTO "public"."sys_role_res" VALUES ('9', '42');
+INSERT INTO "public"."sys_role_res" VALUES ('9', '43');
+INSERT INTO "public"."sys_role_res" VALUES ('9', '44');
+INSERT INTO "public"."sys_role_res" VALUES ('9', '45');
+INSERT INTO "public"."sys_role_res" VALUES ('9', '46');
+INSERT INTO "public"."sys_role_res" VALUES ('9', '47');
+INSERT INTO "public"."sys_role_res" VALUES ('9', '49');
+INSERT INTO "public"."sys_role_res" VALUES ('9', '50');
+INSERT INTO "public"."sys_role_res" VALUES ('9', '51');
+INSERT INTO "public"."sys_role_res" VALUES ('9', '52');
+INSERT INTO "public"."sys_role_res" VALUES ('1', '2');
+INSERT INTO "public"."sys_role_res" VALUES ('1', '65');
+INSERT INTO "public"."sys_role_res" VALUES ('1', '43');
+INSERT INTO "public"."sys_role_res" VALUES ('1', '30');
+INSERT INTO "public"."sys_role_res" VALUES ('1', '44');
+INSERT INTO "public"."sys_role_res" VALUES ('1', '16');
+INSERT INTO "public"."sys_role_res" VALUES ('1', '59');
+INSERT INTO "public"."sys_role_res" VALUES ('1', '24');
+INSERT INTO "public"."sys_role_res" VALUES ('1', '66');
+INSERT INTO "public"."sys_role_res" VALUES ('1', '40');
+INSERT INTO "public"."sys_role_res" VALUES ('1', '15');
+INSERT INTO "public"."sys_role_res" VALUES ('1', '42');
+INSERT INTO "public"."sys_role_res" VALUES ('1', '35');
+INSERT INTO "public"."sys_role_res" VALUES ('1', '29');
+INSERT INTO "public"."sys_role_res" VALUES ('1', '33');
+INSERT INTO "public"."sys_role_res" VALUES ('1', '13');
+INSERT INTO "public"."sys_role_res" VALUES ('1', '4');
+INSERT INTO "public"."sys_role_res" VALUES ('1', '18');
+INSERT INTO "public"."sys_role_res" VALUES ('1', '12');
+INSERT INTO "public"."sys_role_res" VALUES ('1', '1');
+INSERT INTO "public"."sys_role_res" VALUES ('1', '83');
+INSERT INTO "public"."sys_role_res" VALUES ('1', '74');
+INSERT INTO "public"."sys_role_res" VALUES ('1', '28');
+INSERT INTO "public"."sys_role_res" VALUES ('1', '73');
+INSERT INTO "public"."sys_role_res" VALUES ('1', '69');
+INSERT INTO "public"."sys_role_res" VALUES ('1', '22');
+INSERT INTO "public"."sys_role_res" VALUES ('1', '78');
+INSERT INTO "public"."sys_role_res" VALUES ('1', '52');
+INSERT INTO "public"."sys_role_res" VALUES ('1', '9');
+INSERT INTO "public"."sys_role_res" VALUES ('1', '20');
+INSERT INTO "public"."sys_role_res" VALUES ('1', '14');
+INSERT INTO "public"."sys_role_res" VALUES ('1', '55');
+INSERT INTO "public"."sys_role_res" VALUES ('1', '7');
+INSERT INTO "public"."sys_role_res" VALUES ('1', '37');
+INSERT INTO "public"."sys_role_res" VALUES ('1', '54');
+INSERT INTO "public"."sys_role_res" VALUES ('1', '67');
+INSERT INTO "public"."sys_role_res" VALUES ('1', '31');
+INSERT INTO "public"."sys_role_res" VALUES ('1', '70');
+INSERT INTO "public"."sys_role_res" VALUES ('1', '57');
+INSERT INTO "public"."sys_role_res" VALUES ('1', '8');
+INSERT INTO "public"."sys_role_res" VALUES ('1', '79');
+INSERT INTO "public"."sys_role_res" VALUES ('1', '3');
+INSERT INTO "public"."sys_role_res" VALUES ('1', '11');
+INSERT INTO "public"."sys_role_res" VALUES ('1', '21');
+INSERT INTO "public"."sys_role_res" VALUES ('1', '71');
+INSERT INTO "public"."sys_role_res" VALUES ('1', '36');
+INSERT INTO "public"."sys_role_res" VALUES ('1', '19');
+INSERT INTO "public"."sys_role_res" VALUES ('1', '25');
+INSERT INTO "public"."sys_role_res" VALUES ('1', '58');
+INSERT INTO "public"."sys_role_res" VALUES ('1', '34');
+INSERT INTO "public"."sys_role_res" VALUES ('1', '81');
+INSERT INTO "public"."sys_role_res" VALUES ('1', '75');
+INSERT INTO "public"."sys_role_res" VALUES ('1', '76');
+INSERT INTO "public"."sys_role_res" VALUES ('1', '32');
+INSERT INTO "public"."sys_role_res" VALUES ('1', '68');
+INSERT INTO "public"."sys_role_res" VALUES ('1', '60');
+INSERT INTO "public"."sys_role_res" VALUES ('1', '23');
+INSERT INTO "public"."sys_role_res" VALUES ('1', '72');
+INSERT INTO "public"."sys_role_res" VALUES ('1', '45');
+INSERT INTO "public"."sys_role_res" VALUES ('1', '17');
+INSERT INTO "public"."sys_role_res" VALUES ('1', '10');
+INSERT INTO "public"."sys_role_res" VALUES ('1', '5');
+INSERT INTO "public"."sys_role_res" VALUES ('1', '77');
+INSERT INTO "public"."sys_role_res" VALUES ('1', '41');
+INSERT INTO "public"."sys_role_res" VALUES ('1', '80');
+INSERT INTO "public"."sys_role_res" VALUES ('1', '61');
+INSERT INTO "public"."sys_role_res" VALUES ('1', '39');
+INSERT INTO "public"."sys_role_res" VALUES ('1', '53');
+COMMIT;
+
+-- ----------------------------
+--  Table structure for etl_task_column
+-- ----------------------------
+DROP TABLE IF EXISTS "public"."etl_task_column";
+CREATE TABLE "public"."etl_task_column" (
+	"id" int8 NOT NULL,
+	"ds_define_id" int8,
+	"column_idx" int4,
+	"family_name" varchar COLLATE "default",
+	"column_name" varchar COLLATE "default",
+	"field_Source_Type" int4,
+	"field_Type" int4,
+	"function_name" varchar COLLATE "default",
+	"pk_function_name" varchar COLLATE "default",
+	"script" text COLLATE "default",
+	"script_type" varchar COLLATE "default",
+	"class_name" varchar COLLATE "default",
+	"sort_id" int4,
+	"remark" varchar COLLATE "default"
+)
+WITH (OIDS=FALSE);
+ALTER TABLE "public"."etl_task_column" OWNER TO "postgres";
+
+COMMENT ON COLUMN "public"."etl_task_column"."column_idx" IS '列序号';
+
+-- ----------------------------
+--  Table structure for meta_comment
+-- ----------------------------
+DROP TABLE IF EXISTS "public"."meta_comment";
+CREATE TABLE "public"."meta_comment" (
+	"id" int8 NOT NULL,
+	"user_id" int8 NOT NULL,
+	"comment" varchar(400) COLLATE "default",
+	"object_type" int4 NOT NULL,
+	"object_id" int8 NOT NULL,
+	"create_date" date NOT NULL,
+	"update_date" date NOT NULL
+)
+WITH (OIDS=FALSE);
+ALTER TABLE "public"."meta_comment" OWNER TO "postgres";
+
+-- ----------------------------
+--  Table structure for meta_owner
+-- ----------------------------
+DROP TABLE IF EXISTS "public"."meta_owner";
+CREATE TABLE "public"."meta_owner" (
+	"id" int8,
+	"object_type" int4,
+	"object_id" int8,
+	"user_id" int8,
+	"create_date" date,
+	"remark" varchar COLLATE "default"
+)
+WITH (OIDS=FALSE);
+ALTER TABLE "public"."meta_owner" OWNER TO "postgres";
+
+-- ----------------------------
+--  Table structure for meta_watch
+-- ----------------------------
+DROP TABLE IF EXISTS "public"."meta_watch";
+CREATE TABLE "public"."meta_watch" (
+	"id" int8,
+	"object_type" int4,
+	"object_id" int8,
+	"user_id" int8,
+	"create_date" date,
+	"remark" varchar COLLATE "default"
+)
+WITH (OIDS=FALSE);
+ALTER TABLE "public"."meta_watch" OWNER TO "postgres";
+
+-- ----------------------------
+--  Table structure for meta_database
+-- ----------------------------
+DROP TABLE IF EXISTS "public"."meta_database";
+CREATE TABLE "public"."meta_database" (
+	"datasource_id" int8,
+	"id" int8 NOT NULL,
+	"db_name" varchar COLLATE "default",
+	"check_label" int4,
+	"schema_name" varchar COLLATE "default",
+	"create_date" date,
+	"update_date" date,
+	"createby_id" int8,
+	"updateby_id" int8,
+	"remark" varchar COLLATE "default",
+	"job_exe_id" int8
+)
+WITH (OIDS=FALSE);
+ALTER TABLE "public"."meta_database" OWNER TO "postgres";
+
+-- ----------------------------
+--  Table structure for meta_favorite
+-- ----------------------------
+DROP TABLE IF EXISTS "public"."meta_favorite";
+CREATE TABLE "public"."meta_favorite" (
+	"id" int8,
+	"object_type" int4,
+	"object_id" int8,
+	"user_id" int8,
+	"create_date" date,
+	"remark" varchar COLLATE "default"
+)
+WITH (OIDS=FALSE);
+ALTER TABLE "public"."meta_favorite" OWNER TO "postgres";
+
+-- ----------------------------
+--  Table structure for meta_property
+-- ----------------------------
+DROP TABLE IF EXISTS "public"."meta_property";
+CREATE TABLE "public"."meta_property" (
+	"id" int8,
+	"ref_id" int8,
+	"property_key" varchar COLLATE "default",
+	"property_value" varchar COLLATE "default",
+	"remark" varchar COLLATE "default",
+	"ref_type" int4
+)
+WITH (OIDS=FALSE);
+ALTER TABLE "public"."meta_property" OWNER TO "postgres";
+
+-- ----------------------------
+--  Table structure for meta_table_index
+-- ----------------------------
+DROP TABLE IF EXISTS "public"."meta_table_index";
+CREATE TABLE "public"."meta_table_index" (
+	"table_id" int8 NOT NULL,
+	"index_id" int8 NOT NULL,
+	"remark" varchar COLLATE "default"
+)
+WITH (OIDS=FALSE);
+ALTER TABLE "public"."meta_table_index" OWNER TO "postgres";
 
 
 -- ----------------------------
@@ -4182,19 +4633,20 @@ ALTER SEQUENCE "public"."seq_cms_category" RESTART 38;
 ALTER SEQUENCE "public"."seq_cms_comment" RESTART 416;
 ALTER SEQUENCE "public"."seq_cms_link" RESTART 15;
 ALTER SEQUENCE "public"."seq_cms_site" RESTART 3;
-ALTER SEQUENCE "public"."seq_etl_job" RESTART 46;
+ALTER SEQUENCE "public"."seq_etl_job" RESTART 48;
 ALTER SEQUENCE "public"."seq_etl_job_log" RESTART 46;
 ALTER SEQUENCE "public"."seq_etl_param_column" RESTART 46;
-ALTER SEQUENCE "public"."seq_etl_plugin" RESTART 46;
-ALTER SEQUENCE "public"."seq_etl_plugin_param" RESTART 46;
-ALTER SEQUENCE "public"."seq_etl_task" RESTART 46;
-ALTER SEQUENCE "public"."seq_etl_task_param" RESTART 46;
+ALTER SEQUENCE "public"."seq_etl_plugin" RESTART 60;
+ALTER SEQUENCE "public"."seq_etl_plugin_param" RESTART 54;
+ALTER SEQUENCE "public"."seq_etl_task" RESTART 49;
+ALTER SEQUENCE "public"."seq_etl_task_param" RESTART 50;
 ALTER SEQUENCE "public"."seq_finace" RESTART 2;
-ALTER SEQUENCE "public"."seq_job_jobclass" RESTART 47;
-ALTER SEQUENCE "public"."seq_job_machine" RESTART 46;
+ALTER SEQUENCE "public"."seq_job_execution_info" RESTART 2;
+ALTER SEQUENCE "public"."seq_job_jobclass" RESTART 52;
+ALTER SEQUENCE "public"."seq_job_machine" RESTART 53;
 ALTER SEQUENCE "public"."seq_job_reg_center" RESTART 2;
-ALTER SEQUENCE "public"."seq_job_task_define" RESTART 46;
-ALTER SEQUENCE "public"."seq_job_worker" RESTART 46;
+ALTER SEQUENCE "public"."seq_job_task_define" RESTART 58;
+ALTER SEQUENCE "public"."seq_job_worker" RESTART 50;
 ALTER SEQUENCE "public"."seq_meta_datasource" RESTART 4;
 ALTER SEQUENCE "public"."seq_meta_dbcolumn" RESTART 2;
 ALTER SEQUENCE "public"."seq_meta_dbindex" RESTART 7;
@@ -4202,11 +4654,11 @@ ALTER SEQUENCE "public"."seq_meta_dbtable" RESTART 6;
 ALTER SEQUENCE "public"."seq_meta_module" RESTART 2;
 ALTER SEQUENCE "public"."seq_meta_project" RESTART 19;
 ALTER SEQUENCE "public"."seq_oa_leave" RESTART 15;
-ALTER SEQUENCE "public"."seq_sys_dict" RESTART 1030;
+ALTER SEQUENCE "public"."seq_sys_dict" RESTART 1039;
 ALTER SEQUENCE "public"."seq_sys_icon" RESTART 364;
-ALTER SEQUENCE "public"."seq_sys_log" RESTART 256;
+ALTER SEQUENCE "public"."seq_sys_log" RESTART 453;
 ALTER SEQUENCE "public"."seq_sys_multi_lang" RESTART 1005;
-ALTER SEQUENCE "public"."seq_sys_res" RESTART 81;
+ALTER SEQUENCE "public"."seq_sys_res" RESTART 84;
 ALTER SEQUENCE "public"."seq_sys_role" RESTART 10;
 ALTER SEQUENCE "public"."seq_sys_test" RESTART 4;
 ALTER SEQUENCE "public"."seq_sys_timetask" RESTART 2;
@@ -4567,16 +5019,6 @@ CREATE CONSTRAINT TRIGGER "RI_ConstraintTrigger_c_18558" AFTER UPDATE ON "public
 COMMENT ON TRIGGER "RI_ConstraintTrigger_c_18558" ON "public"."act_re_model" IS NULL;
 
 -- ----------------------------
---  Primary key structure for table etl_param_column
--- ----------------------------
-ALTER TABLE "public"."etl_param_column" ADD PRIMARY KEY ("id") NOT DEFERRABLE INITIALLY IMMEDIATE;
-
--- ----------------------------
---  Primary key structure for table etl_job
--- ----------------------------
-ALTER TABLE "public"."etl_job" ADD PRIMARY KEY ("id") NOT DEFERRABLE INITIALLY IMMEDIATE;
-
--- ----------------------------
 --  Primary key structure for table etl_plugin_param
 -- ----------------------------
 ALTER TABLE "public"."etl_plugin_param" ADD PRIMARY KEY ("id") NOT DEFERRABLE INITIALLY IMMEDIATE;
@@ -4590,14 +5032,6 @@ ALTER TABLE "public"."etl_task_param" ADD PRIMARY KEY ("id") NOT DEFERRABLE INIT
 --  Primary key structure for table meta_datasource
 -- ----------------------------
 ALTER TABLE "public"."meta_datasource" ADD PRIMARY KEY ("id") NOT DEFERRABLE INITIALLY IMMEDIATE;
-
--- ----------------------------
---  Triggers structure for table meta_datasource
--- ----------------------------
-CREATE CONSTRAINT TRIGGER "RI_ConstraintTrigger_c_18738" AFTER INSERT ON "public"."meta_datasource" NOT DEFERRABLE INITIALLY IMMEDIATE FOR EACH ROW EXECUTE PROCEDURE "RI_FKey_check_ins"();
-COMMENT ON TRIGGER "RI_ConstraintTrigger_c_18738" ON "public"."meta_datasource" IS NULL;
-CREATE CONSTRAINT TRIGGER "RI_ConstraintTrigger_c_18739" AFTER UPDATE ON "public"."meta_datasource" NOT DEFERRABLE INITIALLY IMMEDIATE FOR EACH ROW EXECUTE PROCEDURE "RI_FKey_check_upd"();
-COMMENT ON TRIGGER "RI_ConstraintTrigger_c_18739" ON "public"."meta_datasource" IS NULL;
 
 -- ----------------------------
 --  Primary key structure for table meta_module_table
@@ -4643,16 +5077,6 @@ ALTER TABLE "public"."sys_multi_lang" ADD PRIMARY KEY ("id") NOT DEFERRABLE INIT
 ALTER TABLE "public"."sys_multi_lang" ADD CONSTRAINT "sys_muti_lang_lang_key_lang_code_key" UNIQUE ("lang_key","lang_code") NOT DEFERRABLE INITIALLY IMMEDIATE;
 
 -- ----------------------------
---  Primary key structure for table meta_dbtable
--- ----------------------------
-ALTER TABLE "public"."meta_dbtable" ADD PRIMARY KEY ("id") NOT DEFERRABLE INITIALLY IMMEDIATE;
-
--- ----------------------------
---  Indexes structure for table meta_dbtable
--- ----------------------------
-CREATE INDEX  "IDX_TABLE_NAME" ON "public"."meta_dbtable" USING btree("table_name" COLLATE "default" ASC NULLS LAST, datasource_id ASC NULLS LAST);
-
--- ----------------------------
 --  Primary key structure for table sys_log
 -- ----------------------------
 ALTER TABLE "public"."sys_log" ADD PRIMARY KEY ("id") NOT DEFERRABLE INITIALLY IMMEDIATE;
@@ -4692,10 +5116,6 @@ CREATE CONSTRAINT TRIGGER "RI_ConstraintTrigger_a_18731" AFTER DELETE ON "public
 COMMENT ON TRIGGER "RI_ConstraintTrigger_a_18731" ON "public"."meta_project" IS NULL;
 CREATE CONSTRAINT TRIGGER "RI_ConstraintTrigger_a_18732" AFTER UPDATE ON "public"."meta_project" FROM "public"."meta_module" NOT DEFERRABLE INITIALLY IMMEDIATE FOR EACH ROW EXECUTE PROCEDURE "RI_FKey_noaction_upd"();
 COMMENT ON TRIGGER "RI_ConstraintTrigger_a_18732" ON "public"."meta_project" IS NULL;
-CREATE CONSTRAINT TRIGGER "RI_ConstraintTrigger_a_18736" AFTER DELETE ON "public"."meta_project" FROM "public"."meta_datasource" NOT DEFERRABLE INITIALLY IMMEDIATE FOR EACH ROW EXECUTE PROCEDURE "RI_FKey_cascade_del"();
-COMMENT ON TRIGGER "RI_ConstraintTrigger_a_18736" ON "public"."meta_project" IS NULL;
-CREATE CONSTRAINT TRIGGER "RI_ConstraintTrigger_a_18737" AFTER UPDATE ON "public"."meta_project" FROM "public"."meta_datasource" NOT DEFERRABLE INITIALLY IMMEDIATE FOR EACH ROW EXECUTE PROCEDURE "RI_FKey_noaction_upd"();
-COMMENT ON TRIGGER "RI_ConstraintTrigger_a_18737" ON "public"."meta_project" IS NULL;
 
 -- ----------------------------
 --  Primary key structure for table etl_plugin
@@ -4711,6 +5131,31 @@ ALTER TABLE "public"."etl_task" ADD PRIMARY KEY ("id") NOT DEFERRABLE INITIALLY 
 --  Primary key structure for table etl_job_log
 -- ----------------------------
 ALTER TABLE "public"."etl_job_log" ADD PRIMARY KEY ("id") NOT DEFERRABLE INITIALLY IMMEDIATE;
+
+-- ----------------------------
+--  Primary key structure for table etl_task_ds_define
+-- ----------------------------
+ALTER TABLE "public"."etl_task_ds_define" ADD PRIMARY KEY ("id") NOT DEFERRABLE INITIALLY IMMEDIATE;
+
+-- ----------------------------
+--  Primary key structure for table etl_job
+-- ----------------------------
+ALTER TABLE "public"."etl_job" ADD PRIMARY KEY ("id") NOT DEFERRABLE INITIALLY IMMEDIATE;
+
+-- ----------------------------
+--  Indexes structure for table etl_job
+-- ----------------------------
+CREATE INDEX  "IDX_JOB_NAME" ON "public"."etl_job" USING btree(job_name COLLATE "default" ASC NULLS LAST);
+
+-- ----------------------------
+--  Primary key structure for table meta_dbtable
+-- ----------------------------
+ALTER TABLE "public"."meta_dbtable" ADD PRIMARY KEY ("id") NOT DEFERRABLE INITIALLY IMMEDIATE;
+
+-- ----------------------------
+--  Indexes structure for table meta_dbtable
+-- ----------------------------
+CREATE INDEX  "IDX_TABLE_NAME" ON "public"."meta_dbtable" USING btree("table_name" COLLATE "default" ASC NULLS LAST, db_id ASC NULLS LAST);
 
 -- ----------------------------
 --  Primary key structure for table sys_test
@@ -4741,27 +5186,9 @@ CREATE CONSTRAINT TRIGGER "RI_ConstraintTrigger_c_18703" AFTER UPDATE ON "public
 COMMENT ON TRIGGER "RI_ConstraintTrigger_c_18703" ON "public"."sys_user_role" IS NULL;
 
 -- ----------------------------
---  Primary key structure for table sys_role_res
+--  Primary key structure for table meta_dbindex
 -- ----------------------------
-ALTER TABLE "public"."sys_role_res" ADD PRIMARY KEY ("role_id", "res_id") NOT DEFERRABLE INITIALLY IMMEDIATE;
-
--- ----------------------------
---  Indexes structure for table sys_role_res
--- ----------------------------
-CREATE INDEX  "fk9a255a8923ae94ef" ON "public"."sys_role_res" USING btree(res_id ASC NULLS LAST);
-CREATE INDEX  "fk9a255a895c176d41" ON "public"."sys_role_res" USING btree(role_id ASC NULLS LAST);
-
--- ----------------------------
---  Triggers structure for table sys_role_res
--- ----------------------------
-CREATE CONSTRAINT TRIGGER "RI_ConstraintTrigger_c_18687" AFTER INSERT ON "public"."sys_role_res" FROM "public"."sys_role" NOT DEFERRABLE INITIALLY IMMEDIATE FOR EACH ROW EXECUTE PROCEDURE "RI_FKey_check_ins"();
-COMMENT ON TRIGGER "RI_ConstraintTrigger_c_18687" ON "public"."sys_role_res" IS NULL;
-CREATE CONSTRAINT TRIGGER "RI_ConstraintTrigger_c_18688" AFTER UPDATE ON "public"."sys_role_res" FROM "public"."sys_role" NOT DEFERRABLE INITIALLY IMMEDIATE FOR EACH ROW EXECUTE PROCEDURE "RI_FKey_check_upd"();
-COMMENT ON TRIGGER "RI_ConstraintTrigger_c_18688" ON "public"."sys_role_res" IS NULL;
-CREATE CONSTRAINT TRIGGER "RI_ConstraintTrigger_c_18692" AFTER INSERT ON "public"."sys_role_res" FROM "public"."sys_res" NOT DEFERRABLE INITIALLY IMMEDIATE FOR EACH ROW EXECUTE PROCEDURE "RI_FKey_check_ins"();
-COMMENT ON TRIGGER "RI_ConstraintTrigger_c_18692" ON "public"."sys_role_res" IS NULL;
-CREATE CONSTRAINT TRIGGER "RI_ConstraintTrigger_c_18693" AFTER UPDATE ON "public"."sys_role_res" FROM "public"."sys_res" NOT DEFERRABLE INITIALLY IMMEDIATE FOR EACH ROW EXECUTE PROCEDURE "RI_FKey_check_upd"();
-COMMENT ON TRIGGER "RI_ConstraintTrigger_c_18693" ON "public"."sys_role_res" IS NULL;
+ALTER TABLE "public"."meta_dbindex" ADD PRIMARY KEY ("id") NOT DEFERRABLE INITIALLY IMMEDIATE;
 
 -- ----------------------------
 --  Primary key structure for table act_ru_execution
@@ -4904,23 +5331,6 @@ CREATE CONSTRAINT TRIGGER "RI_ConstraintTrigger_a_18631" AFTER UPDATE ON "public
 COMMENT ON TRIGGER "RI_ConstraintTrigger_a_18631" ON "public"."act_ge_bytearray" IS NULL;
 
 -- ----------------------------
---  Primary key structure for table sys_role
--- ----------------------------
-ALTER TABLE "public"."sys_role" ADD PRIMARY KEY ("id") NOT DEFERRABLE INITIALLY IMMEDIATE;
-
--- ----------------------------
---  Triggers structure for table sys_role
--- ----------------------------
-CREATE CONSTRAINT TRIGGER "RI_ConstraintTrigger_a_18685" AFTER DELETE ON "public"."sys_role" FROM "public"."sys_role_res" NOT DEFERRABLE INITIALLY IMMEDIATE FOR EACH ROW EXECUTE PROCEDURE "RI_FKey_noaction_del"();
-COMMENT ON TRIGGER "RI_ConstraintTrigger_a_18685" ON "public"."sys_role" IS NULL;
-CREATE CONSTRAINT TRIGGER "RI_ConstraintTrigger_a_18686" AFTER UPDATE ON "public"."sys_role" FROM "public"."sys_role_res" NOT DEFERRABLE INITIALLY IMMEDIATE FOR EACH ROW EXECUTE PROCEDURE "RI_FKey_noaction_upd"();
-COMMENT ON TRIGGER "RI_ConstraintTrigger_a_18686" ON "public"."sys_role" IS NULL;
-CREATE CONSTRAINT TRIGGER "RI_ConstraintTrigger_a_18695" AFTER DELETE ON "public"."sys_role" FROM "public"."sys_user_role" NOT DEFERRABLE INITIALLY IMMEDIATE FOR EACH ROW EXECUTE PROCEDURE "RI_FKey_noaction_del"();
-COMMENT ON TRIGGER "RI_ConstraintTrigger_a_18695" ON "public"."sys_role" IS NULL;
-CREATE CONSTRAINT TRIGGER "RI_ConstraintTrigger_a_18696" AFTER UPDATE ON "public"."sys_role" FROM "public"."sys_user_role" NOT DEFERRABLE INITIALLY IMMEDIATE FOR EACH ROW EXECUTE PROCEDURE "RI_FKey_noaction_upd"();
-COMMENT ON TRIGGER "RI_ConstraintTrigger_a_18696" ON "public"."sys_role" IS NULL;
-
--- ----------------------------
 --  Primary key structure for table cms_site
 -- ----------------------------
 ALTER TABLE "public"."cms_site" ADD PRIMARY KEY ("id") NOT DEFERRABLE INITIALLY IMMEDIATE;
@@ -4937,32 +5347,6 @@ CREATE CONSTRAINT TRIGGER "RI_ConstraintTrigger_a_18655" AFTER DELETE ON "public
 COMMENT ON TRIGGER "RI_ConstraintTrigger_a_18655" ON "public"."cms_site" IS NULL;
 CREATE CONSTRAINT TRIGGER "RI_ConstraintTrigger_a_18656" AFTER UPDATE ON "public"."cms_site" FROM "public"."cms_category" NOT DEFERRABLE INITIALLY IMMEDIATE FOR EACH ROW EXECUTE PROCEDURE "RI_FKey_noaction_upd"();
 COMMENT ON TRIGGER "RI_ConstraintTrigger_a_18656" ON "public"."cms_site" IS NULL;
-
--- ----------------------------
---  Primary key structure for table sys_res
--- ----------------------------
-ALTER TABLE "public"."sys_res" ADD PRIMARY KEY ("id") NOT DEFERRABLE INITIALLY IMMEDIATE;
-
--- ----------------------------
---  Indexes structure for table sys_res
--- ----------------------------
-CREATE INDEX  "fkc3428feed6c7d0a5" ON "public"."sys_res" USING btree(parent_id ASC NULLS LAST);
-
--- ----------------------------
---  Triggers structure for table sys_res
--- ----------------------------
-CREATE CONSTRAINT TRIGGER "RI_ConstraintTrigger_a_18680" AFTER DELETE ON "public"."sys_res" FROM "public"."sys_res" NOT DEFERRABLE INITIALLY IMMEDIATE FOR EACH ROW EXECUTE PROCEDURE "RI_FKey_noaction_del"();
-COMMENT ON TRIGGER "RI_ConstraintTrigger_a_18680" ON "public"."sys_res" IS NULL;
-CREATE CONSTRAINT TRIGGER "RI_ConstraintTrigger_a_18681" AFTER UPDATE ON "public"."sys_res" FROM "public"."sys_res" NOT DEFERRABLE INITIALLY IMMEDIATE FOR EACH ROW EXECUTE PROCEDURE "RI_FKey_noaction_upd"();
-COMMENT ON TRIGGER "RI_ConstraintTrigger_a_18681" ON "public"."sys_res" IS NULL;
-CREATE CONSTRAINT TRIGGER "RI_ConstraintTrigger_c_18682" AFTER INSERT ON "public"."sys_res" FROM "public"."sys_res" NOT DEFERRABLE INITIALLY IMMEDIATE FOR EACH ROW EXECUTE PROCEDURE "RI_FKey_check_ins"();
-COMMENT ON TRIGGER "RI_ConstraintTrigger_c_18682" ON "public"."sys_res" IS NULL;
-CREATE CONSTRAINT TRIGGER "RI_ConstraintTrigger_c_18683" AFTER UPDATE ON "public"."sys_res" FROM "public"."sys_res" NOT DEFERRABLE INITIALLY IMMEDIATE FOR EACH ROW EXECUTE PROCEDURE "RI_FKey_check_upd"();
-COMMENT ON TRIGGER "RI_ConstraintTrigger_c_18683" ON "public"."sys_res" IS NULL;
-CREATE CONSTRAINT TRIGGER "RI_ConstraintTrigger_a_18690" AFTER DELETE ON "public"."sys_res" FROM "public"."sys_role_res" NOT DEFERRABLE INITIALLY IMMEDIATE FOR EACH ROW EXECUTE PROCEDURE "RI_FKey_noaction_del"();
-COMMENT ON TRIGGER "RI_ConstraintTrigger_a_18690" ON "public"."sys_res" IS NULL;
-CREATE CONSTRAINT TRIGGER "RI_ConstraintTrigger_a_18691" AFTER UPDATE ON "public"."sys_res" FROM "public"."sys_role_res" NOT DEFERRABLE INITIALLY IMMEDIATE FOR EACH ROW EXECUTE PROCEDURE "RI_FKey_noaction_upd"();
-COMMENT ON TRIGGER "RI_ConstraintTrigger_a_18691" ON "public"."sys_res" IS NULL;
 
 -- ----------------------------
 --  Primary key structure for table meta_module_object
@@ -5004,9 +5388,53 @@ CREATE CONSTRAINT TRIGGER "RI_ConstraintTrigger_a_18701" AFTER UPDATE ON "public
 COMMENT ON TRIGGER "RI_ConstraintTrigger_a_18701" ON "public"."sys_user" IS NULL;
 
 -- ----------------------------
---  Primary key structure for table meta_dbindex
+--  Primary key structure for table sys_role
 -- ----------------------------
-ALTER TABLE "public"."meta_dbindex" ADD PRIMARY KEY ("id") NOT DEFERRABLE INITIALLY IMMEDIATE;
+ALTER TABLE "public"."sys_role" ADD PRIMARY KEY ("id") NOT DEFERRABLE INITIALLY IMMEDIATE;
+
+-- ----------------------------
+--  Indexes structure for table sys_role
+-- ----------------------------
+CREATE UNIQUE INDEX  "sys_role_id_key" ON "public"."sys_role" USING btree("id" ASC NULLS LAST);
+
+-- ----------------------------
+--  Triggers structure for table sys_role
+-- ----------------------------
+CREATE CONSTRAINT TRIGGER "RI_ConstraintTrigger_a_18695" AFTER DELETE ON "public"."sys_role" FROM "public"."sys_user_role" NOT DEFERRABLE INITIALLY IMMEDIATE FOR EACH ROW EXECUTE PROCEDURE "RI_FKey_noaction_del"();
+COMMENT ON TRIGGER "RI_ConstraintTrigger_a_18695" ON "public"."sys_role" IS NULL;
+CREATE CONSTRAINT TRIGGER "RI_ConstraintTrigger_a_18696" AFTER UPDATE ON "public"."sys_role" FROM "public"."sys_user_role" NOT DEFERRABLE INITIALLY IMMEDIATE FOR EACH ROW EXECUTE PROCEDURE "RI_FKey_noaction_upd"();
+COMMENT ON TRIGGER "RI_ConstraintTrigger_a_18696" ON "public"."sys_role" IS NULL;
+CREATE CONSTRAINT TRIGGER "RI_ConstraintTrigger_a_51522" AFTER DELETE ON "public"."sys_role" FROM "public"."sys_role_res" NOT DEFERRABLE INITIALLY IMMEDIATE FOR EACH ROW EXECUTE PROCEDURE "RI_FKey_cascade_del"();
+COMMENT ON TRIGGER "RI_ConstraintTrigger_a_51522" ON "public"."sys_role" IS NULL;
+CREATE CONSTRAINT TRIGGER "RI_ConstraintTrigger_a_51523" AFTER UPDATE ON "public"."sys_role" FROM "public"."sys_role_res" NOT DEFERRABLE INITIALLY IMMEDIATE FOR EACH ROW EXECUTE PROCEDURE "RI_FKey_noaction_upd"();
+COMMENT ON TRIGGER "RI_ConstraintTrigger_a_51523" ON "public"."sys_role" IS NULL;
+
+-- ----------------------------
+--  Primary key structure for table sys_res
+-- ----------------------------
+ALTER TABLE "public"."sys_res" ADD PRIMARY KEY ("id") NOT DEFERRABLE INITIALLY IMMEDIATE;
+
+-- ----------------------------
+--  Indexes structure for table sys_res
+-- ----------------------------
+CREATE INDEX  "fkc3428feed6c7d0a5" ON "public"."sys_res" USING btree(parent_id ASC NULLS LAST);
+CREATE UNIQUE INDEX  "sys_res_id_key" ON "public"."sys_res" USING btree("id" ASC NULLS LAST);
+
+-- ----------------------------
+--  Triggers structure for table sys_res
+-- ----------------------------
+CREATE CONSTRAINT TRIGGER "RI_ConstraintTrigger_a_18680" AFTER DELETE ON "public"."sys_res" FROM "public"."sys_res" NOT DEFERRABLE INITIALLY IMMEDIATE FOR EACH ROW EXECUTE PROCEDURE "RI_FKey_noaction_del"();
+COMMENT ON TRIGGER "RI_ConstraintTrigger_a_18680" ON "public"."sys_res" IS NULL;
+CREATE CONSTRAINT TRIGGER "RI_ConstraintTrigger_a_18681" AFTER UPDATE ON "public"."sys_res" FROM "public"."sys_res" NOT DEFERRABLE INITIALLY IMMEDIATE FOR EACH ROW EXECUTE PROCEDURE "RI_FKey_noaction_upd"();
+COMMENT ON TRIGGER "RI_ConstraintTrigger_a_18681" ON "public"."sys_res" IS NULL;
+CREATE CONSTRAINT TRIGGER "RI_ConstraintTrigger_c_18682" AFTER INSERT ON "public"."sys_res" FROM "public"."sys_res" NOT DEFERRABLE INITIALLY IMMEDIATE FOR EACH ROW EXECUTE PROCEDURE "RI_FKey_check_ins"();
+COMMENT ON TRIGGER "RI_ConstraintTrigger_c_18682" ON "public"."sys_res" IS NULL;
+CREATE CONSTRAINT TRIGGER "RI_ConstraintTrigger_c_18683" AFTER UPDATE ON "public"."sys_res" FROM "public"."sys_res" NOT DEFERRABLE INITIALLY IMMEDIATE FOR EACH ROW EXECUTE PROCEDURE "RI_FKey_check_upd"();
+COMMENT ON TRIGGER "RI_ConstraintTrigger_c_18683" ON "public"."sys_res" IS NULL;
+CREATE CONSTRAINT TRIGGER "RI_ConstraintTrigger_a_51527" AFTER DELETE ON "public"."sys_res" FROM "public"."sys_role_res" NOT DEFERRABLE INITIALLY IMMEDIATE FOR EACH ROW EXECUTE PROCEDURE "RI_FKey_cascade_del"();
+COMMENT ON TRIGGER "RI_ConstraintTrigger_a_51527" ON "public"."sys_res" IS NULL;
+CREATE CONSTRAINT TRIGGER "RI_ConstraintTrigger_a_51528" AFTER UPDATE ON "public"."sys_res" FROM "public"."sys_role_res" NOT DEFERRABLE INITIALLY IMMEDIATE FOR EACH ROW EXECUTE PROCEDURE "RI_FKey_noaction_upd"();
+COMMENT ON TRIGGER "RI_ConstraintTrigger_a_51528" ON "public"."sys_res" IS NULL;
 
 -- ----------------------------
 --  Primary key structure for table job_jobclass
@@ -5014,14 +5442,19 @@ ALTER TABLE "public"."meta_dbindex" ADD PRIMARY KEY ("id") NOT DEFERRABLE INITIA
 ALTER TABLE "public"."job_jobclass" ADD PRIMARY KEY ("id") NOT DEFERRABLE INITIALLY IMMEDIATE;
 
 -- ----------------------------
+--  Primary key structure for table job_worker
+-- ----------------------------
+ALTER TABLE "public"."job_worker" ADD PRIMARY KEY ("id") NOT DEFERRABLE INITIALLY IMMEDIATE;
+
+-- ----------------------------
 --  Primary key structure for table job_machine
 -- ----------------------------
 ALTER TABLE "public"."job_machine" ADD PRIMARY KEY ("id") NOT DEFERRABLE INITIALLY IMMEDIATE;
 
 -- ----------------------------
---  Primary key structure for table job_worker
+--  Uniques structure for table job_machine
 -- ----------------------------
-ALTER TABLE "public"."job_worker" ADD PRIMARY KEY ("id") NOT DEFERRABLE INITIALLY IMMEDIATE;
+ALTER TABLE "public"."job_machine" ADD CONSTRAINT "IDX_ADDRESS" UNIQUE ("address") NOT DEFERRABLE INITIALLY IMMEDIATE;
 
 -- ----------------------------
 --  Primary key structure for table job_task_define
@@ -5037,6 +5470,54 @@ ALTER TABLE "public"."job_reg_center" ADD PRIMARY KEY ("id") NOT DEFERRABLE INIT
 --  Uniques structure for table job_reg_center
 -- ----------------------------
 ALTER TABLE "public"."job_reg_center" ADD CONSTRAINT "IDX_REG_CENTER_NAME" UNIQUE ("name") NOT DEFERRABLE INITIALLY IMMEDIATE;
+
+-- ----------------------------
+--  Primary key structure for table job_execution_info
+-- ----------------------------
+ALTER TABLE "public"."job_execution_info" ADD PRIMARY KEY ("id") NOT DEFERRABLE INITIALLY IMMEDIATE;
+
+-- ----------------------------
+--  Primary key structure for table sys_role_res
+-- ----------------------------
+ALTER TABLE "public"."sys_role_res" ADD PRIMARY KEY ("role_id", "res_id") NOT DEFERRABLE INITIALLY IMMEDIATE;
+
+-- ----------------------------
+--  Indexes structure for table sys_role_res
+-- ----------------------------
+CREATE INDEX  "fk9a255a8923ae94ef" ON "public"."sys_role_res" USING btree(res_id ASC NULLS LAST);
+CREATE INDEX  "fk9a255a895c176d41" ON "public"."sys_role_res" USING btree(role_id ASC NULLS LAST);
+
+-- ----------------------------
+--  Triggers structure for table sys_role_res
+-- ----------------------------
+CREATE CONSTRAINT TRIGGER "RI_ConstraintTrigger_c_51524" AFTER INSERT ON "public"."sys_role_res" FROM "public"."sys_role" NOT DEFERRABLE INITIALLY IMMEDIATE FOR EACH ROW EXECUTE PROCEDURE "RI_FKey_check_ins"();
+COMMENT ON TRIGGER "RI_ConstraintTrigger_c_51524" ON "public"."sys_role_res" IS NULL;
+CREATE CONSTRAINT TRIGGER "RI_ConstraintTrigger_c_51525" AFTER UPDATE ON "public"."sys_role_res" FROM "public"."sys_role" NOT DEFERRABLE INITIALLY IMMEDIATE FOR EACH ROW EXECUTE PROCEDURE "RI_FKey_check_upd"();
+COMMENT ON TRIGGER "RI_ConstraintTrigger_c_51525" ON "public"."sys_role_res" IS NULL;
+CREATE CONSTRAINT TRIGGER "RI_ConstraintTrigger_c_51529" AFTER INSERT ON "public"."sys_role_res" FROM "public"."sys_res" NOT DEFERRABLE INITIALLY IMMEDIATE FOR EACH ROW EXECUTE PROCEDURE "RI_FKey_check_ins"();
+COMMENT ON TRIGGER "RI_ConstraintTrigger_c_51529" ON "public"."sys_role_res" IS NULL;
+CREATE CONSTRAINT TRIGGER "RI_ConstraintTrigger_c_51530" AFTER UPDATE ON "public"."sys_role_res" FROM "public"."sys_res" NOT DEFERRABLE INITIALLY IMMEDIATE FOR EACH ROW EXECUTE PROCEDURE "RI_FKey_check_upd"();
+COMMENT ON TRIGGER "RI_ConstraintTrigger_c_51530" ON "public"."sys_role_res" IS NULL;
+
+-- ----------------------------
+--  Primary key structure for table etl_task_column
+-- ----------------------------
+ALTER TABLE "public"."etl_task_column" ADD PRIMARY KEY ("id") NOT DEFERRABLE INITIALLY IMMEDIATE;
+
+-- ----------------------------
+--  Primary key structure for table meta_comment
+-- ----------------------------
+ALTER TABLE "public"."meta_comment" ADD PRIMARY KEY ("id") NOT DEFERRABLE INITIALLY IMMEDIATE;
+
+-- ----------------------------
+--  Primary key structure for table meta_database
+-- ----------------------------
+ALTER TABLE "public"."meta_database" ADD PRIMARY KEY ("id") NOT DEFERRABLE INITIALLY IMMEDIATE;
+
+-- ----------------------------
+--  Primary key structure for table meta_table_index
+-- ----------------------------
+ALTER TABLE "public"."meta_table_index" ADD PRIMARY KEY ("table_id", "index_id") NOT DEFERRABLE INITIALLY IMMEDIATE;
 
 -- ----------------------------
 --  Foreign keys structure for table act_ru_job
@@ -5096,11 +5577,6 @@ ALTER TABLE "public"."act_re_model" ADD CONSTRAINT "act_re_model_editor_source_v
 ALTER TABLE "public"."act_re_model" ADD CONSTRAINT "act_re_model_deployment_id__fkey" FOREIGN KEY ("deployment_id_") REFERENCES "public"."act_re_deployment" ("id_") ON UPDATE NO ACTION ON DELETE NO ACTION NOT DEFERRABLE INITIALLY IMMEDIATE;
 
 -- ----------------------------
---  Foreign keys structure for table meta_datasource
--- ----------------------------
-ALTER TABLE "public"."meta_datasource" ADD CONSTRAINT "meta_project_meta_datasource" FOREIGN KEY ("project_id") REFERENCES "public"."meta_project" ("id") ON UPDATE NO ACTION ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE;
-
--- ----------------------------
 --  Foreign keys structure for table meta_module
 -- ----------------------------
 ALTER TABLE "public"."meta_module" ADD CONSTRAINT "meta_project_meta_module" FOREIGN KEY ("project_id") REFERENCES "public"."meta_project" ("id") ON UPDATE NO ACTION ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE;
@@ -5115,12 +5591,6 @@ ALTER TABLE "public"."sys_log" ADD CONSTRAINT "sys_log_userid_fkey" FOREIGN KEY 
 -- ----------------------------
 ALTER TABLE "public"."sys_user_role" ADD CONSTRAINT "sys_user_role_role_id_fkey" FOREIGN KEY ("role_id") REFERENCES "public"."sys_role" ("id") ON UPDATE NO ACTION ON DELETE NO ACTION NOT DEFERRABLE INITIALLY IMMEDIATE;
 ALTER TABLE "public"."sys_user_role" ADD CONSTRAINT "sys_user_role_user_id_fkey" FOREIGN KEY ("user_id") REFERENCES "public"."sys_user" ("id") ON UPDATE NO ACTION ON DELETE NO ACTION NOT DEFERRABLE INITIALLY IMMEDIATE;
-
--- ----------------------------
---  Foreign keys structure for table sys_role_res
--- ----------------------------
-ALTER TABLE "public"."sys_role_res" ADD CONSTRAINT "sys_role_res_role_id_fkey" FOREIGN KEY ("role_id") REFERENCES "public"."sys_role" ("id") ON UPDATE NO ACTION ON DELETE NO ACTION NOT DEFERRABLE INITIALLY IMMEDIATE;
-ALTER TABLE "public"."sys_role_res" ADD CONSTRAINT "sys_role_res_res_id_fkey" FOREIGN KEY ("res_id") REFERENCES "public"."sys_res" ("id") ON UPDATE NO ACTION ON DELETE NO ACTION NOT DEFERRABLE INITIALLY IMMEDIATE;
 
 -- ----------------------------
 --  Foreign keys structure for table act_ru_execution
@@ -5144,4 +5614,10 @@ ALTER TABLE "public"."act_ge_bytearray" ADD CONSTRAINT "act_ge_bytearray_deploym
 --  Foreign keys structure for table sys_res
 -- ----------------------------
 ALTER TABLE "public"."sys_res" ADD CONSTRAINT "sys_res_parent_id_fkey" FOREIGN KEY ("parent_id") REFERENCES "public"."sys_res" ("id") ON UPDATE NO ACTION ON DELETE NO ACTION NOT DEFERRABLE INITIALLY IMMEDIATE;
+
+-- ----------------------------
+--  Foreign keys structure for table sys_role_res
+-- ----------------------------
+ALTER TABLE "public"."sys_role_res" ADD CONSTRAINT "sys_role_res_role_id_fkey" FOREIGN KEY ("role_id") REFERENCES "public"."sys_role" ("id") ON UPDATE NO ACTION ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE;
+ALTER TABLE "public"."sys_role_res" ADD CONSTRAINT "sys_role_res_res_id_fkey" FOREIGN KEY ("res_id") REFERENCES "public"."sys_res" ("id") ON UPDATE NO ACTION ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE;
 

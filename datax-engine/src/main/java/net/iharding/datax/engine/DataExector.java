@@ -30,7 +30,9 @@ import com.taobao.datax.engine.schedule.JarLoader;
 import com.taobao.datax.engine.schedule.MonitorPool;
 import com.taobao.datax.engine.schedule.NamedThreadPoolExecutor;
 import com.taobao.datax.engine.schedule.ReaderWorker;
+import com.taobao.datax.engine.schedule.Reporter;
 import com.taobao.datax.engine.schedule.WriterWorker;
+import com.taobao.datax.engine.storage.Storage;
 import com.taobao.datax.engine.storage.StoragePool;
 
 /**
@@ -86,6 +88,91 @@ public class DataExector {
 			readerPool.shutdown();
 			for (NamedThreadPoolExecutor dp : writerPool) {
 				dp.shutdown();
+			}
+			int sleepCnt = 0;
+			while (true) {
+				/* check reader finish? */
+				boolean readerFinish = readerPool.isTerminated();
+				if (readerFinish) {
+					storagePool.closeInput();
+				}
+
+				boolean writerAllFinish = true;
+
+				NamedThreadPoolExecutor[] dps = writerPool.toArray(new NamedThreadPoolExecutor[0]);
+				/* check each DumpPool */
+				for (NamedThreadPoolExecutor dp : dps) {
+					if (!readerFinish && dp.isTerminated()) {
+						logger.error(String.format("DataX Writer %s failed .", dp.getName()));
+						writerPool.remove(dp);
+					} else if (!dp.isTerminated()) {
+						writerAllFinish = false;
+					}
+				}
+
+				if (readerFinish && writerAllFinish) {
+					logger.info("DataX Reader post work begins .");
+					readerPool.doPost();
+					logger.info("DataX Reader post work ends .");
+
+					logger.info("DataX Writers post work begins .");
+					for (NamedThreadPoolExecutor dp : writerPool) {
+						dp.getParam().setOppositeMetaData(readerPool.getParam().getMyMetaData());
+						dp.doPost();
+					}
+					logger.info("DataX Writers post work ends .");
+
+					logger.info("DataX job succeed .");
+					break;
+				} else if (!readerFinish && writerAllFinish) {
+					logger.error("DataX Writers finished before reader finished.");
+					logger.error("DataX job failed.");
+					readerPool.shutdownNow();
+					readerPool.awaitTermination(3, TimeUnit.SECONDS);
+					break;
+				}
+
+				Thread.sleep(1000);
+				sleepCnt++;
+
+				if (sleepCnt % PERIOD == 0) {
+					/* reader&writer count num of thread */
+					StringBuilder sb = new StringBuilder();
+					sb.append(String.format("ReaderPool %s: Active Threads %d .", readerPool.getName(), readerPool.getActiveCount()));
+					logger.info(sb.toString());
+
+					sb.setLength(0);
+					for (NamedThreadPoolExecutor perWriterPool : writerPool) {
+						sb.append(String.format("WriterPool %s: Active Threads %d .", perWriterPool.getName(), perWriterPool.getActiveCount()));
+						logger.info(sb.toString());
+						sb.setLength(0);
+					}
+					logger.info(storagePool.getPeriodState());
+				}
+			}
+
+			StringBuilder sb = new StringBuilder();
+
+			sb.append(storagePool.getTotalStat());
+			long discardLine = this.writerMonitorPool.getDiscardLine();
+			sb.append(String.format("%-26s: %19d\n", "Total discarded records", discardLine));
+
+			logger.info(sb.toString());
+
+			Reporter.stat.put("DISCARD_RECORDS", String.valueOf(discardLine));
+			Reporter reporter = Reporter.instance();
+			// reporter.report(jobConf);
+
+			long total = -1;
+			boolean writePartlyFailed = false;
+			for (Storage s : storagePool.getStorageForReader()) {
+				String[] lineCounts = s.info().split(":");
+				long lineTx = Long.parseLong(lineCounts[1]);
+				if (total != -1 && total != lineTx) {
+					writePartlyFailed = true;
+					logger.error("Writer partly failed, for " + total + "!=" + lineTx);
+				}
+				total = lineTx;
 			}
 		}
 	}
