@@ -1,6 +1,7 @@
 package net.iharding.modules.meta.model;
 
 import java.util.Date;
+import java.util.HashSet;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -8,7 +9,8 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.OrderBy;
 import javax.persistence.Table;
@@ -17,8 +19,6 @@ import net.iharding.core.orm.IdEntity;
 
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
-import org.hibernate.annotations.NotFound;
-import org.hibernate.annotations.NotFoundAction;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
@@ -36,12 +36,11 @@ public class DBIndex extends IdEntity {
 	/**
 	 * 数据表
 	 */
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name="table_id")
-	@NotFound(action = NotFoundAction.EXCEPTION)
+	@ManyToMany(cascade = { CascadeType.PERSIST, CascadeType.MERGE }, targetEntity = DBTable.class)
+	@JoinTable(name = "meta_table_index", joinColumns = { @JoinColumn(name = "index_id") }, inverseJoinColumns = { @JoinColumn(name = "table_id") })
 	@JsonIgnoreProperties(value = { "hibernateLazyInitializer","handler","datasource"})
 	@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
-	private DBTable dbtable;
+	private Set<DBTable> tables = new HashSet<DBTable>(0);
 	/**
 	 * 索引库名
 	 */
@@ -98,16 +97,15 @@ public class DBIndex extends IdEntity {
 	public void setCheckLabel(Integer checkLabel) {
 		this.checkLabel = checkLabel;
 	}
-
 	
-	public DBTable getDbtable() {
-		return dbtable;
+	public Set<DBTable> getTables() {
+		return tables;
 	}
 
-	public void setDbtable(DBTable dbtable) {
-		this.dbtable = dbtable;
+	public void setTables(Set<DBTable> tables) {
+		this.tables = tables;
 	}
-	
+
 	public String getIndex_name() {
 		return index_name;
 	}

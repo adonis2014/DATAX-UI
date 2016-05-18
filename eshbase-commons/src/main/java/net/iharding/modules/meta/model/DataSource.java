@@ -30,23 +30,20 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
  */
 @Entity
 @Table(name = "meta_datasource")
-@JsonIgnoreProperties(value = { "tables"})
+@JsonIgnoreProperties(value = { "databases"})
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class DataSource extends IdEntity {
 
-	/**
-	 * 项目ID
-	 */
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name="project_id")
-	@NotFound(action = NotFoundAction.IGNORE)
-	@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
-	private Project project;
+	@OneToMany(targetEntity=Database.class,fetch = FetchType.LAZY,cascade=CascadeType.ALL,mappedBy="datasource")
+	@OrderBy("id ASC")
+	private Set<Database> databases;
+	
 	/**
 	 * jdbc驱动
 	 */
 	@Column(name="driver_class_name")
 	private String driverClassName;
+	
 	/**
 	 * jdbc URL
 	 */
@@ -103,14 +100,19 @@ public class DataSource extends IdEntity {
 	 */
 	@Column(name="create_date")
 	private Date createDate;
-	
-	@OneToMany(targetEntity=DBTable.class,fetch = FetchType.LAZY,cascade=CascadeType.ALL,mappedBy="datasource")
-	@OrderBy("id ASC")
-	private Set<DBTable> tables;
+
 	
 	@Column(name="check_label")
 	private Integer checkLabel;
 	
+	public Set<Database> getDatabases() {
+		return databases;
+	}
+
+	public void setDatabases(Set<Database> databases) {
+		this.databases = databases;
+	}
+
 	public Integer getCheckLabel() {
 		return checkLabel;
 	}
@@ -119,22 +121,6 @@ public class DataSource extends IdEntity {
 		this.checkLabel = checkLabel;
 	}
 
-	
-	public Set<DBTable> getTables() {
-		return tables;
-	}
-
-	public void setTables(Set<DBTable> tables) {
-		this.tables = tables;
-	}
-
-	public Project getProject() {
-		return project;
-	}
-
-	public void setProject(Project project) {
-		this.project = project;
-	}
 
 	@Column(name="driver_class_name")
 	public String getDriverClassName() {

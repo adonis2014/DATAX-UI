@@ -14,6 +14,10 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
+
+import net.iharding.modules.etl.model.EtlTask;
+import net.iharding.utils.PropertyUtils;
 
 import com.taobao.datax.common.exception.DataExchangeException;
 import com.taobao.datax.common.plugin.Writer;
@@ -30,6 +34,11 @@ public class StoragePool {
 
 	private Map<String, Storage> storageMap = new HashMap<String, Storage>();
 
+	private String cStorageClassName=PropertyUtils.getValue("datax.storage.class");
+	private int cLineLimit=PropertyUtils.getIntValue("datax.storage.linelimit","3000");
+	private int cByteLimit=PropertyUtils.getIntValue("datax.storage.bytelimit","1000000");
+	private int destructLimit=PropertyUtils.getIntValue("datax.storage.destructlimit","1000");
+	
 	/**
 	 * Constructor for {@link StoragePool}.
 	 * Product one {@link Storage} for each {@link Writer}.
@@ -69,11 +78,20 @@ public class StoragePool {
             } catch (Exception e) {
                 throw new DataExchangeException(e.getCause());
             }
-            
 			Storage s = StorageFactory.product(cStorageClassName);
 			s.init(jpc.getId(), cLineLimit, cByteLimit, destructLimit);
 			s.getStat().setPeriodInSeconds(period);
 			storageMap.put(jpc.getId(), s);
+		}
+	}
+
+	
+	public StoragePool(Set<EtlTask> tasks, int period) {
+		for (EtlTask task : tasks) {
+			Storage s = StorageFactory.product(cStorageClassName);
+			s.init(task.getId().toString(), cLineLimit, cByteLimit, destructLimit);
+			s.getStat().setPeriodInSeconds(period);
+			storageMap.put(task.getId().toString(), s);
 		}
 	}
 

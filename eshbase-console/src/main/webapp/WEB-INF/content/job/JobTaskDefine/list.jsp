@@ -66,7 +66,7 @@ $(document).ready(function() {
 	
 	Page.initData(
 		{
-			url:"${ctx}/job/jobTaskDefine/page",
+			url:"${ctx}/job/JobTaskDefine/page",
 			pageNo : 1,
 			pageSize : 10,
 			tableId : "#sample_1"

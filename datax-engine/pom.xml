@@ -43,15 +43,11 @@
 
 	<dependencies>
 	<dependency>
-            <groupId>com.dangdang</groupId>
-            <artifactId>elastic-job-core</artifactId>
-            <version>${elastic-job.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>com.dangdang</groupId>
-            <artifactId>elastic-job-spring</artifactId>
-            <version>${elastic-job.version}</version>
-        </dependency>
+		<groupId>net.iharding</groupId>
+		<artifactId>eshbase-commons</artifactId>
+		<version>0.1-beta</version>
+	</dependency>
+	
 	</dependencies>
 
 

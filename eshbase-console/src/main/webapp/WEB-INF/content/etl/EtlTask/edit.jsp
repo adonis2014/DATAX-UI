@@ -94,11 +94,10 @@
 									</thead>
 									<tbody>
 									<c:forEach items="${obj.taskParams}" var="tparam">
-									<input type="text" value="${tparam.paramValue}"/>
 									<tr>
 										<td>${tparam.pluginParamId}</td>
 										<td>${tparam.paramKey}</td>
-										<td><input type="text" value="${tparam.paramValue}"/></td>
+										<td><input type="text" name="paramValue_${tparam.paramKey}" value="${tparam.paramValue}"/></td>
 										<td>${tparam.remark}</td>
 									</tr>
 									</c:forEach>

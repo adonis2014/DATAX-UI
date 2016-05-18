@@ -6,6 +6,7 @@ import org.apache.commons.lang.StringUtils;
 import org.guess.core.web.BaseController;
 
 import net.iharding.modules.etl.model.EtlTask;
+import net.iharding.modules.etl.service.EtlTaskParamService;
 import net.iharding.modules.etl.service.EtlTaskService;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,6 +36,9 @@ public class EtlTaskController extends BaseController<EtlTask>{
 	
 	@Autowired
 	private EtlTaskService etlTaskService;
+	
+	@Autowired
+	private EtlTaskParamService etlTaskParamService;
 	
 	/**
 	 * 添加

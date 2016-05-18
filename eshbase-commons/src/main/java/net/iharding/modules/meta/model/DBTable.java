@@ -41,11 +41,11 @@ public class DBTable extends IdEntity {
 	 * 数据源ID
 	 */
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "datasource_id")
+	@JoinColumn(name = "db_id")
 	@NotFound(action = NotFoundAction.IGNORE)
-	@JsonIgnoreProperties(value = { "creater","project","updater","tables"})
+	@JsonIgnoreProperties(value = { "creater","updater","tables"})
 	@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
-	private DataSource datasource;
+	private Database database;
 	/**
 	 * 类名
 	 */
@@ -101,8 +101,9 @@ public class DBTable extends IdEntity {
 	@OrderBy("id ASC")
 	private Set<DbColumn> columns;
 	
-	@OneToMany(targetEntity = DBIndex.class, fetch = FetchType.LAZY, cascade = CascadeType.ALL,mappedBy="dbtable")
-	@OrderBy("id ASC")
+	@ManyToMany(cascade = { CascadeType.PERSIST, CascadeType.MERGE }, targetEntity = DBIndex.class)
+	@JoinTable(name = "meta_table_index", joinColumns = { @JoinColumn(name = "table_id") }, inverseJoinColumns = { @JoinColumn(name = "index_id") })
+	@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 	private Set<DBIndex> dbIndexs;
 
 	@Column(name="check_label")
@@ -150,13 +151,13 @@ public class DBTable extends IdEntity {
 	public void setColumns(Set<DbColumn> columns) {
 		this.columns = columns;
 	}
-
-	public DataSource getDatasource() {
-		return datasource;
+	
+	public Database getDatabase() {
+		return database;
 	}
 
-	public void setDatasource(DataSource datasource) {
-		this.datasource = datasource;
+	public void setDatabase(Database database) {
+		this.database = database;
 	}
 
 	public Set<Module> getModules() {

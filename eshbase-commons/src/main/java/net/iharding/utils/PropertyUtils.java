@@ -2,6 +2,8 @@ package net.iharding.utils;
 
 import java.io.IOException;
 import java.util.Properties;
+
+import org.apache.commons.lang3.math.NumberUtils;
 /**
  * 获取属性文件配置信息
  * @author admin
@@ -28,6 +30,10 @@ public class PropertyUtils {
 	
 	public static String getValue(String key){
 		return (String)hbaseQueryProp.get(key);
+	}
+	
+	public static int getIntValue(String key,String defaultValue){
+		return NumberUtils.toInt(hbaseQueryProp.getProperty(key,defaultValue));
 	}
 	
 	public static String getElasticSearchClusterName(){

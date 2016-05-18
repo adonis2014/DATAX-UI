@@ -1,6 +1,8 @@
 package net.iharding.modules.etl.model;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -194,5 +196,50 @@ public class EtlJob extends IdEntity {
 		this.tasks = tasks;
 	}
 	
+	public EtlTask getReaderTask(){
+		for (EtlTask dpc : tasks) {
+			if (dpc.getPlugin().getPluginType()==1){
+				return dpc;
+			}
+		}
+		return null;
+	}
+	
+	/**
+	 * 检查配置是否错误
+	 * @return
+	 */
+	public boolean checkSetError(){
+		
+		return true;
+	}
+	
+	/**
+	 * 将ETL调度任务配置转换为字符串输出
+	 */
+	@Override
+	public String toString() {
+		StringBuilder sb = new StringBuilder(300);
+		sb.append(String.format("\njob:%s", this.getId()));
+		sb.append("\nReader task conf:");
+		sb.append(this.getReaderTask().toString());
+		sb.append(String.format("\n\nWriter task [num %d]:", this.tasks.size()-1));
+		for (EtlTask dpc : tasks) {
+			if (dpc.getPlugin().getPluginType()==2){
+				sb.append(dpc.toString());
+			}
+		}
+		return sb.toString();
+	}
+
+	public List<EtlTask> getWriterTasks() {
+		List<EtlTask> wtasks=new ArrayList<EtlTask>(); 
+		for(EtlTask task:wtasks){
+			if (task.getPlugin().getPluginType()==2){
+				wtasks.add(task);
+			}
+		}
+		return wtasks;
+	}
 	
 }

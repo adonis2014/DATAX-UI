@@ -176,5 +176,23 @@ public class EtlTask extends IdEntity {
 		this.remark = remark;
 	}
 	
+	@Override
+	public String toString() {
+		StringBuilder sb = new StringBuilder(1024);
+		sb.append(String.format("\nname:%s id %s, updatedate(%d) ",
+				this.getTaskName(), this.getId(), 
+				this.getUpdateDate()));
+		String s = "";
+		for (EtlTaskParam param : taskParams) {
+			if ("password".equalsIgnoreCase(param.getParamKey())){
+				s += String.format("\n\t%25s=[%-30s]", param.getParamKey(), "******");
+			}else{
+				s += String.format("\n\t%25s=[%-30s]", param.getParamKey(), param.getParamValue());
+			}
+		}
+		sb.append(String.format("\nparams:%s", s));
+		return sb.toString();
+	}
+	
 	
 }

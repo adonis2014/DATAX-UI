@@ -41,22 +41,31 @@ public class CodeGenerate {
 		List<Field> fields = new ArrayList<Field>();
 		
 		String classAuthor = "Joe.zhang"; // 类作者，例：
-		String moduleName = "etl"; // 模块名，例：sys  
-		String className = "TaskColumn"; // 类名，例：user
-		String functionName = "数据字段转换定义"; // 功能名，例：用户
-		fields.add(new Field("dsDefineId", "数据源定义ID", "Long"));
-		fields.add(new Field("columnIdx","字段ID","Integer"));
-		fields.add(new Field("familyName","列族名","String"));		
-		fields.add(new Field("column_name","列名","String"));		
-		fields.add(new Field("fieldSourceType","原数据类别","Integer"));		
-		fields.add(new Field("fieldType","字段类别","Integer"));	
-		fields.add(new Field("functionName	","字段数据处理函数","String"));	
-		fields.add(new Field("pkFunctionName","关键字字段数据处理函数","String"));			
-		fields.add(new Field("script","字段处理脚本","String"));			
-		fields.add(new Field("script_type","脚本类别","String"));			
-		fields.add(new Field("class_name","自定义类名","String"));			
-		fields.add(new Field("sort_id","字段排序值","Integer"));		
-		fields.add(new Field("remark","备注","String"));			
+		String moduleName = "meta"; // 模块名，例：sys  
+		String className = "MetaProperty"; // 类名，例：user
+		String functionName = "元数据关注"; // 功能名，例：用户
+		fields.add(new Field("propertyKey", "属性Key", "String"));
+		fields.add(new Field("propertyValue", "属性值", "String"));
+		fields.add(new Field("refType","关联对象类别","Integer"));		
+		fields.add(new Field("refId","关联对象Id","Long"));	
+		fields.add(new Field("remark", "备注", "String"));
+		
+//		String moduleName = "etl"; // 模块名，例：sys  
+//		String className = "TaskColumn"; // 类名，例：user
+//		String functionName = "数据字段转换定义"; // 功能名，例：用户
+//		fields.add(new Field("dsDefineId", "数据源定义ID", "Long"));
+//		fields.add(new Field("columnIdx","字段ID","Integer"));
+//		fields.add(new Field("familyName","列族名","String"));		
+//		fields.add(new Field("column_name","列名","String"));		
+//		fields.add(new Field("fieldSourceType","原数据类别","Integer"));		
+//		fields.add(new Field("fieldType","字段类别","Integer"));	
+//		fields.add(new Field("functionName	","字段数据处理函数","String"));	
+//		fields.add(new Field("pkFunctionName","关键字字段数据处理函数","String"));			
+//		fields.add(new Field("script","字段处理脚本","String"));			
+//		fields.add(new Field("script_type","脚本类别","String"));			
+//		fields.add(new Field("class_name","自定义类名","String"));			
+//		fields.add(new Field("sort_id","字段排序值","Integer"));		
+//		fields.add(new Field("remark","备注","String"));			
 		
 //		fields.add(new Field("fileSplit", "数据分隔符", "String"));
 //		fields.add(new Field("dataType", "数据类型", "Integer"));

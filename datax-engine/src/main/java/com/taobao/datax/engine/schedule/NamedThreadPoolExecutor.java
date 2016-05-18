@@ -52,7 +52,7 @@ public class NamedThreadPoolExecutor extends ThreadPoolExecutor {
      *			are executed. This queue will hold only the <tt>Runnable</tt> </br>
      * 			tasks submitted by the <tt>execute</tt> method. <br>
 	 * */
-	NamedThreadPoolExecutor(String name, int corePoolSize, int maximumPoolSize,
+	public NamedThreadPoolExecutor(String name, int corePoolSize, int maximumPoolSize,
 			long keepAliveTime, TimeUnit unit, BlockingQueue<Runnable> workQueue) {
 		super(corePoolSize, maximumPoolSize, keepAliveTime, unit, workQueue);
 		this.name = name;
