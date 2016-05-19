@@ -1,8 +1,8 @@
 package net.iharding.modules.meta.service.impl;
 
 import org.guess.core.service.BaseServiceImpl;
-import net.iharding.modules.meta.model.Comment;
-import net.iharding.modules.meta.service.CommentService;
+import net.iharding.modules.meta.model.MetaComment;
+import net.iharding.modules.meta.service.MetaCommentService;
 import org.springframework.stereotype.Service;
 
 /**
@@ -14,6 +14,6 @@ import org.springframework.stereotype.Service;
 *
 */
 @Service
-public class CommentServiceImpl extends BaseServiceImpl<Comment, Long> implements CommentService {
+public class MetaCommentServiceImpl extends BaseServiceImpl<MetaComment, Long> implements MetaCommentService {
 
 }

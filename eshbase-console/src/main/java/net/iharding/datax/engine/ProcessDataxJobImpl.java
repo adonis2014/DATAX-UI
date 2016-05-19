@@ -3,8 +3,9 @@ package net.iharding.datax.engine;
 import java.util.List;
 import java.util.Map;
 
-import net.iharding.modules.etl.dao.EtlJobDao;
-import net.iharding.modules.etl.model.EtlJob;
+import net.iharding.modules.job.dao.JobWorkerDao;
+import net.iharding.modules.job.jobtype.DataxETLJob;
+import net.iharding.modules.job.model.JobWorker;
 import net.iharding.utils.PropertyUtils;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,7 +35,7 @@ public class ProcessDataxJobImpl implements ProcessDataxJob {
 	// private final JobConfiguration jobConfig1 = new JobConfiguration("simpleElasticDemoJob", DataxCommonJob.class, 10, "0/5 * * * * ?");
 
 	@Autowired
-	private EtlJobDao etlJobDao;
+	private JobWorkerDao jobWorkerDao;
 
 	/**
 	 * 获取调度任务注册中心对象
@@ -56,78 +57,78 @@ public class ProcessDataxJobImpl implements ProcessDataxJob {
 
 	@Override
 	public void addJob(long jobId) {
-		EtlJob job = etlJobDao.get(jobId);
-		if (schedulers.get(job.getJobName())==null){
-			JobConfiguration jobConfig = new JobConfiguration(job.getJobName(), DataxETLJob.class, 1, job.getCronTrigger());
+		JobWorker job = jobWorkerDao.get(jobId);
+		if (schedulers.get(job.getName())==null){
+			JobConfiguration jobConfig = new JobConfiguration(job.getName(), DataxETLJob.class, 1, job.getCron());
 			jobConfig.setJobParameter(job.getId().toString());
 			JobScheduler js= new JobScheduler(getRegCenter(), jobConfig);
 			js.init();
-			schedulers.put(job.getJobName(),js);
+			schedulers.put(job.getName(),js);
 			job.setNextExeDate(js.getNextFireTime());
-			etlJobDao.save(job);
+			jobWorkerDao.save(job);
 		}
 	}
 
 	@Override
 	public void overWriteJob(long jobId) {
-		EtlJob job = etlJobDao.get(jobId);
+		JobWorker job = jobWorkerDao.get(jobId);
 		JobScheduler js=null;
-		if (schedulers.get(job.getJobName())==null){
-			JobConfiguration jobConfig = new JobConfiguration(job.getJobName(), DataxETLJob.class, 1, job.getCronTrigger());
+		if (schedulers.get(job.getName())==null){
+			JobConfiguration jobConfig = new JobConfiguration(job.getName(), DataxETLJob.class, 1, job.getCron());
 			jobConfig.setJobParameter(job.getId().toString());
 			js= new JobScheduler(getRegCenter(), jobConfig);
 			js.init();
-			schedulers.put(job.getJobName(),js);
+			schedulers.put(job.getName(),js);
 		}else{
-			js=schedulers.get(job.getJobName());
-			js.rescheduleJob(job.getCronTrigger());
+			js=schedulers.get(job.getName());
+			js.rescheduleJob(job.getCron());
 		}
 		job.setNextExeDate(js.getNextFireTime());
-		etlJobDao.save(job);
+		jobWorkerDao.save(job);
 	}
 
 	@Override
 	public void addAllJobs() {
-		List<EtlJob> jobs=etlJobDao.getAll();
+		List<JobWorker> jobs=jobWorkerDao.getAll();
 		JobScheduler js=null;
-		for(EtlJob job:jobs){
-			if (schedulers.get(job.getJobName())==null){
-				JobConfiguration jobConfig = new JobConfiguration(job.getJobName(), DataxETLJob.class, 1, job.getCronTrigger());
+		for(JobWorker job:jobs){
+			if (schedulers.get(job.getName())==null){
+				JobConfiguration jobConfig = new JobConfiguration(job.getName(), DataxETLJob.class, 1, job.getCron());
 				jobConfig.setJobParameter(job.getId().toString());
 				js= new JobScheduler(getRegCenter(), jobConfig);
 				js.init();
-				schedulers.put(job.getJobName(),js);
+				schedulers.put(job.getName(),js);
 			}else{
-				js=schedulers.get(job.getJobName());
-				js.rescheduleJob(job.getCronTrigger());
+				js=schedulers.get(job.getName());
+				js.rescheduleJob(job.getCron());
 			}
 			job.setNextExeDate(js.getNextFireTime());
-			etlJobDao.save(job);
+			jobWorkerDao.save(job);
 		}
 	}
 
 	@Override
 	public void shutdownJob(long jobId) {
-		EtlJob job = etlJobDao.get(jobId);
+		JobWorker job = jobWorkerDao.get(jobId);
 		JobScheduler js=null;
-		if (schedulers.get(job.getJobName())!=null){
-			js=schedulers.get(job.getJobName());
+		if (schedulers.get(job.getName())!=null){
+			js=schedulers.get(job.getName());
 			js.shutdown();
 			job.setNextExeDate(null);
-			etlJobDao.save(job);
+			jobWorkerDao.save(job);
 		}
 	}
 
 	@Override
 	public void shutdownAllJobs() {
-		List<EtlJob> jobs=etlJobDao.getAll();
+		List<JobWorker> jobs=jobWorkerDao.getAll();
 		JobScheduler js=null;
-		for(EtlJob job:jobs){
-			if (schedulers.get(job.getJobName())!=null){
-				js=schedulers.get(job.getJobName());
+		for(JobWorker job:jobs){
+			if (schedulers.get(job.getName())!=null){
+				js=schedulers.get(job.getName());
 				js.shutdown();
 				job.setNextExeDate(null);
-				etlJobDao.save(job);
+				jobWorkerDao.save(job);
 			}
 		}
 	}

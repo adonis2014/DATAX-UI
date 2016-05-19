@@ -11,6 +11,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import net.iharding.core.orm.IdEntity;
+import net.iharding.modules.meta.model.DataSource;
 
 import org.guess.sys.model.User;
 import org.hibernate.annotations.Cache;
@@ -33,10 +34,13 @@ public class JobWorker extends IdEntity {
 	 */
 	private String name;
 	/**
-	 * 作业类ID
+	 * 作业类
 	 */
-	@Column(name="jobclass_id")
-	private Long jobClassId;
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name="jobclass_id")
+	@NotFound(action = NotFoundAction.IGNORE)
+	@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
+	private JobClass jobclass;
 	/**
 	 * 逻辑名
 	 */
@@ -108,6 +112,9 @@ public class JobWorker extends IdEntity {
 	 * 作业是否禁止启动
 	 */
 	private Integer disabled;
+	
+	@Column(name="next_exe_date")
+	private Date nextExeDate;
 	/**
 	 * 本地配置是否可覆盖注册中心配置
 	 */
@@ -138,6 +145,7 @@ public class JobWorker extends IdEntity {
 	 */
 	@Column(name="update_date")
 	private Date updateDate;
+	
 	/**
 	 * 启用标记
 	 */
@@ -152,18 +160,26 @@ public class JobWorker extends IdEntity {
 		return name;
 	}
 
+	public Date getNextExeDate() {
+		return nextExeDate;
+	}
+
+	public void setNextExeDate(Date nextExeDate) {
+		this.nextExeDate = nextExeDate;
+	}
+
 	public void setName(String name) {
 		this.name = name;
 	}
 	
-	public Long getJobClassId() {
-		return jobClassId;
+	public JobClass getJobclass() {
+		return jobclass;
 	}
 
-	public void setJobClassId(Long jobClassId) {
-		this.jobClassId = jobClassId;
+	public void setJobclass(JobClass jobclass) {
+		this.jobclass = jobclass;
 	}
-	
+
 	public String getLogicName() {
 		return logicName;
 	}

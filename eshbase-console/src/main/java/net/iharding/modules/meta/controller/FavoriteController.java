@@ -16,13 +16,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 *
 */
 @Controller
-@RequestMapping("/meta/favorite")
+@RequestMapping("/meta/Favorite")
 public class FavoriteController extends BaseController<Favorite>{
 
 	{
-		editView = "/meta/favorite/edit";
-		listView = "/meta/favorite/list";
-		showView = "/meta/favorite/show";
+		editView = "/meta/Favorite/edit";
+		listView = "/meta/Favorite/list";
+		showView = "/meta/Favorite/show";
 	}
 	
 	@Autowired

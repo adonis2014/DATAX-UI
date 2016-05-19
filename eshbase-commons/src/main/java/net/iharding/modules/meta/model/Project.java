@@ -81,12 +81,7 @@ public class Project extends IdEntity {
 	@OneToMany(targetEntity=Module.class,fetch = FetchType.LAZY,cascade=CascadeType.ALL,mappedBy="project")
 	@OrderBy("id ASC")
 	private Set<Module> modules;
-	/**
-	 * 项目数据源
-	 */
-	@OneToMany(targetEntity=DataSource.class,fetch = FetchType.LAZY,cascade=CascadeType.ALL,mappedBy="project")
-	@OrderBy("id ASC")
-	private Set<DataSource> dataSources;
+	
 	
 	@Column(name="check_label")
 	private Integer checkLabel;
@@ -165,13 +160,6 @@ public class Project extends IdEntity {
 		this.modules = modules;
 	}
 
-	public Set<DataSource> getDataSources() {
-		return dataSources;
-	}
-
-	public void setDataSources(Set<DataSource> dataSources) {
-		this.dataSources = dataSources;
-	}
 	
 	
 }

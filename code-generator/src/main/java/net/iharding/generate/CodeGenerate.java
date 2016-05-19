@@ -41,14 +41,19 @@ public class CodeGenerate {
 		List<Field> fields = new ArrayList<Field>();
 		
 		String classAuthor = "Joe.zhang"; // 类作者，例：
-		String moduleName = "meta"; // 模块名，例：sys  
-		String className = "MetaProperty"; // 类名，例：user
-		String functionName = "元数据关注"; // 功能名，例：用户
-		fields.add(new Field("propertyKey", "属性Key", "String"));
-		fields.add(new Field("propertyValue", "属性值", "String"));
-		fields.add(new Field("refType","关联对象类别","Integer"));		
-		fields.add(new Field("refId","关联对象Id","Long"));	
-		fields.add(new Field("remark", "备注", "String"));
+		String moduleName = "job"; // 模块名，例：sys  
+		String className = "jobFlow"; // 类名，例：user
+		String functionName = "作业流程定义";
+		fields.add(new Field("name", "名称", "String"));
+		fields.add(new Field("jobClassId", "作业类ID", "Long"));
+		
+//		String className = "MetaProperty"; // 类名，例：user
+//		String functionName = "元数据关注"; // 功能名，例：用户
+//		fields.add(new Field("propertyKey", "属性Key", "String"));
+//		fields.add(new Field("propertyValue", "属性值", "String"));
+//		fields.add(new Field("refType","关联对象类别","Integer"));		
+//		fields.add(new Field("refId","关联对象Id","Long"));	
+//		fields.add(new Field("remark", "备注", "String"));
 		
 //		String moduleName = "etl"; // 模块名，例：sys  
 //		String className = "TaskColumn"; // 类名，例：user
@@ -240,12 +245,12 @@ public class CodeGenerate {
 //		fields.add(new Field("required", "是否必须", "String")); 
 //		fields.add(new Field("format", "格式", "String")); 
 
-//		fields.add(new Field("createbyId", "建立者", "Long"));
-//		fields.add(new Field("updatebyId", "更新者", "Long"));
-//		fields.add(new Field("createDate", "建立时间", "Date"));
-//		fields.add(new Field("updateDate", "更新时间", "Date"));
-//		fields.add(new Field("checkLabel", "启用标记", "Integer"));
-//		fields.add(new Field("remark", "备注", "String"));
+		fields.add(new Field("createbyId", "建立者", "Long"));
+		fields.add(new Field("updatebyId", "更新者", "Long"));
+		fields.add(new Field("createDate", "建立时间", "Date"));
+		fields.add(new Field("updateDate", "更新时间", "Date"));
+		fields.add(new Field("checkLabel", "启用标记", "Integer"));
+		fields.add(new Field("remark", "备注", "String"));
 
 		// 是否启用生成工具
 		Boolean isEnable = true;

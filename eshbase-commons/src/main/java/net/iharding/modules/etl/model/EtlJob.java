@@ -41,16 +41,8 @@ public class EtlJob extends IdEntity {
 	 */
 	@Column(name="job_name")
 	private String jobName;
-	/**
-	 * 下次执行时间
-	 */
-	@Column(name="next_exe_date")
-	private Date nextExeDate;
-	/**
-	 * 调度设置
-	 */
-	@Column(name="cron_trigger")
-	private String cronTrigger;
+	
+	
 	/**
 	 * 状态
 	 */
@@ -116,21 +108,6 @@ public class EtlJob extends IdEntity {
 		this.etlType = etlType;
 	}
 
-	public Date getNextExeDate() {
-		return nextExeDate;
-	}
-
-	public void setNextExeDate(Date nextExeDate) {
-		this.nextExeDate = nextExeDate;
-	}
-	
-	public String getCronTrigger() {
-		return cronTrigger;
-	}
-
-	public void setCronTrigger(String cronTrigger) {
-		this.cronTrigger = cronTrigger;
-	}
 	
 	public Integer getStatus() {
 		return status;

@@ -24,7 +24,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 *
 */
 @Controller
-@RequestMapping("/meta/module")
+@RequestMapping("/meta/Module")
 public class ModuleController extends BaseController<Module>{
 
 	{

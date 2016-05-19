@@ -1,8 +1,8 @@
 package net.iharding.modules.meta.dao.impl;
 
 import org.guess.core.orm.hibernate.HibernateDao;
-import net.iharding.modules.meta.dao.CommentDao;
-import net.iharding.modules.meta.model.Comment;
+import net.iharding.modules.meta.dao.MetaCommentDao;
+import net.iharding.modules.meta.model.MetaComment;
 import org.springframework.stereotype.Repository;
 
 /**
@@ -14,6 +14,6 @@ import org.springframework.stereotype.Repository;
 *
 */
 @Repository
-public class CommentDaoImpl extends HibernateDao<Comment,Long> implements CommentDao {
+public class MetaCommentDaoImpl extends HibernateDao<MetaComment,Long> implements MetaCommentDao {
 
 }

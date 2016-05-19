@@ -16,13 +16,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 *
 */
 @Controller
-@RequestMapping("/meta/database")
+@RequestMapping("/meta/Database")
 public class DatabaseController extends BaseController<Database>{
 
 	{
-		editView = "/meta/database/edit";
-		listView = "/meta/database/list";
-		showView = "/meta/database/show";
+		editView = "/meta/Database/edit";
+		listView = "/meta/Database/list";
+		showView = "/meta/Database/show";
 	}
 	
 	@Autowired

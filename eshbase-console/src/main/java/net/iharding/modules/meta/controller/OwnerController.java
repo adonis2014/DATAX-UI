@@ -16,13 +16,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 *
 */
 @Controller
-@RequestMapping("/meta/owner")
+@RequestMapping("/meta/Owner")
 public class OwnerController extends BaseController<Owner>{
 
 	{
-		editView = "/meta/owner/edit";
-		listView = "/meta/owner/list";
-		showView = "/meta/owner/show";
+		editView = "/meta/Owner/edit";
+		listView = "/meta/Owner/list";
+		showView = "/meta/Owner/show";
 	}
 	
 	@Autowired

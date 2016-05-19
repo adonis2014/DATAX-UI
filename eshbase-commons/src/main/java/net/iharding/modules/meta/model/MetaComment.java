@@ -26,7 +26,7 @@ import org.hibernate.annotations.NotFoundAction;
 @Entity
 @Table(name = "meta_comment")
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
-public class Comment extends IdEntity {
+public class MetaComment extends IdEntity {
 
 	/**
 	 * 注释人ID

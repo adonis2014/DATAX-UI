@@ -31,7 +31,7 @@
 										<td class="fieldtitle" >作业名:</td>
 										<td class="fieldvalue">${obj.name}</td>
 										<td class="fieldtitle" >作业类型:</td>
-										<td class="fieldvalue"><mytags:dictSelect field="jobType" id="jobType" type="label" defaultVal="${obj.jobType}" hasLabel="false" codeType="19" /></td>
+										<td class="fieldvalue"><mytags:dictSelect field="jobType" id="jobType" type="label" defaultVal="${obj.jobType}" hasLabel="false" codeType="21" /></td>
 									</tr>
 									<tr>
 										<td class="fieldtitle">类名:</td>
@@ -57,9 +57,39 @@
 										<td class="fieldtitle">更新时间:</td>
 										<td class="fieldvalue">${obj.updateDate }</td>
 									</tr>
-								
+								</tbody>
+								</table>
 							</form>
 						</div>
+						<div class="portlet-title">
+							<h4>
+								<i class="icon-reorder"></i>作业调度情况
+							</h4>
+						</div>
+						<div class="portlet-body form">
+								<table width="100%" class="dbgrid">
+									<thead>
+										<tr>
+											<th>名称</th>
+											<th>逻辑名</th>
+											<th>cron表达式</th>
+											<th>启用标记</th>
+											<th>下次执行时间</th>
+										</tr>
+									</thead>
+									<tbody>
+									<c:forEach items="${obj.workers}" var="worker">
+									<tr>
+										<td><a href="${ctx}/job/JobWorker/show/${worker.id}">${worker.name}</a></td>
+										<td>${worker.logicName}</td>
+										<td>${worker.cron}</td>
+									    <td><mytags:dictSelect field="checkLabelMap" id="checkLabelMap" type="label" hasLabel="false" codeType="17" defaultVal="${worker.checkLabel}"/></td>
+										<td>${worker.nextExeDate}</td>
+									</tr>
+									</c:forEach>
+									</tbody>
+								</table>
+								</div>
 					</div>
 				</div>
 			</div>

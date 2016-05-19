@@ -31,7 +31,7 @@
 										<td class="fieldtitle">作业名:</td>
 										<td class="fieldvalue"><input type="text"  validate="{required:true}" name="name" value="${obj.name }" /></td>
 										<td class="fieldtitle">作业类型:</td>
-										<td class="fieldvalue"><mytags:dictSelect field="jobType" id="jobType" defaultVal="${obj.jobType}" hasLabel="false" codeType="19" /></td>
+										<td class="fieldvalue"><mytags:dictSelect field="jobType" id="jobType" defaultVal="${obj.jobType}" hasLabel="false" codeType="21" hasPSel="false"/></td>
 									</tr>
 									<tr>
 										<td class="fieldtitle">类名:</td>

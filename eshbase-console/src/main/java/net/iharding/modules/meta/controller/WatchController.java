@@ -16,13 +16,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 *
 */
 @Controller
-@RequestMapping("/meta/watch")
+@RequestMapping("/meta/Watch")
 public class WatchController extends BaseController<Watch>{
 
 	{
-		editView = "/meta/watch/edit";
-		listView = "/meta/watch/list";
-		showView = "/meta/watch/show";
+		editView = "/meta/Watch/edit";
+		listView = "/meta/Watch/list";
+		showView = "/meta/Watch/show";
 	}
 	
 	@Autowired

@@ -51,7 +51,9 @@ public class JobWorkerDaoImpl extends NativeSqlQueryHibernateDao<JobWorker, Long
 			worker.setDisabled((Integer)obj.get("disabled"));
 			worker.setFailover((Integer)obj.get("failover"));
 			worker.setFetchDataCount((Integer)obj.get("fetch_data_count"));
-			if (obj.get("job_class_id")!=null)worker.setJobClassId(((BigInteger)obj.get("job_class_id")).longValue());
+//			if (obj.get("job_class_id")!=null){
+//				worker.setJobClass(((BigInteger)obj.get("job_class_id")).longValue());
+//			}
 			worker.setJobClassName((String)obj.get("job_class_name"));
 			worker.setJobParameter((String)obj.get("job_parameter"));
 			worker.setLogicName((String)obj.get("logic_name"));

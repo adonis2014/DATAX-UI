@@ -63,7 +63,7 @@
 			var checkLabelMap = new Map();  
 			<mytags:dictSelect field="checkLabelMap" id="checkLabelMap" type="map" hasLabel="false" codeType="17" />
 			var classTypeMap = new Map();  
-			<mytags:dictSelect field="classTypeMap" id="classTypeMap" type="map" hasLabel="false" codeType="19" />
+			<mytags:dictSelect field="classTypeMap" id="classTypeMap" type="map" hasLabel="false" codeType="21" />
 			App.activeMenu("job/JobClass/list");
 			Page.initData({
 				url : "${ctx}/job/JobClass/page",
@@ -115,9 +115,9 @@
 					<shiro:hasPermission name="job:JobClass:changeJobClassCL">
 					 var $a = $('<a href="javascript:void(0)" data-id="'+item.id+'" data-placement="right"  onclick="javascript:changeJobClassCL(this)"></a>');
 					 if(value === 1){
-						 return $a.clone().attr("data-original-title","点击禁用").addClass("green").html('<i class="icon-unlock"></i>&nbsp;&nbsp;  已启用');
+						 return $a.clone().attr("data-original-title","点击禁用").addClass("green").html('<i class="icon-unlock"></i>&nbsp;&nbsp;已启用');
 					 }
-					 return $a.attr("data-original-title","点击启用").addClass("grey").html('<i class="icon-lock"></i>&nbsp;&nbsp;  已禁用');
+					 return $a.attr("data-original-title","点击启用").addClass("grey").html('<i class="icon-lock"></i>&nbsp;&nbsp;已禁用');
 				 	</shiro:hasPermission>
 				 	if(value == 1){
 					 	return "<span class='label label-success'>已启用</span>";

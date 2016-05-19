@@ -16,13 +16,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 *
 */
 @Controller
-@RequestMapping("/meta/metaProperty")
+@RequestMapping("/meta/MetaProperty")
 public class MetaPropertyController extends BaseController<MetaProperty>{
 
 	{
-		editView = "/meta/metaProperty/edit";
-		listView = "/meta/metaProperty/list";
-		showView = "/meta/metaProperty/show";
+		editView = "/meta/MetaProperty/edit";
+		listView = "/meta/MetaProperty/list";
+		showView = "/meta/MetaProperty/show";
 	}
 	
 	@Autowired

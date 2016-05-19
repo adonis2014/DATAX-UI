@@ -1,7 +1,6 @@
 package net.iharding.modules.job.model;
 
 import java.util.Date;
-import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -9,12 +8,9 @@ import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.persistence.OrderBy;
 import javax.persistence.Table;
 
 import net.iharding.core.orm.IdEntity;
-import net.iharding.modules.meta.model.Database;
 
 import org.guess.sys.model.User;
 import org.hibernate.annotations.Cache;
@@ -22,43 +18,28 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.annotations.NotFound;
 import org.hibernate.annotations.NotFoundAction;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-
 /**
- * 作业类信息Entity
+ * 作业流程定义Entity
  * @author Joe.zhang
- * @version 2016-01-31
+ * @version 2016-05-19
  */
 @Entity
-@Table(name = "job_jobclass")
-@JsonIgnoreProperties(value = { "workers"})
+@Table(name = "job_flow")
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
-public class JobClass extends IdEntity {
+public class JobFlow extends IdEntity {
 
 	/**
-	 * 作业名
+	 * 名称
 	 */
-	@Column(name="name")
 	private String name;
 	/**
-	 * 作业类型
+	 * 作业类ID
 	 */
-	@Column(name="job_type")
-	private Integer jobType;
-	/**
-	 * 类名
-	 */
-	@Column(name="class_name")
-	private String className;
-	/**
-	 * 版本
-	 */
-	private String version;
-	/**
-	 * 作业产品ID
-	 */
-	@Column(name="product_id")
-	private String productId;
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name="jobclass_id")
+	@NotFound(action = NotFoundAction.IGNORE)
+	@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
+	private JobClass jobclass;
 	/**
 	 * 最后更新人
 	 */
@@ -85,6 +66,7 @@ public class JobClass extends IdEntity {
 	 */
 	@Column(name="update_date")
 	private Date updateDate;
+	
 	/**
 	 * 启用标记
 	 */
@@ -95,18 +77,6 @@ public class JobClass extends IdEntity {
 	 */
 	private String remark;
 	
-	@OneToMany(targetEntity=JobWorker.class,fetch = FetchType.LAZY,cascade=CascadeType.ALL,mappedBy="jobclass")
-	@OrderBy("id ASC")
-	private Set<JobWorker> workers;
-	
-	public Set<JobWorker> getWorkers() {
-		return workers;
-	}
-
-	public void setWorkers(Set<JobWorker> workers) {
-		this.workers = workers;
-	}
-
 	public String getName() {
 		return name;
 	}
@@ -115,38 +85,14 @@ public class JobClass extends IdEntity {
 		this.name = name;
 	}
 	
-	public Integer getJobType() {
-		return jobType;
+	public JobClass getJobclass() {
+		return jobclass;
 	}
 
-	public void setJobType(Integer jobType) {
-		this.jobType = jobType;
-	}
-	
-	public String getClassName() {
-		return className;
+	public void setJobclass(JobClass jobclass) {
+		this.jobclass = jobclass;
 	}
 
-	public void setClassName(String className) {
-		this.className = className;
-	}
-	
-	public String getVersion() {
-		return version;
-	}
-
-	public void setVersion(String version) {
-		this.version = version;
-	}
-	
-	public String getProductId() {
-		return productId;
-	}
-
-	public void setProductId(String productId) {
-		this.productId = productId;
-	}
-	
 	public User getUpdater() {
 		return updater;
 	}
