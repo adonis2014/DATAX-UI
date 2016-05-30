@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 *
 */
 @Controller
-@RequestMapping("/job/jobExecutionInfo")
+@RequestMapping("/job/JobExecutionInfo")
 public class JobExecutionInfoController extends BaseController<JobExecutionInfo>{
 
 	{

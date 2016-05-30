@@ -1,16 +1,16 @@
 <%@ page contentType="text/html;charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/content/common/common.jsp"%>
-<c:set var="pageTitle" value="${empty obj ? '添加作业流程定义':'修改作业流程定义' }" scope="page" />
+<c:set var="pageTitle" value="${empty obj ? '添加作业定义':'修改作业定义' }" scope="page" />
 <html>
 <head>
 <title>${pageTitle }</title>
 </head>
 <body>
+<%@ include file="/WEB-INF/content/job/JobClass/selJobClass.jsp" %>
 	<div class="page-content">
 		<div class="container-fluid">
 			<!-- 页面导航 -->
-			<tool:navBar pageTitle="${pageTitle }"
-				pageTitleContent="内容管理-{functionName}管理-${pageTitle }" titleIcon="icon-home" />
+			<tool:navBar pageTitle="${pageTitle }" pageTitleContent="作业定义-作业定义管理-${pageTitle }" titleIcon="icon-home" />
 			<!-- 主体内容 -->
 			<div class="row-fluid">
 				<div class="span12">
@@ -20,81 +20,58 @@
 								<i class="icon-reorder"></i>请填写表单
 							</h4>
 							<div class="tools">
-								<a href="javascript:;" class="collapse"></a> <a
-									href="javascript:;" class="remove"></a>
+								<a href="javascript:;" class="collapse"></a> <a href="javascript:;" class="remove"></a>
 							</div>
 						</div>
 						<div class="portlet-body form">
-							<form action="${ctx}/job/jobFlow/edit" class="form-horizontal form_sync"
-								method="post" id="form1">
-								
+							<form action="${ctx}/job/JobFlow/edit" class="form-horizontal form_sync" method="post" id="form1">
+								<input type="hidden" value="${obj.jobclass.id}" name="jobclass.id" id="jobclassId"/>
 								<input type="hidden" value="${obj.id}" name="id">
 								<div class="control-group">
 									<label class="control-label">名称:</label>
 									<div class="controls">
-										<input type="text" class="span6 m-wrap"
-											validate="{required:true}"
-											name="name" value="${obj.name }" />
+										<input type="text" class="span6 m-wrap" validate="{required:true}" name="name" value="${obj.name }" />
 									</div>
 								</div>
 								<div class="control-group">
-									<label class="control-label">作业类ID:</label>
+									<label class="control-label">作业类:</label>
 									<div class="controls">
-										<input type="text" class="span6 m-wrap"
-											validate="{required:true}"
-											name="jobClassId" value="${obj.jobClassId }" />
+										<input type="text" class="span6 m-wrap" validate="{required:true}" name="jobClassName" id="jobClassName" value="${obj.jobclass.name}"  readonly="readonly" onfocus="showJobClass()"/>
 									</div>
 								</div>
+								<c:if test="${not empty obj}">
 								<div class="control-group">
 									<label class="control-label">建立者:</label>
 									<div class="controls">
-										<input type="text" class="span6 m-wrap"
-											validate="{required:true}"
-											name="createbyId" value="${obj.createbyId }" />
+										${obj.creater.name}
 									</div>
 								</div>
 								<div class="control-group">
 									<label class="control-label">更新者:</label>
 									<div class="controls">
-										<input type="text" class="span6 m-wrap"
-											validate="{required:true}"
-											name="updatebyId" value="${obj.updatebyId }" />
+										${obj.updater.name}
 									</div>
 								</div>
 								<div class="control-group">
 									<label class="control-label">建立时间:</label>
 									<div class="controls">
-										<input type="text" class="span6 m-wrap"
-											validate="{required:true}"
-											name="createDate" value="${obj.createDate }" />
+										${obj.createDate }
 									</div>
 								</div>
 								<div class="control-group">
 									<label class="control-label">更新时间:</label>
 									<div class="controls">
-										<input type="text" class="span6 m-wrap"
-											validate="{required:true}"
-											name="updateDate" value="${obj.updateDate }" />
+										${obj.updateDate }
 									</div>
 								</div>
-								<div class="control-group">
-									<label class="control-label">启用标记:</label>
-									<div class="controls">
-										<input type="text" class="span6 m-wrap"
-											validate="{required:true}"
-											name="checkLabel" value="${obj.checkLabel }" />
-									</div>
-								</div>
+								</c:if>
+								
 								<div class="control-group">
 									<label class="control-label">备注:</label>
 									<div class="controls">
-										<input type="text" class="span6 m-wrap"
-											validate="{required:true}"
-											name="remark" value="${obj.remark }" />
+										<input type="text" class="span6 m-wrap" validate="{required:true}" name="remark" value="${obj.remark }" />
 									</div>
 								</div>
-								
-								
 								<div class="form-actions">
 									<button type="submit" class="btn blue">提交</button>
 									<a class='btn' href="${header.Referer }">返回</a>
@@ -106,11 +83,23 @@
 			</div>
 		</div>
 	</div>
-<%@ include file="/WEB-INF/content/common/plugins/jquery-validation.jsp"%>
-<script type="text/javascript">
-	$(function(){
-		App.activeMenu("job/jobFlow/list");
-	});
-</script>
+	<%@ include file="/WEB-INF/content/common/plugins/jquery-validation.jsp"%>
+	<script type="text/javascript">
+		$(function() {
+			App.activeMenu("job/jobFlow/list");
+		});
+		function showJobClass(){
+			$("#jobClassList").modal();
+		}
+		function selJobClass(obj){
+			var flag = Page.selectsPrompt();
+			if(!flag) return;
+			
+			var obj = $("#jobClass-grid").find("td :checkbox:checked");
+			$('input[id=jobClassName]').val(obj.first().attr("data-text"));
+			$('input[id=jobclassId]').val(flag);
+			$('#jobClassList').modal('hide');
+		}
+	</script>
 </body>
 </html>

@@ -16,13 +16,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 *
 */
 @Controller
-@RequestMapping("/job/jobFlow")
+@RequestMapping("/job/JobFlow")
 public class JobFlowController extends BaseController<JobFlow>{
 
 	{
-		editView = "/job/jobFlow/edit";
-		listView = "/job/jobFlow/list";
-		showView = "/job/jobFlow/show";
+		editView = "/job/JobFlow/edit";
+		listView = "/job/JobFlow/list";
+		showView = "/job/JobFlow/show";
 	}
 	
 	@Autowired

@@ -8,7 +8,7 @@
 	<div class="page-content">
 		<div class="container-fluid">
 			<!-- 页面导航 -->
-			<tool:navBar pageTitle="作业流程定义列表" pageTitleContent="内容管理-作业流程定义管理-作业流程定义列表" titleIcon="icon-home"/>
+			<tool:navBar pageTitle="作业流定义列表" pageTitleContent="内容管理-作业流定义管理-作业流定义列表" titleIcon="icon-home"/>
 			<!-- 主体内容 -->
 			<div class="row-fluid">
 				<div class="span12">
@@ -24,16 +24,16 @@
 						</div>
 						<div class="portlet-body">
 							<div class="row-fluid">
-								<form class="queryForm span8">
+								<form class="queryForm span6">
 									<div class="row-fluid">
-	                                 	<div class="span7 ">
+	                                 	<div class="span8 ">
 		                                    <div class="control-group">
 		                                       <div class="controls">
-		                                          <input type="text" id="filters" class="m-wrap span12" placeholder="名称,作业类ID,建立者,更新者,建立时间,更新时间,启用标记,备注">
+		                                          <input type="text" id="filters" class="m-wrap span10" placeholder="名称,作业类,建立者,更新者,启用标记,备注">
 		                                       </div>
 		                                    </div>
 	                                 	</div>
-	                                 	<div class="span5 ">
+	                                 	<div class="span4">
 		                                    <div class="control-group">
 		                                       <div class="controls">
 		                                         <a class="btn blue" href="javascript:void(0)" onclick="javascript:doQuery();">
@@ -47,7 +47,7 @@
 	                                 	</div>
 									</div>
 								</form>
-								<tool:operBtns modelKey="role"></tool:operBtns>
+								<tool:operBtns  modelKey="jobflow" modelName="job"></tool:operBtns>
 							</div>
 							<table class="table table-striped table-bordered table-hover" id="sample_1">
 								
@@ -59,14 +59,17 @@
 		</div>
 	</div>
 <%@ include file="/WEB-INF/content/common/plugins/page.jsp"%>
+<script type="text/javascript" src="${ctx}/assets/js/map.js"></script>
 <script type="text/javascript">
 $(document).ready(function() {
+	var dbtypeMap = new Map();  
+	<mytags:dictSelect field="dbtypeMap" id="dbtypeMap" type="map" hasLabel="false" codeType="17" />
 	
-	App.activeMenu("job/jobFlow/list");
+	App.activeMenu("job/JobFlow/list");
 	
 	Page.initData(
 		{
-			url:"${ctx}/job/jobFlow/page",
+			url:"${ctx}/job/JobFlow/page",
 			pageNo : 1,
 			pageSize : 10,
 			tableId : "#sample_1"
@@ -74,23 +77,59 @@ $(document).ready(function() {
 		null,
 		[
 			 	{cName:"name",cValue:"名称"},
+			 	{cName:"jobClass",cValue:"作业类",format:function(i,value,item){
+					  var $a = $('<a data-original-title="点击访问" data-placement="right" class="tooltips" href="../JobClass/show/'+item.jobclass.id+'" >'+item.jobclass.name+'</a>');
+					  return $a;
+				  }},
+				  {cName:"creater",cValue:"建立者",format:function(i,value,item){
+						 if(App.isNundef(value)){
+							 return value.name;
+						 }
+					 }},
 
-			 	{cName:"jobClassId",cValue:"作业类ID"},
-
-			 	{cName:"createbyId",cValue:"建立者"},
-
-			 	{cName:"updatebyId",cValue:"更新者"},
-
-			 	{cName:"createDate",cValue:"建立时间"},
-
-			 	{cName:"updateDate",cValue:"更新时间"},
-
-			 	{cName:"checkLabel",cValue:"启用标记"},
-
+				 	{cName:"updater",cValue:"更新者",format:function(i,value,item){
+						 if(App.isNundef(value)){
+							 return value.name;
+						 }
+					 }},
+				 	
+			 	{cName:"createDate",cValue:"建立时间",format:function(i,value,item){
+					 if(App.isNundef(value)){
+						 return new Date(value).format("yyyy-MM-dd hh:mm:ss");
+					 }
+					 return value;
+				 }},
+			 	{cName:"updateDate",cValue:"更新时间",format:function(i,value,item){
+					 if(App.isNundef(value)){
+						 return new Date(value).format("yyyy-MM-dd hh:mm:ss");
+					 }
+					 return value;
+				 }},
+			 	{cName:"checkLabel",cValue:"启用标记",format:function(i,value,item){
+			 		return dbtypeMap.get(item.checkLabel);
+			 	}},
 			  	{cName:"remark",cValue:"备注"}
 		 ]
 	);
 });
+
+function checkObj(){
+	var boxes = $("#sample_1").find("td :checkbox:checked");
+	if(boxes.length == 0){
+		App.alert("请选中一条记录");
+		return;
+	}
+	$.each(boxes,function(i,item){
+			var i = document.createElement("input");
+			i.type = "hidden";
+			i.name = "ids";
+			i.value = $(item).attr("data-id");
+			f.appendChild(i);
+	});
+		f.action = Page.subUrl() + "/delete";
+		f.method = "POST";
+		f.submit();
+}
 
 function doQuery(){
 	var queryObj = {

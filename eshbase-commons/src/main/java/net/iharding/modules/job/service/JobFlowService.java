@@ -1,7 +1,9 @@
 package net.iharding.modules.job.service;
 
-import org.guess.core.service.BaseService;
 import net.iharding.modules.job.model.JobFlow;
+import net.iharding.modules.job.model.JobFlowWrapper;
+
+import org.guess.core.service.BaseService;
 
 /**
 * 
@@ -12,5 +14,7 @@ import net.iharding.modules.job.model.JobFlow;
 *
 */
 public interface JobFlowService extends BaseService<JobFlow, Long>{
+	
+	public JobFlowWrapper getJobFlowWrapper(long flowId);
 
 }

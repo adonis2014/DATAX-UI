@@ -32,4 +32,16 @@ public class JobFlowWrapper extends JobFlow {
 	public String getProperty(String key) {
 		return properties.get(key);
 	}
+
+	public void setJobFlow(JobFlow flow) {
+		this.setCheckLabel(flow.getCheckLabel());
+		this.setCreateDate(flow.getCreateDate());
+		this.setCreater(flow.getCreater());
+		this.setId(flow.getId());
+		this.setJobclass(flow.getJobclass());
+		this.setName(flow.getName());
+		this.setRemark(flow.getRemark());
+		this.setUpdateDate(flow.getUpdateDate());
+		this.setUpdater(flow.getUpdater());
+	}
 }

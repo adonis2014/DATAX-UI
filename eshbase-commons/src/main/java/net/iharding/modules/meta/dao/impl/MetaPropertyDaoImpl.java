@@ -1,8 +1,12 @@
 package net.iharding.modules.meta.dao.impl;
 
+import java.util.List;
+
 import org.guess.core.orm.hibernate.HibernateDao;
+
 import net.iharding.modules.meta.dao.MetaPropertyDao;
 import net.iharding.modules.meta.model.MetaProperty;
+
 import org.springframework.stereotype.Repository;
 
 /**
@@ -15,5 +19,10 @@ import org.springframework.stereotype.Repository;
 */
 @Repository
 public class MetaPropertyDaoImpl extends HibernateDao<MetaProperty,Long> implements MetaPropertyDao {
+
+	@Override
+	public List<MetaProperty> getProperties(int refType, long refId) {
+		return this.find("select * from MetaProperty where refType=? and refId=? ", refType,refId);
+	}
 
 }

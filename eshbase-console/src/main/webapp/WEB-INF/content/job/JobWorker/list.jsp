@@ -46,7 +46,7 @@
 										</div>
 									</div>
 								</form>
-								<tool:operBtns modelKey="role"></tool:operBtns>
+								<tool:operBtns modelKey="jobworker"  modelName="job"></tool:operBtns>
 							</div>
 							<table class="table table-striped table-bordered table-hover" id="sample_1">
 

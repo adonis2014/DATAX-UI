@@ -67,7 +67,7 @@
 	                                 	</div>
 									</div>
 								</form>
-								<tool:operBtns modelKey="user"></tool:operBtns>
+								<tool:operBtns modelKey="user"  modelName="sys"></tool:operBtns>
 							</div>
 							<table class="table table-striped table-bordered table-hover" id="sample_1">
 								
