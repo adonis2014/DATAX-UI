@@ -119,6 +119,8 @@ function checkObj(){
 		App.alert("请选中一条记录");
 		return;
 	}
+	var f = document.createElement("form");
+	document.body.appendChild(f);
 	$.each(boxes,function(i,item){
 			var i = document.createElement("input");
 			i.type = "hidden";
@@ -126,7 +128,7 @@ function checkObj(){
 			i.value = $(item).attr("data-id");
 			f.appendChild(i);
 	});
-		f.action = Page.subUrl() + "/delete";
+		f.action = Page.subUrl() + "/checkJobFlow";
 		f.method = "POST";
 		f.submit();
 }

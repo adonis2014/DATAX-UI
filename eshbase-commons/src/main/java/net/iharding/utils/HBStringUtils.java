@@ -13,6 +13,7 @@ import java.util.Locale;
 import java.util.Map;
 
 import net.iharding.Constants;
+import net.iharding.modules.job.model.JobFlowCron;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.math.NumberUtils;
@@ -617,5 +618,17 @@ public class HBStringUtils extends StringUtils {
 	}
 	
 	private static Map<String,HBaseKeyManager> hbaseKMMap=new HashMap<String,HBaseKeyManager>();
+
+	public static String getCronString(JobFlowCron cron) {
+		String cronStr="";
+		if ("1".equalsIgnoreCase(cron.getCronrepeat())){//重复执行任务
+//			if (cron.getCrondate())
+		}else{//执行一次
+			String[] times=StringUtils.split(cron.getCrontime(), ":");
+			String[] dates=StringUtils.split(cron.getCrondate(),"-"); 
+			cronStr=times[2]+" "+times[1]+" "+times[0]+" "+dates[2]+" "+dates[1]+" ? "+dates[0];
+		}
+		return cronStr;
+	}
 
 }

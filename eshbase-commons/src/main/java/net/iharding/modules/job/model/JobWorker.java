@@ -156,6 +156,23 @@ public class JobWorker extends IdEntity {
 	 */
 	private String remark;
 	
+	/**
+	 * 调度任务流程对象
+	 */
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name="flow_id")
+	@NotFound(action = NotFoundAction.IGNORE)
+	@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
+	private JobFlow jobflow;
+	
+	public JobFlow getJobflow() {
+		return jobflow;
+	}
+
+	public void setJobflow(JobFlow jobflow) {
+		this.jobflow = jobflow;
+	}
+
 	public String getName() {
 		return name;
 	}

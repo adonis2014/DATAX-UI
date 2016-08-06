@@ -69,4 +69,20 @@ public class JobFlowServiceImpl extends BaseServiceImpl<JobFlow, Long> implement
 		return flowrapper;
 	}
 
+	@Override
+	public JobFlowWrapper CheckJobFlow(Long id) {
+		JobFlowWrapper flowrapper=new JobFlowWrapper();
+		try {
+			JobFlow jobflow=this.get(id);
+			List<MetaProperty> properties=metaPropertyDao.getProperties(DictConstants.DICT_OBJECT_TYPE_JOBFLOW,id);
+			flowrapper.addProperties(properties);
+			jobflow.setCheckLabel(1);
+			flowrapper.setJobFlow(jobflow);
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return flowrapper;
+	}
+
 }

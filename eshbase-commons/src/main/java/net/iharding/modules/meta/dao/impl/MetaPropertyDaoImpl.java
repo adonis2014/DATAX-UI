@@ -22,7 +22,7 @@ public class MetaPropertyDaoImpl extends HibernateDao<MetaProperty,Long> impleme
 
 	@Override
 	public List<MetaProperty> getProperties(int refType, long refId) {
-		return this.find("select * from MetaProperty where refType=? and refId=? ", refType,refId);
+		return this.find("from MetaProperty where refType=? and refId=? ", refType,refId);
 	}
 
 }

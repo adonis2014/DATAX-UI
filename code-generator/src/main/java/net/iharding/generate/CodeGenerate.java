@@ -4,7 +4,6 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -18,7 +17,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.io.DefaultResourceLoader;
 
-import com.dangdang.ddframe.job.console.domain.ExecutionInfo.ExecutionStatus;
 import com.google.common.collect.Maps;
 
 import freemarker.template.Configuration;
@@ -37,15 +35,15 @@ public class CodeGenerate {
 
 		// packageName
 		// 包名，这里如果更改包名，请在applicationContext.xml和spring-mvc.xml中配置base-package、packagesToScan属性，来指定多个（共4处需要修改）。
-		String packageName = "net.iharding.modules";
+		String packageName = "com.github";
 		List<Field> fields = new ArrayList<Field>();
 		
 		String classAuthor = "Joe.zhang"; // 类作者，例：
-		String moduleName = "job"; // 模块名，例：sys  
-		String className = "jobFlow"; // 类名，例：user
-		String functionName = "作业流程定义";
-		fields.add(new Field("name", "名称", "String"));
-		fields.add(new Field("jobClassId", "作业类ID", "Long"));
+		String moduleName = "eswrapper"; // 模块名，例：sys  
+//		String className = "datasource"; // 类名，例：user
+//		String functionName = "集群数据源";
+//		fields.add(new Field("name", "名称", "String"));
+//		fields.add(new Field("jobClassId", "作业类ID", "Long"));
 		
 //		String className = "MetaProperty"; // 类名，例：user
 //		String functionName = "元数据关注"; // 功能名，例：用户
@@ -220,17 +218,27 @@ public class CodeGenerate {
 //		fields.add(new Field("indexType", "索引类别", "Integer"));
 		
 //		fields.add(new Field("moduleName", "模块名", "String"));
+		String className = "MonitorLogDetail"; // 类名，例：user
+		String functionName = "监控记录明细"; // 功能名，例：用户
+		fields.add(new Field("clusterName", "集群名", "String"));
+		fields.add(new Field("node", "接点", "String"));	
+		fields.add(new Field("successCount", "成功次数", "Integer"));	
+		fields.add(new Field("successTps", "成功TPS", "float"));	
+		fields.add(new Field("failureCount", "失败次数", "Integer"));	
+		fields.add(new Field("failureTps", "失败Tps", "float"));	
+		fields.add(new Field("concurrentMin", "线程池最小值", "Integer"));	
+		fields.add(new Field("concurrentAve", "线程池平均值", "float"));	
+		fields.add(new Field("concurrentMax", "线程池最大值", "Integer"));
+		fields.add(new Field("logId", "logId", "Long"));	
+		
+		
+//		fields.add(new Field("dbtype", "数据源类别", "Integer"));
 		
 //		String className = "DataSource"; // 类名，例：user
-//		String functionName = "数据源对象"; // 功能名，例：用户
-//		fields.add(new Field("driverCLassName", "jdbc driver classname", "String"));
-//		fields.add(new Field("jdbcPassword", "jdbc登录密码", "String"));
-//		fields.add(new Field("jdbcUrl", "jdbc连接url", "String"));
-//		fields.add(new Field("dbType", "数据库类别", "Integer"));
-//		fields.add(new Field("jdbcUser", "jdbc用户", "String"));
+//		String functionName = "集群数据源"; // 功能名，例：用户
 //		fields.add(new Field("schemaName", "schema名称", "String"));
-//		fields.add(new Field("dbName", "db名称", "String"));		
-		
+//		fields.add(new Field("dsName", "ds名称", "String"));		
+//		fields.add(new Field("dbtype", "数据源类别", "Integer"));
 		
 //		String className = "DbColumn"; // 类名，例：user
 //		String functionName = "字段(属性)对象"; // 功能名，例：用户
@@ -245,12 +253,12 @@ public class CodeGenerate {
 //		fields.add(new Field("required", "是否必须", "String")); 
 //		fields.add(new Field("format", "格式", "String")); 
 
-		fields.add(new Field("createbyId", "建立者", "Long"));
-		fields.add(new Field("updatebyId", "更新者", "Long"));
-		fields.add(new Field("createDate", "建立时间", "Date"));
-		fields.add(new Field("updateDate", "更新时间", "Date"));
-		fields.add(new Field("checkLabel", "启用标记", "Integer"));
-		fields.add(new Field("remark", "备注", "String"));
+//		fields.add(new Field("createbyId", "建立者", "Long"));
+//		fields.add(new Field("updatebyId", "更新者", "Long"));
+//		fields.add(new Field("createDate", "建立时间", "Date"));
+//		fields.add(new Field("updateDate", "更新时间", "Date"));
+//		fields.add(new Field("checkLabel", "启用标记", "Integer"));
+//		fields.add(new Field("remark", "备注", "String"));
 
 		// 是否启用生成工具
 		Boolean isEnable = true;

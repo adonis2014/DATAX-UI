@@ -1,5 +1,6 @@
 package net.iharding.modules.meta.model;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 
@@ -21,18 +22,22 @@ public class MetaProperty extends IdEntity {
 	/**
 	 * 属性Key
 	 */
+	@Column(name = "property_key")
 	private String propertyKey;
 	/**
 	 * 属性值
 	 */
+	@Column(name = "property_value")
 	private String propertyValue;
 	/**
 	 * 关联对象类别
 	 */
+	@Column(name = "ref_type")
 	private Integer refType;
 	/**
 	 * 关联对象Id
 	 */
+	@Column(name = "ref_id")
 	private Long refId;
 	/**
 	 * 备注

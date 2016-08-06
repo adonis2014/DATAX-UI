@@ -16,5 +16,11 @@ import org.guess.core.service.BaseService;
 public interface JobFlowService extends BaseService<JobFlow, Long>{
 	
 	public JobFlowWrapper getJobFlowWrapper(long flowId);
+/**
+ * 设置启动调度工作流程
+ * @param id
+ * @return
+ */
+	public JobFlowWrapper CheckJobFlow(Long id);
 
 }
