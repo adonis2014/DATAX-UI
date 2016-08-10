@@ -24,12 +24,12 @@
 						</div>
 						<div class="portlet-body">
 							<div class="row-fluid">
-								<form class="queryForm span8">
+								<form class="queryForm span6">
 									<div class="row-fluid">
-	                                 	<div class="span7 ">
+	                                 	<div class="span6 ">
 		                                    <div class="control-group">
 		                                       <div class="controls">
-		                                          <input type="text" id="filters" class="m-wrap span12" placeholder="调度作业名,下次执行时间,调度设置,状态,建立者,更新者,建立时间,更新时间,启用标记,备注">
+		                                          <input type="text" id="filters" class="m-wrap span8" placeholder="调度作业名,下次执行时间,调度设置,状态,建立者,更新者,建立时间,更新时间,启用标记,备注">
 		                                       </div>
 		                                    </div>
 	                                 	</div>
@@ -112,13 +112,6 @@ $(document).ready(function() {
 						 return value.name;
 					 }
 				 }},
-			 	{cName:"updateDate",cValue:"更新时间",format:function(i,value,item){
-					 if(App.isNundef(value)){
-						 return new Date(value).format("yyyy-MM-dd");
-					 }
-					 return value;
-				 }},
-
 			 	{cName:"checkLabel",cValue:"启用标记",format:function(i,value,item){
 					<shiro:hasPermission name="etl:EtlJob:check">
 					 var $a = $('<a href="javascript:void(0)" data-id="'+item.id+'" data-placement="right"   onclick="javascript:check(this)" ></a>');
@@ -131,9 +124,7 @@ $(document).ready(function() {
 					 	return "<span class='label label-success'>已启用</span>";
 					 }
 				 	return "<span class='label label-danger'>已停用</span>";
-			 }},
-
-			  	{cName:"remark",cValue:"备注"}
+			 }}
 		 ]
 	);
 });

@@ -30,7 +30,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
  */
 @Entity
 @Table(name = "etl_task")
-@JsonIgnoreProperties(value = { "taskParams"})
+@JsonIgnoreProperties(value = { "taskParams","job"})
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class EtlTask extends IdEntity {
 
