@@ -47,6 +47,15 @@ public class ParamKey {
 	 */
 	public final static String delMode = "del_mode";
 	
+	/* 
+	 * @name: parent
+	 * @description:parent 所对应列值
+	 * @range:
+	 * @mandatory: false
+	 * @default:1
+	 */
+	public final static String parent = "parent";
+	
 	/*
 	 * @name: writer buffer size
 	 * @description: writer buffer size, 

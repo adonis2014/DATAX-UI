@@ -54,7 +54,7 @@ public class DFSUtils {
 	}
 
 	public enum HdfsFileType {
-		TXT, COMP_TXT, SEQ,
+		TXT, COMP_TXT, SEQ,ORC,AVRO
 	}
 
 	// store configurations for per FileSystem schema

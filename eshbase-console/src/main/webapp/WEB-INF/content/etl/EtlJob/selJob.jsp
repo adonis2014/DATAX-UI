@@ -23,13 +23,6 @@
 					{cName:"etlType",cValue:"etl类别",format:function(i,value,item){
 				 		return etlTypeMap.get(item.etlType);
 				 	}},
-				 	{cName:"nextExeDate",cValue:"下次执行时间",format:function(i,value,item){
-						 if(App.isNundef(value)){
-							 return new Date(value).format("yyyy-MM-dd hh:mm:ss");
-						 }
-						 return value;
-					 }},
-				 	{cName:"cronTrigger",cValue:"调度设置"},
 				 	{cName:"status",cValue:"状态",format:function(i,value,item){
 				 		return statusMap.get(item.status);
 				 	}},

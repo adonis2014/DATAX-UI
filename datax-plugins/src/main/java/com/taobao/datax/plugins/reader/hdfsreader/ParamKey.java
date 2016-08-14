@@ -27,6 +27,16 @@ public final class ParamKey {
 	 * @default:
 	 */
 	public final static String dir = "dir";
+	
+	
+	/*
+	 * @name: fileType
+	 * @description: filetype of hdfs
+	 * @range:
+	 * @mandatory: false 
+	 * @default:
+	 */
+	public final static String fileType = "fileType";
 	/*
 	 * @name: fieldSplit
 	 * @description: how to sperate a line
@@ -111,5 +121,21 @@ public final class ParamKey {
      * @default:yyyy-MM-dd
      */
 	public final static String format = "format";
+	
+	/*
+     * @name:路径作为字段输出
+     * @description:路径作为字段输出
+     * @mandatory: false
+     * @default:
+     */
+	public final static String pathField = "pathField";
+	
+	/*
+     * @name:扩展字段获取，比如获取其他表的join数据或者当前时间等
+     * @description:
+     * @mandatory: false
+     * @default:
+     */
+	public final static String extendValueClass = "extendValueClass";
 }
 

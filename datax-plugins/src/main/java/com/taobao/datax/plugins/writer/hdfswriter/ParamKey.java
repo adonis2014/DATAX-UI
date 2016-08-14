@@ -27,6 +27,23 @@ public final class ParamKey {
 	 * @default:
 	 */
 	public final static String dir = "dir";
+	
+	/*
+	 * @name: partitionColumn
+	 * @description: 分区取值字段和规则定义
+	 * @range:
+	 * @mandatory: false 
+	 * @default:
+	 */
+	public final static String partitionColumn = "partitionColumn";
+	/*
+	 * @name: partitionName
+	 * @description: 分区字段名
+	 * @range:
+	 * @mandatory: false 
+	 * @default:
+	 */
+	public final static String partitionName="partitionName";
 	/*
 	 * @name: prefixname
 	 * @description: hdfs filename
@@ -128,7 +145,7 @@ public final class ParamKey {
 	public final static String valueClass = "value_class";
 	/* 
 	 * @name: delMode
-	 * @description: do clean data before loading  0: overwrite file with the same filename  1: report error when exists same filename  2: delete single file  3: delete all files with the same prefix name 	4: delete all files in the directory     
+	 * @description: do clean data before loading  0: overwrite file with the same filename  1: if when exists same filename,create new file  2: delete single file  3: delete all files with the same prefix name 	4: delete all files in the directory     
 	 * @range:[0-4]   
 	 * @mandatory: false
 	 * @default:3

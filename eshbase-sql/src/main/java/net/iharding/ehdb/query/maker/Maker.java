@@ -21,10 +21,7 @@ import net.sf.jsqlparser.schema.Column;
 
 import org.elasticsearch.common.xcontent.ToXContent;
 import org.elasticsearch.index.query.BoolQueryBuilder;
-import org.elasticsearch.index.query.FilterBuilder;
-import org.elasticsearch.index.query.FilterBuilders;
 import org.elasticsearch.index.query.MatchQueryBuilder;
-import org.elasticsearch.index.query.OrFilterBuilder;
 import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.index.query.WildcardQueryBuilder;
@@ -54,16 +51,12 @@ public abstract class Maker {
 			AndExpression ae=(AndExpression)cond;
 			if (isQuery) {
 				x=QueryBuilders.boolQuery().must((QueryBuilder)make(ae.getLeftExpression())).must((QueryBuilder)make(ae.getRightExpression()));
-			}else{
-				x=FilterBuilders.boolFilter().must((FilterBuilder)make(ae.getLeftExpression())).must((FilterBuilder)make(ae.getRightExpression()));
 			}
 			x = fixNot(cond, x,ae.isNot());
 		}else if (cond instanceof OrExpression){
 			OrExpression oe=(OrExpression)cond;
 			if (isQuery) {
 				x=QueryBuilders.boolQuery().should((QueryBuilder)make(oe.getLeftExpression())).should((QueryBuilder)make(oe.getRightExpression()));
-			}else{
-				x=FilterBuilders.boolFilter().should((FilterBuilder)make(oe.getLeftExpression())).should((FilterBuilder)make(oe.getRightExpression()));
 			}
 			x = fixNot(cond, x,oe.isNot());
 		}else{
@@ -82,8 +75,6 @@ public abstract class Maker {
 			DbColumn dbcolumn=dbtable.getDbColumn(column.getColumnName());
 			if (isQuery) {
 				x=QueryBuilders.rangeQuery(dbcolumn.getFieldCode()).gte(bt.getBetweenExpressionStart()).lte(bt.getBetweenExpressionEnd());
-			}else{
-				x=FilterBuilders.rangeFilter(dbcolumn.getFieldCode()).gte(bt.getBetweenExpressionStart()).lte(bt.getBetweenExpressionEnd());
 			}
 			isnot=bt.isNot();
 		}else if (cond instanceof EqualsTo){
@@ -92,8 +83,6 @@ public abstract class Maker {
 			DbColumn dbcolumn=dbtable.getDbColumn(column.getColumnName());
 			if (isQuery){
 				x=QueryBuilders.termQuery(dbcolumn.getFieldCode(), equalsTo.getRightExpression());
-			}else{
-				x=FilterBuilders.termFilter(dbcolumn.getFieldCode(), equalsTo.getRightExpression());
 			}
 			isnot=equalsTo.isNot();
 		}else if (cond instanceof GreaterThan){
@@ -102,8 +91,6 @@ public abstract class Maker {
 			DbColumn dbcolumn=dbtable.getDbColumn(column.getColumnName());
 			if (isQuery){
 				x=QueryBuilders.rangeQuery(dbcolumn.getFieldCode()).gt(greaterThan.getRightExpression());
-			}else{
-				x=FilterBuilders.rangeFilter(dbcolumn.getFieldCode()).gt(greaterThan.getRightExpression());
 			}
 			isnot=greaterThan.isNot();
 		}else if (cond instanceof GreaterThanEquals){
@@ -112,8 +99,6 @@ public abstract class Maker {
 			DbColumn dbcolumn=dbtable.getDbColumn(column.getColumnName());
 			if (isQuery){
 				x=QueryBuilders.rangeQuery(dbcolumn.getFieldCode()).gte(equalsTo.getRightExpression());
-			}else{
-				x=FilterBuilders.rangeFilter(dbcolumn.getFieldCode()).gte(equalsTo.getRightExpression());
 			}
 			isnot=equalsTo.isNot();
 		}else if (cond instanceof MinorThan){
@@ -122,8 +107,6 @@ public abstract class Maker {
 			DbColumn dbcolumn=dbtable.getDbColumn(column.getColumnName());
 			if (isQuery){
 				x=QueryBuilders.rangeQuery(dbcolumn.getFieldCode()).lt(equalsTo.getRightExpression());
-			}else{
-				x=FilterBuilders.rangeFilter(dbcolumn.getFieldCode()).lt(equalsTo.getRightExpression());
 			}
 			isnot=equalsTo.isNot();
 		}  else if (cond instanceof MinorThanEquals){
@@ -132,8 +115,6 @@ public abstract class Maker {
 			DbColumn dbcolumn=dbtable.getDbColumn(column.getColumnName());
 			if (isQuery){
 				x=QueryBuilders.rangeQuery(dbcolumn.getFieldCode()).lte(equalsTo.getRightExpression());
-			}else{
-				x=FilterBuilders.rangeFilter(dbcolumn.getFieldCode()).lte(equalsTo.getRightExpression());
 			}
 			isnot=equalsTo.isNot();
 		} else if (cond instanceof NotEqualsTo){
@@ -142,8 +123,6 @@ public abstract class Maker {
 			DbColumn dbcolumn=dbtable.getDbColumn(column.getColumnName());
 			if (isQuery){
 				x=QueryBuilders.boolQuery().mustNot(QueryBuilders.termQuery(dbcolumn.getFieldCode(),equalsTo.getRightExpression()));
-			}else{
-				x=FilterBuilders.boolFilter().mustNot(FilterBuilders.termFilter(dbcolumn.getFieldCode(),equalsTo.getRightExpression()));
 			}
 			isnot=equalsTo.isNot();
 		}   else if (cond instanceof InExpression){
@@ -162,19 +141,12 @@ public abstract class Maker {
 				}
 				x = boolQuery;
 			}
-			else {
-				OrFilterBuilder orFilter = FilterBuilders.orFilter();
-				for(MatchQueryBuilder matchQuery : matchQueries) {
-					orFilter.add(FilterBuilders.queryFilter(matchQuery));
-				}
-				x = orFilter;
-			}
+			
 			isnot=inExpress.isNot();
 		}   else if (cond instanceof IsNullExpression){
 			IsNullExpression missExp=(IsNullExpression)cond;
 			Column column=(Column)missExp.getLeftExpression();
 			DbColumn dbcolumn=dbtable.getDbColumn(column.getColumnName());
-			x=QueryBuilders.constantScoreQuery(FilterBuilders.missingFilter(dbcolumn.getFieldCode()));
 			isnot=missExp.isNot();
 		}   else if (cond instanceof LikeExpression){
 			LikeExpression like=(LikeExpression)cond;
@@ -183,7 +155,6 @@ public abstract class Maker {
 			StringValue value=(StringValue)like.getRightExpression();
 			String queryStr = value.getValue().replace('%', '*').replace('_', '?');
 			WildcardQueryBuilder wildcardQuery = QueryBuilders.wildcardQuery(dbcolumn.getFieldCode(), queryStr);
-			x = isQuery ? wildcardQuery : FilterBuilders.queryFilter(wildcardQuery);
 			isnot=like.isNot();
 		}    
 		x = fixNot(cond, x,isnot);
@@ -194,9 +165,7 @@ public abstract class Maker {
 		if (isnot) {
 			if (isQuery) {
 				bqb = QueryBuilders.boolQuery().mustNot((QueryBuilder) bqb);
-			} else {
-				bqb = FilterBuilders.notFilter((FilterBuilder) bqb);
-			}
+			} 
 		}
 		return bqb;
 	}

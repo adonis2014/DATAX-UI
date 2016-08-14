@@ -13,7 +13,6 @@ package com.taobao.datax.common.plugin;
 import java.util.List;
 
 import com.taobao.datax.common.exception.DataExchangeException;
-import com.taobao.datax.plugins.writer.mysqlwriter.MysqlWriter;
 
 
 /**

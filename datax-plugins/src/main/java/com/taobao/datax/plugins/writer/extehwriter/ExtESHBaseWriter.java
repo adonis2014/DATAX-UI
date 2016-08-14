@@ -3,6 +3,8 @@ package com.taobao.datax.plugins.writer.extehwriter;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -20,18 +22,17 @@ import org.apache.lucene.queryparser.classic.QueryParser;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.elasticsearch.client.Client;
 import org.elasticsearch.client.transport.TransportClient;
-import org.elasticsearch.common.settings.ImmutableSettings;
 import org.elasticsearch.common.settings.Settings;
 import org.elasticsearch.common.transport.InetSocketTransportAddress;
 import org.elasticsearch.node.Node;
 
-import com.taobao.datax.common.constants.Constants;
 import com.taobao.datax.common.exception.DataExchangeException;
 import com.taobao.datax.common.plugin.Line;
 import com.taobao.datax.common.plugin.LineReceiver;
 import com.taobao.datax.common.plugin.PluginParam;
 import com.taobao.datax.common.plugin.PluginStatus;
 import com.taobao.datax.common.plugin.Writer;
+import com.taobao.datax.common.util.ETLConstants;
 import com.taobao.datax.common.util.ETLDateUtils;
 import com.taobao.datax.common.util.ETLStringUtils;
 
@@ -350,11 +351,17 @@ public class ExtESHBaseWriter extends Writer {
 		InetSocketTransportAddress[] transportAddress = new InetSocketTransportAddress[hosts.length];
 		for (String host : hosts) {
 			String[] hp = ETLStringUtils.split(host, ":");
-			transportAddress[id] = new InetSocketTransportAddress(hp[0], NumberUtils.toInt(hp[1], 9300));
+			try {
+				transportAddress[id] = new InetSocketTransportAddress(InetAddress.getByName(hp[0]), NumberUtils.toInt(hp[1], 9300));
+			} catch (UnknownHostException e) {
+				e.printStackTrace();
+			}
+//			transportAddress[id] = new InetSocketTransportAddress(hp[0], NumberUtils.toInt(hp[1], 9300));
 			id++;
 		}
-		Settings settings = ImmutableSettings.settingsBuilder().put("cluster.name", this.clustername).put("client.transport.sniff", true).build();
-		client = new TransportClient(settings).addTransportAddresses(transportAddress);
+		Settings settings = Settings.settingsBuilder().put("cluster.name", this.clustername).put("client.transport.sniff", true).build();
+		client =TransportClient.builder().settings(settings).build().addTransportAddresses(transportAddress);//  new TransportClient().addTransportAddresses(transportAddress);
+//		client = new TransportClient(settings).addTransportAddresses(transportAddress);
 	
 		try {
 			this.proxy = ExtESHBaseProxy.newProxy(hbase_conf, tablename,exttablename,client,this.bulksize,this.indexname,this.extindexname,this.typename,this.exttypename);
@@ -533,7 +540,7 @@ public class ExtESHBaseWriter extends Writer {
 		if (day == null) {
 			return dateStr;
 		}
-		return ETLDateUtils.formatDate(day, Constants.DATE_FORMAT_SSS);
+		return ETLDateUtils.formatDate(day, ETLConstants.DATE_FORMAT_SSS);
 	}
 
 	public static int daysBetween(String smdate, String bdate) {

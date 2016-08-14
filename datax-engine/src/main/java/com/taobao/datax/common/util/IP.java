@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.charset.Charset;
+import java.util.Arrays;
 import java.util.Random;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
@@ -36,17 +37,17 @@ public class IP {
     }
 
     public static void main(String[] args){
-    	IP ip=new IP();
-    	ip.init("ipaddress.dat");
-    	
-        Long st = System.nanoTime();
-        for (int i = 0; i < 1000000; i++)
-        {
+//    	IP ip=new IP();
+//    	ip.init(PropertyUtils.getValue("ipaddress.dat"));
+//    	
+//        Long st = System.nanoTime();
+//        for (int i = 0; i < 1000000; i++)
+//        {
 //        	System.out.println(Arrays.toString(ip.find(randomIp())));
-        }
-        Long et = System.nanoTime();
-        System.out.println((et - st) / 1000 / 1000);
-
+//        }
+//        Long et = System.nanoTime();
+//        System.out.println((et - st) / 1000 / 1000);
+//
 //        System.out.println(Arrays.toString(ip.find("118.28.8.8")));
     }
 

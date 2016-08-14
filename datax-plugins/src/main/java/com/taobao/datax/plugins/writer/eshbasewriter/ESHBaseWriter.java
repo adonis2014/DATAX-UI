@@ -3,9 +3,12 @@ package com.taobao.datax.plugins.writer.eshbasewriter;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Iterator;
@@ -20,17 +23,17 @@ import org.apache.lucene.queryparser.classic.QueryParser;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.elasticsearch.client.Client;
 import org.elasticsearch.client.transport.TransportClient;
-import org.elasticsearch.common.settings.ImmutableSettings;
 import org.elasticsearch.common.settings.Settings;
 import org.elasticsearch.common.transport.InetSocketTransportAddress;
+import org.elasticsearch.shield.ShieldPlugin;
 
-import com.taobao.datax.common.constants.Constants;
 import com.taobao.datax.common.exception.DataExchangeException;
 import com.taobao.datax.common.plugin.Line;
 import com.taobao.datax.common.plugin.LineReceiver;
 import com.taobao.datax.common.plugin.PluginParam;
 import com.taobao.datax.common.plugin.PluginStatus;
 import com.taobao.datax.common.plugin.Writer;
+import com.taobao.datax.common.util.ETLConstants;
 import com.taobao.datax.common.util.ETLDateUtils;
 import com.taobao.datax.common.util.ETLStringUtils;
 
@@ -57,13 +60,23 @@ public class ESHBaseWriter extends Writer {
 
 	private String[] qualifiers = null;
 
+	private String[] formats = null;
+
 	private int[] columnIndexes;
 
 	private int rowkeyIndex;
 
 	private String rowKeyRule = "0";
 
-	
+	private String isSaveOneObj = "false";
+
+	private String oneObjColName = "data";
+
+	private String oneObjColumnNames = "";
+
+	private List<String> ooColumnNames = null;
+
+	private String oneObjName = "EN_User";
 	// rowid设置方式
 	private int rowKeyRuleValue = 0;
 	// 求余数方式计算rowId的参数
@@ -75,6 +88,7 @@ public class ESHBaseWriter extends Writer {
 	private int[] rowIdIdx;// 字段index值，数字集合
 	private Logger logger = Logger.getLogger(ESHBaseWriter.class);
 
+	private String oneObjFamilyName = "cf";
 
 	// elasticsearch 参数 群组名称
 	private String clustername;
@@ -111,6 +125,12 @@ public class ESHBaseWriter extends Writer {
 
 
 	private Client client;
+
+	private String parent;
+	private int routing = -1;
+	private String routingValue = null;
+	private  String shield_user;
+	private  String shield_password;
 
 	@Override
 	public List<PluginParam> split(PluginParam param) {
@@ -192,7 +212,23 @@ public class ESHBaseWriter extends Writer {
 		delMode = param.getIntValue(ParamKey.delMode, 0);
 		autoflush = param.getBoolValue(ParamKey.autoFlush, false);
 		bufferSize = param.getIntValue(ParamKey.bufferSize, DEFAULT_BUFFER_SIZE);
+		isSaveOneObj = param.getValue(ParamKey.isSaveOneObj, this.isSaveOneObj);
+		oneObjColName = param.getValue(ParamKey.oneObjColName, this.oneObjColName);
+		oneObjColumnNames = param.getValue(ParamKey.oneObjColumnNames, this.oneObjColumnNames);
+		ooColumnNames = Arrays.asList(oneObjColumnNames.split(","));
 		rowKeyRule = param.getValue(ParamKey.rowKeyRule, this.rowKeyRule);
+		oneObjName = param.getValue(ParamKey.oneObjName, this.oneObjName);
+		oneObjFamilyName = param.getValue(ParamKey.oneObjFamilyName, this.oneObjFamilyName);
+		try {
+			this.parent = param.getValue(ParamKey.parent, this.parent);
+		} catch (Exception ex) {
+		}
+		this.routing = param.getIntValue(ParamKey.routing, -1);
+		try {
+			this.shield_user = param.getValue(ParamKey.shield_user);
+			this.shield_password = param.getValue(ParamKey.shield_password);
+		} catch (Exception ex) {
+		}
 		// 分解参数规则
 		if ("0".equalsIgnoreCase(rowKeyRule)) {// 直接使用指定字段作为rowId
 			this.rowKeyRuleValue = 0;
@@ -216,6 +252,18 @@ public class ESHBaseWriter extends Writer {
 			this.rowKeyRuleValue = 3;
 			String[] rules = rowKeyRule.split(",");
 			rowIdPattern = rules[1];
+		} else if (rowKeyRule.startsWith("4")) {
+			this.rowKeyRuleValue = 4;
+		}else if (rowKeyRule.startsWith("5")) {// 使用组合字段首字段倒序方式计算rowId
+			this.rowKeyRuleValue = 5;
+			String[] rules = rowKeyRule.split(",");
+			int id = 0;
+			String[] rids=rules[1].split("/");
+			this.rowIdIdx=new int[rids.length];
+			for (String idx : rids) {
+				this.rowIdIdx[id] = NumberUtils.toInt(idx);
+				id++;
+			}
 		}
 		/* if user does not set rowkey index, use 0 for default. */
 		rowkeyIndex = param.getIntValue(ParamKey.rowkey_index, 0, 0, Integer.MAX_VALUE);
@@ -242,11 +290,13 @@ public class ESHBaseWriter extends Writer {
 		 */
 		if (param.hasValue(ParamKey.column_value_index)) {
 			String[] indexes = param.getValue(ParamKey.column_value_index).split(",");
-			if (indexes.length != columnNames.length) {
+			if (!"true".equalsIgnoreCase(oneObjColName)) {// 是否统一保存为一个字段
+				if (indexes.length != columnNames.length) {
 					String msg = String.format("HBase column index is different form column name: \nColumnName %s\nColumnIndex %s\n", param.getValue(ParamKey.column_name),
 							param.getValue(ParamKey.column_value_index));
 					logger.error(msg);
 					throw new IllegalArgumentException(msg);
+				}
 			}
 			columnIndexes = new int[indexes.length];
 			for (int i = 0; i < indexes.length; i++) {
@@ -295,6 +345,7 @@ public class ESHBaseWriter extends Writer {
 		}
 		this.esdelMode = param.getIntValue(ParamKey.es_delMode, 0);
 		this.escolumnNames = param.getValue(ParamKey.es_column_name).split(",");
+		formats = new String[escolumnNames.length];
 		if (param.hasValue(ParamKey.es_column_value_index)) {
 			String[] indexes = param.getValue(ParamKey.es_column_value_index).split(",");
 			if (indexes.length != escolumnNames.length) {
@@ -306,6 +357,13 @@ public class ESHBaseWriter extends Writer {
 			this.escolumnIndexes = new int[indexes.length];
 			for (int i = 0; i < indexes.length; i++) {
 				escolumnIndexes[i] = Integer.valueOf(indexes[i]);
+				if (escolumnNames[i].contains("/")) {
+					String[] tmps2 = escolumnNames[i].trim().split("/");
+					escolumnNames[i] = tmps2[0].trim();
+					formats[i] = tmps2[1].trim();
+				} else {
+					formats[i] = null;
+				}
 			}
 		} else {// 默认从1到字段长度
 			this.escolumnIndexes = new int[escolumnNames.length];
@@ -314,8 +372,8 @@ public class ESHBaseWriter extends Writer {
 			this.column_escape_index = param.getValue(ParamKey.column_escape_index);
 			if (param.hasValue(ParamKey.column_escape_index)) {
 				String[] indexes = column_escape_index.split(",");
-				if (indexes.length != columnNames.length) {
-					String msg = String.format("elasticsearch column escape index is different form column name: \nColumnName %s\nColumnIndex %s\n", param.getValue(ParamKey.column_name),
+				if (indexes.length != this.escolumnNames.length) {
+					String msg = String.format("elasticsearch column escape index is different form column name: \nescolumnNames %s\nColumnIndex %s\n", param.getValue(ParamKey.column_name),
 							param.getValue(ParamKey.column_escape_index));
 					logger.error(msg);
 					throw new IllegalArgumentException(msg);
@@ -325,22 +383,34 @@ public class ESHBaseWriter extends Writer {
 					columnEscapeIndexes[i] = Integer.valueOf(indexes[i]);
 				}
 			} else {// 默认从1到字段长度
-				this.columnEscapeIndexes = new int[columnNames.length];
+				this.columnEscapeIndexes = new int[escolumnNames.length];
 			}
 		} catch (Exception ex) {
 			this.columnEscapeIndexes = new int[columnNames.length];
 		}
+
 		String[] hosts = ETLStringUtils.split(this.hosts, ";");
 		int id = 0;
 		InetSocketTransportAddress[] transportAddress = new InetSocketTransportAddress[hosts.length];
 		for (String host : hosts) {
 			String[] hp = ETLStringUtils.split(host, ":");
-			transportAddress[id] = new InetSocketTransportAddress(hp[0], NumberUtils.toInt(hp[1], 9300));
+			try {
+				transportAddress[id] = new InetSocketTransportAddress(InetAddress.getByName(hp[0]), NumberUtils.toInt(hp[1], 9300));
+			} catch (UnknownHostException e) {
+				e.printStackTrace();
+			}
 			id++;
 		}
-		Settings settings = ImmutableSettings.settingsBuilder().put("cluster.name", this.clustername).put("client.transport.sniff", true).build();
-		client = new TransportClient(settings).addTransportAddresses(transportAddress);
-
+//		Settings settings = Settings.settingsBuilder().put("cluster.name", this.clustername).put("client.transport.sniff", true).build();
+		Settings settings = null;
+		if (StringUtils.isNotEmpty(this.shield_user)){
+			settings = Settings.settingsBuilder().put("cluster.name", this.clustername).put("shield.user", this.shield_user+":"+this.shield_password).put("client.transport.sniff", true).build();
+			client =TransportClient.builder().addPlugin(ShieldPlugin.class).settings(settings).build().addTransportAddresses(transportAddress);
+		}else{
+			settings = Settings.settingsBuilder().put("cluster.name", this.clustername).put("client.transport.sniff", true).build();
+			client =TransportClient.builder().settings(settings).build().addTransportAddresses(transportAddress);
+		}
+		
 		try {
 			this.proxy = ESHBaseProxy.newProxy(hbase_conf, tablename, client, this.bulksize, this.indexname, this.typename);
 			this.proxy.setAutoFlush(autoflush);
@@ -365,7 +435,7 @@ public class ESHBaseWriter extends Writer {
 		return PluginStatus.SUCCESS.value();
 	}
 
-	@SuppressWarnings({ "rawtypes", "unchecked" })
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@Override
 	public int startWrite(LineReceiver receiver) {
 		Line line;
@@ -380,10 +450,10 @@ public class ESHBaseWriter extends Writer {
 		while ((line = receiver.getFromReader()) != null) {
 			try {
 				fieldNum = line.getFieldNum();
-				if (null == line.checkAndGetField(rowkeyIndex)) {
+				if (null == line.checkAndGetField(rowkeyIndex) || StringUtils.isEmpty(line.getField(rowkeyIndex))) {
 					throw new IOException("rowkey is missing .");
 				}
-
+				logger.warn("line :"+line.toString("/".charAt(0)));
 				if (0 == fieldNum || 1 == fieldNum) {
 					logger.warn("ESHBaseWriter meets an empty line, ignore it .");
 					continue;
@@ -427,17 +497,47 @@ public class ESHBaseWriter extends Writer {
 					currRowid = ETLStringUtils.getDateIncrementRowId(this.tablename, rowId, rowIdPattern);
 					proxy.prepare(currRowid.getBytes(encode));
 					break;
+				}case 4://倒序
+				{
+					currRowid = ETLStringUtils.reverse(line.getField(rowkeyIndex));
+					proxy.prepare(currRowid.getBytes(encode));
+					break;
+				}case 5://首字段倒序，组合字段
+				{
+					StringBuffer rowId = new StringBuffer();
+					for (int i=0;i<this.rowIdIdx.length;i++) {
+						if (i==0){
+							rowId.append(StringUtils.reverse(line.getField(rowIdIdx[0])));
+						}else{
+							rowId.append(ETLConstants.separator);
+							rowId.append(line.getField(rowIdIdx[i]));
+						}
+					}
+					currRowid =rowId.toString();
+					proxy.prepare(currRowid.getBytes(encode));
+					break;
 				}
 				}
+				Map<String, String> map = new ConcurrentHashMap<String, String>();
 				for (int i = 0; i < columnIndexes.length; i++) {
 					if (null == line.checkAndGetField(columnIndexes[i])) {
 						continue;
 					}
-					if (StringUtils.isNotEmpty(line.getField(columnIndexes[i]))) {
-						proxy.add(families[i].getBytes(encode), qualifiers[i].getBytes(encode), line.getField(columnIndexes[i]).getBytes(encode));
+					if ("true".equalsIgnoreCase(this.isSaveOneObj)) {// 包含多个字段保存到Map
+						if (ooColumnNames.contains(qualifiers[i])) {
+							map.put(qualifiers[i], line.getField(columnIndexes[i]));
+						} else {
+							if (StringUtils.isNotEmpty(line.getField(columnIndexes[i]))) {
+								proxy.add(families[i].getBytes(encode), qualifiers[i].getBytes(encode), line.getField(columnIndexes[i]).getBytes(encode));
+							}
+						}
+					} else {
+						if (StringUtils.isNotEmpty(line.getField(columnIndexes[i]))) {
+								proxy.add(families[i].getBytes(encode), qualifiers[i].getBytes(encode), line.getField(columnIndexes[i]).getBytes(encode));
+							}
 					}
 				}
-
+				
 				Map esmap = new ConcurrentHashMap();
 				// Map tepMap=new ConcurrentHashMap();
 				for (int i = 0; i < this.escolumnIndexes.length; i++) {
@@ -446,40 +546,233 @@ public class ESHBaseWriter extends Writer {
 					}
 					if (StringUtils.isNotEmpty(line.getField(escolumnIndexes[i]))) {
 						lineValue = ETLStringUtils.trim(line.getField(escolumnIndexes[i]));
-						if (ETLStringUtils.getJSONType(lineValue) == ETLStringUtils.JSON_TYPE.JSON_TYPE_STRING) {
-							if (1 == columnEscapeIndexes[i]) {// 是否转义
-								esmap.put(this.escolumnNames[i], QueryParser.escape(lineValue));
+						
+						if (escolumnNames[i].indexOf(".") > 0 && (escolumnNames[i].indexOf("mm:ss.S")<=0 && escolumnNames[i].indexOf("mm:ss.s")<=0) ) {// 对象
+							String[] cnames = StringUtils.split(escolumnNames[i], ".");
+							Object nMap = esmap.get(cnames[0]);
+							Map nestMap = null;
+							if (nMap != null) {
+								nestMap = (Map) nMap;
 							} else {
-								esmap.put(this.escolumnNames[i], lineValue);
+								nestMap = new ConcurrentHashMap();
 							}
-						} else if (ETLStringUtils.getJSONType(lineValue) == ETLStringUtils.JSON_TYPE.JSON_TYPE_ARRAY) {
-							if (1 == columnEscapeIndexes[i]) {// 是否转义
-								esmap.put(this.escolumnNames[i], escapeList(mapper.readValue(lineValue, List.class)));
-							} else {
-								esmap.put(this.escolumnNames[i], mapper.readValue(lineValue, List.class));
+							
+							if (ETLStringUtils.getJSONType(lineValue) == ETLStringUtils.JSON_TYPE.JSON_TYPE_STRING) {
+								if (lineValue.length() > 32766) {
+									lineValue = lineValue.substring(0, 32760);
+								}
+								if (cnames[1].indexOf("|") > 0) {// 存在格式定义
+									String[] cms = StringUtils.split(cnames[1], "|");
+									if ("SPLIT".equalsIgnoreCase(cms[1])) {// 分割字符串为数组
+										if (1 == columnEscapeIndexes[i])
+											lineValue = QueryParser.escape(lineValue);
+										if (StringUtils.contains(lineValue, "-")) {
+											String[] values = StringUtils.split(lineValue, "-");
+											List vvList = new ArrayList<String>();
+											for (String vv : values) {
+												if (StringUtils.isNotEmpty(vv)) {
+													vvList.add(vv);
+												}
+											}
+											if (!vvList.isEmpty())
+												nestMap.put(cms[0], vvList);
+										} else {
+											nestMap.put(cms[0], lineValue);
+										}
+									} else {
+										Date theDate = ETLDateUtils.parseDate(lineValue, "yyyy-MM-dd HH:mm:ss");
+										if (theDate == null) {
+											theDate = ETLDateUtils.parseDate(lineValue, "yyyy-MM-dd HH:mm:ss.sss");
+										}
+										if (theDate == null) {
+											theDate = ETLDateUtils.parseDate(lineValue, "yyyy-MM-dd HH:mm:ss.s");
+										}
+										if (theDate == null) {
+											theDate = ETLDateUtils.parseDate(lineValue, "YYYYMMddHHmmss");
+										}
+										if (theDate == null) {
+											theDate = ETLDateUtils.parseDate(lineValue, "yyyy-MM-dd");
+										}
+										if (theDate == null) {
+											theDate = ETLDateUtils.parseDate(lineValue, "YYYYMMdd");
+										}
+										if (theDate != null)nestMap.put(cms[0], ETLDateUtils.formatDate(theDate, cms[1]));
+									}
+								} else {
+									if (1 == columnEscapeIndexes[i]) {// 是否转义
+										nestMap.put(cnames[1], QueryParser.escape(lineValue));
+									} else {
+										if (formats[i] != null) {
+											lineValue = StringUtils.substring(lineValue, 0, 19);
+										}
+										nestMap.put(cnames[1], lineValue);
+									}
+								}
+								esmap.put(cnames[0], nestMap);
+							}else if (ETLStringUtils.getJSONType(lineValue) == ETLStringUtils.JSON_TYPE.JSON_TYPE_ARRAY) {
+								try {
+									if (1 == columnEscapeIndexes[i]) {// 是否转义
+										esmap.put(this.escolumnNames[i], escapeList(mapper.readValue(lineValue, List.class)));
+									} else {
+										esmap.put(this.escolumnNames[i], mapper.readValue(lineValue, List.class));
+									}
+								} catch (Exception ex) {
+									if (lineValue.length() > 32766) {
+										lineValue = lineValue.substring(0, 32760);
+									}
+									if (1 == columnEscapeIndexes[i]) {// 是否转义
+										esmap.put(this.escolumnNames[i], QueryParser.escape(lineValue));
+									} else {
+										if (formats[i] == null) {
+											esmap.put(this.escolumnNames[i], lineValue);
+										} else {
+											esmap.put(this.escolumnNames[i], StringUtils.substring(lineValue, 0, 19));
+										}
+									}
+								}
+							} else if (ETLStringUtils.getJSONType(lineValue) == ETLStringUtils.JSON_TYPE.JSON_TYPE_OBJECT) {
+								try {
+									if (1 == columnEscapeIndexes[i]) {// 是否转义
+										esmap.put(this.escolumnNames[i], escapeMap(mapper.readValue(lineValue, Map.class)));
+									} else {
+										esmap.put(this.escolumnNames[i], mapper.readValue(lineValue, Map.class));
+									}
+								} catch (Exception ex) {
+									if (lineValue.length() > 32766) {
+										lineValue = lineValue.substring(0, 32760);
+									}
+									if (1 == columnEscapeIndexes[i]) {// 是否转义
+										esmap.put(this.escolumnNames[i], QueryParser.escape(lineValue));
+									} else {
+										if (formats[i] == null) {
+											esmap.put(this.escolumnNames[i], lineValue);
+										} else {
+											esmap.put(this.escolumnNames[i], StringUtils.substring(lineValue, 0, 19));
+										}
+									}
+								}
 							}
-						} else if (ETLStringUtils.getJSONType(lineValue) == ETLStringUtils.JSON_TYPE.JSON_TYPE_OBJECT) {
-							if (1 == columnEscapeIndexes[i]) {// 是否转义
-								esmap.put(this.escolumnNames[i], escapeMap(mapper.readValue(lineValue, Map.class)));
-							} else {
-								esmap.put(this.escolumnNames[i], mapper.readValue(lineValue, Map.class));
+							esmap.put(cnames[0], nestMap);
+						} else {
+							
+							if (ETLStringUtils.getJSONType(lineValue) == ETLStringUtils.JSON_TYPE.JSON_TYPE_STRING) {
+								if (lineValue.length() > 32766) {
+									lineValue = lineValue.substring(0, 32760);
+								}
+								if (escolumnNames[i].indexOf("|") > 0) {// 存在格式定义
+									String[] cms = StringUtils.split(escolumnNames[i], "|");
+									if ("SPLIT".equalsIgnoreCase(cms[1])) {// 分割字符串为数组
+										if (1 == columnEscapeIndexes[i])
+											lineValue = QueryParser.escape(lineValue);
+										if (StringUtils.contains(lineValue, "-")) {
+											String[] values = StringUtils.split(lineValue, "-");
+											List vvList = new ArrayList<String>();
+											for (String vv : values) {
+												if (StringUtils.isNotEmpty(vv)) {
+													vvList.add(vv);
+												}
+											}
+											if (!vvList.isEmpty())esmap.put(cms[0], vvList);
+										} else {
+											esmap.put(cms[0], lineValue);
+										}
+									} else {
+										Date theDate = ETLDateUtils.parseDate(lineValue, "yyyy-MM-dd HH:mm:ss");
+										if (theDate == null) {
+											theDate = ETLDateUtils.parseDate(lineValue, "yyyy-MM-dd HH:mm:ss.sss");
+										}
+										if (theDate == null) {
+											theDate = ETLDateUtils.parseDate(lineValue, "yyyy-MM-dd HH:mm:ss.s");
+										}
+										if (theDate == null) {
+											theDate = ETLDateUtils.parseDate(lineValue, "YYYYMMddHHmmss");
+										}
+										if (theDate == null) {
+											theDate = ETLDateUtils.parseDate(lineValue, "yyyy-MM-dd");
+										}
+										if (theDate == null) {
+											theDate = ETLDateUtils.parseDate(lineValue, "YYYYMMdd");
+										}
+										if (theDate != null)
+											esmap.put(cms[0], ETLDateUtils.formatDate(theDate, cms[1]));
+									}
+								} else {
+									if (1 == columnEscapeIndexes[i]) {// 是否转义
+										esmap.put(this.escolumnNames[i], QueryParser.escape(lineValue));
+									} else {
+										if (formats[i] == null) {
+											esmap.put(this.escolumnNames[i], lineValue);
+										} else {
+											esmap.put(this.escolumnNames[i], StringUtils.substring(lineValue, 0, 19));
+										}
+									}
+								}
+							} else if (ETLStringUtils.getJSONType(lineValue) == ETLStringUtils.JSON_TYPE.JSON_TYPE_ARRAY) {
+								try {
+									if (1 == columnEscapeIndexes[i]) {// 是否转义
+										esmap.put(this.escolumnNames[i], escapeList(mapper.readValue(lineValue, List.class)));
+									} else {
+										esmap.put(this.escolumnNames[i], mapper.readValue(lineValue, List.class));
+									}
+								} catch (Exception ex) {
+									if (lineValue.length() > 32766) {
+										lineValue = lineValue.substring(0, 32760);
+									}
+									if (1 == columnEscapeIndexes[i]) {// 是否转义
+										esmap.put(this.escolumnNames[i], QueryParser.escape(lineValue));
+									} else {
+										if (formats[i] == null) {
+											esmap.put(this.escolumnNames[i], lineValue);
+										} else {
+											esmap.put(this.escolumnNames[i], StringUtils.substring(lineValue, 0, 19));
+										}
+									}
+								}
+							} else if (ETLStringUtils.getJSONType(lineValue) == ETLStringUtils.JSON_TYPE.JSON_TYPE_OBJECT) {
+								try {
+									if (1 == columnEscapeIndexes[i]) {// 是否转义
+										esmap.put(this.escolumnNames[i], escapeMap(mapper.readValue(lineValue, Map.class)));
+									} else {
+										esmap.put(this.escolumnNames[i], mapper.readValue(lineValue, Map.class));
+									}
+								} catch (Exception ex) {
+									if (lineValue.length() > 32766) {
+										lineValue = lineValue.substring(0, 32760);
+									}
+									if (1 == columnEscapeIndexes[i]) {// 是否转义
+										esmap.put(this.escolumnNames[i], QueryParser.escape(lineValue));
+									} else {
+										if (formats[i] == null) {
+											esmap.put(this.escolumnNames[i], lineValue);
+										} else {
+											esmap.put(this.escolumnNames[i], StringUtils.substring(lineValue, 0, 19));
+										}
+									}
+								}
 							}
 						}
 					}
 				}
-
+				if (this.routing>-1){
+					routingValue=line.getField(this.routing);
+				}
 				if (this.uniquekey >= 0) {
 					// System.out.println("id:--"+line.getField(this.uniquekey));
 					if (StringUtils.isNotEmpty(currRowid)) {
-						proxy.insert(currRowid, esmap);
+						if (StringUtils.isNotEmpty(this.parent)) {
+							proxy.insert(currRowid, esmap, this.parent,routingValue);
+						} else {
+							proxy.insert(currRowid, esmap, null,routingValue);
+						}
 					} else {
-						proxy.insert(null, esmap);
+						proxy.insert(null, esmap, null,routingValue);
 					}
 				} else {
-					proxy.insert(null, esmap);
+					proxy.insert(null, esmap, null,routingValue);
 				}
 				this.monitor.lineSuccess();
 			} catch (IOException e) {
+				e.printStackTrace();
 				this.getMonitor().lineFail(e.getMessage());
 			}
 		}
@@ -501,8 +794,8 @@ public class ESHBaseWriter extends Writer {
 		return mapStr;
 	}
 
-	@SuppressWarnings("rawtypes")
-	private List escapeList(List<String> arrayStr) {
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	private List escapeList(List arrayStr) {
 		for (int i = 0; i < arrayStr.size(); i++) {
 			Object v = arrayStr.get(i);
 			if (v instanceof String) {
@@ -520,7 +813,7 @@ public class ESHBaseWriter extends Writer {
 		if (day == null) {
 			return dateStr;
 		}
-		return ETLDateUtils.formatDate(day, Constants.DATE_FORMAT_SSS);
+		return ETLDateUtils.formatDate(day, ETLConstants.DATE_FORMAT_SSS);
 	}
 
 	public static int daysBetween(String smdate, String bdate) {
@@ -581,7 +874,8 @@ public class ESHBaseWriter extends Writer {
 
 	private void deleteESTables() throws Exception {
 		this.logger.info(String.format("ElasticSearchWriter begins to delete table %s .", this.indexname, this.typename));
-		proxy.deleteESTable(this.indexname, typename);
+		proxy.deleteESTable(this.indexname, number_of_shards, number_of_replicas, typename, mapping_xml);
+
 	}
 
 	private void truncateESTable() throws Exception {

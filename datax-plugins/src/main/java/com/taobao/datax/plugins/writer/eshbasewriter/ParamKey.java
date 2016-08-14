@@ -94,6 +94,44 @@ public class ParamKey {
      */
 	public final static String rowKeyRule = "rowKeyRule";
 	
+	 /*
+     * @name:isSaveOneObj 
+     * @description:是否合并保存一个字段
+     * @range:true,false
+     * @mandatory: false
+     * @default:true
+     */
+	public final static String isSaveOneObj = "isSaveOneObj";
+	
+	/*
+     * @name:oneObjColName 
+     * @description:合并保存的字段名
+     * @mandatory: false
+     * @default:data
+     */
+	public final static String oneObjColName = "oneObjColName";
+	
+	/*
+     * @name:oneObjName
+     * @description:合并保存的字段对应对象 EN_User-用户表
+     * @mandatory: false
+     * @default:1
+     */
+	public final static String oneObjName = "oneObjName";
+	/*
+     * @name:oneObjColumnNames
+     * @description:需要合并保存的字段名集合
+     * @mandatory: false
+     * @default:
+     */
+	public final static String oneObjColumnNames = "oneObjColumnNames";
+	/*
+     * @name:oneObjFamilyName
+     * @description:需要合并保存的列族名
+     * @mandatory: false
+     * @default:cf
+     */
+	public final static String oneObjFamilyName="oneObjFamilyName";
 	
 	/*
 	 * @name: clustername
@@ -173,12 +211,56 @@ public class ParamKey {
 	
 	/* 
 	 * @name: esDelMode
-	 * @description:删除模式；由用户进行选择，0 写入前不删除，覆盖文件 1 上传数据之前truncate原type;2 上传数据之前delete原type
+	 * @description:删除模式；由用户进行选择，0 写入前不删除，覆盖文件 1 上传数据之前删除原type重建type;2 上传数据之前delete原type,index重建
 	 * @range:[0-2]  
 	 * @mandatory: false
 	 * @default:1
 	 */
 	public final static String es_delMode = "es_del_mode";
+	/* 
+	 * @name: parent
+	 * @description:parent 所对应列值
+	 * @range:
+	 * @mandatory: false
+	 * @default:1
+	 */
+	public final static String parent = "parent";
+	
+	 /*
+     * @name:routing
+     * @description:routing  of the row
+     * @range:1-4
+     * @mandatory: false
+     * @default:1
+     */
+	public static String routing="routing";
+	 /*
+     * @name:isHotStableSplit
+     * @description:isHotStableSplit
+     * @range:0-1
+     * @mandatory: false
+     * @default:0
+     */
+	public static String isHotStableSplit="isHotStableSplit";
+	
+	 /*
+     * @name:shield_user
+     * @description:shield_user
+     * @range:
+     * @mandatory: false
+     * @default:
+     */
+	public static String shield_user="shield_user";
+	
+	 /*
+     * @name:shield_password
+     * @description:shield_password
+     * @range:
+     * @mandatory: false
+     * @default:
+     */
+	public static String shield_password="shield_password";
+
 	
 	/*
 	 * @name: cloumns name
@@ -213,6 +295,5 @@ public class ParamKey {
      * @default:1
      */
 	public final static String concurrency = "concurrency";
-
 
 }

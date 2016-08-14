@@ -21,6 +21,14 @@ public class ParamKey {
 	 * @default: 127.0.0.1:9300
 	 */
 	public final static String hosts = "hosts";
+	/* 
+	 * @name: parent
+	 * @description:parent 所对应列值
+	 * @range:
+	 * @mandatory: false
+	 * @default:1
+	 */
+	public final static String parent = "parent";
 	/*
 	 * @name: indexname
 	 * @description:elasticsearch index name
@@ -124,4 +132,100 @@ public class ParamKey {
      */
 	public final static String concurrency = "concurrency";
 
+	 /*
+     * @name:rowKeyRule
+     * @description:uniquekey Rule of the row
+     * @range:1-4
+     * @mandatory: false
+     * @default:1
+     */
+	public static String rowKeyRule="rowKeyRule";
+	
+	 /*
+     * @name:routing
+     * @description:routing  of the row
+     * @range:1-4
+     * @mandatory: false
+     * @default:1
+     */
+	public static String routing="routing";
+	 /*
+     * @name:isHotStableSplit
+     * @description:isHotStableSplit
+     * @range:0-1
+     * @mandatory: false
+     * @default:0
+     */
+	public static String isHotStableSplit="isHotStableSplit";
+	
+	 /*
+     * @name:shield_user
+     * @description:shield_user
+     * @range:
+     * @mandatory: false
+     * @default:
+     */
+	public static String shield_user="shield_user";
+	
+	 /*
+     * @name:shield_password
+     * @description:shield_password
+     * @range:
+     * @mandatory: false
+     * @default:
+     */
+	public static String shield_password="shield_password";
+	/*
+     * @name:ignoreEmptyRowId
+     * @description:if ignore empty rowid
+     * @range:true,false
+     * @mandatory: false
+     * @default:true
+     */
+	public static String ignoreEmptyRowId="ignoreEmptyRowId";
+
+	/*
+     * @name:isJob
+     * @description:是否固定调度任务
+     * @range:0-1
+     * @mandatory: false
+     * @default:0
+     */
+	public final static String isJob = "isJob";
+	
+	/*
+     * @name:days
+     * @description:几天内数据目录导入调度
+     * @range:-1- -100
+     * @mandatory: false
+     * @default:-1
+     */
+	public final static String days = "days";
+	
+	/*
+     * @name:format
+     * @description:日期格式
+     * @mandatory: false
+     * @default:yyyy-MM-dd
+     */
+	public final static String format = "format";
+	
+
+	/*
+     * @name:lineProcessClass
+     * @description:写入之前行数据处理类
+     * @mandatory: false
+     * @default: com.
+     */
+	public final static String lineProcessClass = "lineProcessClass";
+	
+	/*
+     * @name:isUpdate
+     * @description:是否更新索引文档，如果是更新，将读取原es document后更新部分属性
+     * @mandatory: false
+     * @default:false
+     */
+	public final static String isUpdate = "isUpdate";
+	
+	
 }

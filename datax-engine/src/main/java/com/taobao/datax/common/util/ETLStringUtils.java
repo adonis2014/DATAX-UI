@@ -3,7 +3,6 @@ package com.taobao.datax.common.util;
 import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collection;
 import java.util.Date;
@@ -19,16 +18,11 @@ import org.apache.hadoop.hbase.util.Bytes;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.jackson.type.TypeReference;
 
-import com.taobao.datax.common.constants.Constants;
-import com.taobao.datax.utils.ETLConstants;
-
 
 public class ETLStringUtils extends StringUtils {
 
 	private static Map<String,HBaseKeyManager> hbaseKMMap=new HashMap<String,HBaseKeyManager>();
-	private static ObjectMapper mapper = new ObjectMapper();
 
-	
 	public enum JSON_TYPE {
 		/** JSONObject */
 		JSON_TYPE_OBJECT,
@@ -37,7 +31,7 @@ public class ETLStringUtils extends StringUtils {
 		/** 不是JSON格式的字符串 */
 		JSON_TYPE_STRING
 	}
-
+	
 	/**
 	 * 获取求余数方式的rowid
 	 * 
@@ -50,115 +44,16 @@ public class ETLStringUtils extends StringUtils {
 	public static String getRemainderRowId(Long fieldValue, Integer fieldvalueLen, Integer remainder, Integer remainderLen) {
 		return leftPad(String.valueOf(fieldValue % remainder), remainderLen, "0") + leftPad(String.valueOf(fieldValue), fieldvalueLen, "0");
 	}
-	
 	/**
-	 * 从result获取数字，null返回0
-	 * 
-	 * @param ur
-	 * @param familyName
-	 * @param qualifier
+	 * 反转余数获取fiedl value
+	 * @param fieldValue
+	 * @param fieldvalueLen
+	 * @param remainder
+	 * @param remainderLen
 	 * @return
 	 */
-	public static int getIntValueFromResult(Result ur, byte[] familyName, String qualifier) {
-		byte[] vb = ur.getValue(familyName, Bytes.toBytes(qualifier));
-		if (vb == null) {
-			return 0;
-		} else {
-			return NumberUtils.toInt(Bytes.toString(vb));
-		}
-	}
-	
-	public static float getFloatValueFromResult(Result ur, byte[] familyName, String qualifier) {
-		byte[] vb = ur.getValue(familyName, Bytes.toBytes(qualifier));
-		if (vb == null) {
-			return 0;
-		} else {
-			return NumberUtils.toFloat(Bytes.toString(vb));
-		}
-	}
-
-	public static long getLongValueFromResult(Result ur, byte[] familyName, String qualifier) {
-		byte[] vb = ur.getValue(familyName, Bytes.toBytes(qualifier));
-		if (vb == null) {
-			return 0;
-		} else {
-			return NumberUtils.toLong(Bytes.toString(vb));
-		}
-	}
-
-	public static Date getDateValueFromResult(Result ur, byte[] familyName, String qualifier, String pattern) {
-		byte[] vb = ur.getValue(familyName, Bytes.toBytes(qualifier));
-		if (vb == null) {
-			return null;
-		} else {
-			return ETLDateUtils.parseDate(Bytes.toString(vb), pattern);
-		}
-	}
-
-	public static List<String> getListStringFromResult(Result ur, byte[] familyName, String qualifier) {
-		byte[] vb = ur.getValue(familyName, Bytes.toBytes(qualifier));
-		if (vb == null) {
-			return null;
-		} else {
-			try {
-				return mapper.readValue(ur.getValue(familyName, Bytes.toBytes(qualifier)), new TypeReference<List<String>>() {
-				});
-			} catch (IOException e) {
-				e.printStackTrace();
-				return null;
-			}
-		}
-	}
-
-	public static List<String> getListStringFromStr(String field) {
-		try {
-			return mapper.readValue(field, new TypeReference<List<String>>() {
-			});
-		} catch (IOException e) {
-			e.printStackTrace();
-			return null;
-		}
-	}
-
-	public static Map<String, Integer> getMapStringFromResult(Result ur, byte[] familyName, String qualifier) {
-		byte[] vb = ur.getValue(familyName, Bytes.toBytes(qualifier));
-		if (vb == null) {
-			return null;
-		} else {
-			try {
-				return mapper.readValue(ur.getValue(familyName, Bytes.toBytes(qualifier)), new TypeReference<Map<String, Integer>>() {
-				});
-			} catch (IOException e) {
-				e.printStackTrace();
-				return null;
-			}
-		}
-	}
-
-	public static Map<String, Integer> getMapStringFromStr(String ur) {
-		try {
-			return mapper.readValue(ur, new TypeReference<Map<String, Integer>>() {
-			});
-		} catch (IOException e) {
-			e.printStackTrace();
-			return null;
-		}
-	}
-
-
-	public static List<Integer> getListIntFromResult(Result ur, byte[] familyName, String qualifier) {
-		byte[] vb = ur.getValue(familyName, Bytes.toBytes(qualifier));
-		if (vb == null) {
-			return null;
-		} else {
-			try {
-				return mapper.readValue(ur.getValue(familyName, Bytes.toBytes(qualifier)), new TypeReference<List<Integer>>() {
-				});
-			} catch (IOException e) {
-				e.printStackTrace();
-				return null;
-			}
-		}
+	public static String getReverseRemainderRowId(String rowValue,Integer remainderLen) {
+		return removeStart(substring(rowValue, remainderLen+1), "0");
 	}
 
 	/***
@@ -199,7 +94,7 @@ public class ETLStringUtils extends StringUtils {
 				System.out.println(rowId);
 			}
 		}
-		String date=ETLDateUtils.formatDate(day,Constants.DATEFORMAT_YYYYMMDD);
+		String date=ETLDateUtils.formatDate(day,ETLConstants.DATEFORMAT_YYYYMMDD);
 		HBaseKeyManager km=hbaseKMMap.get(tableName+"-"+date);
 		if (km==null){
 			km=new HBaseKeyManager(tableName,date);
@@ -207,6 +102,7 @@ public class ETLStringUtils extends StringUtils {
 		}
 		return date+"-"+km.cal();
 	}
+	
 
 	public static String getMaxListStringFromList(List<String> days) {
 		String theDay = null;
@@ -577,11 +473,12 @@ public class ETLStringUtils extends StringUtils {
 		// System.out.println(isFilefolder("dd/d"));
 		// System.out.println(isFilefolder("d:\\\\d\\d.text<>.jsp"));
 		// StringUtils.getHBaseRowId("000161-1388316916750-苏D797M1      -2155363291");
-		List<String> ss = new ArrayList<String>();
-		ss.add("23");
-		ss.add("2");
-		ss.add("20");
-		System.out.println(getMaxListStringFromList(ss));
+//		List<String> ss = new ArrayList<String>();
+//		ss.add("23");
+//		ss.add("2");
+//		ss.add("20");
+//		System.out.println(getMaxListStringFromList(ss));
+		System.out.println(getReverseRemainderRowId("00340034343434",5));
 	}
 
 	public static String delZero(String str) {
@@ -604,6 +501,133 @@ public class ETLStringUtils extends StringUtils {
 		return obj.toString();
 	}
 
+	private static ObjectMapper mapper = new ObjectMapper();
+
+	/**
+	 * 从result获取字符串，null返回''
+	 * 
+	 * @param ur
+	 * @param familyName
+	 * @param qualifier
+	 * @return
+	 */
+	public static String getStringValueFromResult(Result ur, byte[] familyName, String qualifier) {
+		byte[] vb = ur.getValue(familyName, Bytes.toBytes(qualifier));
+		if (vb == null) {
+			return "";
+		} else {
+			return Bytes.toString(vb);
+		}
+	}
+
+	/**
+	 * 从result获取数字，null返回0
+	 * 
+	 * @param ur
+	 * @param familyName
+	 * @param qualifier
+	 * @return
+	 */
+	public static int getIntValueFromResult(Result ur, byte[] familyName, String qualifier) {
+		byte[] vb = ur.getValue(familyName, Bytes.toBytes(qualifier));
+		if (vb == null) {
+			return 0;
+		} else {
+			return NumberUtils.toInt(Bytes.toString(vb));
+		}
+	}
 	
+	public static float getFloatValueFromResult(Result ur, byte[] familyName, String qualifier) {
+		byte[] vb = ur.getValue(familyName, Bytes.toBytes(qualifier));
+		if (vb == null) {
+			return 0;
+		} else {
+			return NumberUtils.toFloat(Bytes.toString(vb));
+		}
+	}
+
+	public static long getLongValueFromResult(Result ur, byte[] familyName, String qualifier) {
+		byte[] vb = ur.getValue(familyName, Bytes.toBytes(qualifier));
+		if (vb == null) {
+			return 0;
+		} else {
+			return NumberUtils.toLong(Bytes.toString(vb));
+		}
+	}
+
+	public static Date getDateValueFromResult(Result ur, byte[] familyName, String qualifier, String pattern) {
+		byte[] vb = ur.getValue(familyName, Bytes.toBytes(qualifier));
+		if (vb == null) {
+			return null;
+		} else {
+			return ETLDateUtils.parseDate(Bytes.toString(vb), pattern);
+		}
+	}
+
+	public static List<String> getListStringFromResult(Result ur, byte[] familyName, String qualifier) {
+		byte[] vb = ur.getValue(familyName, Bytes.toBytes(qualifier));
+		if (vb == null) {
+			return null;
+		} else {
+			try {
+				return mapper.readValue(ur.getValue(familyName, Bytes.toBytes(qualifier)), new TypeReference<List<String>>() {
+				});
+			} catch (IOException e) {
+				e.printStackTrace();
+				return null;
+			}
+		}
+	}
+
+	public static List<String> getListStringFromStr(String field) {
+		try {
+			return mapper.readValue(field, new TypeReference<List<String>>() {
+			});
+		} catch (IOException e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
+
+	public static Map<String, Integer> getMapStringFromResult(Result ur, byte[] familyName, String qualifier) {
+		byte[] vb = ur.getValue(familyName, Bytes.toBytes(qualifier));
+		if (vb == null) {
+			return null;
+		} else {
+			try {
+				return mapper.readValue(ur.getValue(familyName, Bytes.toBytes(qualifier)), new TypeReference<Map<String, Integer>>() {
+				});
+			} catch (IOException e) {
+				e.printStackTrace();
+				return null;
+			}
+		}
+	}
+
+	public static Map<String, Integer> getMapStringFromStr(String ur) {
+		try {
+			return mapper.readValue(ur, new TypeReference<Map<String, Integer>>() {
+			});
+		} catch (IOException e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
+
+	public static List<Integer> getListIntFromResult(Result ur, byte[] familyName, String qualifier) {
+		byte[] vb = ur.getValue(familyName, Bytes.toBytes(qualifier));
+		if (vb == null) {
+			return null;
+		} else {
+			try {
+				return mapper.readValue(ur.getValue(familyName, Bytes.toBytes(qualifier)), new TypeReference<List<Integer>>() {
+				});
+			} catch (IOException e) {
+				e.printStackTrace();
+				return null;
+			}
+		}
+	}
+
 
 }

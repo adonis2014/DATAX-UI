@@ -35,6 +35,41 @@ public final class ParamKey {
 	 * @default: user
 	 */
 	public final static String typename="typename";
+	
+	 /*
+     * @name:routing
+     * @description:routing  of the row
+     * @range:1-4
+     * @mandatory: false
+     * @default:1
+     */
+	public static String routing="routing";
+	 /*
+     * @name:isHotStableSplit
+     * @description:isHotStableSplit
+     * @range:0-1
+     * @mandatory: false
+     * @default:0
+     */
+	public static String isHotStableSplit="isHotStableSplit";
+	
+	 /*
+     * @name:shield_user
+     * @description:shield_user
+     * @range:
+     * @mandatory: false
+     * @default:
+     */
+	public static String shield_user="shield_user";
+	
+	 /*
+     * @name:shield_password
+     * @description:shield_password
+     * @range:
+     * @mandatory: false
+     * @default:
+     */
+	public static String shield_password="shield_password";
 
 	/*
 	 * @name: htableName
@@ -87,6 +122,14 @@ public final class ParamKey {
      * @default: 
      */
 	public final static String queryString="queryString";
+	/*
+     * @name: onlyEsQuery
+     * @description: es onlyEsQuery
+     * @range: false-true
+     * @mandatory: false
+     * @default: false
+     */
+	public final static String onlyEsQuery="onlyEsQuery";
 	/*
      * @name: order_field
      * @description: columns to be order, default is null

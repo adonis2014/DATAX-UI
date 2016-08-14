@@ -11,7 +11,7 @@
 			添加 <i class="icon-plus"></i>
 		</a>
 	</shiro:hasPermission>
-	<shiro:hasPermission name="${modelName}:${modelKey }:update">
+	<shiro:hasPermission name="${modelName}:${modelKey }:edit">
 	<a class="btn blue" href="javascript:void(0);" onclick="Page.updateObj();">
 			修改<i class="icon-pencil"></i>
 	</a>

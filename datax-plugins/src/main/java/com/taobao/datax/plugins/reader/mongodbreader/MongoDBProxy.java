@@ -11,11 +11,12 @@ import com.mongodb.DB;
 import com.mongodb.DBCollection;
 import com.mongodb.DBCursor;
 import com.mongodb.DBObject;
+import com.mongodb.QueryBuilder;
 import com.mongodb.QueryOperators;
-import com.taobao.datax.common.constants.Constants;
 import com.taobao.datax.common.plugin.Line;
 import com.taobao.datax.common.util.ETLDateUtils;
 import com.taobao.datax.common.util.ETLStringUtils;
+import com.taobao.datax.utils.ETLConstants;
 
 /**
  * mongoDB数据访问
@@ -54,9 +55,10 @@ public class MongoDBProxy {
 		this.columnNames=columnNames;
 		if (this.startId==null && this.stopId==null){
 			if (ETLStringUtils.isNotEmpty(startDate) && ETLStringUtils.isNotEmpty(endDate)){
-				BasicDBObject dbObj = new BasicDBObject().append(fieldName, 
-						new BasicDBObject().append(QueryOperators.GTE,ETLDateUtils.parseDate(startDate, "yyyy-MM-dd")))
-						.append(QueryOperators.LT,ETLDateUtils.parseDate(endDate+" 23:59:59.999", Constants.DATE_FORMAT_SSS));
+				long start=ETLDateUtils.parse(startDate, "yyyy-MM-dd");
+				long end=ETLDateUtils.parse(endDate+" 23:59:59.999", ETLConstants.DATE_FORMAT_SSS);
+				DBObject dbObj = QueryBuilder.start().put(fieldName).greaterThanEquals(new Date(start))
+						.lessThan(new Date(end)).get();
 				cursor=collection.find(dbObj);
 			}else{
 				cursor=collection.find();
@@ -74,6 +76,7 @@ public class MongoDBProxy {
 		                new BasicDBObject().append(QueryOperators.LT, NumberUtils.toLong(stopId))); 
 			}
 			cursor=collection.find( dbObj);
+			cursor.addOption(com.mongodb.Bytes.QUERYOPTION_NOTIMEOUT);
 		}
 	}
 	/**
@@ -91,21 +94,32 @@ public class MongoDBProxy {
 		DBObject result = cursor.next();
 		Map resuMap= result.toMap();
 		for(String colName:this.columnNames){
-			line.addField(getNullString(resuMap.get(colName)));
+			line.addField(getNullString(resuMap,colName));
 		}
 		return true;
 	}
 	
-	private String getNullString(Object val){
-		if (val==null){
-			return "";
-		}else{
-			if (val instanceof java.util.Date){
-				return ETLDateUtils.formatDate((Date)val, Constants.DATE_FORMAT_SSS);
+	private String getNullString(Map resuMap,String colName){
+		if (colName.indexOf(".")>0){
+			Object val=resuMap.get(colName.substring(0, colName.indexOf(".")));
+			if (val instanceof DBObject){
+				return getNullString(((DBObject)val).toMap(),colName.substring(colName.indexOf(".")+1));
 			}else{
-				return val.toString();
+				return null;
+			}
+		}else{
+			Object val=resuMap.get(colName);
+			if (val==null){
+				return "";
+			}else{
+				if (val instanceof java.util.Date){
+					return ETLDateUtils.formatDate((Date)val, ETLConstants.DATE_FORMAT_SSS);
+				}else{
+					return val.toString();
+				}
 			}
 		}
+		
 	}
 	
 	
