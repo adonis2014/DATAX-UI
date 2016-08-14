@@ -11,7 +11,6 @@ package com.taobao.datax.plugins.common;
 
 import com.taobao.datax.common.exception.ExceptionTracker;
 import com.taobao.datax.common.plugin.Pluginable;
-import com.taobao.datax.plugins.reader.mysqlreader.MysqlReader;
 import org.apache.commons.dbcp.BasicDataSource;
 import org.apache.commons.dbcp.BasicDataSourceFactory;
 import org.apache.log4j.Logger;

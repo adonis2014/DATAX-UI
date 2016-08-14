@@ -13,7 +13,10 @@ package com.taobao.datax.plugins.writer.hdfswriter;
 import com.taobao.datax.common.plugin.PluginParam;
 import com.taobao.datax.common.plugin.PluginStatus;
 import com.taobao.datax.common.plugin.Splitter;
+import com.taobao.datax.common.util.ETLDateUtils;
+import com.taobao.datax.common.util.ETLStringUtils;
 import com.taobao.datax.common.util.SplitUtils;
+
 import org.apache.hadoop.fs.Path;
 import org.apache.log4j.Logger;
 
@@ -35,7 +38,7 @@ public class HdfsFileSplitter extends Splitter {
 	@Override
 	public int init() {
 		String dir = param.getValue(ParamKey.dir);
-
+		
 		if (dir.endsWith("*")) {
 			dir = dir.substring(0, dir.lastIndexOf("*"));
 		}
@@ -61,9 +64,13 @@ public class HdfsFileSplitter extends Splitter {
 			logger.info(String
 					.format("HdfsWriter set no splitting, Use %s as absolute filename .",
 							p.toString() + "/" + prefix));
-
-			param.putValue(ParamKey.dir, p.toString() + "/"
+			if (ETLStringUtils.contains(this.prefix, "{currDate}")){
+				param.putValue(ParamKey.dir, p.toString() + "/"
+						+ prefix.replace("{currDate}",ETLDateUtils.dateAddDays(ETLDateUtils.getCurrTimestamp(), -1, "yyyy-MM-dd")));
+			}else{
+				param.putValue(ParamKey.dir, p.toString() + "/"
 					+ prefix);
+			}
 			return super.split(param);
 		}
 

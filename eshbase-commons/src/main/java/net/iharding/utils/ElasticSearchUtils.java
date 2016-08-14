@@ -1,12 +1,15 @@
 package net.iharding.utils;
 
 
+import java.net.InetAddress;
+import java.net.UnknownHostException;
+
 import org.apache.commons.lang.math.NumberUtils;
 import org.elasticsearch.client.Client;
 import org.elasticsearch.client.transport.TransportClient;
-import org.elasticsearch.common.settings.ImmutableSettings;
 import org.elasticsearch.common.settings.Settings;
 import org.elasticsearch.common.transport.InetSocketTransportAddress;
+import org.elasticsearch.plugin.deletebyquery.DeleteByQueryPlugin;
 /**
  * elastic search工具类
  * @author admin
@@ -31,12 +34,16 @@ public class ElasticSearchUtils {
 			InetSocketTransportAddress[] transportAddress=new InetSocketTransportAddress[hosts.length];
 			for(String host:hosts){
 				String[] hp=HBStringUtils.split(host,":");
-				transportAddress[id]=new InetSocketTransportAddress(hp[0],NumberUtils.toInt(hp[1],9300));
+				try {
+					transportAddress[id]=new InetSocketTransportAddress(InetAddress.getByName(hp[0]),NumberUtils.toInt(hp[1],9300));
+				} catch (UnknownHostException e) {
+					e.printStackTrace();
+				}
 				id++;
 			}
-			 Settings settings = ImmutableSettings.settingsBuilder()     
+			 Settings settings = Settings.settingsBuilder()     
 		                .put("cluster.name", clusterName).put("client.transport.sniff", true).build();
-			client=new TransportClient(settings).addTransportAddresses(transportAddress);
+			 client=TransportClient.builder().settings(settings).addPlugin(DeleteByQueryPlugin.class).build().addTransportAddresses(transportAddress);
 		}
 		return client;
 	}

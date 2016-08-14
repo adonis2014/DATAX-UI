@@ -27,7 +27,6 @@ import org.elasticsearch.action.admin.indices.create.CreateIndexResponse;
 import org.elasticsearch.action.admin.indices.delete.DeleteIndexResponse;
 import org.elasticsearch.action.admin.indices.exists.indices.IndicesExistsResponse;
 import org.elasticsearch.action.admin.indices.exists.types.TypesExistsResponse;
-import org.elasticsearch.action.admin.indices.mapping.delete.DeleteMappingResponse;
 import org.elasticsearch.action.admin.indices.mapping.put.PutMappingRequest;
 import org.elasticsearch.action.admin.indices.mapping.put.PutMappingResponse;
 import org.elasticsearch.action.bulk.BulkItemResponse;
@@ -35,7 +34,7 @@ import org.elasticsearch.action.bulk.BulkRequestBuilder;
 import org.elasticsearch.action.bulk.BulkResponse;
 import org.elasticsearch.client.Client;
 import org.elasticsearch.client.Requests;
-import org.elasticsearch.common.settings.ImmutableSettings;
+import org.elasticsearch.common.settings.Settings;
 
 public class ExtESHBaseProxy {
 
@@ -164,13 +163,13 @@ public class ExtESHBaseProxy {
 	}
 
 	public void deleteESTable(String indexname, String typename) throws Exception {
-		DeleteMappingResponse response = client.admin().indices().prepareDeleteMapping(indexname).setType(typename).execute().actionGet();
-		DeleteMappingResponse response2 = client.admin().indices().prepareDeleteMapping(this.extindexname).setType(exttypename).execute().actionGet();
-		if (!(response.isAcknowledged() || response2.isAcknowledged())) {
-			throw new Exception(response.toString());
-		} else {
-			logger.debug("删除索引Type：" + indexname + "-" + typename + " 成功！");
-		}
+//		DeleteMappingResponse response = client.admin().indices().prepareDeleteMapping(indexname).setType(typename).execute().actionGet();
+//		DeleteMappingResponse response2 = client.admin().indices().prepareDeleteMapping(this.extindexname).setType(exttypename).execute().actionGet();
+//		if (!(response.isAcknowledged() || response2.isAcknowledged())) {
+//			throw new Exception(response.toString());
+//		} else {
+//			logger.debug("删除索引Type：" + indexname + "-" + typename + " 成功！");
+//		}
 	}
 
 	public void createESTable(String indexname, int number_of_shards, int number_of_replicas, String typename, int bulksize, String mapping_xml) throws Exception {
@@ -179,7 +178,7 @@ public class ExtESHBaseProxy {
 		if (!response.isExists()) {
 			// 建立索引
 			CreateIndexResponse creaResp = client.admin().indices().prepareCreate(indexname)
-					.setSettings(ImmutableSettings.settingsBuilder().put("number_of_shards", number_of_shards).put("number_of_replicas", number_of_replicas)).execute().actionGet();
+					.setSettings(Settings.settingsBuilder().put("number_of_shards", number_of_shards).put("number_of_replicas", number_of_replicas)).execute().actionGet();
 			if (!creaResp.isAcknowledged()) {
 				throw new Exception(creaResp.toString());
 			}
@@ -199,7 +198,7 @@ public class ExtESHBaseProxy {
 		if (!response2.isExists()) {
 			// 建立索引
 			CreateIndexResponse creaResp = client.admin().indices().prepareCreate(extindexname)
-					.setSettings(ImmutableSettings.settingsBuilder().put("number_of_shards", number_of_shards).put("number_of_replicas", number_of_replicas)).execute().actionGet();
+					.setSettings(Settings.settingsBuilder().put("number_of_shards", number_of_shards).put("number_of_replicas", number_of_replicas)).execute().actionGet();
 			if (!creaResp.isAcknowledged()) {
 				throw new Exception(creaResp.toString());
 			}
@@ -279,7 +278,7 @@ public class ExtESHBaseProxy {
 //		}
 		
 		CreateIndexResponse creaResp2 = client.admin().indices().prepareCreate(extindexname)
-				.setSettings(ImmutableSettings.settingsBuilder().put("number_of_shards", number_of_shards).put("number_of_replicas", number_of_replicas)).execute().actionGet();
+				.setSettings(Settings.settingsBuilder().put("number_of_shards", number_of_shards).put("number_of_replicas", number_of_replicas)).execute().actionGet();
 		if (!creaResp2.isAcknowledged()) {
 			throw new Exception(creaResp2.toString());
 		}

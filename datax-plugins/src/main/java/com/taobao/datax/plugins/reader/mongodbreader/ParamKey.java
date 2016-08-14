@@ -77,6 +77,22 @@ public class ParamKey {
      * @default:
      */
 	public final static String columnNames="columnNames";
+	/*
+     * @name: parentColumnId
+     * @description: mangoDB database's parentColumnId
+     * @range:
+     * @mandatory: false
+     * @default:
+     */
+	public final static String parentColumnId="parentColumnId";
+	/*
+     * @name: childColumnNames
+     * @description: mangoDB database's childColumnNames
+     * @range:
+     * @mandatory: false
+     * @default:
+     */
+	public final static String childColumnNames="childColumnNames";
 
 	 /*
      * @name:concurrency

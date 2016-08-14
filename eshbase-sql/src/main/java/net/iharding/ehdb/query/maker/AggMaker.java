@@ -15,7 +15,6 @@ import org.elasticsearch.search.aggregations.AbstractAggregationBuilder;
 import org.elasticsearch.search.aggregations.AggregationBuilder;
 import org.elasticsearch.search.aggregations.AggregationBuilders;
 import org.elasticsearch.search.aggregations.ValuesSourceAggregationBuilder;
-import org.elasticsearch.search.aggregations.bucket.histogram.DateHistogram;
 import org.elasticsearch.search.aggregations.bucket.histogram.DateHistogramBuilder;
 import org.elasticsearch.search.aggregations.bucket.histogram.Histogram;
 import org.elasticsearch.search.aggregations.bucket.histogram.HistogramBuilder;
@@ -150,32 +149,32 @@ public class AggMaker {
 		DbColumn dbColumn = dbtable.getDbColumn(column);
 		DateHistogramBuilder dateHistogram = AggregationBuilders.dateHistogram(dbColumn.getFieldCode()).format(TIME_FARMAT);
 		dateHistogram.field(dbColumn.getFieldCode());
-		for(Expression expression:field.getParameters().getExpressions()){
-			String[] kv = expression.toString().split(":");
-			if (kv.length>1){
-				if (kv[0].equalsIgnoreCase("interval")){
-					dateHistogram.interval(new DateHistogram.Interval(kv[1]));
-					continue;
-				}else if (kv[0].equalsIgnoreCase("format")){
-					dateHistogram.format(kv[1]);
-					continue;
-				}else if (kv[0].equalsIgnoreCase("time_zone")|| kv[0].equalsIgnoreCase("pre_zone")){
-					dateHistogram.preZone(kv[1]);
-					continue;
-				}else if (kv[0].equalsIgnoreCase("post_zone")){
-					dateHistogram.postZone(kv[1]);
-					continue;
-				}else if (kv[0].equalsIgnoreCase("post_offset")){
-					dateHistogram.postOffset(kv[1]);
-					continue;
-				}else if (kv[0].equalsIgnoreCase("pre_offset")){
-					dateHistogram.preOffset(kv[1]);
-					continue;
-				}else{
-					throw new NotSupportedException("date range err or not define field " + kv.toString());
-				}
-			}
-		}
+//		for(Expression expression:field.getParameters().getExpressions()){
+//			String[] kv = expression.toString().split(":");
+//			if (kv.length>1){
+//				if (kv[0].equalsIgnoreCase("interval")){
+//					dateHistogram.interval(new DateHistogram.Interval(kv[1]));
+//					continue;
+//				}else if (kv[0].equalsIgnoreCase("format")){
+//					dateHistogram.format(kv[1]);
+//					continue;
+//				}else if (kv[0].equalsIgnoreCase("time_zone")|| kv[0].equalsIgnoreCase("pre_zone")){
+//					dateHistogram.preZone(kv[1]);
+//					continue;
+//				}else if (kv[0].equalsIgnoreCase("post_zone")){
+//					dateHistogram.postZone(kv[1]);
+//					continue;
+//				}else if (kv[0].equalsIgnoreCase("post_offset")){
+//					dateHistogram.postOffset(kv[1]);
+//					continue;
+//				}else if (kv[0].equalsIgnoreCase("pre_offset")){
+//					dateHistogram.preOffset(kv[1]);
+//					continue;
+//				}else{
+//					throw new NotSupportedException("date range err or not define field " + kv.toString());
+//				}
+//			}
+//		}
 		return dateHistogram;
 	}
 

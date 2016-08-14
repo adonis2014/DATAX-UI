@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -15,7 +16,6 @@ import org.apache.lucene.queryparser.classic.QueryParser;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.jackson.type.TypeReference;
 
-import com.taobao.datax.common.constants.Constants;
 import com.taobao.datax.common.model.AggregationRecord;
 import com.taobao.datax.common.model.DataFieldSortByID;
 import com.taobao.datax.common.model.DataProcessEntity;
@@ -25,9 +25,9 @@ import com.taobao.datax.common.plugin.DataProcessor;
 import com.taobao.datax.common.plugin.Line;
 import com.taobao.datax.common.plugin.RecordValidator;
 import com.taobao.datax.common.plugin.RecordValueProc;
+import com.taobao.datax.common.util.ETLConstants;
 import com.taobao.datax.common.util.ETLStringUtils;
 import com.taobao.datax.common.util.ZipStrUtil;
-import com.taobao.datax.utils.ETLConstants;
 
 /**
  * 数据预统计合并或者清洗处理
@@ -54,9 +54,11 @@ public class UDADataProcessor extends DataProcessor {
 	ObjectMapper mapper = new ObjectMapper();
 
 	private String encode = "utf-8";
+	String parent=null;
 
-	public UDADataProcessor(UDAESHBaseProxy proxy) {
+	public UDADataProcessor(UDAESHBaseProxy proxy,String parent) {
 		this.proxy = proxy;
+		this.parent=parent;
 	}
 	RecordValidator rvValidator=null;
 	RecordValueProc rvProc=null;
@@ -124,7 +126,12 @@ public class UDADataProcessor extends DataProcessor {
 			if (rvProc!=null)rvProc.initRow(aggRows,curRow,dpEntity);
 			// 获取rowKey
 			for (DataProcessField field : pkFields) {
-				rowKeyColumns.add(DataProcessUtils.processValue(null, curRow, field));
+				String pv=DataProcessUtils.processPKValue(null, curRow, field);
+				if (pv!=null){
+					rowKeyColumns.add(pv);
+				}else{
+					break;
+				}
 			}
 			String rowKey = this.getRowIdFromCloumn(rowKeyColumns);
 			// 从集合中获取已经存在的聚合记录
@@ -148,8 +155,6 @@ public class UDADataProcessor extends DataProcessor {
 				}
 			}
 			aggRows.put(rowKey, record);
-			//在所有数据取完后
-			if (rvProc!=null)rvProc.endProcRow(aggRows,curRow,dpEntity);
 			curRow.clear();
 			rowKeyColumns.clear();
 		}
@@ -170,17 +175,21 @@ public class UDADataProcessor extends DataProcessor {
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@Override
 	public int saveOrUpdate(Map<String, AggregationRecord> rows) {
-		byte[] cf= Constants.DEFAULT_COLUMN_FAMILY.getBytes();
+		byte[] cf= ETLConstants.DEFAULT_COLUMN_FAMILY.getBytes();
+		Map<String,AggregationRecord> oriRecords=proxy.getRecords(rows.keySet(), fields, encode);
 		for (Map.Entry<String, AggregationRecord> entry : rows.entrySet()) {
 			try {
 				proxy.prepare(entry.getKey().getBytes());
-				AggregationRecord orirecord = proxy.getRecord(entry.getKey(), fields, encode);
+				//AggregationRecord orirecord = proxy.getRecord(entry.getKey(), fields, encode);
+				AggregationRecord orirecord = oriRecords.get(entry.getKey());
 				AggregationRecord curRecord=entry.getValue();
 				if (orirecord != null) {// 聚合记录
 					curRecord=DataProcessUtils.aggRecord(curRecord,orirecord,fields);
 				}
-				proxy.add(cf, Constants.DEFAULT_COLUMN_ROWNUM.getBytes(encode), ("" + curRecord.getAggRowNum()).getBytes());
-				proxy.add(cf, Constants.DEFAULT_COLUMN_AGGROWNUM.getBytes(encode), ("" + curRecord.getAggRowNum()).getBytes());
+				//在所有数据取完后
+				if (rvProc!=null)rvProc.endProcRow(rows,curRecord,dpEntity);
+				proxy.add(cf, ETLConstants.DEFAULT_COLUMN_ROWNUM.getBytes(encode), ("" + curRecord.getAggRowNum()).getBytes());
+				proxy.add(cf, ETLConstants.DEFAULT_COLUMN_AGGROWNUM.getBytes(encode), ("" + curRecord.getAggRowNum()).getBytes());
 				Map esmap = new ConcurrentHashMap();
 				for (DataProcessField field : fields) {
 					if (field.getFieldType() != ETLConstants.FIELD_TYPE_ORI) {// 只保存聚合表字段数据
@@ -188,6 +197,9 @@ public class UDADataProcessor extends DataProcessor {
 						if (lineValue!=null && ETLStringUtils.isNotEmpty(lineValue.toString())){
 							if (field.getCompress()==1){
 								proxy.add(field.getFamilyName().getBytes(encode), field.getColumnName().getBytes(encode),ZipStrUtil.compress(mapper.writeValueAsString(lineValue)).getBytes());
+							}else if (lineValue instanceof String || lineValue instanceof Integer || lineValue instanceof Date
+									|| lineValue instanceof Float || lineValue instanceof Double || lineValue instanceof Long){
+								proxy.add(field.getFamilyName().getBytes(encode), field.getColumnName().getBytes(encode),lineValue.toString().getBytes());
 							}else{
 								proxy.add(field.getFamilyName().getBytes(encode), field.getColumnName().getBytes(encode),mapper.writeValueAsString(lineValue).getBytes());
 							}
@@ -199,7 +211,13 @@ public class UDADataProcessor extends DataProcessor {
 						}
 					}
 				}
-				proxy.insert(entry.getKey(), esmap);
+				if (StringUtils.isNotEmpty(parent)){
+					
+					proxy.insert(entry.getKey(), esmap,parent);
+					
+				}else{
+					proxy.insert(entry.getKey(), esmap,null);
+				}
 			} catch (UnsupportedEncodingException e) {
 				e.printStackTrace();
 				
@@ -207,7 +225,7 @@ public class UDADataProcessor extends DataProcessor {
 				e.printStackTrace();
 			}
 		}
-		return Constants.RET_SUCCESS;
+		return ETLConstants.RET_SUCCESS;
 	}
 
 }

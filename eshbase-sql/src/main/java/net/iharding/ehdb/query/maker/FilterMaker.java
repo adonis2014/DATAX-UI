@@ -3,7 +3,7 @@ package net.iharding.ehdb.query.maker;
 import net.iharding.modules.meta.model.DBTable;
 import net.sf.jsqlparser.expression.Expression;
 
-import org.elasticsearch.index.query.FilterBuilder;
+import org.apache.hadoop.hive.metastore.parser.ExpressionTree.FilterBuilder;
 
 public class FilterMaker extends Maker {
 

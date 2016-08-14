@@ -29,7 +29,7 @@
 	                                 	<div class="span6 ">
 		                                    <div class="control-group">
 		                                       <div class="controls">
-		                                          <input type="text" id="filters" class="m-wrap span8" placeholder="调度作业名,下次执行时间,调度设置,状态,建立者,更新者,建立时间,更新时间,启用标记,备注">
+		                                          <input type="text" id="filters" class="m-wrap span12" placeholder="调度作业名,备注">
 		                                       </div>
 		                                    </div>
 	                                 	</div>
@@ -82,16 +82,6 @@ $(document).ready(function() {
 			 	{cName:"etlType",cValue:"etl类别",format:function(i,value,item){
 			 		return etlTypeMap.get(item.etlType);
 			 	}},
-
-			 	{cName:"nextExeDate",cValue:"下次执行时间",format:function(i,value,item){
-					 if(App.isNundef(value)){
-						 return new Date(value).format("yyyy-MM-dd hh:mm:ss");
-					 }
-					 return value;
-				 }},
-
-			 	{cName:"cronTrigger",cValue:"调度设置"},
-
 			 	{cName:"status",cValue:"状态",format:function(i,value,item){
 			 		return statusMap.get(item.status);
 			 	}},
@@ -131,7 +121,7 @@ $(document).ready(function() {
 
 function doQuery(){
 	var queryObj = {
-			search_LIKES_jobName_OR_nextExeDate_OR_cronTrigger_OR_status_OR_createbyId_OR_updatebyId_OR_createDate_OR_updateDate_OR_checkLabel_OR_remark : App.isEqPlacehoder($("#filters"))
+			search_LIKES_jobName_OR_remark : App.isEqPlacehoder($("#filters"))
 		};
 	Page.doQuery(queryObj);
 }

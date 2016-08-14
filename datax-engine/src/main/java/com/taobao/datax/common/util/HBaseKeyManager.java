@@ -9,8 +9,6 @@ import org.apache.hadoop.hbase.client.Result;
 import org.apache.hadoop.hbase.client.Table;
 import org.apache.hadoop.hbase.util.Bytes;
 
-import com.taobao.datax.common.constants.Constants;
-
 
 public class HBaseKeyManager extends IncrementNumber {
 
@@ -36,14 +34,14 @@ public class HBaseKeyManager extends IncrementNumber {
 	public long initStartNum()  {
 		try {
 			if (keyTable==null){
-				keyTable = HBaseUtils.getTable(Constants.ENNIU_SYS_TABLE_INCREMENT_ENTITY_CODE);
+				keyTable = HBaseUtils.getTable(ETLConstants.ENNIU_SYS_TABLE_INCREMENT_ENTITY_CODE);
 			}
 			Get get = new Get(Bytes.toBytes(this.tableName+"-"+this.dictName));
 			// 根据rowkey查询
 			Result ur = keyTable.get(get);
-			byte[] family=Bytes.toBytes(Constants.DEFAULT_COLUMN_FAMILY);
+			byte[] family=Bytes.toBytes(ETLConstants.DEFAULT_COLUMN_FAMILY);
 			if (ur != null) {
-				return ETLStringUtils.getIntValueFromResult(ur,family,Constants.ENNIU_SYSINCREMENT_FIELD_MAXID);
+				return ETLStringUtils.getIntValueFromResult(ur,family,ETLConstants.ENNIU_SYSINCREMENT_FIELD_MAXID);
 			}
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -55,10 +53,10 @@ public class HBaseKeyManager extends IncrementNumber {
 	public void updateStartNum(long intervalMax)  {
 		try {
 			if (keyTable==null){
-				keyTable = HBaseUtils.getTable(Constants.ENNIU_SYS_TABLE_INCREMENT_ENTITY_CODE);
+				keyTable = HBaseUtils.getTable(ETLConstants.ENNIU_SYS_TABLE_INCREMENT_ENTITY_CODE);
 			}
 			Put p=new Put(Bytes.toBytes(this.tableName+"-"+this.dictName));
-			p.addColumn(Bytes.toBytes(Constants.DEFAULT_COLUMN_FAMILY), Bytes.toBytes(Constants.ENNIU_SYSINCREMENT_FIELD_MAXID), Bytes.toBytes(String.valueOf(intervalMax)));
+			p.addColumn(Bytes.toBytes(ETLConstants.DEFAULT_COLUMN_FAMILY), Bytes.toBytes(ETLConstants.ENNIU_SYSINCREMENT_FIELD_MAXID), Bytes.toBytes(String.valueOf(intervalMax)));
 			keyTable.put(p);
 		} catch (IOException e) {
 			e.printStackTrace();

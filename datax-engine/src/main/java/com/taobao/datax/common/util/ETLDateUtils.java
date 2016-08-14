@@ -11,14 +11,11 @@ import org.apache.commons.lang.time.DateUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.taobao.datax.utils.ETLConstants;
-
-
 public class ETLDateUtils extends DateUtils {
 
 	private static final Logger log = LoggerFactory.getLogger(ETLDateUtils.class);
 
-	public static final Date invalidateDate = parseDate("1970-09-01","yyyy-MM-dd");
+	public static final Date invalidateDate = parseDate("1970-09-01", "yyyy-MM-dd");
 
 	public static long parse(String date) {
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -40,8 +37,7 @@ public class ETLDateUtils extends DateUtils {
 	 * @return 相差天数
 	 * @throws ParseException
 	 */
-	public static int daysBetween(Date smdate, Date bdate)
-			throws ParseException {
+	public static int daysBetween(Date smdate, Date bdate) throws ParseException {
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 		smdate = sdf.parse(sdf.format(smdate));
 		bdate = sdf.parse(sdf.format(bdate));
@@ -58,8 +54,7 @@ public class ETLDateUtils extends DateUtils {
 	/**
 	 * 字符串的日期格式的计算
 	 */
-	public static int daysBetween(String smdate, String bdate)
-			throws ParseException {
+	public static int daysBetween(String smdate, String bdate) throws ParseException {
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 		Calendar cal = Calendar.getInstance();
 		cal.setTime(sdf.parse(smdate));
@@ -71,8 +66,7 @@ public class ETLDateUtils extends DateUtils {
 		return Integer.parseInt(String.valueOf(between_days));
 	}
 
-	public static long parseLong(String date, String pattern)
-			throws ParseException {
+	public static long parseLong(String date, String pattern) throws ParseException {
 		SimpleDateFormat sdft = new SimpleDateFormat(pattern);
 		return sdft.parse(date).getTime();
 	}
@@ -94,8 +88,7 @@ public class ETLDateUtils extends DateUtils {
 	}
 
 	public static String formatToSolrDate(Date date) {
-		SimpleDateFormat dateFormat = new SimpleDateFormat(
-				ETLConstants.DATE_FORMAT_SSS);
+		SimpleDateFormat dateFormat = new SimpleDateFormat(ETLConstants.DATE_FORMAT_SSS);
 		String[] strs = ETLStringUtils.split(dateFormat.format(date), " ");
 		return strs[0] + "T" + strs[1] + "Z";
 	}
@@ -111,7 +104,7 @@ public class ETLDateUtils extends DateUtils {
 			Date date = dateFormat.parse(dateStr);
 			return date;
 		} catch (ParseException e) {
-			log.error("时间格式处理错误!", e.getMessage());
+			// log.error("时间格式处理错误!", e.getMessage());
 			return null;
 		}
 
@@ -146,8 +139,7 @@ public class ETLDateUtils extends DateUtils {
 	 * @return
 	 * @throws ParseException
 	 */
-	public static String getUTC(String beforeFormart, String afterFormart,
-			String dateStr) throws ParseException {
+	public static String getUTC(String beforeFormart, String afterFormart, String dateStr) throws ParseException {
 		SimpleDateFormat be = new SimpleDateFormat(beforeFormart, Locale.US);
 		Date date = be.parse(dateStr);
 
@@ -166,8 +158,7 @@ public class ETLDateUtils extends DateUtils {
 	 * @return
 	 * @throws ParseException
 	 */
-	public static String getTimeStr(String time, SimpleDateFormat dateFormat)
-			throws ParseException {
+	public static String getTimeStr(String time, SimpleDateFormat dateFormat) throws ParseException {
 		Date startDate = stringToDate(time, dateFormat);
 		String timeStr = dateAddHours(startDate, ETLConstants.GMT_TIME, dateFormat);
 		String[] startTime = timeStr.split(" ");
@@ -184,8 +175,7 @@ public class ETLDateUtils extends DateUtils {
 	 * @param dateFormat
 	 * @return
 	 */
-	public static String dateAddHours(Date time, int hours,
-			SimpleDateFormat dateFormat) {
+	public static String dateAddHours(Date time, int hours, SimpleDateFormat dateFormat) {
 		long timeLong = time.getTime() / 1000 + 60l * 60 * hours;
 		time.setTime(timeLong * 1000);
 		String timeStr = dateFormat.format(time);
@@ -203,8 +193,7 @@ public class ETLDateUtils extends DateUtils {
 	 * @return
 	 * @throws ParseException
 	 */
-	public static String getTzToGmt(String dateStr, String dateFormat,
-			String beforeTimeZone, String afterTimeZone) throws ParseException {
+	public static String getTzToGmt(String dateStr, String dateFormat, String beforeTimeZone, String afterTimeZone) throws ParseException {
 		SimpleDateFormat sdfBefore = new SimpleDateFormat(dateFormat);
 		sdfBefore.setTimeZone(TimeZone.getTimeZone(beforeTimeZone));
 		SimpleDateFormat sdfAfter = new SimpleDateFormat(dateFormat);
@@ -212,6 +201,29 @@ public class ETLDateUtils extends DateUtils {
 		Date date = stringToDate(dateStr, sdfBefore);
 		String dateGmtEight = sdfAfter.format(date);
 		return dateGmtEight;
+	}
+
+	/**
+	 * UTC转本地时间
+	 * 
+	 * @param utcTime
+	 * @param utcTimePatten
+	 * @param localTimePatten
+	 * @return
+	 */
+	public static String utc2Local(String utcTime, String utcTimePatten, String localTimePatten) {
+		SimpleDateFormat utcFormater = new SimpleDateFormat(utcTimePatten);
+		utcFormater.setTimeZone(TimeZone.getTimeZone("UTC"));
+		Date gpsUTCDate = null;
+		try {
+			gpsUTCDate = utcFormater.parse(utcTime);
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+		SimpleDateFormat localFormater = new SimpleDateFormat(localTimePatten);
+		localFormater.setTimeZone(TimeZone.getDefault());
+		String localTime = localFormater.format(gpsUTCDate.getTime());
+		return localTime;
 	}
 
 	/**
@@ -224,8 +236,7 @@ public class ETLDateUtils extends DateUtils {
 	 * @return
 	 * @throws ParseException
 	 */
-	public static boolean dateCheck(String start, String end,
-			SimpleDateFormat dateFormat) throws ParseException {
+	public static boolean dateCheck(String start, String end, SimpleDateFormat dateFormat) throws ParseException {
 		boolean flag = true;
 		Date startDate = stringToDate(start, dateFormat);
 		Date endDate = stringToDate(end, dateFormat);
@@ -245,8 +256,7 @@ public class ETLDateUtils extends DateUtils {
 	 * @return
 	 * @throws ParseException
 	 */
-	public static String getSearchStartDate(String start, String init,
-			String keep, SimpleDateFormat dateFormat) throws ParseException {
+	public static String getSearchStartDate(String start, String init, String keep, SimpleDateFormat dateFormat) throws ParseException {
 		String startDate = start;
 		Date startDay = stringToDate(start, dateFormat);
 		Date judgeDay = dateCompare(init, keep, dateFormat);
@@ -265,8 +275,7 @@ public class ETLDateUtils extends DateUtils {
 	 * @return
 	 * @throws ParseException
 	 */
-	public static String getEndDate(String time, SimpleDateFormat dateFormat)
-			throws ParseException {
+	public static String getEndDate(String time, SimpleDateFormat dateFormat) throws ParseException {
 		Date nowDate = new Date();
 		Date timeDate = stringToDate(time, dateFormat);
 		String endDate = "";
@@ -286,8 +295,7 @@ public class ETLDateUtils extends DateUtils {
 	 * @param dateFormat
 	 * @return
 	 */
-	public static Date stringToDate(String dateStr, SimpleDateFormat dateFormat)
-			throws ParseException {
+	public static Date stringToDate(String dateStr, SimpleDateFormat dateFormat) throws ParseException {
 		Date date = dateFormat.parse(dateStr);
 		return date;
 	}
@@ -299,8 +307,7 @@ public class ETLDateUtils extends DateUtils {
 	 * @return
 	 * @throws ParseException
 	 */
-	public static String dateCompare(String initDateStr, String keepDateStr,
-			String dateFormat) throws ParseException {
+	public static String dateCompare(String initDateStr, String keepDateStr, String dateFormat) throws ParseException {
 		String returnVal = "";
 		SimpleDateFormat sdf = new SimpleDateFormat(dateFormat);
 		Date initDate = stringToDate(initDateStr, sdf);
@@ -313,8 +320,7 @@ public class ETLDateUtils extends DateUtils {
 		return returnVal;
 	}
 
-	public static boolean dateCompare(String initDateStr, String keepDateStr)
-			throws ParseException {
+	public static boolean dateCompare(String initDateStr, String keepDateStr) throws ParseException {
 		SimpleDateFormat sdf = new SimpleDateFormat(ETLConstants.DATE_FORMAT_SSS);
 		Date initDate = stringToDate(initDateStr, sdf);
 		Date keepDate = stringToDate(keepDateStr, sdf);
@@ -332,8 +338,7 @@ public class ETLDateUtils extends DateUtils {
 	 * @return
 	 * @throws ParseException
 	 */
-	public static Date dateCompare(String initDateStr, String keepDateStr,
-			SimpleDateFormat sdf) throws ParseException {
+	public static Date dateCompare(String initDateStr, String keepDateStr, SimpleDateFormat sdf) throws ParseException {
 		Date initDate = stringToDate(initDateStr, sdf);
 		Date keepDate = stringToDate(keepDateStr, sdf);
 		if (initDate.after(keepDate)) {
@@ -373,12 +378,10 @@ public class ETLDateUtils extends DateUtils {
 		return sdf.format(new Date(t));
 	}
 
-	public static boolean ifShouldDelete(String start, String initDateStr,
-			String keepDateStr, SimpleDateFormat sdf) throws ParseException {
+	public static boolean ifShouldDelete(String start, String initDateStr, String keepDateStr, SimpleDateFormat sdf) throws ParseException {
 
 		Date startDay = stringToDate(start, sdf);
-		Date initDate = stringToDate(initDateStr, new SimpleDateFormat(
-				"yyyy-MM-dd"));
+		Date initDate = stringToDate(initDateStr, new SimpleDateFormat("yyyy-MM-dd"));
 		Date keepDate = stringToDate(keepDateStr, sdf);
 		if (startDay.before(initDate) || startDay.before(keepDate)) {
 			return true;
@@ -412,17 +415,14 @@ public class ETLDateUtils extends DateUtils {
 	 * @return
 	 * @throws ParseException
 	 */
-	public static boolean compareDate(String rangeStr, String coreStr)
-			throws ParseException {
-		SimpleDateFormat dateFormat = new SimpleDateFormat(
-				ETLConstants.DATE_FORMAT);
+	public static boolean compareDate(String rangeStr, String coreStr) throws ParseException {
+		SimpleDateFormat dateFormat = new SimpleDateFormat(ETLConstants.DATE_FORMAT);
 		boolean flag = false;
 		Date coreDate = stringToDate(coreStr, dateFormat);
 		String[] rangeStrArr = rangeStr.split(",");
 		Date rangeDateMin = stringToDate(rangeStrArr[0], dateFormat);
 		Date raneDateMax = stringToDate(rangeStrArr[1], dateFormat);
-		if ((coreDate.after(rangeDateMin) && coreDate.before(raneDateMax))
-				|| coreDate.equals(rangeDateMin)) {
+		if ((coreDate.after(rangeDateMin) && coreDate.before(raneDateMax)) || coreDate.equals(rangeDateMin)) {
 			flag = true;
 		}
 		return flag;
@@ -437,26 +437,24 @@ public class ETLDateUtils extends DateUtils {
 	 * @param dateFormat
 	 * @return
 	 */
-	public static String dateAddDays(Date time, int days,
-			SimpleDateFormat dateFormat) {
+	public static String dateAddDays(Date time, int days, SimpleDateFormat dateFormat) {
 		long timeLong = time.getTime() / 1000 + 60l * 60 * 24 * days;
 		time.setTime(timeLong * 1000);
 		String timeStr = dateFormat.format(time);
 		return timeStr;
 	}
 
-	public static String convertDateFormat(String date,
-			SimpleDateFormat formatBefore, SimpleDateFormat formatAfter)
-			throws ParseException {
+	public static String convertDateFormat(String date, SimpleDateFormat formatBefore, SimpleDateFormat formatAfter) throws ParseException {
 		String convertDateStr = formatAfter.format(formatBefore.parse(date));
 		return convertDateStr;
 	}
-	
-	public static String getToday(){
-		return  formatDate(getCurrTimestamp(),ETLConstants.DATE_FORMAT);
+
+	public static String getToday() {
+		return formatDate(getCurrTimestamp(), ETLConstants.DATE_FORMAT);
 	}
-	
-	public static Date getCurrTimestamp(){
+
+	public static Date getCurrTimestamp() {
 		return new Date(System.currentTimeMillis());
 	}
+
 }

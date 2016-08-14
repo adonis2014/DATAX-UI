@@ -66,6 +66,7 @@ public class ParamKey {
 	 * @default: 
 	 */
 	public final static String column_value_index = "columns_value";
+	
 	/* 
 	 * @name: delMode
 	 * @description:删除模式；由用户进行选择，0 写入前不删除，覆盖文件 1 上传数据之前truncate原表;2 上传数据之前delete原表
@@ -101,6 +102,43 @@ public class ParamKey {
      */
 	public final static String rowKeyRule = "rowKeyRule";
 	
+	 /*
+     * @name:isSaveOneObj 
+     * @description:是否合并保存一个字段
+     * @range:true,false
+     * @mandatory: false
+     * @default:true
+     */
+	public final static String isSaveOneObj = "isSaveOneObj";
 	
+	/*
+     * @name:oneObjColName 
+     * @description:合并保存的字段名
+     * @mandatory: false
+     * @default:data
+     */
+	public final static String oneObjColName = "oneObjColName";
+	
+	/*
+     * @name:oneObjName
+     * @description:合并保存的字段对应对象 EN_User-用户表
+     * @mandatory: false
+     * @default:1
+     */
+	public final static String oneObjName = "oneObjName";
+	/*
+     * @name:oneObjColumnNames
+     * @description:需要合并保存的字段名集合
+     * @mandatory: false
+     * @default:
+     */
+	public final static String oneObjColumnNames = "oneObjColumnNames";
+	/*
+     * @name:oneObjFamilyName
+     * @description:需要合并保存的列族名
+     * @mandatory: false
+     * @default:cf
+     */
+	public final static String oneObjFamilyName="oneObjFamilyName";
 
 }

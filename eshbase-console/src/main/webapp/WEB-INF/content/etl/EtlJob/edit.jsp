@@ -34,13 +34,7 @@
 										<td class="fieldtitle">ETL类型:</td>
 										<td class="fieldvalue"><mytags:dictSelect field="etlType" id="etlType" type="select" hasLabel="false" defaultVal="${obj.etlType}" codeType="1034" /></td>
 									</tr>
-									<tr>
-										<td class="fieldtitle">调度设置:</td>
-										<td class="fieldvalue"><input type="text"  validate="{required:true}" name="cronTrigger" value="${obj.cronTrigger }" /></td>
-										<c:if test="${not empty obj}">
-										<td class="fieldtitle">下次执行时间:</td>
-										<td class="fieldvalue">${obj.nextExeDate}</td>
-									</tr>
+								<c:if test="${not empty obj}">
 									<tr>
 										<td class="fieldtitle">状态:</td>
 										<td class="fieldvalue"><mytags:dictSelect field="status" id="status" type="label" hasLabel="false" defaultVal="${obj.status}" codeType="1003" /></td>
@@ -60,10 +54,9 @@
 									<td class="fieldvalue">${obj.updateDate }</td>
 								</tr>
 								</c:if>
-								<c:if test="${empty obj}"></tr></c:if>
 								<tr>
 									<td class="fieldtitle">备注:</td>
-									<td class="fieldvalue" colspan="3"><input type="text"  validate="{required:true}" name="remark" value="${obj.remark }" /></td>
+									<td class="fieldvalue" colspan="3"><input type="text"  name="remark" value="${obj.remark }" /></td>
 								</tr>
 									<tr>	
 										<td style="text-align:center;" colspan="4">

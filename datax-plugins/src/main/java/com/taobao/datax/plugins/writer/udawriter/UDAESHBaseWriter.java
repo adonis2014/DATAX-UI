@@ -3,6 +3,8 @@ package com.taobao.datax.plugins.writer.udawriter;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -16,11 +18,10 @@ import org.apache.log4j.Logger;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.elasticsearch.client.Client;
 import org.elasticsearch.client.transport.TransportClient;
-import org.elasticsearch.common.settings.ImmutableSettings;
 import org.elasticsearch.common.settings.Settings;
 import org.elasticsearch.common.transport.InetSocketTransportAddress;
+import org.elasticsearch.node.Node;
 
-import com.taobao.datax.common.constants.Constants;
 import com.taobao.datax.common.exception.DataExchangeException;
 import com.taobao.datax.common.model.AggregationRecord;
 import com.taobao.datax.common.plugin.Line;
@@ -28,6 +29,7 @@ import com.taobao.datax.common.plugin.LineReceiver;
 import com.taobao.datax.common.plugin.PluginParam;
 import com.taobao.datax.common.plugin.PluginStatus;
 import com.taobao.datax.common.plugin.Writer;
+import com.taobao.datax.common.util.ETLConstants;
 import com.taobao.datax.common.util.ETLDateUtils;
 import com.taobao.datax.common.util.ETLStringUtils;
 import com.taobao.datax.engine.plugin.DefaultLine;
@@ -37,6 +39,8 @@ public class UDAESHBaseWriter  extends Writer{
 	private static final int DEFAULT_BUFFER_SIZE = 16 * 1024 * 1024;
 
 	private String tablename;
+
+	private String encode = "utf-8";
 
 	private UDAESHBaseProxy proxy;
 
@@ -64,9 +68,14 @@ public class UDAESHBaseWriter  extends Writer{
 
 	private String hosts;
 	
+	// _id指定的字段
+	private int uniquekey = -1;
+	
+	private String parent;
 
 	ObjectMapper mapper = new ObjectMapper();
 
+	private Node node;
 
 	private Client client;
 
@@ -119,6 +128,7 @@ public class UDAESHBaseWriter  extends Writer{
 	public int init() {
 		tablename = param.getValue(ParamKey.htable);
 		hbase_conf = param.getValue(ParamKey.hbase_conf);
+		encode = param.getValue(ParamKey.encoding, "UTF-8");
 		delMode = param.getIntValue(ParamKey.delMode, 0);
 		bufferSize = param.getIntValue(ParamKey.bufferSize, DEFAULT_BUFFER_SIZE);
 		if (bufferSize < 0 || bufferSize >= 32 * 1024 * 1024) {
@@ -132,6 +142,9 @@ public class UDAESHBaseWriter  extends Writer{
 		this.number_of_replicas = param.getIntValue(ParamKey.number_of_replicas, 1);
 		this.typename = param.getValue(ParamKey.typename);
 		this.mapping_xml = param.getValue(ParamKey.mapping_xml);
+		try{
+			this.parent=param.getValue(ParamKey.parent,this.parent);
+		}catch(Exception ex){}
 		if (this.mapping_xml != null) {
 			FileInputStream is = null;
 			try {
@@ -159,13 +172,20 @@ public class UDAESHBaseWriter  extends Writer{
 		InetSocketTransportAddress[] transportAddress = new InetSocketTransportAddress[hosts.length];
 		for (String host : hosts) {
 			String[] hp = ETLStringUtils.split(host, ":");
-			transportAddress[id] = new InetSocketTransportAddress(hp[0], NumberUtils.toInt(hp[1], 9300));
+			try {
+				transportAddress[id] = new InetSocketTransportAddress(InetAddress.getByName(hp[0]), NumberUtils.toInt(hp[1], 9300));
+			} catch (UnknownHostException e) {
+				e.printStackTrace();
+			}
+//			transportAddress[id] = new InetSocketTransportAddress(hp[0], NumberUtils.toInt(hp[1], 9300));
 			id++;
 		}
-		Settings settings = ImmutableSettings.settingsBuilder().put("cluster.name", this.clustername).put("client.transport.sniff", true).build();
-		client = new TransportClient(settings).addTransportAddresses(transportAddress);
+		Settings settings = Settings.settingsBuilder().put("cluster.name", this.clustername).put("client.transport.sniff", true).build();
+		client = TransportClient.builder().settings(settings).build().addTransportAddresses(transportAddress);
+//client = new TransportClient(settings).addTransportAddresses(transportAddress);
 		try {
-			this.proxy = UDAESHBaseProxy.newProxy(hbase_conf, tablename,client,this.bufferSize,this.indexname,this.typename);
+			this.proxy = UDAESHBaseProxy.newProxy(hbase_conf, tablename,client,this.indexname,this.typename);
+			try{
 			String deleteRange=param.getValue(ParamKey.deleteRange);
 			if (ETLStringUtils.isNotEmpty(deleteRange)){
 				String[] ranges=ETLStringUtils.split(deleteRange, ";");
@@ -174,6 +194,9 @@ public class UDAESHBaseWriter  extends Writer{
 					proxy.deleteTableRows(rows[0],rows[1]);
 				}
 			}
+			}catch(IllegalArgumentException ex){
+			}
+			
 			this.proxy.setBufferSize(bufferSize);
 			if (null == this.proxy || !this.proxy.check()) {
 				throw new DataExchangeException("HBase Client initilize failed .");
@@ -208,7 +231,7 @@ public class UDAESHBaseWriter  extends Writer{
 	public int startWrite(LineReceiver receiver) {
 		//prepareEs,connect to elasticSearch Server & hbase Server
 		proxy.prepareEs();
-		UDADataProcessor dataProcessor=new UDADataProcessor(proxy);
+		UDADataProcessor dataProcessor=new UDADataProcessor(proxy,this.parent);
 		dataProcessor.setParam(param);
 		dataProcessor.init();
 		List<Line> lines=new ArrayList<Line>();
@@ -240,7 +263,11 @@ public class UDAESHBaseWriter  extends Writer{
 				this.getMonitor().lineFail(e.getMessage());
 			}
 		}
-
+		Map<String,AggregationRecord> rows=dataProcessor.getLines(lines);
+		//保存更新聚合记录
+		dataProcessor.saveOrUpdate(rows);
+		rows.clear();
+		lines.clear();
 		return PluginStatus.SUCCESS.value();
 	}
 
@@ -249,7 +276,7 @@ public class UDAESHBaseWriter  extends Writer{
 		if (day == null) {
 			return dateStr;
 		}
-		return ETLDateUtils.formatDate(day, Constants.DATE_FORMAT_SSS);
+		return ETLDateUtils.formatDate(day, ETLConstants.DATE_FORMAT_SSS);
 	}
 
 	public static int daysBetween(String smdate, String bdate) {
@@ -294,6 +321,7 @@ public class UDAESHBaseWriter  extends Writer{
 			client.close();
 			//node.close();
 			client=null;
+			node=null;
 			return PluginStatus.SUCCESS.value();
 		} catch (IOException e) {
 			throw new DataExchangeException(e.getCause());
@@ -313,7 +341,7 @@ public class UDAESHBaseWriter  extends Writer{
 	private void deleteESTables() throws Exception {
 		this.logger.info(String.format(
 				"ElasticSearchWriter begins to delete table %s .", this.indexname,this.typename));
-		proxy.deleteESTable(this.indexname,typename);
+		proxy.deleteESTable(this.indexname,number_of_shards, number_of_replicas, typename,this.mapping_xml);
 	}
 
 	private void truncateESTable() throws Exception {
