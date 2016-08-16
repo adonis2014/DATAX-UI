@@ -138,7 +138,6 @@
 				return;
 
 			var obj = $("#sample_1").find("td :checkbox:checked");
-			alert(obj.first().attr("data-type"));
 			$('input[id=plugin]').val(obj.first().attr("data-text"));
 			$('input[id=pluginId]').val(flag);
 			$('input[id=pluginType]').val(obj.first().attr("data-type"));

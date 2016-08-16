@@ -13,34 +13,29 @@
 					pageSize : 10,
 					checkboxType : 1,
 					colName : "dbName",
-					tableId : "#sample_1"
+					tableId : "#datasources"
 				},
 				null,
 				[
-					{cName:"dbName",cValue:"db名"},
-				 	{cName:"schemaName",cValue:"schema"},
-				 	{cName:"project",cValue:"项目",format:function(i,value,item){
-						  var $a = $('<a data-original-title="点击访问" data-placement="right" class="tooltips" href="../Project/show/'+item.project.id+'" >'+item.project.projectName+'</a>');
-						  return $a;
-					  }},
-				 	{cName:"driverClassName",cValue:"class"},
-				 	{cName:"dbType",cValue:"类别",format:function(i,value,item){
-				 		return dbtypeMap.get(item.dbType);
-				 	}},
-				 	{cName:"remark",cValue:"备注"}
+					{cName:"dsName",cValue:"ds名"},
+		 	{cName:"schemaName",cValue:"schema"},
+		 	
+			 	{cName:"dbType",cValue:"类别",format:function(i,value,item){
+			 		return dbtypeMap.get(item.dbType);
+			 	}},
+			 	{cName:"remark",cValue:"备注"}
 				 ]
 			);
 	});
 </script>
-<div id="datasourceList" class="modal hide fade" role="dialog"
-	aria-labelledby="myModalLabel" aria-hidden="true">
+<div id="datasourceList" class="modal hide fade" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 	<div class="modal-header">
 		<button type="button" class="close" data-dismiss="modal"
 			aria-hidden="true">&times;</button>
 		<h3>选择数据源</h3>
 	</div>
 	<div class="modal-body">
-		<table class="table table-striped table-bordered table-hover" id="sample_1">
+		<table class="table table-striped table-bordered table-hover" id="datasources">
 		</table>
 	</div>
 	<div class="modal-footer">

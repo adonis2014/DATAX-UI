@@ -8,7 +8,7 @@
 	<div class="page-content">
 		<div class="container-fluid">
 			<!-- 页面导航 -->
-			<tool:navBar pageTitle="数据源对象列表" pageTitleContent="内容管理-数据源对象管理-数据源对象列表" titleIcon="icon-home"/>
+			<tool:navBar pageTitle="数据源对象列表" pageTitleContent="元数据管理-数据源对象管理-数据源对象列表" titleIcon="icon-home"/>
 			<!-- 主体内容 -->
 			<div class="row-fluid">
 				<div class="span12">
@@ -24,12 +24,12 @@
 						</div>
 						<div class="portlet-body">
 							<div class="row-fluid">
-								<form class="queryForm span8">
+								<form class="queryForm span5">
 									<div class="row-fluid">
 	                                 	<div class="span7 ">
 		                                    <div class="control-group">
 		                                       <div class="controls">
-		                                          <input type="text" id="filters" class="m-wrap span12" placeholder="项目ID,jdbc driver classname,jdbc登录密码,jdbc连接url,数据库类别,jdbc用户,schema名称,db名称,建立者,更新者,建立世间,更新世间,备注">
+		                                          <input type="text" id="filters" class="m-wrap span10" placeholder="schema名称,ds名称,备注">
 		                                       </div>
 		                                    </div>
 	                                 	</div>
@@ -47,7 +47,7 @@
 	                                 	</div>
 									</div>
 								</form>
-								<tool:operBtns modelKey="datasource" modelName="meta"></tool:operBtns>
+								<tool:operBtns modelKey="datasource" modelName="meta" spannum="7"></tool:operBtns>
 							</div>
 							<table class="table table-striped table-bordered table-hover" id="sample_1">
 								
@@ -65,7 +65,8 @@
 $(document).ready(function() {
 	var dbtypeMap = new Map();  
 	<mytags:dictSelect field="dbtypeMap" id="dbtypeMap" type="map" hasLabel="false" codeType="10" />
-	
+	var statusMap = new Map();  
+	<mytags:dictSelect field="statusMap" id="statusMap" type="map" hasLabel="false" codeType="17" />
 	App.activeMenu("meta/DataSource/list");
 	
 	Page.initData(
@@ -77,29 +78,36 @@ $(document).ready(function() {
 		},
 		null,
 		[
-		 	{cName:"dbName",cValue:"db名"},
+		 	{cName:"dsName",cValue:"ds名"},
 		 	{cName:"schemaName",cValue:"schema"},
-		 	{cName:"project",cValue:"项目",format:function(i,value,item){
-				  var $a = $('<a data-original-title="点击访问" data-placement="right" class="tooltips" href="../Project/show/'+item.project.id+'" >'+item.project.projectName+'</a>');
-				  return $a;
-			  }},
-			 	{cName:"driverClassName",cValue:"class"},
-			 	{cName:"jdbcUser",cValue:"用户"},
-			 	{cName:"jdbcPassword",cValue:"登录密码"},
-			 	{cName:"jdbcUrl",cValue:"url"},
-			 	{cName:"dbType",cValue:"类别",format:function(i,value,item){
+		 	{cName:"dbType",cValue:"类别",format:function(i,value,item){
 			 		return dbtypeMap.get(item.dbType);
-			 	}},
-			 	{cName:"remark",cValue:"备注"}
+			 }},
+			{cName:"remark",cValue:"备注"},
+			{cName:"checkLabel",cValue:"状态",format:function(i,value,item){
+			  		return statusMap.get(item.checkLabel);
+			}},{cName:"operate",cValue:"元数据",format:function(i,value,item){
+			  		return '<a href="${ctx}/meta/DataSource/importMeta/'+item.id+'">导入</a>';
+			}}
 		 ]
 	);
 });
 
 function doQuery(){
 	var queryObj = {
-			search_LIKES_project_OR_driverCLassName_OR_jdbcPassword_OR_jdbcUrl_OR_dbType_OR_jdbcUser_OR_schemaName_OR_dbName_OR_createbyId_OR_updatebyId_OR_createDate_OR_updateDate_OR_remark : App.isEqPlacehoder($("#filters"))
+			search_LIKES_schemaName_OR_dsName_OR_remark : App.isEqPlacehoder($("#filters"))
 		};
 	Page.doQuery(queryObj);
+}
+function checkObj(){
+	var flag = Page.selectsPrompt();
+	if(!flag) return;
+	window.location.href = Page.subUrl() + "/setCheckLabel/" + flag;
+}
+function setupParam(){
+	var flag = Page.selectsPrompt();
+	if(!flag) return;
+	window.location.href = Page.subUrl() + "/setupParam/" + flag;
 }
 </script>
 </body>

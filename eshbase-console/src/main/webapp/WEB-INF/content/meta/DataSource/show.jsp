@@ -6,8 +6,6 @@
 <title>${pageTitle }</title>
 </head>
 <body>
-<%@ include file="/WEB-INF/content/meta/Project/selProject.jsp" %>
-
 	<div class="page-content">
 		<div class="container-fluid">
 			<!-- 页面导航 -->
@@ -28,137 +26,80 @@
 						<div class="portlet-body form">
 							<div class="form-horizontal form-view">
 								<h3 class="form-section">数据源信息<a class='btn purple pull-right' href="${header.Referer }">返回</a></h3>
+								<table width="100%" class="dbform">
+									<tbody>
+									<tr>
+										<th>schema:</th>
+										<td>${obj.schemaName}</td>
+										<th>名称:</th>
+										<td>${obj.dsName}</td>
+									</tr>
+									<tr>
+										<th>类别:</th>
+										<td>elasticsearch</td>
+										<th>备注:</th>
+										<td>${obj.remark}</td>
+									</tr>
+									<tr>
+										<th>建立者:</th>
+										<td>${obj.creater.name}</td>
+										<th>建立时间:</th>
+										<td><fmt:formatDate value="${obj.createDate}" type="both" pattern="yyyy-MM-dd"/></td>
+									</tr>
+									<tr>
+										<th>更新者:</th>
+										<td>${obj.updater.name}</td>
+										<th>更新时间:</th>
+										<td><fmt:formatDate value="${obj.updateDate}" type="both" pattern="yyyy-MM-dd"/></td>
+									</tr>
+								<c:forEach items="${properties}"  var="metaPro" varStatus="status">
+									<c:if test="${empty currGroup or metaPro.group!=currGroup}">
+									<tr>
+										<td colspan="4" class="info-title">${metaPro.groupName}
+										<c:set var="currGroup" value="${metaPro.group}" ></c:set>
+										<c:set var="id" value="0" ></c:set>
+										</td>
+									</tr>
+									<tr>
+									</c:if>
+									<c:set var="id" value="${id+1}" ></c:set>
+										<th>${metaPro.remark}:</th>
+										<td>${metaPro.propertyValue}</td>
+									<c:if test="${id % 2 == 0}"></tr>
+									<tr></c:if>
+								</c:forEach>
+										</tbody>
+								</table>
+								
+								<br/>
+								
 								<div class="row-fluid">
-									<div class="span12 ">
-										<div class="control-group">
-											<label class="control-label">项目:</label>
-											<div class="controls">
-													<span class="text bold">
-														${obj.project.projectName}
-													</span>
-											</div>
-										</div>
-									</div>
-								</div>
-								<div class="row-fluid">
-									<div class="span6 ">
-										<div class="control-group">
-											<label class="control-label" >schema名称:</label>
-											<div class="controls">
-												<span class="text">${obj.schemaName}</span>
-											</div>
-										</div>
-									</div>
-									<!--/span-->
-									<div class="span6 ">
-										<div class="control-group">
-											<label class="control-label" >db名称:</label>
-											<div class="controls">
-												<span class="text">${obj.dbName}</span>
-											</div>
-										</div>
-									</div>
-								</div>
-								<div class="row-fluid">
-									<div class="span6 ">
-										<div class="control-group">
-											<label class="control-label" >jdbc class:</label>
-											<div class="controls">
-												<span class="text">${obj.driverClassName}</span>
-											</div>
-										</div>
-									</div>
-									<!--/span-->
-									<div class="span6 ">
-										<div class="control-group">
-											<label class="control-label" >jdbc url:</label>
-											<div class="controls">
-												<span class="text">${obj.jdbcUrl}</span>
-											</div>
-										</div>
-									</div>
-								</div>
-								<div class="row-fluid">
-									<div class="span6 ">
-										<div class="control-group">
-											<label class="control-label" >jdbc 用户:</label>
-											<div class="controls">
-												<span class="text">${obj.jdbcUser}</span>
-											</div>
-										</div>
-									</div>
-									<!--/span-->
-									<div class="span6 ">
-										<div class="control-group">
-											<label class="control-label">jdbc 登录密码:</label>
-											<div class="controls">
-												<span class="text">${obj.jdbcPassword}</span>
-											</div>
-										</div>
-									</div>
-								</div>
-								<div class="row-fluid">
-									<div class="span12 ">
-										<div class="control-group">
-											<label class="control-label">数据库类别:</label>
-											<div class="controls">
-													<span class="text">
-														<mytags:dictSelect field="dbType" type="text" id="dbType" defaultVal="${obj.dbType}" hasLabel="false" codeType="10" />
-													</span>
-											</div>
-										</div>
-									</div>
-								</div>
-								<div class="row-fluid">
-									<div class="span6 ">
-										<div class="control-group">
-											<label class="control-label" >建立者:</label>
-											<div class="controls">
-												<span class="text">${obj.creater.name}</span>
-											</div>
-										</div>
-									</div>
-									<!--/span-->
-									<div class="span6 ">
-										<div class="control-group">
-											<label class="control-label">建立时间:</label>
-											<div class="controls">
-												<span class="text">${obj.createDate }</span>
-											</div>
-										</div>
-									</div>
-								</div>
-								<div class="row-fluid">
-									<div class="span6 ">
-										<div class="control-group">
-											<label class="control-label" >更新者:</label>
-											<div class="controls">
-												<span class="text">${obj.updater.name}</span>
-											</div>
-										</div>
-									</div>
-									<!--/span-->
-									<div class="span6 ">
-										<div class="control-group">
-											<label class="control-label">更新时间:</label>
-											<div class="controls">
-												<span class="text">${obj.updateDate }</span>
-											</div>
-										</div>
-									</div>
-								</div>
-								<div class="row-fluid">
-									<div class="span12 ">
-										<div class="control-group">
-											<label class="control-label">备注:</label>
-											<div class="controls">
-													<span class="text">
-														${obj.remark }
-													</span>
-											</div>
-										</div>
-									</div>
-								</div>
+	<table width="100%" class="table table-striped table-bordered table-hover">
+		<thead>
+			<tr>
+				<th>数据库名</th>
+				<th>schema名</th>
+				<th>更新时间</th>
+				<th>建立时间</th>
+				<th>启用标记</th>
+				<th>备注</th>
+			</tr>
+		</thead>
+		<tbody>
+			<c:forEach var="table" items="${obj.databases}">
+			<tr>
+				<td><a href='${ctx}/meta/Database/show/${table.id}'>${table.dbname}</a></td>
+				<td>${table.schemaName}</td>
+				<td><fmt:formatDate value="${table.updateDate}" type="both" pattern="yyyy-MM-dd"/></td>
+				<td><fmt:formatDate value="${table.createDate}" type="both" pattern="yyyy-MM-dd"/></td>
+				<td>${table.checkLabel}</td>
+				<td>${table.remark}</td>
+			</tr>
+			</c:forEach>
+		
+		</tbody>
+	</table>
+</div>
 						</div>
 					</div>
 				</div>
@@ -169,20 +110,9 @@
 <%@ include file="/WEB-INF/content/common/plugins/jquery-validation.jsp"%>
 <script type="text/javascript">
 	$(function(){
-		App.activeMenu("meta/dataSource/list");
+		App.activeMenu("meta/DataSource/list");
 	});
-	function showProject(){
-		$("#projectList").modal();
-	}
-	function selProject(obj){
-		var flag = Page.selectsPrompt();
-		if(!flag) return;
-		
-		var obj = $("#sample_1").find("td :checkbox:checked");
-		$('input[id=projectName]').val(obj.first().attr("data-text"));
-		$('input[id=projectId]').val(flag);
-		$('#projectList').modal('hide');
-	}
+	
 </script>
 </body>
 </html>

@@ -247,5 +247,19 @@ public class DBTable extends IdEntity {
 		}
 		return null;
 	}
+	
+	
+	
+	public DbColumn getNewDbColumn(String columnName) {
+		if (columns!=null){
+			for(DbColumn column:columns){
+				if (column.getFieldCode().equalsIgnoreCase(columnName)){
+					return column;
+				}
+			}
+		}
+		return new DbColumn();
+	}
+
 
 }

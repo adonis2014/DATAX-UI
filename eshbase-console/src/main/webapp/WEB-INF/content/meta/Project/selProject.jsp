@@ -11,17 +11,12 @@
 					pageSize : 10,
 					checkboxType : 1,
 					colName : "projectName",
-					tableId : "#sample_1"
+					tableId : "#projects"
 				},
 				null,
 				[
 					 	{cName:"projectCode",cValue:"项目编码"},
 					 	{cName:"projectName",cValue:"项目名称"},
-					 	{cName:"creater",cValue:"建立者",format:function(i,value,item){
-							 if(App.isNundef(value)){
-								 return value.name;
-							 }
-						 }},
 					 	{cName:"remark",cValue:"备注"}
 				 ]
 			);
@@ -39,7 +34,7 @@
 		<h3>选择项目</h3>
 	</div>
 	<div class="modal-body">
-		<table class="table table-striped table-bordered table-hover" id="sample_1">
+		<table class="table table-striped table-bordered table-hover" id="projects">
 		</table>
 	</div>
 	<div class="modal-footer">

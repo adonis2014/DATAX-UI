@@ -4,14 +4,20 @@
 <%@ taglib prefix="shiro" uri="http://shiro.apache.org/tags" %>
 <%@ attribute name="modelKey" type="java.lang.String" required="true" description="模块key" %>
 <%@ attribute name="modelName" type="java.lang.String" required="false" description="模块名" rtexprvalue="true"%>
+<%@ attribute name="spannum" type="java.lang.String" required="false" description="span数目" rtexprvalue="true"%>
 
-<div class="span5 pull-right">
+<div class="span${empty spannum?5:spannum} pull-right">
 	<shiro:hasPermission name="${modelName}:${modelKey }:add">
 		<a class="btn green" href="javascript:void(0)" onclick="Page.addObj();">
 			添加 <i class="icon-plus"></i>
 		</a>
 	</shiro:hasPermission>
 	<shiro:hasPermission name="${modelName}:${modelKey }:edit">
+	<a class="btn blue" href="javascript:void(0);" onclick="Page.updateObj();">
+			修改<i class="icon-pencil"></i>
+	</a>
+	</shiro:hasPermission>
+	<shiro:hasPermission name="${modelName}:${modelKey }:update">
 	<a class="btn blue" href="javascript:void(0);" onclick="Page.updateObj();">
 			修改<i class="icon-pencil"></i>
 	</a>
@@ -29,6 +35,16 @@
 	<shiro:hasPermission name="${modelName}:${modelKey }:check">
 	<a class="btn blue" href="javascript:void(0);" onclick="checkObj();">
 			启停<i class="icon-search"></i>
+	</a>
+	</shiro:hasPermission>
+	<shiro:hasPermission name="${modelName}:${modelKey }:setCheckLabel">
+	<a class="btn blue" href="javascript:void(0);" onclick="checkObj();">
+			启停<i class="icon-search"></i>
+	</a>
+	</shiro:hasPermission>
+	<shiro:hasPermission name="${modelName}:${modelKey }:setupParam">
+	<a class="btn blue" href="javascript:void(0);" onclick="setupParam();">
+			参数设置<i class="icon-search"></i>
 	</a>
 	</shiro:hasPermission>
 	<shiro:hasPermission name="${modelName}:${modelKey }:execute">

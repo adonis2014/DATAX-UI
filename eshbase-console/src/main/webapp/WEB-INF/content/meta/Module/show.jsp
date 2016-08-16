@@ -1,12 +1,11 @@
 <%@ page contentType="text/html;charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/content/common/common.jsp"%>
-<c:set var="pageTitle" value="${empty obj ? '添加模块对象':'修改模块对象' }" scope="page" />
+<c:set var="pageTitle" value="${'模块详细信息'}" scope="page" />
 <html>
 <head>
 <title>${pageTitle }</title>
 </head>
 <body>
-<%@ include file="/WEB-INF/content/meta/Project/selProject.jsp" %>
 	<div class="page-content">
 		<div class="container-fluid">
 			<!-- 页面导航 -->
@@ -17,40 +16,36 @@
 					<div class="portlet box blue">
 						<div class="portlet-title">
 							<h4>
-								<i class="icon-reorder"></i>请填写表单
+								<i class="icon-reorder"></i>${pageTitle }
 							</h4>
 							<div class="tools">
 								<a href="javascript:;" class="collapse"></a> <a href="javascript:;" class="remove"></a>
 							</div>
 						</div>
 						<div class="portlet-body form">
-							<form action="${ctx}/meta/Module/edit" class="form-horizontal form_sync" method="post" id="form1">
-								<input type="hidden" value="${obj.id}" name="id"/>
-								<input type="hidden" value="${obj.project.id}" name="project.id" id="projectId"/>
+							<form action="${ctx}/meta/module/edit" class="form-horizontal form_sync" method="post" id="form1">
+
+								<input type="hidden" value="${obj.id}" name="id">
 								<table width="100%" class="dbform">
 									<tr>
 										<td class="fieldtitle">项目:</td>
-										<td class="fieldvalue"><input type="text" class="span8 m-wrap" validate="{required:true}" name="projectname" id="project"  readonly="readonly" onfocus="showProjects()" value="${obj.project.projectName}" /></td>
+										<td class="fieldvalue"><a href="${ctx}/meta/Project/show/${obj.project.id}" target="_blank">${obj.project.projectName}</a></td>
 										<td class="fieldtitle">数据源:</td>
 										<td class="fieldvalue">
-										<select name="datasource.id">
-											<c:forEach items="${datasources}" var="ds">
-											<option value="${ds.id}">${ds.dsName}</option>
-											</c:forEach>
-										</select>
+										<a href="${ctx}/meta/DataSource/show/${obj.datasource.id}" target="_blank">${obj.datasource.dsName}</a>
 										</td>
 									</tr>
 									<tr>
 										<td class="fieldtitle">模块编码:</td>
-										<td class="fieldvalue"><input type="text" class="span8 m-wrap" validate="{required:true}" name="moduleCode" value="${obj.moduleCode }" /></td>
+										<td class="fieldvalue">${obj.moduleCode }</td>
 										<td class="fieldtitle">模块名:</td>
-										<td class="fieldvalue"><input type="text" class="span8 m-wrap" validate="{required:true}" name="moduleName" value="${obj.moduleName }" /></td>
+										<td class="fieldvalue">${obj.moduleName }</td>
 									</tr>
 									<tr>
 										<td class="fieldtitle">包名:</td>
-										<td class="fieldvalue"><input type="text" class="span8 m-wrap" validate="{required:true}" name="packageName" value="${obj.packageName }" /></td>
+										<td class="fieldvalue">${obj.packageName }</td>
 										<td class="fieldtitle">备注:</td>
-										<td class="fieldvalue"><input type="text" class="span8 m-wrap" name="remark" value="${obj.remark }" /></td>
+										<td class="fieldvalue">${obj.remark }</td>
 									</tr>
 									<c:if test="${not empty obj}">
 									<tr>
@@ -69,6 +64,36 @@
 									<button type="submit" class="btn blue">提交</button>
 									<a class='btn' href="${header.Referer }">返回</a>
 								</div>
+								<div class="portlet-body">
+								<table width="100%" class="dbgrid">
+									<thead>
+										<tr>
+											<th>数据源</th>
+											<th>表名</th>
+											<th>逻辑名</th>
+											<th>表类别</th>
+											<th>建立者</th>
+											<th>最后更新者</th>
+											<th>最后更新时间</th>
+											<th>备注</th>
+										</tr>
+									</thead>
+									<tbody>
+									<c:forEach items="${obj.tables}" var="table">
+										<tr>
+											<td><a href="">${table.datasource.dsName}</a></td>
+											<td>${table.tableName}</td>
+											<td>${table.tablePname}</td>
+											<td><mytags:dictSelect field="tableType" defaultVal="${table.tableType}" type="label" hasLabel="false"/> </td>
+											<td>${table.creater.name}</td>
+											<td>${table.updater.name}</td>
+											<td>${table.updateDate}</td>
+											<td>${table.remark}</td>
+										</tr>
+									</c:forEach>
+									</tbody>
+							</table>
+								</div>
 							</form>
 						</div>
 					</div>
@@ -81,28 +106,6 @@
 		$(function() {
 			App.activeMenu("meta/Module/list");
 		});
-		function showProjects() {
-			$("#projectList").modal();v
-		}
-		function selProject() {
-			var flag = Page.selectsPrompt();
-			if (!flag)return;
-			var obj = $("#projects").find("td :checkbox:checked");
-			$('input[id=project]').val(obj.first().attr("data-text"));
-			$('input[id=projectId]').val(flag);
-			$('#projectList').modal('hide');
-		}
-		function showDatasources(){
-			$("#datasourceList").modal();
-		}
-		function selDataSource(obj) {
-			var flag = Page.selectsPrompt();
-			if (!flag)return;
-			var obj = $("#datasources").find("td :checkbox:checked");
-			$('input[id=datasource]').val(obj.first().attr("data-text"));
-			$('input[id=datasourceId]').val(flag);
-			$('#datasourceList').modal('hide');
-		}
 	</script>
 </body>
 </html>

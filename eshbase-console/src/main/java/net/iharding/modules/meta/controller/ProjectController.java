@@ -51,7 +51,7 @@ public class ProjectController extends BaseController<Project>{
 	@RequestMapping(method = RequestMethod.GET, value = "/setCheckLabel/{id}")
 	public String setCheckLabel(@PathVariable("id") Long id) throws Exception {
 		Project obj = projectService.get(id);
-		if (obj.getCheckLabel()==0){
+		if (obj.getCheckLabel()==null || obj.getCheckLabel()==0){
 			obj.setCheckLabel(1);
 		}else{
 			obj.setCheckLabel(0);

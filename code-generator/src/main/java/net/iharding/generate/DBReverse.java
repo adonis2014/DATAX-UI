@@ -109,7 +109,7 @@ public class DBReverse {
 			if (dataSource.getDbType()==Constants.DBMS_TYPE_MSSQL){
 				rs = dmd.getColumns(null, null, tableName, "%");
 			}else{
-				rs = dmd.getColumns(dataSource.getDbName(), dataSource.getSchemaName(), tableName, "%");
+				rs = dmd.getColumns(dataSource.getDsName(), dataSource.getSchemaName(), tableName, "%");
 			}
 			while (rs.next()) {
 				int colType = rs.getInt(5);
@@ -212,8 +212,8 @@ public class DBReverse {
 	}
 
 	public Connection getConnection(DataSource dataSource) throws ClassNotFoundException, SQLException{
-		Class.forName(dataSource.getDriverClassName());
-		return DriverManager.getConnection(dataSource.getJdbcUrl(),dataSource.getJdbcUser(),dataSource.getJdbcPassword());
+//		Class.forName(dataSource.getDriverClassName());
+		return null;// DriverManager.getConnection(dataSource.getJdbcUrl(),dataSource.getJdbcUser(),dataSource.getJdbcPassword());
 	}
 	
 	public Module reverseModule(Module module,String classAuthor) throws ClassNotFoundException, SQLException{
@@ -222,11 +222,11 @@ public class DBReverse {
 		DatabaseMetaData dmd = conn.getMetaData();
 		String[] tabletypes = { "TABLE" };
 		if (module.getDatasource().getDbType()==Constants.DBMS_TYPE_ORACLE){
-			rs = dmd.getTables(module.getDatasource().getDbName(), module.getDatasource().getSchemaName(), "%", tabletypes);
+			rs = dmd.getTables(module.getDatasource().getDsName(), module.getDatasource().getSchemaName(), "%", tabletypes);
 		}else if (module.getDatasource().getDbType()==Constants.DBMS_TYPE_MSSQL){
 			rs = dmd.getTables(null, null, "%", null);
 		}else{
-			rs = dmd.getTables(module.getDatasource().getDbName(), null, null, tabletypes);
+			rs = dmd.getTables(module.getDatasource().getDsName(), null, null, tabletypes);
 		}
 		while (rs.next()) {
 			if (rs.getString(4).equalsIgnoreCase("table")) {

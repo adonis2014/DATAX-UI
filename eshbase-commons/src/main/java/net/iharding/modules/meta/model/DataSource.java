@@ -1,6 +1,7 @@
 package net.iharding.modules.meta.model;
 
 import java.util.Date;
+import java.util.HashSet;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -16,12 +17,14 @@ import javax.persistence.Table;
 import net.iharding.core.orm.IdEntity;
 
 import org.guess.sys.model.User;
+import org.guess.sys.util.UserUtil;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.annotations.NotFound;
 import org.hibernate.annotations.NotFoundAction;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 
 /**
  * 数据源Entity
@@ -38,30 +41,8 @@ public class DataSource extends IdEntity {
 	@OrderBy("id ASC")
 	private Set<Database> databases;
 	
-	/**
-	 * jdbc驱动
-	 */
-	@Column(name="driver_class_name")
-	private String driverClassName;
-	
-	/**
-	 * jdbc URL
-	 */
-	@Column(name="jdbc_url")
-	private String jdbcUrl;
-	/**
-	 * jdbc用户
-	 */
-	@Column(name="jdbc_user")
-	private String jdbcUser;
-	/**
-	 * jdbc用户
-	 */
-	@Column(name="jdbc_password")
-	private String jdbcPassword;
-	
-	@Column(name="db_name")
-	private String dbName;
+	@Column(name="ds_name")
+	private String dsName;
 	
 	@Column(name="schema_name")
 	private String schemaName;
@@ -122,21 +103,14 @@ public class DataSource extends IdEntity {
 	}
 
 
-	@Column(name="driver_class_name")
-	public String getDriverClassName() {
-		return driverClassName;
-	}
-
-	public void setDriverClassName(String driverClassName) {
-		this.driverClassName = driverClassName;
-	}
 	
-	public String getDbName() {
-		return dbName;
+	
+	public String getDsName() {
+		return dsName;
 	}
 
-	public void setDbName(String dbName) {
-		this.dbName = dbName;
+	public void setDsName(String dsName) {
+		this.dsName = dsName;
 	}
 
 	public String getSchemaName() {
@@ -145,33 +119,6 @@ public class DataSource extends IdEntity {
 
 	public void setSchemaName(String schemaName) {
 		this.schemaName = schemaName;
-	}
-
-	@Column(name="jdbc_url")
-	public String getJdbcUrl() {
-		return jdbcUrl;
-	}
-
-	public void setJdbcUrl(String jdbcUrl) {
-		this.jdbcUrl = jdbcUrl;
-	}
-	
-	@Column(name="jdbc_user")
-	public String getJdbcUser() {
-		return jdbcUser;
-	}
-
-	public void setJdbcUser(String jdbcUser) {
-		this.jdbcUser = jdbcUser;
-	}
-	
-	@Column(name="jdbc_password")
-	public String getJdbcPassword() {
-		return jdbcPassword;
-	}
-
-	public void setJdbcPassword(String jdbcPassword) {
-		this.jdbcPassword = jdbcPassword;
 	}
 	
 	public String getRemark() {
@@ -225,5 +172,40 @@ public class DataSource extends IdEntity {
 		this.createDate = createDate;
 	}
 	
+	public void addDatabase(Database db) {
+		if (databases==null){
+			databases=new HashSet<Database>();
+		}
+		databases.add(db);
+	}
+	
+	public Database getDatabase(String dbname){
+		if (databases!=null){
+			for(Database tdb:databases){
+				if (tdb.getDatasource().id==this.id && tdb.getDbname().equalsIgnoreCase(dbname)){
+					return tdb;
+				}
+			}
+		}
+		Database db=new Database();
+		db.setCreateDate(new Date());
+		User cuser = UserUtil.getCurrentUser();
+		db.setCreater(cuser);
+		return db;
+	}
+	/**
+	 * 将状态设置为未启用
+	 */
+	public void setCheckLabelFalse(){
+		for (Database db:databases){
+			db.setCheckLabel(0);
+			for(DBTable table:db.getTables()){
+				table.setCheckLabel(0);
+				for(DbColumn column:table.getColumns()){
+					column.setCheckLabel(0);
+				}
+			}
+		}
+	}
 	
 }

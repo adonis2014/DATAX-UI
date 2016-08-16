@@ -27,58 +27,29 @@
 						<div class="portlet-body form">
 							<form action="${ctx}/meta/Project/edit" class="form-horizontal form_sync" method="post" id="form1">
 								<input type="hidden" name="id" value="${obj.id}" />
-								<div class="control-group">
-									<label class="control-label">项目编码:</label>
-									<div class="controls">
-										<input type="text" class="span6 m-wrap"
-											validate="{required:true}"
-											name="projectCode" value="${obj.projectCode }" />
-									</div>
-								</div>
-								<div class="control-group">
-									<label class="control-label">项目名称:</label>
-									<div class="controls">
-										<input type="text" class="span6 m-wrap"
-											validate="{required:true}"
-											name="projectName" value="${obj.projectName }" />
-									</div>
-								</div>
-								<c:if test="${not empty obj}">
-								<div class="control-group">
-									<label class="control-label">建立者:</label>
-									<div class="controls">
-										${obj.creater.name}
-									</div>
-								</div>
-								<div class="control-group">
-									<label class="control-label">更新者:</label>
-									<div class="controls">
-										${obj.updater.name}
-									</div>
-								</div>
-								<div class="control-group">
-									<label class="control-label">建立时间:</label>
-									<div class="controls">
-										${obj.createDate }
-									</div>
-								</div>
-								<div class="control-group">
-									<label class="control-label">更新时间:</label>
-									<div class="controls">
-										${obj.updateDate }
-									</div>
-								</div>
+								<table width="100%" class="dbform">
+									<tr>
+										<th class="fieldtitle">项目编码:</th><td class="fieldvalue"><input type="text"  validate="{required:true}" name="projectCode" value="${obj.projectCode }" /></td>
+										<th class="fieldtitle">项目名称:</th><td class="fieldvalue"><input type="text"  validate="{required:true}" name="projectName" value="${obj.projectName }" /></td>
+									</tr>
+									<c:if test="${not empty obj}">
+								<tr>
+										<th class="fieldtitle">建立者:</th><td class="fieldvalue">${obj.creater.name}</td>
+										<th class="fieldtitle">更新者:</th><td class="fieldvalue">${obj.updater.name}</td>
+								</tr>
+								<tr>
+										<th class="fieldtitle">建立时间:</th>
+										<td class="fieldvalue">${obj.createDate }</td>
+										<th class="fieldtitle">更新时间:</th>
+										<td class="fieldvalue">${obj.updateDate }</td>
+								</tr>
 								</c:if>
-								<div class="control-group">
-									<label class="control-label">备注:</label>
-									<div class="controls">
-										<input type="text" class="span6 m-wrap"
-											validate="{required:true}"
-											name="remark" value="${obj.remark }" />
-									</div>
-								</div>
-								
-								
+								<tr>
+										<th class="fieldtitle">备注:</th>
+										<td class="fieldvalue" colspan="3"><input type="text" class="span10"  name="remark" value="${obj.remark }" /></td>
+								</tr>
+								</table>
+								<br/>
 								<div class="form-actions">
 									<button type="submit" class="btn blue">提交</button>
 									<a class='btn' href="${header.Referer }">返回</a>

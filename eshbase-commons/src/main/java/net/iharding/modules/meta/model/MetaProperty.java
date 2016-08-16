@@ -11,6 +11,7 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 /**
  * 元数据关注Entity
+ * 
  * @author Joe.zhang
  * @version 2016-05-18
  */
@@ -43,7 +44,16 @@ public class MetaProperty extends IdEntity {
 	 * 备注
 	 */
 	private String remark;
-	
+
+	@Column(name = "sort_id")
+	private Long sortId;
+
+	@Column(name = "group_id")
+	private String group;
+
+	@Column(name = "group_name")
+	private String groupName;
+
 	public String getPropertyKey() {
 		return propertyKey;
 	}
@@ -51,7 +61,7 @@ public class MetaProperty extends IdEntity {
 	public void setPropertyKey(String propertyKey) {
 		this.propertyKey = propertyKey;
 	}
-	
+
 	public String getPropertyValue() {
 		return propertyValue;
 	}
@@ -59,7 +69,31 @@ public class MetaProperty extends IdEntity {
 	public void setPropertyValue(String propertyValue) {
 		this.propertyValue = propertyValue;
 	}
-	
+
+	public Long getSortId() {
+		return sortId;
+	}
+
+	public void setSortId(Long sortId) {
+		this.sortId = sortId;
+	}
+
+	public String getGroup() {
+		return group;
+	}
+
+	public void setGroup(String group) {
+		this.group = group;
+	}
+
+	public String getGroupName() {
+		return groupName;
+	}
+
+	public void setGroupName(String groupName) {
+		this.groupName = groupName;
+	}
+
 	public Integer getRefType() {
 		return refType;
 	}
@@ -67,7 +101,7 @@ public class MetaProperty extends IdEntity {
 	public void setRefType(Integer refType) {
 		this.refType = refType;
 	}
-	
+
 	public Long getRefId() {
 		return refId;
 	}
@@ -75,7 +109,7 @@ public class MetaProperty extends IdEntity {
 	public void setRefId(Long refId) {
 		this.refId = refId;
 	}
-	
+
 	public String getRemark() {
 		return remark;
 	}
@@ -83,6 +117,5 @@ public class MetaProperty extends IdEntity {
 	public void setRemark(String remark) {
 		this.remark = remark;
 	}
-	
-	
+
 }

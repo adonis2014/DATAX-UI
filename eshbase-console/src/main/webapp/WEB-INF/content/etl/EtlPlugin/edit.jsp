@@ -67,7 +67,7 @@
 								
 							</div>
 						</div>
-						<form action="${ctx}/etl/EtlPluginParam/edit" class="form-horizontal form_sync" method="post" id="form1">
+						<form action="${ctx}/etl/EtlPluginParam/saveParam" class="form-horizontal form_sync" method="post" id="form1">
 								<input type="hidden" value="${obj.id}" name="plugin.id">
 						<div class="portlet-body form">
 							<table width="100%" class="dbgrid">

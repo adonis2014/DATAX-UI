@@ -46,13 +46,15 @@ public class EtlPluginParamController extends BaseController<EtlPluginParam>{
 	 * @return
 	 * @throws Exception
 	 */
-	@RequestMapping(method = RequestMethod.POST, value = "/edit")
-	public String create(@Valid EtlPluginParam object) throws Exception {
+	@RequestMapping(method = RequestMethod.POST, value = "/saveParam")
+	public ModelAndView savePluginParam(@Valid EtlPluginParam object) throws Exception {
 //		object.setPlugin(etlPluginService.get(object.getPlugin().getId()));
 		etlPluginParamService.save(object);
-		EtlPlugin obj = etlPluginService.get(object.getId());
-		this.request.setAttribute("obj",obj);
-		return REDIRECT + editView;
+		EtlPlugin obj = etlPluginService.get(object.getPlugin().getId());
+		ModelAndView mav = new ModelAndView(editView);
+		mav.addObject("obj", obj);
+		
+		return mav;
 	}
 	
 	/**

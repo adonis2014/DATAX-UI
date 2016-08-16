@@ -8,7 +8,7 @@
 	<div class="page-content">
 		<div class="container-fluid">
 			<!-- 页面导航 -->
-			<tool:navBar pageTitle="项目对象列表" pageTitleContent="内容管理-项目对象管理-项目对象列表" titleIcon="icon-home"/>
+			<tool:navBar pageTitle="项目对象列表" pageTitleContent="元数据管理-项目对象管理-项目对象列表" titleIcon="icon-home"/>
 			<!-- 主体内容 -->
 			<div class="row-fluid">
 				<div class="span12">
@@ -24,16 +24,16 @@
 						</div>
 						<div class="portlet-body">
 							<div class="row-fluid">
-								<form class="queryForm span8">
+								<form class="queryForm span7">
 									<div class="row-fluid">
-	                                 	<div class="span7 ">
+	                                 	<div class="span6 ">
 		                                    <div class="control-group">
 		                                       <div class="controls">
 		                                          <input type="text" id="filters" class="m-wrap span12" placeholder="项目编码,项目名称,备注">
 		                                       </div>
 		                                    </div>
 	                                 	</div>
-	                                 	<div class="span5 ">
+	                                 	<div class="span4 ">
 		                                    <div class="control-group">
 		                                       <div class="controls">
 		                                         <a class="btn blue" href="javascript:void(0)" onclick="javascript:doQuery();">
@@ -59,11 +59,13 @@
 		</div>
 	</div>
 <%@ include file="/WEB-INF/content/common/plugins/page.jsp"%>
+<script type="text/javascript" src="${ctx}/assets/js/map.js"></script>
+
 <script type="text/javascript">
 $(document).ready(function() {
-	
 	App.activeMenu("meta/Project/list");
-	
+	var statusMap = new Map();  
+	<mytags:dictSelect field="statusMap" id="statusMap" type="map" hasLabel="false" codeType="17" />
 	Page.initData(
 		{
 			url:"${ctx}/meta/Project/page",
@@ -74,15 +76,12 @@ $(document).ready(function() {
 		null,
 		[
 			 	{cName:"projectCode",cValue:"项目编码"},
-
 			 	{cName:"projectName",cValue:"项目名称"},
-
 			 	{cName:"creater",cValue:"建立者",format:function(i,value,item){
 					 if(App.isNundef(value)){
 						 return value.name;
 					 }
 				 }},
-
 			 	{cName:"updater",cValue:"更新者",format:function(i,value,item){
 					 if(App.isNundef(value)){
 						 return value.name;
@@ -100,7 +99,9 @@ $(document).ready(function() {
 					 }
 					 return value;
 				 }},
-			  	{cName:"remark",cValue:"备注"}
+			  	{cName:"checkLabel",cValue:"状态",format:function(i,value,item){
+			  		return statusMap.get(item.checkLabel);
+				 }}
 		 ]
 	);
 });
@@ -110,6 +111,13 @@ function doQuery(){
 			search_LIKES_projectCode_OR_projectName_OR_remark : App.isEqPlacehoder($("#filters"))
 		};
 	Page.doQuery(queryObj);
+}
+
+function checkObj(){
+	var flag = Page.selectsPrompt();
+	if(!flag) return;
+	window.location.href = Page.subUrl() + "/setCheckLabel/" + flag;
+	
 }
 </script>
 </body>

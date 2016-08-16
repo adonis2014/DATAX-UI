@@ -1,6 +1,7 @@
 package net.iharding.modules.meta.model;
 
 import java.util.Date;
+import java.util.HashSet;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -17,6 +18,7 @@ import net.iharding.core.orm.IdEntity;
 import net.iharding.modules.job.model.JobExecutionInfo;
 
 import org.guess.sys.model.User;
+import org.guess.sys.util.UserUtil;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.annotations.NotFound;
@@ -185,5 +187,25 @@ public class Database extends IdEntity {
 		this.remark = remark;
 	}
 	
-	
+	public void addTable(DBTable table) {
+		if (tables == null) {
+			tables = new HashSet<DBTable>();
+		}
+		tables.add(table);
+	}
+
+	public DBTable getDBTable(String tableName) {
+		if (tables!=null){
+			for(DBTable tdb:tables){
+				if (tdb.getDatabase().id==this.id && tdb.getTableName().equalsIgnoreCase(tableName)){
+					return tdb;
+				}
+			}
+		}
+		DBTable table=new DBTable();
+		table.setCreateDate(new Date());
+		User cuser = UserUtil.getCurrentUser();
+		table.setCreatebyId(cuser.getId());
+		return table;
+	}
 }

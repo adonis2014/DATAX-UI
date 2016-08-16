@@ -40,8 +40,12 @@ public class ProjectServiceImpl extends BaseServiceImpl<Project, Long> implement
 			project.setUpdater(cuser);
 			project.setUpdateDate(new Date());
 		}else{
-			project.setCreater(UserUtil.getCurrentUser());
+			User cuser = UserUtil.getCurrentUser();
+			project.setCreater(cuser);
 			project.setCreateDate(new Date());
+			project.setUpdater(cuser);
+			project.setCheckLabel(1);
+			project.setUpdateDate(new Date());
 		}
 		super.save(project);
 	}
