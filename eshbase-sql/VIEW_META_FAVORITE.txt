@@ -1,0 +1,48 @@
+CREATE VIEW "VIEW_META_FAVORITE" AS 
+SELECT meta_favorite."id", 
+	meta_favorite.object_type, 
+	meta_favorite.object_id, 
+	meta_favorite.user_id, 
+	meta_favorite.create_date, 
+	meta_favorite.remark,  
+	meta_database.db_name AS object_name, 
+	meta_database."schema_name" AS object_pname, 
+	meta_database.remark AS object_remark,
+	meta_database.check_label
+FROM meta_database INNER JOIN meta_favorite ON meta_database."id" = meta_favorite.object_id and meta_favorite.object_type=1
+union all
+SELECT meta_favorite."id", 
+	meta_favorite.object_type, 
+	meta_favorite.object_id, 
+	meta_favorite.user_id, 
+	meta_favorite.create_date, 
+	meta_favorite.remark, 
+	meta_dbtable."table_name" AS object_name, 
+	meta_dbtable.table_pname AS object_pname,  
+	meta_dbtable.remark AS object_remark, 
+	meta_dbtable.check_label
+FROM meta_dbtable INNER JOIN meta_favorite ON meta_dbtable."id" = meta_favorite.object_id and meta_favorite.object_type=2
+union all
+SELECT meta_favorite."id", 
+	meta_favorite.object_type, 
+	meta_favorite.object_id, 
+	meta_favorite.user_id, 
+	meta_favorite.create_date, 
+	meta_favorite.remark, 
+	meta_dbindex.index_name AS object_name, 
+	meta_dbindex.type_name AS object_pname,  
+	meta_dbindex.remark AS object_remark, 
+	meta_dbindex.check_label
+FROM meta_dbindex INNER JOIN meta_favorite ON meta_dbindex."id" = meta_favorite.object_id and meta_favorite.object_type=3
+union all
+SELECT meta_favorite."id", 
+	meta_favorite.object_type, 
+	meta_favorite.object_id, 
+	meta_favorite.user_id, 
+	meta_favorite.create_date, 
+	meta_favorite.remark,  
+	meta_column."column_name" AS object_name, 
+	meta_column.column_pname AS object_pname,  
+	meta_column.remark AS object_remark,
+	meta_column.check_label
+FROM meta_column INNER JOIN meta_favorite ON meta_column."id" = meta_favorite.object_id and meta_favorite.object_type=4

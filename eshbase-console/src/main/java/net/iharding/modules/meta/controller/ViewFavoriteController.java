@@ -1,8 +1,10 @@
 package net.iharding.modules.meta.controller;
 
-import org.guess.core.web.BaseController;
-import net.iharding.modules.meta.model.Favorite;
+import net.iharding.modules.meta.model.ViewFavorite;
 import net.iharding.modules.meta.service.FavoriteService;
+import net.iharding.modules.meta.service.ViewFavoriteService;
+
+import org.guess.core.web.BaseController;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -17,7 +19,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 */
 @Controller
 @RequestMapping("/meta/Favorite")
-public class FavoriteController extends BaseController<Favorite>{
+public class ViewFavoriteController extends BaseController<ViewFavorite>{
 
 	{
 		editView = "/meta/Favorite/edit";
@@ -27,4 +29,7 @@ public class FavoriteController extends BaseController<Favorite>{
 	
 	@Autowired
 	private FavoriteService favoriteService;
+	
+	@Autowired
+	private ViewFavoriteService viewFavoriteService;
 }

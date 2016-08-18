@@ -2,12 +2,11 @@ package net.iharding.modules.meta.dao.impl;
 
 import java.util.List;
 
-import org.guess.core.orm.hibernate.HibernateDao;
-import org.hibernate.Session;
-
 import net.iharding.modules.meta.dao.MetaPropertyDao;
 import net.iharding.modules.meta.model.MetaProperty;
 
+import org.guess.core.orm.hibernate.HibernateDao;
+import org.hibernate.Session;
 import org.springframework.stereotype.Repository;
 
 /**

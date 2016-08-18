@@ -6,24 +6,24 @@
 	<div class="navbar-inner">
 		<div class="container-fluid">
 			<!-- BEGIN LOGO -->
-			<a class="brand" href="index.html">数据交换控制台</a>
+			<a class="brand" href="index.html">数据中心控制台</a>
 			<!-- BEGIN TOP NAVIGATION MENU -->
 			<ul class="nav pull-right">
 				<!-- BEGIN NOTIFICATION DROPDOWN -->
-				
 				<li class="dropdown" id="header_notification_bar">
 					<a href="#" class="dropdown-toggle" data-toggle="dropdown"> 
 						<i class="diy_icon_02_44"></i>
 					</a>
 					<ul class="dropdown-menu extended notification">
-						<li>
-							<p>当前站点:(点击菜单切换)</p>
-						</li>
-						<li data-sitename="news">
-							<a href="javascript:Header.changeSite('');">
-								控制台
-							</a>
-						</li>
+						
+					</ul>
+				</li>
+				<li class="dropdown" id="header_notification_bar">
+					<a href="#" class="dropdown-toggle" data-toggle="dropdown"> 
+						<i class="diy_icon_02_44"></i>
+					</a>
+					<ul class="dropdown-menu extended notification">
+						
 					</ul>
 				</li>
 				<!-- END TODO DROPDOWN -->

@@ -24,12 +24,12 @@
 						</div>
 						<div class="portlet-body">
 							<div class="row-fluid">
-								<form class="queryForm span8">
+								<form class="queryForm span7">
 									<div class="row-fluid">
 	                                 	<div class="span7 ">
 		                                    <div class="control-group">
 		                                       <div class="controls">
-		                                          <input type="text" id="filters" class="m-wrap span12" placeholder="注释人ID,注释,关联对象类别,关联对象Id,建立时间,更新时间">
+		                                          <input type="text" id="filters" class="m-wrap span12" placeholder="注释,对象名">
 		                                       </div>
 		                                    </div>
 	                                 	</div>
@@ -62,11 +62,11 @@
 <script type="text/javascript">
 $(document).ready(function() {
 	
-	App.activeMenu("meta/comment/list");
+	App.activeMenu("meta/Comment/list");
 	
 	Page.initData(
 		{
-			url:"${ctx}/meta/comment/page",
+			url:"${ctx}/meta/Comment/page",
 			pageNo : 1,
 			pageSize : 10,
 			tableId : "#sample_1"

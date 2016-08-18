@@ -24,72 +24,79 @@
 							</div>
 						</div>
 						<div class="portlet-body form">
-							<form action="${ctx}/meta/DBTable/edit" class="form-horizontal form_sync" method="post" id="form1">
-								<input type="hidden" value="${obj.id}" name="id">
-								<input type="hidden" value="${obj.database.id}" name="database.id" id="databaseId"/>
-								
-								<div class="control-group">
-									<label class="control-label">数据库:</label>
-									<div class="controls">
-										<input type="text" class="span6 m-wrap" validate="{required:true}" id="datasource" name="database.dbname" value="${obj.database.dbname }" readonly="readonly" onfocus="showDatasource()" />
-									</div>
-								</div>
-								<div class="control-group">
-									<label class="control-label">类名:</label>
-									<div class="controls">
-										<input type="text" class="span6 m-wrap" validate="{required:true}" name="className" value="${obj.className }" />
-									</div>
-								</div>
-								<div class="control-group">
-									<label class="control-label">表名:</label>
-									<div class="controls">
-										<input type="text" class="span6 m-wrap" validate="{required:true}" name="tableName" value="${obj.tableName }" />
-									</div>
-								</div>
-								<div class="control-group">
-									<label class="control-label">逻辑名:</label>
-									<div class="controls">
-										<input type="text" class="span6 m-wrap" validate="{required:true}" name="tablePname" value="${obj.tablePname }" />
-									</div>
-								</div>
-								<div class="control-group">
-									<label class="control-label">表类别:</label>
-									<div class="controls">
-										<mytags:dictSelect field="tableType" id="tableType" defaultVal="${obj.tableType}" hasLabel="false" codeType="12" />
-									</div>
-								</div>
+							<form action="${ctx}/meta/DBTable/saveTable" class="form-horizontal form_sync" method="post" id="form1">
+							<input type="hidden" value="${obj.id}" name="id">
+							<table width="100%" class="dbform">
+									<tr>
+										<td class="fieldtitle">数据库说明:</td>
+										<td class="fieldvalue">${obj.database.remark}</td>
+										<td class="fieldtitle">数据库名:</td>
+										<td class="fieldvalue"><a href="${ctx}/meta/Database/show/${obj.database.id}">${obj.database.dbname}</a></td>
+									</tr>
+									<tr>
+										<td class="fieldtitle">表名:</td>
+										<td class="fieldvalue">${obj.tableName }</td>
+										<td class="fieldtitle">逻辑名:</td>
+										<td class="fieldvalue"><input type="text" class="span6 m-wrap" validate="{required:true}" name="tablePname" value="${obj.tablePname}" /></td>
+									</tr>
 								<c:if test="${not empty obj}">
-								<div class="control-group">
-									<label class="control-label">建立者:</label>
-									<div class="controls">
-										${creater.name}
-									</div>
-								</div>
-								<div class="control-group">
-									<label class="control-label">更新者:</label>
-									<div class="controls">
-										${updater.name}
-									</div>
-								</div>
-								<div class="control-group">
-									<label class="control-label">建立时间:</label>
-									<div class="controls">
-										${obj.createDate }
-									</div>
-								</div>
-								<div class="control-group">
-									<label class="control-label">更新时间:</label>
-									<div class="controls">
-										${obj.updateDate }
-									</div>
-								</div>
+									<tr>
+										<td class="fieldtitle">建立者:</td>
+										<td class="fieldvalue">${obj.creater.name}</td>
+										<td class="fieldtitle">更新者:</td>
+										<td class="fieldvalue">${obj.updater.name}</td>
+									</tr>
+									<tr>
+										<td class="fieldtitle">建立时间:</td>
+										<td class="fieldvalue">${obj.createDate }</td>
+										<td class="fieldtitle">更新时间:</td>
+										<td class="fieldvalue">${obj.updateDate }</td>
+									</tr>
+									<tr>
+										<td class="fieldtitle">类名:</td>
+										<td class="fieldvalue">${obj.className}</td>
+										<td class="fieldtitle">启用标记:</td>
+										<td class="fieldvalue">
+										<mytags:dictSelect field="checkLabel" type="label" id="checkLabel" defaultVal="${obj.checkLabel}" hasLabel="false" codeType="17" />
+										</td>
+									</tr>
 								</c:if>
-								<div class="control-group">
-									<label class="control-label">备注:</label>
-									<div class="controls">
-										<input type="text" class="span6 m-wrap" validate="{required:true}" name="remark" value="${obj.remark }" />
+								<tr>
+									<td class="fieldtitle">表类别:</td>
+									<td class="fieldvalue"><mytags:dictSelect field="tableType" id="tableType" defaultVal="${obj.tableType}" hasLabel="false" codeType="12" /></td>
+									<td class="fieldtitle">备注:</td>
+									<td class="fieldvalue" ><input type="text" class="span12 m-wrap" name="remark" value="${obj.remark}"/></td>
+								</tr>
+								</table>
+								<c:if test="${not empty obj.columns }">
+									<br />
+									<div class="row-fluid">
+										<table width="100%" class="dbgrid">
+											<thead>
+												<tr>
+													<th>字段编码</th>
+													<th>字段名</th>
+													<th>逻辑名</th>
+													<th>字段类别</th>
+													<th>是否必须</th>
+													<th>备注</th>
+												</tr>
+											</thead>
+											<tbody>
+												<c:forEach var="column" items="${obj.columns}">
+													<tr>
+														<td><a href='${ctx}/meta/DBColumn/show/${column.id}' >${column.fieldCode}</a></td>
+														<td>${column.columnName}</td>
+														<td><input type="text"  name="columnPname_${table.id}" value="${column.columnPname}"/></td>
+														<td>${column.type}</td>
+														<td>${column.required}</td>
+														<td><input type="text"  name="remark_${table.id}" value="${table.remark}"/></td>
+													</tr>
+												</c:forEach>
+											</tbody>
+										</table>
 									</div>
-								</div>
+								</c:if>
 								<div class="form-actions">
 									<button type="submit" class="btn blue">提交</button>
 									<a class='btn' href="${header.Referer }">返回</a>

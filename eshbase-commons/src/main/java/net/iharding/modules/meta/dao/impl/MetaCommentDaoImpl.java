@@ -1,8 +1,9 @@
 package net.iharding.modules.meta.dao.impl;
 
-import org.guess.core.orm.hibernate.HibernateDao;
 import net.iharding.modules.meta.dao.MetaCommentDao;
 import net.iharding.modules.meta.model.MetaComment;
+
+import org.guess.core.orm.hibernate.HibernateDao;
 import org.springframework.stereotype.Repository;
 
 /**

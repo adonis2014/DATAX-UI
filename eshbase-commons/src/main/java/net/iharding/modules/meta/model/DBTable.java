@@ -18,6 +18,7 @@ import javax.persistence.Table;
 
 import net.iharding.core.orm.IdEntity;
 
+import org.guess.sys.model.User;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.annotations.NotFound;
@@ -74,13 +75,19 @@ public class DBTable extends IdEntity {
 	/**
 	 * 最后更新人
 	 */
-	@Column(name = "updateby_id")
-	private Long updatebyId;
+	@ManyToOne(cascade = { CascadeType.PERSIST, CascadeType.MERGE },targetEntity = User.class,fetch = FetchType.LAZY)
+	@JoinColumn(name="updateby_id")
+	@NotFound(action = NotFoundAction.IGNORE)
+	@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
+	private User updater;
 	/**
 	 * 建立人
 	 */
-	@Column(name = "createby_id")
-	private Long createbyId;
+	@ManyToOne(cascade = { CascadeType.PERSIST, CascadeType.MERGE },targetEntity = User.class,fetch = FetchType.LAZY)
+	@JoinColumn(name="createby_id")
+	@NotFound(action = NotFoundAction.IGNORE)
+	@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
+	private User creater;
 	/**
 	 * 最后更新时间
 	 */
@@ -200,20 +207,22 @@ public class DBTable extends IdEntity {
 		this.remark = remark;
 	}
 
-	public Long getUpdatebyId() {
-		return updatebyId;
+	
+
+	public User getUpdater() {
+		return updater;
 	}
 
-	public void setUpdatebyId(Long updatebyId) {
-		this.updatebyId = updatebyId;
+	public void setUpdater(User updater) {
+		this.updater = updater;
 	}
 
-	public Long getCreatebyId() {
-		return createbyId;
+	public User getCreater() {
+		return creater;
 	}
 
-	public void setCreatebyId(Long createbyId) {
-		this.createbyId = createbyId;
+	public void setCreater(User creater) {
+		this.creater = creater;
 	}
 
 	public Date getUpdateDate() {

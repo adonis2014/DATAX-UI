@@ -25,8 +25,7 @@
 							</div>
 						</div>
 						<div class="portlet-body form">
-							<form action="${ctx}/meta/dbColumn/edit" class="form-horizontal form_sync"
-								method="post" id="form1">
+							<form action="${ctx}/meta/dbColumn/edit" class="form-horizontal form_sync" method="post" id="form1">
 								
 								<input type="hidden" value="${obj.id}" name="id">
 								<div class="control-group">

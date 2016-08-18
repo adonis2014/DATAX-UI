@@ -198,7 +198,7 @@ public class Database extends IdEntity {
 		if (tables!=null){
 			for(DBTable tdb:tables){
 				if ( tdb.getTableName().equalsIgnoreCase(tableName)){
-					tdb.setUpdatebyId(cuser.getId());
+					tdb.setUpdater(cuser);
 					tdb.setUpdateDate(new Date());
 					return tdb;
 				}
@@ -207,7 +207,7 @@ public class Database extends IdEntity {
 		DBTable table=new DBTable();
 		table.setCreateDate(new Date());
 		try{
-			table.setCreatebyId(cuser.getId());
+			table.setCreater(cuser);
 		}catch(Exception ex){}
 		return table;
 	}

@@ -63,8 +63,6 @@ public class DBIndexController extends BaseController<DBIndex>{
 		DBIndex obj = dbindexService.get(id);
 		ModelAndView mav = new ModelAndView(editView);
 		mav.addObject("obj", obj);
-		if (obj.getCreatebyId()!=null)mav.addObject("creater", userService.get(obj.getCreatebyId()));
-		if (obj.getUpdatebyId()!=null)mav.addObject("updater", userService.get(obj.getUpdatebyId()));
 		return mav;
 	}
 	
@@ -77,7 +75,7 @@ public class DBIndexController extends BaseController<DBIndex>{
 			obj.setCheckLabel(0);
 		}
 		obj.setUpdateDate(new Date());
-		obj.setUpdatebyId(UserUtil.getCurrentUser().getId());
+		obj.setUpdater(UserUtil.getCurrentUser());
 		dbindexService.save(obj);
 		return this.list();
 	}

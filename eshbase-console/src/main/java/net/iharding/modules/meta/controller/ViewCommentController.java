@@ -1,8 +1,10 @@
 package net.iharding.modules.meta.controller;
 
-import org.guess.core.web.BaseController;
-import net.iharding.modules.meta.model.MetaComment;
+import net.iharding.modules.meta.model.ViewComment;
 import net.iharding.modules.meta.service.MetaCommentService;
+import net.iharding.modules.meta.service.ViewCommentService;
+
+import org.guess.core.web.BaseController;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -17,13 +19,16 @@ import org.springframework.web.bind.annotation.RequestMapping;
 */
 @Controller
 @RequestMapping("/meta/Comment")
-public class MetaCommentController extends BaseController<MetaComment>{
+public class ViewCommentController extends BaseController<ViewComment>{
 
 	{
 		editView = "/meta/Comment/edit";
 		listView = "/meta/Comment/list";
 		showView = "/meta/Comment/show";
 	}
+	
+	@Autowired
+	private ViewCommentService viewCommentService;
 	
 	@Autowired
 	private MetaCommentService commentService;

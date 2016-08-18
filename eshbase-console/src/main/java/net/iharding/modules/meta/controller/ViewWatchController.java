@@ -1,8 +1,10 @@
 package net.iharding.modules.meta.controller;
 
-import org.guess.core.web.BaseController;
-import net.iharding.modules.meta.model.Watch;
+import net.iharding.modules.meta.model.ViewWatch;
+import net.iharding.modules.meta.service.ViewWatchService;
 import net.iharding.modules.meta.service.WatchService;
+
+import org.guess.core.web.BaseController;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -17,7 +19,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 */
 @Controller
 @RequestMapping("/meta/Watch")
-public class WatchController extends BaseController<Watch>{
+public class ViewWatchController extends BaseController<ViewWatch>{
 
 	{
 		editView = "/meta/Watch/edit";
@@ -27,4 +29,7 @@ public class WatchController extends BaseController<Watch>{
 	
 	@Autowired
 	private WatchService watchService;
+	
+	@Autowired
+	private ViewWatchService viewWatchService;
 }

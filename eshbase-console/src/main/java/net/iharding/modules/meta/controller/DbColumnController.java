@@ -19,13 +19,13 @@ import org.springframework.web.bind.annotation.RequestMethod;
 *
 */
 @Controller
-@RequestMapping("/meta/dbColumn")
+@RequestMapping("/meta/DBColumn")
 public class DbColumnController extends BaseController<DbColumn>{
 
 	{
-		editView = "/meta/dbColumn/edit";
-		listView = "/meta/dbColumn/list";
-		showView = "/meta/dbColumn/show";
+		editView = "/meta/DBColumn/edit";
+		listView = "/meta/DBColumn/list";
+		showView = "/meta/DBColumn/show";
 	}
 	
 	@Autowired

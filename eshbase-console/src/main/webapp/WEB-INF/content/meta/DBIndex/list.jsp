@@ -8,7 +8,7 @@
 	<div class="page-content">
 		<div class="container-fluid">
 			<!-- 页面导航 -->
-			<tool:navBar pageTitle="索引对象列表" pageTitleContent="内容管理-索引对象管理-索引对象列表" titleIcon="icon-home"/>
+			<tool:navBar pageTitle="索引对象列表" pageTitleContent="元数据管理-索引对象管理-索引对象列表" titleIcon="icon-home"/>
 			<!-- 主体内容 -->
 			<div class="row-fluid">
 				<div class="span12">
@@ -29,7 +29,7 @@
 	                                 	<div class="span7 ">
 		                                    <div class="control-group">
 		                                       <div class="controls">
-		                                          <input type="text" id="filters" class="m-wrap span12" placeholder="数据表,索引库名,索引表名,索引类别,建立者,更新者,建立世间,更新世间,备注">
+		                                          <input type="text" id="filters" class="m-wrap span12" placeholder="数据表,索引库名,索引表名,备注">
 		                                       </div>
 		                                    </div>
 	                                 	</div>
@@ -85,13 +85,8 @@ $(document).ready(function() {
 			 	{cName:"indexType",cValue:"索引类别"},
 
 			 	{cName:"createbyId",cValue:"建立者"},
-
 			 	{cName:"updatebyId",cValue:"更新者"},
-
-			 	{cName:"createDate",cValue:"建立世间"},
-
 			 	{cName:"updateDate",cValue:"更新世间"},
-
 			  	{cName:"remark",cValue:"备注"}
 		 ]
 	);

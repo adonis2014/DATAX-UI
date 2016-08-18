@@ -35,6 +35,7 @@ public class DatabaseController extends BaseController<Database>{
 	@RequestMapping(method = RequestMethod.POST, value = "/saveDatabase")
 	public ModelAndView saveDatabase(Database cobj) throws Exception {
 		Database obj = databaseService.get(cobj.getId());
+		obj.setRemark(cobj.getRemark());
 		for(DBTable table:obj.getTables()){
 			table.setTablePname(request.getParameter("tablePname_"+table.getId()));
 			table.setRemark(request.getParameter("remark_"+table.getId()));

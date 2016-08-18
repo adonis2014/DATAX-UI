@@ -28,9 +28,9 @@
 								<table width="100%" class="dbform">
 									<tr>
 										<td class="fieldtitle">schema名称:</td>
-										<td class="fieldvalue"><input type="text" class="span12 m-wrap" validate="{required:true}" name="schemaName" value="${obj.schemaName }" /></td>
+										<td class="fieldvalue">${obj.schemaName }</td>
 										<td class="fieldtitle">数据库名:</td>
-										<td class="fieldvalue"><input type="text" class="span12 m-wrap" validate="{required:true}" name="dbname" value="${obj.dbname }" /></td>
+										<td class="fieldvalue">${obj.dbname }</td>
 									</tr>
 								<c:if test="${not empty obj}">
 									<tr>

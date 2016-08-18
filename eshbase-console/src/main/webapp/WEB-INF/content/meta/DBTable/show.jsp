@@ -26,103 +26,49 @@
 						<div class="portlet-body form">
 							<form action="${ctx}/meta/DBTable/edit" class="form-horizontal form_sync" method="post" id="form1">
 								<div class="row-fluid">
-									<div class="span6 ">
-										<div class="control-group">
-											<label class="control-label" >数据源:</label>
-											<div class="controls">
-												<span class="text">${obj.datasource.dbName}</span>
-											</div>
-										</div>
-									</div>
-									<!--/span-->
-									<div class="span6 ">
-										<div class="control-group">
-											<label class="control-label" >类名:</label>
-											<div class="controls">
-												<span class="text">${obj.className}</span>
-											</div>
-										</div>
-									</div>
-								</div>
-								<div class="row-fluid">
-									<div class="span6 ">
-										<div class="control-group">
-											<label class="control-label" >表名:</label>
-											<div class="controls">
-												<span class="text">${obj.tableName}</span>
-											</div>
-										</div>
-									</div>
-									<!--/span-->
-									<div class="span6 ">
-										<div class="control-group">
-											<label class="control-label" >逻辑名:</label>
-											<div class="controls">
-												<span class="text">${obj.tablePname}</span>
-											</div>
-										</div>
-									</div>
-								</div>
-								<div class="row-fluid">
-									<div class="span6 ">
-										<div class="control-group">
-											<label class="control-label" >表类别:</label>
-											<div class="controls">
-												<span class="text"><mytags:dictSelect field="tableType" id="tableType" type="label" defaultVal="${obj.tableType}" hasLabel="false" codeType="12" /></span>
-											</div>
-										</div>
-									</div>
-									<!--/span-->
-									<div class="span6 ">
-										<div class="control-group">
-											<label class="control-label" >备注:</label>
-											<div class="controls">
-												<span class="text">${obj.remark}</span>
-											</div>
-										</div>
-									</div>
-								</div>
-								
+									<table width="100%" class="dbform">
+									<tr>
+										<td class="fieldtitle">数据库说明:</td>
+										<td class="fieldvalue">${obj.database.remark}</td>
+										<td class="fieldtitle">数据库名:</td>
+										<td class="fieldvalue"><a href="${ctx}/meta/Database/show/${obj.database.id}">${obj.database.dbname}</a></td>
+									</tr>
+									<tr>
+										<td class="fieldtitle">表名:</td>
+										<td class="fieldvalue">${obj.tableName }</td>
+										<td class="fieldtitle">逻辑名:</td>
+										<td class="fieldvalue">${obj.tablePname}</td>
+									</tr>
 								<c:if test="${not empty obj}">
-								<div class="row-fluid">
-									<div class="span6 ">
-										<div class="control-group">
-											<label class="control-label" >建立者:</label>
-											<div class="controls">
-												<span class="text">${creater.name}</span>
-											</div>
-										</div>
-									</div>
-									<!--/span-->
-									<div class="span6 ">
-										<div class="control-group">
-											<label class="control-label" >建立时间:</label>
-											<div class="controls">
-												<span class="text">${obj.createDate }</span>
-											</div>
-										</div>
-									</div>
-								</div>
-								<div class="row-fluid">
-									<div class="span6 ">
-										<div class="control-group">
-											<label class="control-label" >更新者:</label>
-											<div class="controls">
-												<span class="text">${updater.name}</span>
-											</div>
-										</div>
-									</div>
-									<!--/span-->
-									<div class="span6 ">
-										<div class="control-group">
-											<label class="control-label" >更新时间:</label>
-											<div class="controls">
-												<span class="text">${obj.updateDate }</span>
-											</div>
-										</div>
-									</div>
-								</div>
+									<tr>
+										<td class="fieldtitle">建立者:</td>
+										<td class="fieldvalue">${obj.creater.name}</td>
+										<td class="fieldtitle">更新者:</td>
+										<td class="fieldvalue">${obj.updater.name}</td>
+									</tr>
+									<tr>
+										<td class="fieldtitle">建立时间:</td>
+										<td class="fieldvalue">${obj.createDate }</td>
+										<td class="fieldtitle">更新时间:</td>
+										<td class="fieldvalue">${obj.updateDate }</td>
+									</tr>
+									<tr>
+										<td class="fieldtitle">类名:</td>
+										<td class="fieldvalue">${obj.className}</td>
+										<td class="fieldtitle">启用标记:</td>
+										<td class="fieldvalue">
+										<mytags:dictSelect field="checkLabel" type="label" id="checkLabel" defaultVal="${obj.checkLabel}" hasLabel="false" codeType="17" />
+										</td>
+									</tr>
 								</c:if>
+								<tr>
+									<td class="fieldtitle">表类别:</td>
+									<td class="fieldvalue"><mytags:dictSelect field="tableType" type="label" id="tableType" defaultVal="${obj.tableType}" hasLabel="false" codeType="12" /></td>
+									<td class="fieldtitle">备注:</td>
+									<td class="fieldvalue" >${obj.remark}</td>
+								</tr>
+								</table>
+								</div>
 							</form>
 						</div>
 					</div>
@@ -175,26 +121,26 @@
 							</div>
 						</div>
 						<div class="portlet-body form">
-							<table class="table table-striped table-bordered table-hover" id="sample_1">
+							<table class="table table-striped table-bordered table-hover" id="sample_2">
 								<thead>
 									<tr>
-									<th>字段属性编码</th>
-									<th>字段名</th>
-									<th>逻辑名</th>
-									<th>字段类别</th>
-									<th>是否存储</th>
-									<th>备注</th>
+										<th>字段编码</th>
+										<th>字段名</th>
+										<th>逻辑名</th>
+										<th>字段类别</th>
+										<th>是否必须</th>
+										<th>备注</th>
 									</tr>
 								</thead>
 								<tbody>
-									<c:forEach items="${obj.dbIndexs}" var="dbindex">
+									<c:forEach var="column" items="${obj.columns}">
 									<tr>
-										<td>${dbindex.index_name}</td>
-										<td>${dbindex.type_name}</td>
-										<td>${dbindex.indexType}</td>
-										<td>${dbindex.createDate}</td>
-										<td>${dbindex.updateDate}</td>
-										<td>${dbindex.remark}</td>
+										<td><a href='${ctx}/meta/DBColumn/show/${column.id}' >${column.fieldCode}</a></td>
+										<td>${column.columnName}</td>
+										<td>${column.columnPname}</td>
+										<td>${column.type}</td>
+										<td>${column.required}</td>
+										<td>${table.remark}</td>
 									</tr>
 									</c:forEach>
 								</tbody>
@@ -202,6 +148,10 @@
 						</div>
 					</div>
 					</c:if>
+					<div class="form-actions">
+									<a class='btn' href="${ctx}/meta/DBTable/update/${obj.id}">修改</a>
+									<a class='btn' href="${header.Referer }">返回</a>
+								</div>
 				</div>
 			</div>
 		</div>

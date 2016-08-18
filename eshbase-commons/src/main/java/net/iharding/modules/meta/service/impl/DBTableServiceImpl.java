@@ -33,17 +33,17 @@ public class DBTableServiceImpl extends BaseServiceImpl<DBTable, Long> implement
 			DBTable table = dbTableDao.get(dbtable.getId());
 			
 			//保留发表者以及发表提起
-			dbtable.setCreatebyId(table.getCreatebyId());
+			dbtable.setCreater(table.getCreater());
 			dbtable.setCreateDate(table.getCreateDate());
 			//更新者
 			User cuser = UserUtil.getCurrentUser();
-			dbtable.setUpdatebyId(cuser.getId());
+			dbtable.setUpdater(cuser);
 			dbtable.setUpdateDate(new Date());
 		}else{
 			User cuser = UserUtil.getCurrentUser();
-			dbtable.setCreatebyId(cuser.getId());
+			dbtable.setCreater(cuser);
 			dbtable.setCreateDate(new Date());
-			dbtable.setUpdatebyId(cuser.getId());
+			dbtable.setUpdater(cuser);
 			dbtable.setUpdateDate(new Date());
 		}
 		super.save(dbtable);

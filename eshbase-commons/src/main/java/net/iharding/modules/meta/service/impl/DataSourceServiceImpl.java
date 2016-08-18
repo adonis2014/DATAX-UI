@@ -215,7 +215,7 @@ public class DataSourceServiceImpl extends BaseServiceImpl<DataSource, Long> imp
 				db.setUpdateDate(new Date());
 				databaseDao.save(db);
 				for (DBTable table : db.getTables()) {
-					table.setUpdatebyId(cuser.getId());
+					table.setUpdater(cuser);
 					table.setUpdateDate(new Date());
 					dbTableDao.save(table);
 					for (DbColumn column : table.getColumns()) {

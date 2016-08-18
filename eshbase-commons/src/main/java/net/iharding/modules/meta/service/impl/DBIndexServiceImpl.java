@@ -31,17 +31,17 @@ public class DBIndexServiceImpl extends BaseServiceImpl<DBIndex, Long> implement
 		if(dbindex.getId() != null){
 			DBIndex index = dbIndexDao.get(dbindex.getId());
 			//保留发表者以及发表提起
-			dbindex.setCreatebyId(index.getCreatebyId());
+			dbindex.setCreater(index.getCreater());
 			dbindex.setCreateDate(index.getCreateDate());
 			//更新者
 			User cuser = UserUtil.getCurrentUser();
-			dbindex.setUpdatebyId(cuser.getId());
+			dbindex.setUpdater(cuser);
 			dbindex.setUpdateDate(new Date());
 		}else{
 			User cuser = UserUtil.getCurrentUser();
-			dbindex.setCreatebyId(cuser.getId());
+			dbindex.setCreater(cuser);
 			dbindex.setCreateDate(new Date());
-			dbindex.setUpdatebyId(cuser.getId());
+			dbindex.setUpdater(cuser);
 			dbindex.setUpdateDate(new Date());
 		}
 		super.save(dbindex);

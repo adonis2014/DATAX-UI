@@ -21,12 +21,7 @@ public class DBTableDaoImpl extends HibernateDao<DBTable, Long> implements DBTab
 	@Override
 	public void save(DBTable dbtable) {
 		Session session = getSession();
-		if (dbtable.getId()==null){
-			session.saveOrUpdate(dbtable);
-		}else{
-			session.update(dbtable);
-		}
-		session.flush();
+		session.merge(dbtable);
 	}
 	
 }

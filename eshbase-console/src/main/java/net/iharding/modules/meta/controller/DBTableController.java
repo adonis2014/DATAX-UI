@@ -5,6 +5,7 @@ import java.util.Date;
 import javax.validation.Valid;
 
 import net.iharding.modules.meta.model.DBTable;
+import net.iharding.modules.meta.model.DbColumn;
 import net.iharding.modules.meta.service.DBTableService;
 
 import org.guess.core.web.BaseController;
@@ -64,8 +65,6 @@ public class DBTableController extends BaseController<DBTable>{
 		DBTable obj = dbTableService.get(id);
 		ModelAndView mav = new ModelAndView(editView);
 		mav.addObject("obj", obj);
-		if (obj.getCreatebyId()!=null)mav.addObject("creater", userService.get(obj.getCreatebyId()));
-		if (obj.getUpdatebyId()!=null)mav.addObject("updater", userService.get(obj.getUpdatebyId()));
 		return mav;
 	}
 	
@@ -78,8 +77,24 @@ public class DBTableController extends BaseController<DBTable>{
 			obj.setCheckLabel(0);
 		}
 		obj.setUpdateDate(new Date());
-		obj.setUpdatebyId(UserUtil.getCurrentUser().getId());
+		obj.setUpdater(UserUtil.getCurrentUser());
 		dbTableService.save(obj);
 		return this.list();
+	}
+	
+	@RequestMapping(method = RequestMethod.POST, value = "/saveTable")
+	public ModelAndView saveTable(DBTable cobj) throws Exception {
+		DBTable obj = dbTableService.get(cobj.getId());
+		obj.setRemark(cobj.getRemark());
+		obj.setTablePname(cobj.getTablePname());
+		obj.setTableType(cobj.getTableType());
+		for(DbColumn column:obj.getColumns()){
+			column.setColumnPname(request.getParameter("columnPname_"+column.getId()));
+			column.setRemark(request.getParameter("remark_"+column.getId()));
+		}
+		ModelAndView mav = new ModelAndView(showView);
+		mav.addObject("obj", obj);
+		dbTableService.save(obj);
+		return  mav;
 	}
 }

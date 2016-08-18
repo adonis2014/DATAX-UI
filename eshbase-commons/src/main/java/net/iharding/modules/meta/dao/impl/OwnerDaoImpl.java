@@ -1,8 +1,9 @@
 package net.iharding.modules.meta.dao.impl;
 
-import org.guess.core.orm.hibernate.HibernateDao;
 import net.iharding.modules.meta.dao.OwnerDao;
 import net.iharding.modules.meta.model.Owner;
+
+import org.guess.core.orm.hibernate.HibernateDao;
 import org.springframework.stereotype.Repository;
 
 /**
