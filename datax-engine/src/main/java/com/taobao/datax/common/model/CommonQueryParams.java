@@ -7,13 +7,14 @@ import java.util.List;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.lucene.queryparser.classic.QueryParser;
-import org.codehaus.jackson.map.ObjectMapper;
 import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.ExistsQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.index.query.RangeQueryBuilder;
 import org.elasticsearch.index.query.TermsQueryBuilder;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 /**
  * eshbase通用查询参数类

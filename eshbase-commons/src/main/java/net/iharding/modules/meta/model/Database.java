@@ -194,18 +194,21 @@ public class Database extends IdEntity {
 		tables.add(table);
 	}
 
-	public DBTable getDBTable(String tableName) {
+	public DBTable getDBTable(String tableName,User cuser) {
 		if (tables!=null){
 			for(DBTable tdb:tables){
-				if (tdb.getDatabase().id==this.id && tdb.getTableName().equalsIgnoreCase(tableName)){
+				if ( tdb.getTableName().equalsIgnoreCase(tableName)){
+					tdb.setUpdatebyId(cuser.getId());
+					tdb.setUpdateDate(new Date());
 					return tdb;
 				}
 			}
 		}
 		DBTable table=new DBTable();
 		table.setCreateDate(new Date());
-		User cuser = UserUtil.getCurrentUser();
-		table.setCreatebyId(cuser.getId());
+		try{
+			table.setCreatebyId(cuser.getId());
+		}catch(Exception ex){}
 		return table;
 	}
 }

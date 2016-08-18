@@ -15,13 +15,13 @@ import java.util.Map;
 
 import org.apache.commons.lang.math.NumberUtils;
 import org.apache.log4j.Logger;
-import org.codehaus.jackson.map.ObjectMapper;
 import org.elasticsearch.client.Client;
 import org.elasticsearch.client.transport.TransportClient;
 import org.elasticsearch.common.settings.Settings;
 import org.elasticsearch.common.transport.InetSocketTransportAddress;
 import org.elasticsearch.node.Node;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.taobao.datax.common.exception.DataExchangeException;
 import com.taobao.datax.common.model.AggregationRecord;
 import com.taobao.datax.common.plugin.Line;

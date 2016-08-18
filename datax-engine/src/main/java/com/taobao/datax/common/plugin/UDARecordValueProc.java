@@ -4,8 +4,8 @@ import java.util.Map;
 
 import org.apache.hadoop.hbase.client.Table;
 import org.apache.log4j.Logger;
-import org.codehaus.jackson.map.ObjectMapper;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.taobao.datax.common.model.AggregationRecord;
 import com.taobao.datax.common.model.DataProcessEntity;
 import com.taobao.datax.common.util.ETLStringUtils;

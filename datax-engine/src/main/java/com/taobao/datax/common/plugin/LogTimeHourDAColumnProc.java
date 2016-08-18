@@ -7,9 +7,9 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 import org.apache.commons.lang.math.NumberUtils;
-import org.codehaus.jackson.map.ObjectMapper;
-import org.codehaus.jackson.type.TypeReference;
 
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.taobao.datax.common.model.AggregationRecord;
 import com.taobao.datax.common.model.DataProcessField;
 import com.taobao.datax.common.util.ETLDateUtils;

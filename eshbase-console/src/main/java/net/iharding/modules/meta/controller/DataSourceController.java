@@ -118,13 +118,16 @@ public class DataSourceController extends BaseController<DataSource>{
 	 */
 	@RequestMapping(method = RequestMethod.GET, value = "/importMeta/{id}")
 	public ModelAndView importMeta(@PathVariable("id") Long id)  {
-		ModelAndView mav = new ModelAndView("/meta/DBTable/list");
+		DataSource obj =null;
+		ModelAndView mav = new ModelAndView(showView);
 		try{
-			DataSource obj = dataSourceService.importMeta(id);
-			mav.addObject("objs", obj);
+			obj = dataSourceService.importMeta(id);
 		}catch(Exception ex){
 			mav.addObject("msg", "连接数据源失败！"+ex.getMessage());
 		}
-		return  mav;
+		mav.addObject("obj", obj);
+		List<MetaProperty> properties=dataSourceService.getProperties(obj.getDbType(),id);
+		mav.addObject("properties", properties);
+		return mav;
 	}
 }

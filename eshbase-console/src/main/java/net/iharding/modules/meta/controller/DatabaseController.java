@@ -1,11 +1,15 @@
 package net.iharding.modules.meta.controller;
 
-import org.guess.core.web.BaseController;
+import net.iharding.modules.meta.model.DBTable;
 import net.iharding.modules.meta.model.Database;
 import net.iharding.modules.meta.service.DatabaseService;
+
+import org.guess.core.web.BaseController;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.servlet.ModelAndView;
 
 /**
 * 
@@ -27,4 +31,17 @@ public class DatabaseController extends BaseController<Database>{
 	
 	@Autowired
 	private DatabaseService databaseService;
+	
+	@RequestMapping(method = RequestMethod.POST, value = "/saveDatabase")
+	public ModelAndView saveDatabase(Database cobj) throws Exception {
+		Database obj = databaseService.get(cobj.getId());
+		for(DBTable table:obj.getTables()){
+			table.setTablePname(request.getParameter("tablePname_"+table.getId()));
+			table.setRemark(request.getParameter("remark_"+table.getId()));
+		}
+		ModelAndView mav = new ModelAndView(showView);
+		mav.addObject("obj", obj);
+		databaseService.save(obj);
+		return  mav;
+	}
 }

@@ -12,9 +12,9 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
-import org.codehaus.jackson.map.ObjectMapper;
-import org.codehaus.jackson.type.TypeReference;
 
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.taobao.datax.common.model.AggregationRecord;
 import com.taobao.datax.common.model.DataFieldSortByID;
 import com.taobao.datax.common.model.DataProcessEntity;

@@ -10,7 +10,7 @@
 	<div class="page-content">
 		<div class="container-fluid">
 			<!-- 页面导航 -->
-			<tool:navBar pageTitle="${pageTitle }" pageTitleContent="内容管理-表单管理-${pageTitle }" titleIcon="icon-home" />
+			<tool:navBar pageTitle="${pageTitle }" pageTitleContent="元数据管理-表单管理-${pageTitle }" titleIcon="icon-home" />
 			<!-- 主体内容 -->
 			<div class="row-fluid">
 				<div class="span12">
@@ -26,11 +26,12 @@
 						<div class="portlet-body form">
 							<form action="${ctx}/meta/DBTable/edit" class="form-horizontal form_sync" method="post" id="form1">
 								<input type="hidden" value="${obj.id}" name="id">
-								<input type="hidden" value="${obj.datasource.id}" name="datasource.id" id="datasourceId"/>
+								<input type="hidden" value="${obj.database.id}" name="database.id" id="databaseId"/>
+								
 								<div class="control-group">
-									<label class="control-label">数据源:</label>
+									<label class="control-label">数据库:</label>
 									<div class="controls">
-										<input type="text" class="span6 m-wrap" validate="{required:true}" id="datasource" name="datasource.dbName" value="${obj.datasource.dbName }" readonly="readonly" onfocus="showDatasource()" />
+										<input type="text" class="span6 m-wrap" validate="{required:true}" id="datasource" name="database.dbname" value="${obj.database.dbname }" readonly="readonly" onfocus="showDatasource()" />
 									</div>
 								</div>
 								<div class="control-group">

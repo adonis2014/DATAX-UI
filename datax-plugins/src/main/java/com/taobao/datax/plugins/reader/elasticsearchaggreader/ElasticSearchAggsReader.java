@@ -10,7 +10,6 @@ import java.util.Date;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.math.NumberUtils;
 import org.apache.log4j.Logger;
-import org.codehaus.jackson.map.ObjectMapper;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.client.Client;
 import org.elasticsearch.client.transport.TransportClient;
@@ -18,8 +17,8 @@ import org.elasticsearch.common.settings.Settings;
 import org.elasticsearch.common.transport.InetSocketTransportAddress;
 import org.elasticsearch.common.unit.TimeValue;
 import org.elasticsearch.search.SearchHit;
-import org.elasticsearch.search.sort.SortOrder;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.taobao.datax.common.exception.DataExchangeException;
 import com.taobao.datax.common.exception.ExceptionTracker;
 import com.taobao.datax.common.plugin.Line;

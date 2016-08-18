@@ -240,9 +240,11 @@ public class DBTable extends IdEntity {
 	}
 
 	public DbColumn getDbColumn(String columnName) {
-		for(DbColumn column:columns){
-			if (column.getFieldCode().equalsIgnoreCase(columnName)){
-				return column;
+		if (columns!=null){
+			for(DbColumn column:columns){
+				if (column.getColumnName().equalsIgnoreCase(columnName)){
+					return column;
+				}
 			}
 		}
 		return null;
@@ -253,7 +255,7 @@ public class DBTable extends IdEntity {
 	public DbColumn getNewDbColumn(String columnName) {
 		if (columns!=null){
 			for(DbColumn column:columns){
-				if (column.getFieldCode().equalsIgnoreCase(columnName)){
+				if (column.getColumnName().equalsIgnoreCase(columnName)){
 					return column;
 				}
 			}

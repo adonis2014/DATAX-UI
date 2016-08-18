@@ -1,25 +1,14 @@
 package net.iharding.plugin.eshbasesql;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import net.iharding.Constants;
 import net.iharding.core.model.Response;
 import net.iharding.ehdb.SearchDao;
-import net.iharding.ehdb.ehsql.ESSearchRequest;
 import net.iharding.ehdb.ehsql.SQLRequest;
 import net.iharding.ehdb.ehsql.query.explain.ExPlainManager;
 import net.iharding.utils.HBaseUtils;
 
-import org.apache.hadoop.hbase.client.Get;
-import org.apache.hadoop.hbase.client.Result;
-import org.apache.hadoop.hbase.client.Table;
-import org.apache.hadoop.hbase.util.Bytes;
-import org.codehaus.jackson.map.ObjectMapper;
-import org.elasticsearch.action.search.SearchRequestBuilder;
-import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.client.Client;
 import org.elasticsearch.common.inject.Inject;
 import org.elasticsearch.common.settings.Settings;
@@ -29,9 +18,8 @@ import org.elasticsearch.rest.RestChannel;
 import org.elasticsearch.rest.RestController;
 import org.elasticsearch.rest.RestRequest;
 import org.elasticsearch.rest.RestStatus;
-import org.elasticsearch.search.SearchHit;
-import org.elasticsearch.search.SearchHits;
-import org.elasticsearch.search.sort.SortBuilder;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 
 

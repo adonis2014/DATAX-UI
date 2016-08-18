@@ -10,8 +10,8 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.log4j.Logger;
-import org.codehaus.jackson.map.ObjectMapper;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.taobao.datax.common.exception.DataExchangeException;
 import com.taobao.datax.common.model.AggregationRecord;
 import com.taobao.datax.common.plugin.Line;

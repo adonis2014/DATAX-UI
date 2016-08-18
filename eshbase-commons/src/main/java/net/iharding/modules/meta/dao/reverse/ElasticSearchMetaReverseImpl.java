@@ -1,7 +1,8 @@
-package net.iharding.modules.meta.dao.impl;
+package net.iharding.modules.meta.dao.reverse;
 
 
 
+import java.io.IOException;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.Date;
@@ -46,7 +47,7 @@ public class ElasticSearchMetaReverseImpl implements MetaReverseDao {
 
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@Override
-	public DataSource reverseMeta(DataSource ds, List<MetaProperty> mps) throws Exception {
+	public DataSource reverseMeta(DataSource ds, List<MetaProperty> mps,User cuser)  {
 		Client client = getEsClient(ds.getId() + "-" + ds.getDsName(), mps);
 		// 访问获取index库集合
 		GetIndexRequestBuilder indexRequestBuilder = client.admin().indices().prepareGetIndex();
@@ -54,15 +55,9 @@ public class ElasticSearchMetaReverseImpl implements MetaReverseDao {
 		GetIndexResponse getIndexResponse = client.admin().indices().getIndex(indexRequestBuilder.request()).actionGet();
 		GetIndexRequest.Feature[] features = indexRequestBuilder.request().features();
 		String[] indices = getIndexResponse.indices();
-		User cuser = UserUtil.getCurrentUser();
-		for(Database db:ds.getDatabases()){
-			db.setCheckLabel(0);
-			db.setUpdater(cuser);
-			db.setUpdateDate(new Date());
-		}
 		for (String index : indices) { 
 			// 解析索引库为database
-			Database db =ds.getDatabase(index);
+			Database db =ds.getDatabase(index,cuser);
 			db.setDatasource(ds);
 			db.setDbname(index);
 			db.setCheckLabel(1);
@@ -77,46 +72,44 @@ public class ElasticSearchMetaReverseImpl implements MetaReverseDao {
 				case MAPPINGS:
 					ImmutableOpenMap<String, MappingMetaData> mappings = getIndexResponse.mappings().get(index);
 					if (mappings != null) {
-						for(DBTable table:db.getTables()){
-							table.setCheckLabel(0);
-							table.setUpdatebyId(cuser.getId());
-							table.setUpdateDate(new Date());
-						}
 						for (ObjectObjectCursor<String, MappingMetaData> typeEntry : mappings) {
-							DBTable table =db.getDBTable(typeEntry.key);// new DBTable();
+							DBTable table =db.getDBTable(typeEntry.key,cuser);// new DBTable();
 							table.setTableName(typeEntry.key);
 							table.setCheckLabel(1);
 							table.setTablePname(typeEntry.key);
 							table.setTableType(1);
 							table.setDatabase(db);
 							table.setRemark("");
-//							table.set typeEntry.value.toString()
-							Map<String, Object> fields = typeEntry.value.sourceAsMap();
-							if (fields.get("_all") != null) {
-								table.setRemark(table.getRemark()+"|_all"+":"+((Map) fields.get("_all")).get("enabled"));
-							}
-							if (fields.get("_source") != null) {
-								table.setRemark(table.getRemark()+"|_source"+":"+((Map) fields.get("_source")).get("enabled"));
-							}
-							if (fields.get("_parent") != null) {
-								table.setRemark(table.getRemark()+"|_parent"+":"+((Map) fields.get("_parent")).get("type"));
-							}
-							table.setRemark(table.getRemark()+"|_routing"+":"+ typeEntry.value.routing().required());
-							Map mf=(Map)fields.get("properties");
-							Iterator iter=mf.entrySet().iterator();
-							while(iter.hasNext()){//字段
-								Map.Entry<String,Map> ob=(Map.Entry<String,Map>) iter.next();
-								DbColumn field=table.getNewDbColumn(ob.getKey());
-								field.setColumnName(ob.getKey());
-								field.setColumnPname(ob.getKey());
-								field.setRemark(ob.getKey());
-								field.setCheckLabel(1);
-								field.setFieldCode(ob.getKey());
-								field.setType(getFieldValue("type",ob));
-								field.setFormat(getFieldValue("format",ob));
-								field.setIndex(getFieldValue("index",ob));
-								field.setDbtable(table);
-								table.addColumn(field);
+							try {
+								Map<String, Object> fields = typeEntry.value.getSourceAsMap();
+								if (fields.get("_all") != null) {
+									table.setRemark(table.getRemark()+"|_all"+":"+((Map) fields.get("_all")).get("enabled"));
+								}
+								if (fields.get("_source") != null) {
+									table.setRemark(table.getRemark()+"|_source"+":"+((Map) fields.get("_source")).get("enabled"));
+								}
+								if (fields.get("_parent") != null) {
+									table.setRemark(table.getRemark()+"|_parent"+":"+((Map) fields.get("_parent")).get("type"));
+								}
+								table.setRemark(table.getRemark()+"|_routing"+":"+ typeEntry.value.routing().required());
+								Map mf=(Map)fields.get("properties");
+								Iterator iter=mf.entrySet().iterator();
+								while(iter.hasNext()){//字段
+									Map.Entry<String,Map> ob=(Map.Entry<String,Map>) iter.next();
+									DbColumn field=table.getNewDbColumn(ob.getKey());
+									field.setColumnName(ob.getKey());
+									field.setColumnPname(ob.getKey());
+									field.setRemark(ob.getKey());
+									field.setCheckLabel(1);
+									field.setFieldCode(ob.getKey());
+									field.setType(getFieldValue("type",ob));
+									field.setFormat(getFieldValue("format",ob));
+									field.setIndex(getFieldValue("index",ob));
+									field.setDbtable(table);
+									table.addColumn(field);
+								}
+							} catch (IOException e) {
+								e.printStackTrace();
 							}
 							db.addTable(table);
 						}
@@ -183,6 +176,18 @@ public class ElasticSearchMetaReverseImpl implements MetaReverseDao {
 			esclientMap.put(key, cl);
 		}
 		return cl;
+	}
+
+	@Override
+	public Database reverseDatabaseMeta(DataSource datasource, List<MetaProperty> mproes, User cuser, String dbName) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public DBTable reverseTableMeta(DataSource datasource, List<MetaProperty> mproes, User cuser, String dbName, String tableName) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 	

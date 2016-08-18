@@ -20,4 +20,7 @@ public class UserUtil {
 		String loginId = (String) subject.getPrincipal();
 		return userService.findUniqueBy("loginId", loginId);
 	}
+	
+	
+	
 }

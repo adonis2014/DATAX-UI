@@ -1,8 +1,10 @@
 package net.iharding.modules.meta.dao.impl;
 
-import org.guess.core.orm.hibernate.HibernateDao;
 import net.iharding.modules.meta.dao.DatabaseDao;
 import net.iharding.modules.meta.model.Database;
+
+import org.guess.core.orm.hibernate.HibernateDao;
+import org.hibernate.Session;
 import org.springframework.stereotype.Repository;
 
 /**
@@ -15,5 +17,9 @@ import org.springframework.stereotype.Repository;
 */
 @Repository
 public class DatabaseDaoImpl extends HibernateDao<Database,Long> implements DatabaseDao {
-
+	@Override
+	public void save(Database database) {
+		Session session = getSession();
+		session.merge(database);
+	}
 }

@@ -14,8 +14,8 @@ import java.util.Map;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.math.NumberUtils;
 import org.apache.log4j.Logger;
-import org.codehaus.jackson.map.ObjectMapper;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.taobao.datax.common.exception.DataExchangeException;
 import com.taobao.datax.common.plugin.Line;
 import com.taobao.datax.common.plugin.LineReceiver;

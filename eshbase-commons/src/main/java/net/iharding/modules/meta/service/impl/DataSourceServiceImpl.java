@@ -13,7 +13,20 @@ import net.iharding.modules.meta.dao.DatabaseDao;
 import net.iharding.modules.meta.dao.DbColumnDao;
 import net.iharding.modules.meta.dao.MetaPropertyDao;
 import net.iharding.modules.meta.dao.MetaReverseDao;
-import net.iharding.modules.meta.dao.impl.ElasticSearchMetaReverseImpl;
+import net.iharding.modules.meta.dao.reverse.CassandraMetaReverseImpl;
+import net.iharding.modules.meta.dao.reverse.ElasticSearchMetaReverseImpl;
+import net.iharding.modules.meta.dao.reverse.HBaseMetaReverseImpl;
+import net.iharding.modules.meta.dao.reverse.HDFSMetaReverseImpl;
+import net.iharding.modules.meta.dao.reverse.HiveMetaReverseImpl;
+import net.iharding.modules.meta.dao.reverse.KafkaMetaReverseImpl;
+import net.iharding.modules.meta.dao.reverse.MongoDBMetaReverseImpl;
+import net.iharding.modules.meta.dao.reverse.MySqlMetaReverseImpl;
+import net.iharding.modules.meta.dao.reverse.OracleMetaReverseImpl;
+import net.iharding.modules.meta.dao.reverse.PgSqlMetaReverseImpl;
+import net.iharding.modules.meta.dao.reverse.PhoenixMetaReverseImpl;
+import net.iharding.modules.meta.dao.reverse.PrestoDBMetaReverseImpl;
+import net.iharding.modules.meta.dao.reverse.SolrMetaReverseImpl;
+import net.iharding.modules.meta.dao.reverse.SqlServerMetaReverseImpl;
 import net.iharding.modules.meta.model.DBTable;
 import net.iharding.modules.meta.model.DataSource;
 import net.iharding.modules.meta.model.DataSourceWrapper;
@@ -91,7 +104,35 @@ public class DataSourceServiceImpl extends BaseServiceImpl<DataSource, Long> imp
 		List<MetaProperty> mproes = metaPropertyDao.getProperties(oriDatasource.getDbType(), oriDatasource.getId());
 		Properties properties = new Properties();
 		try {
-			properties.load(DataSourceServiceImpl.class.getClassLoader().getResourceAsStream("dsproperty/elasticsearch.properties"));
+			if (dw.getDbType()==1){//MySQL数据库
+				properties.load(DataSourceServiceImpl.class.getClassLoader().getResourceAsStream("dsproperty/mysql.properties"));
+			}else if (dw.getDbType()==2){//HBase
+				properties.load(DataSourceServiceImpl.class.getClassLoader().getResourceAsStream("dsproperty/hbase.properties"));
+			}else if (dw.getDbType()==3){//HDFS
+				properties.load(DataSourceServiceImpl.class.getClassLoader().getResourceAsStream("dsproperty/hdfs.properties"));
+			}else if (dw.getDbType()==4){//ElasticSeach库
+				properties.load(DataSourceServiceImpl.class.getClassLoader().getResourceAsStream("dsproperty/elasticsearch.properties"));
+			}else if (dw.getDbType()==5){//MongoDB数据库
+				properties.load(DataSourceServiceImpl.class.getClassLoader().getResourceAsStream("dsproperty/mongodb.properties"));
+			}else if (dw.getDbType()==6){//Solr库
+				properties.load(DataSourceServiceImpl.class.getClassLoader().getResourceAsStream("dsproperty/solr.properties"));
+			}else if (dw.getDbType()==7){//Kafka队列
+				properties.load(DataSourceServiceImpl.class.getClassLoader().getResourceAsStream("dsproperty/kafka.properties"));
+			}else if (dw.getDbType()==8){//PrestoDB
+				properties.load(DataSourceServiceImpl.class.getClassLoader().getResourceAsStream("dsproperty/prestodb.properties"));
+			}else if (dw.getDbType()==9){//cassandra
+				properties.load(DataSourceServiceImpl.class.getClassLoader().getResourceAsStream("dsproperty/cassandra.properties"));
+			}else if (dw.getDbType()==10){//hive
+				properties.load(DataSourceServiceImpl.class.getClassLoader().getResourceAsStream("dsproperty/hive.properties"));
+			}else if (dw.getDbType()==11){//oracle
+				properties.load(DataSourceServiceImpl.class.getClassLoader().getResourceAsStream("dsproperty/oracle.properties"));
+			}else if (dw.getDbType()==12){//phoenix
+				properties.load(DataSourceServiceImpl.class.getClassLoader().getResourceAsStream("dsproperty/phoenix.properties"));
+			}else if (dw.getDbType()==13){//pgsql
+				properties.load(DataSourceServiceImpl.class.getClassLoader().getResourceAsStream("dsproperty/pgsql.properties"));
+			}else if (dw.getDbType()==14){//sql server
+				properties.load(DataSourceServiceImpl.class.getClassLoader().getResourceAsStream("dsproperty/sqlserver.properties"));
+			}
 			for (Map.Entry<Object, Object> entry : properties.entrySet()) {
 				MetaProperty mp = getMetaProperty(entry, mproes);
 				if (mp == null) {
@@ -164,11 +205,18 @@ public class DataSourceServiceImpl extends BaseServiceImpl<DataSource, Long> imp
 		datasource.setCheckLabelFalse();
 		List<MetaProperty> mproes = metaPropertyDao.getProperties(datasource.getDbType(), datasource.getId());
 		try {
-			DataSource ds = getDbDataSource(datasource, mproes);
+			User cuser = UserUtil.getCurrentUser();
+			DataSource ds = getDbDataSource(datasource, mproes,cuser);
 			// 保存完整的数据定义信息
 			for (Database db : ds.getDatabases()) {
+				db.setCreateDate(new Date());
+				db.setCreater(cuser);
+				db.setUpdater(cuser);
+				db.setUpdateDate(new Date());
 				databaseDao.save(db);
 				for (DBTable table : db.getTables()) {
+					table.setUpdatebyId(cuser.getId());
+					table.setUpdateDate(new Date());
 					dbTableDao.save(table);
 					for (DbColumn column : table.getColumns()) {
 						dbColumnDao.save(column);
@@ -182,11 +230,50 @@ public class DataSourceServiceImpl extends BaseServiceImpl<DataSource, Long> imp
 		return datasource;
 	}
 
-	private DataSource getDbDataSource(DataSource datasource, List<MetaProperty> mproes) throws Exception {
-		if (datasource.getDbType() == 1) {// elasticsearch
+	private DataSource getDbDataSource(DataSource dw, List<MetaProperty> mproes,User cuser) throws Exception {
+		if (dw.getDbType()==1){//MySQL数据库
+			MetaReverseDao revDao = new MySqlMetaReverseImpl();
+			return revDao.reverseMeta(dw, mproes,cuser);
+		}else if (dw.getDbType()==2){//HBase
+			MetaReverseDao revDao = new HBaseMetaReverseImpl();
+			return revDao.reverseMeta(dw, mproes,cuser);
+		}else if (dw.getDbType()==3){//HDFS
+			MetaReverseDao revDao = new HDFSMetaReverseImpl();
+			return revDao.reverseMeta(dw, mproes,cuser);
+		}else if (dw.getDbType()==4){//ElasticSeach库
 			MetaReverseDao revDao = new ElasticSearchMetaReverseImpl();
-			return revDao.reverseMeta(datasource, mproes);
+			return revDao.reverseMeta(dw, mproes,cuser);
+		}else if (dw.getDbType()==5){//MongoDB数据库
+			MetaReverseDao revDao = new MongoDBMetaReverseImpl();
+			return revDao.reverseMeta(dw, mproes,cuser);
+		}else if (dw.getDbType()==6){//Solr库
+			MetaReverseDao revDao = new SolrMetaReverseImpl();
+			return revDao.reverseMeta(dw, mproes,cuser);
+		}else if (dw.getDbType()==7){//Kafka队列
+			MetaReverseDao revDao = new KafkaMetaReverseImpl();
+			return revDao.reverseMeta(dw, mproes,cuser);
+		}else if (dw.getDbType()==8){//PrestoDB
+			MetaReverseDao revDao = new PrestoDBMetaReverseImpl();
+			return revDao.reverseMeta(dw, mproes,cuser);
+		}else if (dw.getDbType()==9){//cassandra
+			MetaReverseDao revDao = new CassandraMetaReverseImpl();
+			return revDao.reverseMeta(dw, mproes,cuser);
+		}else if (dw.getDbType()==10){//hive
+			MetaReverseDao revDao = new HiveMetaReverseImpl();
+			return revDao.reverseMeta(dw, mproes,cuser);
+		}else if (dw.getDbType()==11){//oracle
+			MetaReverseDao revDao = new OracleMetaReverseImpl();
+			return revDao.reverseMeta(dw, mproes,cuser);
+		}else if (dw.getDbType()==12){//phoenix
+			MetaReverseDao revDao = new PhoenixMetaReverseImpl();
+			return revDao.reverseMeta(dw, mproes,cuser);
+		}else if (dw.getDbType()==13){//pgsql
+			MetaReverseDao revDao = new PgSqlMetaReverseImpl();
+			return revDao.reverseMeta(dw, mproes,cuser);
+		}else if (dw.getDbType()==14){//sql server
+			MetaReverseDao revDao = new SqlServerMetaReverseImpl();
+			return revDao.reverseMeta(dw, mproes,cuser);
 		}
-		return datasource;
+		return dw;
 	}
 }

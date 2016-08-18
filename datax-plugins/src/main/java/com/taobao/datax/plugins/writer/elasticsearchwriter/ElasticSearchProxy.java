@@ -1,11 +1,9 @@
 package com.taobao.datax.plugins.writer.elasticsearchwriter;
 
-import java.io.IOException;
 import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
-import org.codehaus.jackson.map.ObjectMapper;
 import org.elasticsearch.action.admin.indices.create.CreateIndexResponse;
 import org.elasticsearch.action.admin.indices.delete.DeleteIndexResponse;
 import org.elasticsearch.action.admin.indices.exists.indices.IndicesExistsResponse;
@@ -20,9 +18,8 @@ import org.elasticsearch.action.get.GetResponse;
 import org.elasticsearch.client.Client;
 import org.elasticsearch.client.Requests;
 import org.elasticsearch.common.settings.Settings;
-import org.elasticsearch.shield.authc.support.SecuredString;
 
-import static org.elasticsearch.shield.authc.support.UsernamePasswordToken.basicAuthHeaderValue;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 /**
  * elastic search 数据操作类

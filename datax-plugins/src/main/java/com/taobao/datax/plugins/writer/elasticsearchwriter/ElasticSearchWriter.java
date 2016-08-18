@@ -16,13 +16,13 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.math.NumberUtils;
 import org.apache.log4j.Logger;
 import org.apache.lucene.queryparser.classic.QueryParser;
-import org.codehaus.jackson.map.ObjectMapper;
 import org.elasticsearch.client.Client;
 import org.elasticsearch.client.transport.TransportClient;
 import org.elasticsearch.common.settings.Settings;
 import org.elasticsearch.common.transport.InetSocketTransportAddress;
 import org.elasticsearch.shield.ShieldPlugin;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.taobao.datax.common.plugin.Line;
 import com.taobao.datax.common.plugin.LineReceiver;
 import com.taobao.datax.common.plugin.PluginParam;

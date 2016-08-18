@@ -179,17 +179,20 @@ public class DataSource extends IdEntity {
 		databases.add(db);
 	}
 	
-	public Database getDatabase(String dbname){
+	public Database getDatabase(String dbname,User cuser){
 		if (databases!=null){
 			for(Database tdb:databases){
-				if (tdb.getDatasource().id==this.id && tdb.getDbname().equalsIgnoreCase(dbname)){
-					return tdb;
+				if (tdb.getDbname()!=null){
+					if (tdb.getDatasource().id==this.id && tdb.getDbname().equalsIgnoreCase(dbname)){
+						tdb.setUpdater(cuser);
+						tdb.setUpdateDate(new Date());
+						return tdb;
+					}
 				}
 			}
 		}
 		Database db=new Database();
 		db.setCreateDate(new Date());
-		User cuser = UserUtil.getCurrentUser();
 		db.setCreater(cuser);
 		return db;
 	}

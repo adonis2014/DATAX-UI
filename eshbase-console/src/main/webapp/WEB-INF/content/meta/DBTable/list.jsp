@@ -24,12 +24,12 @@
 						</div>
 						<div class="portlet-body">
 							<div class="row-fluid">
-								<form class="queryForm span8">
+								<form class="queryForm span7">
 									<div class="row-fluid">
-	                                 	<div class="span7 ">
+	                                 	<div class="span6 ">
 		                                    <div class="control-group">
 		                                       <div class="controls">
-		                                          <input type="text" id="filters" class="m-wrap span12" placeholder="数据源,类名,表名,逻辑名,表类别,建立者,更新者,建立世间,更新世间,备注">
+		                                          <input type="text" id="filters" class="m-wrap span12" placeholder="类名,表名,逻辑名,备注">
 		                                       </div>
 		                                    </div>
 	                                 	</div>
@@ -59,12 +59,9 @@
 		</div>
 	</div>
 <%@ include file="/WEB-INF/content/common/plugins/page.jsp"%>
-<script type="text/javascript" src="${ctx}/assets/js/map.js"></script>
 <script type="text/javascript">
 $(document).ready(function() {
-	var tabletypeMap = new Map();  
-	<mytags:dictSelect field="tabletypeMap" id="tabletypeMap" type="map" hasLabel="false" codeType="12" />
-
+	
 	App.activeMenu("meta/DBTable/list");
 	
 	Page.initData(
@@ -76,25 +73,15 @@ $(document).ready(function() {
 		},
 		null,
 		[
-			 	{cName:"datasource",cValue:"数据源",format:function(i,value,item){
-					  var $a = $('<a data-original-title="点击访问" data-placement="right" class="tooltips" href="../DataSource/show/'+item.datasource.id+'" >'+item.datasource.dbName+'</a>');
+			 	{cName:"database",cValue:"数据库",format:function(i,value,item){
+					  var $a = $('<a data-original-title="点击访问" data-placement="right" class="tooltips" href="${ctx}/meta/Database/show/'+item.database.id+'" >'+item.database.dbname+'</a>');
 					  return $a;
 				  }},
-			 	{cName:"className",cValue:"类名"},
 			 	{cName:"tableName",cValue:"表名"},
 			 	{cName:"tablePname",cValue:"逻辑名"},
-			 	{cName:"tableType",cValue:"表类别",format:function(i,value,item){
-			 		return tabletypeMap.get(item.tableType);
-			 	}},
-			 	{cName:"createDate",cValue:"建立时间",format:function(i,value,item){
-					 if(App.isNundef(value)){
-						 return new Date(value).format("yyyy-MM-dd hh:mm:ss");
-					 }
-					 return value;
-				 }},
 			 	{cName:"updateDate",cValue:"更新时间",format:function(i,value,item){
 					 if(App.isNundef(value)){
-						 return new Date(value).format("yyyy-MM-dd hh:mm:ss");
+						 return new Date(value).format("yyyy-MM-dd hh:mm");
 					 }
 					 return value;
 				 }},
@@ -105,7 +92,7 @@ $(document).ready(function() {
 
 function doQuery(){
 	var queryObj = {
-			search_LIKES_datasource_OR_className_OR_tableName_OR_tablePname_OR_tableType_OR_createbyId_OR_updatebyId_OR_createDate_OR_updateDate_OR_remark : App.isEqPlacehoder($("#filters"))
+			search_LIKES_datasource_OR_className_OR_tableName_OR_tablePname_OR_remark : App.isEqPlacehoder($("#filters"))
 		};
 	Page.doQuery(queryObj);
 }
