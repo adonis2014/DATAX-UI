@@ -82,7 +82,7 @@
 			App.activeMenu("meta/Module/list");
 		});
 		function showProjects() {
-			$("#projectList").modal();v
+			$("#projectList").modal();
 		}
 		function selProject() {
 			var flag = Page.selectsPrompt();

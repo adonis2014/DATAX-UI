@@ -43,7 +43,17 @@ public class Constants {
 	public static final int STATUS_WARN = 4; // 有警告，但是正常结束
 	public static final int STATUS_ERROR = 5; // 有错误，但是完整结束
 	public static final int STATUS_FAIL = 6; // 操作失败
-
+	
+	public static final int OBJECT_TYPE_DATASOURCE = 0;//数据源
+	public static final int OBJECT_TYPE_DATABASE = 1;//数据库
+	public static final int OBJECT_TYPE_DBTABLE = 2;//数据表
+	public static final int OBJECT_TYPE_DBINDEX = 3;//索引
+	public static final int OBJECT_TYPE_COLUMN = 4;//字段
+	
+	public static final int OBJECT_TYPE_PROJECT = 10;//项目
+	public static final int OBJECT_TYPE_MODULE = 11;//模块
+	public static final int OBJECT_TYPE_JOB = 12;//调度中作业
+	
 
 	public static final int DBMS_TYPE_ORACLE = 1;//oracle
 	public static final int DBMS_TYPE_MSSQL = 2;//MS Sql Server

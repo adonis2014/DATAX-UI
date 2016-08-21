@@ -25,7 +25,7 @@ import org.hibernate.annotations.NotFoundAction;
  * @version 2016-05-18
  */
 @Entity
-@Table(name = "VIEW_META_COMMENT")
+@Table(name = "\"VIEW_META_COMMENT\"")
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class ViewComment extends IdEntity {
 
@@ -37,6 +37,9 @@ public class ViewComment extends IdEntity {
 	@NotFound(action = NotFoundAction.IGNORE)
 	@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 	private User user;
+	
+	@Column(name="user_id",insertable=false,updatable=false)
+	private Long userId;
 	
 	/**
 	 * 注释
@@ -76,6 +79,14 @@ public class ViewComment extends IdEntity {
 	@Column(name = "check_label")
 	private Integer checkLabel;
 	
+
+	public Long getUserId() {
+		return userId;
+	}
+
+	public void setUserId(Long userId) {
+		this.userId = userId;
+	}
 
 	public User getUser() {
 		return user;

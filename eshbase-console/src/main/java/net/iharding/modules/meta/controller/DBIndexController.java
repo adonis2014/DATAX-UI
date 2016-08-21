@@ -4,10 +4,17 @@ import java.util.Date;
 
 import javax.validation.Valid;
 
+import net.iharding.Constants;
 import net.iharding.modules.meta.model.DBIndex;
 import net.iharding.modules.meta.service.DBIndexService;
+import net.iharding.modules.meta.service.DbColumnService;
+import net.iharding.modules.meta.service.FavoriteService;
+import net.iharding.modules.meta.service.MetaCommentService;
+import net.iharding.modules.meta.service.OwnerService;
+import net.iharding.modules.meta.service.WatchService;
 
 import org.guess.core.web.BaseController;
+import org.guess.sys.model.User;
 import org.guess.sys.service.UserService;
 import org.guess.sys.util.UserUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,6 +47,19 @@ public class DBIndexController extends BaseController<DBIndex>{
 	@Autowired
 	private UserService userService;
 	
+	@Autowired
+	private DbColumnService dbColumnService;
+	@Autowired
+	private MetaCommentService commentService;
+	
+	@Autowired
+	private FavoriteService favoriteService;
+	
+	@Autowired
+	private OwnerService ownerService;
+	
+	@Autowired
+	private WatchService watchService;
 	/**
 	 * 添加
 	 * @param object
@@ -78,6 +98,22 @@ public class DBIndexController extends BaseController<DBIndex>{
 		obj.setUpdater(UserUtil.getCurrentUser());
 		dbindexService.save(obj);
 		return this.list();
+	}
+	
+	@RequestMapping(value = "/show/{id}")
+	public ModelAndView show(@PathVariable("id") Long id) throws Exception{
+		DBIndex object = dbindexService.get(id);
+		ModelAndView mav = new ModelAndView(showView);
+		mav.addObject("obj", object);
+		User cuser = UserUtil.getCurrentUser();
+		mav.addObject("favorite", favoriteService.getFavorite(cuser, Constants.OBJECT_TYPE_DBINDEX, object.getId()));
+		mav.addObject("favoriteNum", favoriteService.getFavoriteNum(Constants.OBJECT_TYPE_DBINDEX, object.getId()));
+		mav.addObject("watch", watchService.getWatch(cuser, Constants.OBJECT_TYPE_DBINDEX, object.getId()));
+		mav.addObject("watchNum", watchService.getWatchNum(Constants.OBJECT_TYPE_DBINDEX, object.getId()));
+		mav.addObject("owner", ownerService.getOwner(cuser, Constants.OBJECT_TYPE_DBINDEX, object.getId()));
+		mav.addObject("ownerNum", ownerService.getOwnerNum(Constants.OBJECT_TYPE_DBINDEX, object.getId()));
+		mav.addObject("commentNum", commentService.getCommentNum(Constants.OBJECT_TYPE_DBINDEX, object.getId()));
+		return mav;
 	}
 	
 }

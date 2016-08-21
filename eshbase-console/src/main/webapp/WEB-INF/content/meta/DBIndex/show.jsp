@@ -6,7 +6,10 @@
 <title>${pageTitle }</title>
 </head>
 <body>
-<%@ include file="/WEB-INF/content/meta/DataSource/selDataSource.jsp" %>
+<jsp:include page="/WEB-INF/content/meta/Comment/comments.jsp">
+	<jsp:param value="${obj.id}" name="objectId"/>
+	<jsp:param value="3" name="objectType"/>
+</jsp:include>
 	<div class="page-content">
 		<div class="container-fluid">
 			<!-- 页面导航 -->
@@ -20,104 +23,43 @@
 								<i class="icon-reorder"></i>索引信息
 							</h4>
 							<div class="tools">
-								<a href="javascript:;" class="collapse"></a> <a href="javascript:;" class="remove"></a>
+								<a href="javascript:;" class="collapse"></a> 
+								<a href="javascript:;" class="remove"></a>
 							</div>
 						</div>
 						<div class="portlet-body form">
 							<form action="${ctx}/meta/DBTable/edit" class="form-horizontal form_sync" method="post" id="form1">
-								<div class="row-fluid">
-									<div class="span6 ">
-										<div class="control-group">
-											<label class="control-label" >数据表:</label>
-											<div class="controls">
-												<span class="text">${obj.dbtable.tablePname}</span>
-											</div>
-										</div>
-									</div>
-									<!--/span-->
-									<div class="span6 ">
-										<div class="control-group">
-											<label class="control-label" >索引库名:</label>
-											<div class="controls">
-												<span class="text">${obj.index_name}</span>
-											</div>
-										</div>
-									</div>
-								</div>
-								<div class="row-fluid">
-									<div class="span6 ">
-										<div class="control-group">
-											<label class="control-label" >索引表名:</label>
-											<div class="controls">
-												<span class="text">${obj.type_name}</span>
-											</div>
-										</div>
-									</div>
-									<!--/span-->
-									<div class="span6 ">
-										<div class="control-group">
-											<label class="control-label" >索引类别:</label>
-											<div class="controls">
-												<span class="text"><mytags:dictSelect field="indexType" id="indexType" type="label" defaultVal="${obj.indexType}" hasLabel="false" codeType="13" /></span>
-											</div>
-										</div>
-									</div>
-								</div>
-								<div class="row-fluid">
-									<div class="span6 ">
-										<div class="control-group">
-											<label class="control-label" >备注:</label>
-											<div class="controls">
-												<span class="text">${obj.remark}</span>
-											</div>
-										</div>
-									</div>
-								</div>
-								
-								<c:if test="${not empty obj}">
-								<div class="row-fluid">
-									<div class="span6 ">
-										<div class="control-group">
-											<label class="control-label" >建立者:</label>
-											<div class="controls">
-												<span class="text">${creater.name}</span>
-											</div>
-										</div>
-									</div>
-									<!--/span-->
-									<div class="span6 ">
-										<div class="control-group">
-											<label class="control-label" >建立时间:</label>
-											<div class="controls">
-												<span class="text">${obj.createDate }</span>
-											</div>
-										</div>
-									</div>
-								</div>
-								<div class="row-fluid">
-									<div class="span6 ">
-										<div class="control-group">
-											<label class="control-label" >更新者:</label>
-											<div class="controls">
-												<span class="text">${updater.name}</span>
-											</div>
-										</div>
-									</div>
-									<!--/span-->
-									<div class="span6 ">
-										<div class="control-group">
-											<label class="control-label" >更新时间:</label>
-											<div class="controls">
-												<span class="text">${obj.updateDate }</span>
-											</div>
-										</div>
-									</div>
-								</div>
-								</c:if>
+								<table width="100%" class="dbform">
+									<tr>
+										<td class="fieldtitle">索引库名:</td>
+										<td class="fieldvalue">${obj.index_name }</td>
+										<td class="fieldtitle">索引表名:</td>
+										<td class="fieldvalue">
+										${obj.type_name }
+										</td>
+									</tr>
+									<tr>
+										<td class="fieldtitle">索引类别:</td>
+										<td class="fieldvalue"><mytags:dictSelect field="indexType" type="label" id="indexType" defaultVal="${obj.indexType}" hasLabel="false" codeType="13" /></td>
+										<td class="fieldtitle">备注:</td>
+										<td class="fieldvalue">${obj.remark }</td>
+									</tr>
+									<c:if test="${not empty obj}">
+									<tr>
+											<th class="fieldtitle">建立者:</th><td class="fieldvalue">${obj.creater.name}</td>
+											<th class="fieldtitle">更新者:</th><td class="fieldvalue">${obj.updater.name}</td>
+									</tr>
+									<tr>
+											<th class="fieldtitle">建立时间:</th>
+											<td class="fieldvalue">${obj.createDate }</td>
+											<th class="fieldtitle">更新时间:</th>
+											<td class="fieldvalue">${obj.updateDate }</td>
+									</tr>
+									</c:if>
+								</table>
 							</form>
 						</div>
 					</div>
-					
 					<c:if test="${not empty obj.columns}">
 					<div class="portlet box blue">
 						<div class="portlet-title">
@@ -156,6 +98,72 @@
 						</div>
 					</div>
 					</c:if>
+					<c:if test="${not empty obj.tables}">
+					<div class="portlet-body">
+								<table width="100%" class="dbgrid">
+									<thead>
+										<tr>
+											<th>数据源</th>
+											<th>表名</th>
+											<th>逻辑名</th>
+											<th>表类别</th>
+											<th>建立者</th>
+											<th>最后更新者</th>
+											<th>最后更新时间</th>
+											<th>备注</th>
+										</tr>
+									</thead>
+									<tbody>
+									<c:forEach items="${obj.tables}" var="table">
+										<tr>
+											<td><a href="">${table.datasource.dsName}</a></td>
+											<td>${table.tableName}</td>
+											<td>${table.tablePname}</td>
+											<td><mytags:dictSelect field="tableType" defaultVal="${table.tableType}" type="label" hasLabel="false"/> </td>
+											<td>${table.creater.name}</td>
+											<td>${table.updater.name}</td>
+											<td>${table.updateDate}</td>
+											<td>${table.remark}</td>
+										</tr>
+									</c:forEach>
+									</tbody>
+							</table>
+					</div>
+					</c:if>
+					<div class="form-actions">
+					<a href="javascript:addFavorite();" class="icon-btn span2">
+										<i class="icon-star"></i>
+										<div id="favoriteTxt"><c:if test="${not empty favorite}">取消收藏</c:if>
+										<c:if test="${empty favorite}">收藏</c:if></div>
+										<span class="badge badge-info" id="favoriteNum">${favoriteNum}</span>
+									</a>
+									<a href="javascript:addWatch();" class="icon-btn span2">
+										<i class="icon-eye-open"></i>
+										<div id="watchTxt">
+										<c:if test="${not empty watch}">取消关注</c:if>
+										<c:if test="${empty watch}">关注</c:if></div>
+										<span class="badge badge-info" id="watchNum">${watchNum}</span>
+									</a>
+									<a href="javascript:addOwner();" class="icon-btn span2">
+										<i class="icon-user"></i>
+										<div id="ownerTxt"><c:if test="${not empty owner}">取消拥有</c:if>
+										<c:if test="${empty owner}">拥有</c:if></div>
+										<span class="badge badge-info" id="ownerNum">${ownerNum}</span>
+									</a>
+									<a href="javascript:addComment();" class="icon-btn span2">
+										<i class="icon-comment"></i>
+										<div>注释</div>
+										<span class="badge badge-info" id="commentNum">${commentNum}</span>
+									</a>
+									<a href="${ctx}/meta/DBTable/update/${obj.id}" class="icon-btn span2">
+										<i class="icon-edit"></i>
+										<div>修改</div>
+									</a>
+									<a href="${header.Referer }" class="icon-btn span2">
+										<i class="icon-arrow-left"></i>
+										<div>返回</div>
+									</a>
+								</div>
 				</div>
 			</div>
 		</div>
@@ -165,7 +173,85 @@
 		$(function() {
 			App.activeMenu("meta/DBIndex/list");
 		});
+		function countNum(eleId,opId){
+			var curNum=$("#"+eleId).text();
+			if (opId==1){
+				var newNum=parseInt(curNum)+1;
+				$("#"+eleId).text(newNum);
+			}else{
+				var newNum=parseInt(curNum)-1;
+				$("#"+eleId).text(newNum);
+			}
+		}
 		
+		function addFavorite(){
+			$.ajax({
+                url:"${ctx}/meta/Favorite/save?objectType=3&objectId=${obj.id}",
+                dataType:"text",
+                type:"post",
+               success:function(data){
+                  if(data=="0"){
+                      alert("操作失败！");
+                  }else if (data=="2"){
+                      alert("取消收藏成功！");
+                      countNum("favoriteNum",0);
+                      $("#favoriteTxt").text('收藏');
+                  }else{
+                      alert("收藏成功！");
+                      countNum("favoriteNum",1);
+                      $("#favoriteTxt").text('取消收藏');
+                  }
+               }
+             });
+		}
+		
+		function addWatch(){
+			$.ajax({
+                url:"${ctx}/meta/Watch/save?objectType=3&objectId=${obj.id}",
+                dataType:"text",
+                type:"post",
+               success:function(data){
+                  if(data=="0"){
+                      alert("操作失败！");
+                  }else if (data=="2"){
+                      alert("取消关注成功！");
+                      countNum("watchNum",0);
+                      $("#watchTxt").text('关注');
+                  }else{
+                      alert("关注成功！");
+                      countNum("watchNum",1);
+                      $("#watchTxt").text('取消关注');
+                  }
+               }
+             });
+		}
+		
+		function addComment(){
+			$("#commentsList").modal();
+		}
+		
+		
+		
+		function addOwner(){
+			$.ajax({
+                url:"${ctx}/meta/Owner/save?objectType=3&objectId=${obj.id}",
+                dataType:"text",
+                type:"post",
+               success:function(data){
+                  if(data=="0"){
+                      alert("操作失败！");
+                  }else if (data=="2"){
+                      alert("取消拥有成功！");
+                      countNum("ownerNum",0);
+                      $("#ownerTxt").text('拥有');
+                  }else{
+                      alert("拥有成功！");
+                      countNum("ownerNum",1);
+                      $("#ownerTxt").text('取消拥有');
+                  }
+               }
+             });
+		}
 	</script>
 </body>
 </html>

@@ -20,7 +20,7 @@ import org.hibernate.annotations.NotFoundAction;
 
 
 @Entity
-@Table(name = "VIEW_META_WATCH")
+@Table(name = "\"VIEW_META_WATCH\"")
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class ViewWatch extends IdEntity {
 
@@ -33,6 +33,8 @@ public class ViewWatch extends IdEntity {
 	@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 	private User user;
 	
+	@Column(name="user_id",insertable=false,updatable=false)
+	private Long userId;
 	/**
 	 * 关联对象类别
 	 */
@@ -53,6 +55,14 @@ public class ViewWatch extends IdEntity {
 	 */
 	private String remark;
 	
+
+	public Long getUserId() {
+		return userId;
+	}
+
+	public void setUserId(Long userId) {
+		this.userId = userId;
+	}
 
 	@Column(name = "object_name")
 	private String objectName;

@@ -6,6 +6,10 @@
 <title>${pageTitle}</title>
 </head>
 <body>
+<jsp:include page="/WEB-INF/content/meta/Comment/comments.jsp">
+	<jsp:param value="${obj.id}" name="objectId"/>
+	<jsp:param value="1" name="objectType"/>
+</jsp:include>
 	<div class="page-content">
 		<div class="container-fluid">
 			<!-- 页面导航 -->
@@ -16,10 +20,12 @@
 					<div class="portlet box blue">
 						<div class="portlet-title">
 							<h4>
-								<i class="icon-reorder"></i>${pageTitle}
+								<i class="icon-reorder"></i>${pageTitle} 
+								
 							</h4>
 							<div class="tools">
-								<a href="javascript:;" class="collapse"></a> <a href="javascript:;" class="remove"></a>
+								<a href="javascript:;" class="collapse"></a> 
+								<a href="javascript:;" class="remove"></a>
 							</div>
 						</div>
 						<div class="portlet-body form">
@@ -83,12 +89,43 @@
 										</table>
 									</div>
 								</c:if>
-
 								<div class="form-actions">
-								<a class='btn' href="${ctx}/meta/Database/update/${obj.id}">修改</a>
-									<a class='btn' href="${header.Referer }">返回</a>
+									<a href="javascript:addFavorite();" class="icon-btn span2">
+										<i class="icon-star"></i>
+										<div id="favoriteTxt"><c:if test="${not empty favorite}">取消收藏</c:if>
+										<c:if test="${empty favorite}">收藏</c:if></div>
+										<span class="badge badge-info" id="favoriteNum">${favoriteNum}</span>
+									</a>
+									<a href="javascript:addWatch();" class="icon-btn span2">
+										<i class="icon-eye-open"></i>
+										<div id="watchTxt">
+										<c:if test="${not empty watch}">取消关注</c:if>
+										<c:if test="${empty watch}">关注</c:if></div>
+										<span class="badge badge-info" id="watchNum">${watchNum}</span>
+									</a>
+									<a href="javascript:addOwner();" class="icon-btn span2">
+										<i class="icon-user"></i>
+										<div id="ownerTxt"><c:if test="${not empty owner}">取消拥有</c:if>
+										<c:if test="${empty owner}">拥有</c:if></div>
+										<span class="badge badge-info" id="ownerNum">${ownerNum}</span>
+									</a>
+									<a href="javascript:addComment();" class="icon-btn span2">
+										<i class="icon-comment"></i>
+										<div>注释</div>
+										<span class="badge badge-info" id="commentNum">${commentNum}</span>
+									</a>
+									<a href="${ctx}/meta/Database/update/${obj.id}" class="icon-btn span2">
+										<i class="icon-edit"></i>
+										<div>修改</div>
+									</a>
+									<a href="${header.Referer }" class="icon-btn span2">
+										<i class="icon-arrow-left"></i>
+										<div>返回</div>
+									</a>
 								</div>
+								
 						</div>
+						
 					</div>
 				</div>
 			</div>
@@ -99,6 +136,86 @@
 		$(function() {
 			App.activeMenu("meta/Database/list");
 		});
+		
+		function countNum(eleId,opId){
+			var curNum=$("#"+eleId).text();
+			if (opId==1){
+				var newNum=parseInt(curNum)+1;
+				$("#"+eleId).text(newNum);
+			}else{
+				var newNum=parseInt(curNum)-1;
+				$("#"+eleId).text(newNum);
+			}
+		}
+		
+		function addFavorite(){
+			$.ajax({
+                url:"${ctx}/meta/Favorite/save?objectType=1&objectId=${obj.id}",
+                dataType:"text",
+                type:"post",
+               success:function(data){
+                  if(data=="0"){
+                      alert("操作失败！");
+                  }else if (data=="2"){
+                      alert("取消收藏成功！");
+                      countNum("favoriteNum",0);
+                      $("#favoriteTxt").text('收藏');
+                  }else{
+                      alert("收藏成功！");
+                      countNum("favoriteNum",1);
+                      $("#favoriteTxt").text('取消收藏');
+                  }
+               }
+             });
+		}
+		
+		function addWatch(){
+			$.ajax({
+                url:"${ctx}/meta/Watch/save?objectType=1&objectId=${obj.id}",
+                dataType:"text",
+                type:"post",
+               success:function(data){
+                  if(data=="0"){
+                      alert("操作失败！");
+                  }else if (data=="2"){
+                      alert("取消关注成功！");
+                      countNum("watchNum",0);
+                      $("#watchTxt").text('关注');
+                  }else{
+                      alert("关注成功！");
+                      countNum("watchNum",1);
+                      $("#watchTxt").text('取消关注');
+                  }
+               }
+             });
+		}
+		
+		function addComment(){
+			$("#commentsList").modal();
+		}
+		
+		
+		
+		function addOwner(){
+			$.ajax({
+                url:"${ctx}/meta/Owner/save?objectType=1&objectId=${obj.id}",
+                dataType:"text",
+                type:"post",
+               success:function(data){
+                  if(data=="0"){
+                      alert("操作失败！");
+                  }else if (data=="2"){
+                      alert("取消拥有成功！");
+                      countNum("ownerNum",0);
+                      $("#ownerTxt").text('拥有');
+                  }else{
+                      alert("拥有成功！");
+                      countNum("ownerNum",1);
+                      $("#ownerTxt").text('取消拥有');
+                  }
+               }
+             });
+		}
 	</script>
 </body>
 </html>

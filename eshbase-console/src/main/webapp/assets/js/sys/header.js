@@ -17,3 +17,24 @@ var Header = {
 		alert("还没做0.0!");
 	}
 }
+
+function showProfile(){
+	
+}
+
+function modifyPassword(){
+	
+}
+
+function showFavorite(){
+	window.location.href=ctx+"/meta/Favorite/list?userId=1";
+}
+function showWatch(){
+	window.location.href=ctx+"/meta/Watch/list?userId=1";
+}
+function showOwner(){
+	window.location.href=ctx+"/meta/Owner/list?userId=1";
+}
+function showComment(){
+	window.location.href=ctx+"/meta/Comment/list?userId=1";
+}

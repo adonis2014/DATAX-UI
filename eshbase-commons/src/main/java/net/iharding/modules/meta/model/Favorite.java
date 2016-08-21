@@ -57,8 +57,14 @@ public class Favorite extends IdEntity {
 	 */
 	private String remark;
 	
-	
-	
+	public User getUser() {
+		return user;
+	}
+
+	public void setUser(User user) {
+		this.user = user;
+	}
+
 	public Integer getObjectType() {
 		return objectType;
 	}

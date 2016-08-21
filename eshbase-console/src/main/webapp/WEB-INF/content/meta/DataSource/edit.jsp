@@ -70,7 +70,7 @@
 	<%@ include file="/WEB-INF/content/common/plugins/jquery-validation.jsp"%>
 	<script type="text/javascript">
 		$(function() {
-			App.activeMenu("meta/dataSource/list");
+			App.activeMenu("meta/DataSource/list");
 		});
 		function showProject() {
 			$("#projectList").modal();

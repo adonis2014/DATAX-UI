@@ -24,12 +24,12 @@
 						</div>
 						<div class="portlet-body">
 							<div class="row-fluid">
-								<form class="queryForm span8">
+								<form class="queryForm span7">
 									<div class="row-fluid">
 	                                 	<div class="span7 ">
 		                                    <div class="control-group">
 		                                       <div class="controls">
-		                                          <input type="text" id="filters" class="m-wrap span12" placeholder="注释人ID,关联对象类别,关联对象Id,建立时间,备注">
+		                                          <input type="text" id="filters" class="m-wrap span12" placeholder="对象名,逻辑名">
 		                                       </div>
 		                                    </div>
 	                                 	</div>
@@ -59,36 +59,49 @@
 		</div>
 	</div>
 <%@ include file="/WEB-INF/content/common/plugins/page.jsp"%>
+<script type="text/javascript" src="${ctx}/assets/js/map.js"></script>
+
 <script type="text/javascript">
 $(document).ready(function() {
 	
-	App.activeMenu("meta/owner/list");
+	App.activeMenu("meta/Owner/list");
+	var objtypeMap = new Map();  
+	<mytags:dictSelect field="objtypeMap" id="objtypeMap" type="map" hasLabel="false" codeType="20" />
 	
 	Page.initData(
 		{
-			url:"${ctx}/meta/owner/page",
+			url:"${ctx}/meta/Owner/page?userId=${param.userId}",
 			pageNo : 1,
 			pageSize : 10,
 			tableId : "#sample_1"
 		},
 		null,
 		[
-			 	{cName:"userId",cValue:"注释人ID"},
-
-			 	{cName:"objectType",cValue:"关联对象类别"},
-
-			 	{cName:"objectId",cValue:"关联对象Id"},
-
-			 	{cName:"createDate",cValue:"建立时间"},
-
-			  	{cName:"remark",cValue:"备注"}
+			 	{cName:"user",cValue:"拥有者",format:function(i,value,item){
+					  return item.user.name;
+				 }},
+			 	{cName:"objectType",cValue:"关联对象类别",format:function(i,value,item){
+			  		return objtypeMap.get(item.objectType);
+				}},
+				{cName:"objectName",cValue:"对象名",format:function(i,value,item){
+					return "<a href='${ctx}/meta/Comment/showObj/"+item.objectType+"/"+item.objectId+"' target='_blank'>"+item.objectName+"</a>";
+				}},
+			 	{cName:"objectPname",cValue:"逻辑名",format:function(i,value,item){
+					return "<a href='${ctx}/meta/Comment/showObj/"+item.objectType+"/"+item.objectId+"' target='_blank'>"+item.objectPname+"</a>";
+				}},
+			 	{cName:"createDate",cValue:"建立时间",format:function(i,value,item){
+					 if(App.isNundef(value)){
+						 return new Date(value).format("yyyy-MM-dd hh:mm");
+					 }
+					 return value;
+				 }}
 		 ]
 	);
 });
 
 function doQuery(){
 	var queryObj = {
-			search_LIKES_userId_OR_objectType_OR_objectId_OR_createDate_OR_remark : App.isEqPlacehoder($("#filters"))
+			search_LIKES_objectName_OR_objectPname : App.isEqPlacehoder($("#filters"))
 		};
 	Page.doQuery(queryObj);
 }

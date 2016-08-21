@@ -75,8 +75,9 @@ var Page = {
 		var thead = $("<thead></thead>");
 		var theadTr = $("<tr></tr>");
 		//checkbox
+		if (Page.defaultVal.checkboxType==0 || Page.defaultVal.checkboxType==1){
 			theadTr.append($("<th></th>").append($("<input type='checkbox' onclick='javascript:Page.checkAllItems(this);'>")));
-		
+		}
 		$.each(cols, function(i, item) {
 			var sortStr = item.noSort ? ""
 					: "class='sorting' onclick='Page.sorting(this)'";

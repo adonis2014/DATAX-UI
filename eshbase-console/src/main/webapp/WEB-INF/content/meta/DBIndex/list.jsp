@@ -24,12 +24,12 @@
 						</div>
 						<div class="portlet-body">
 							<div class="row-fluid">
-								<form class="queryForm span8">
+								<form class="queryForm span7">
 									<div class="row-fluid">
-	                                 	<div class="span7 ">
+	                                 	<div class="span6 ">
 		                                    <div class="control-group">
 		                                       <div class="controls">
-		                                          <input type="text" id="filters" class="m-wrap span12" placeholder="数据表,索引库名,索引表名,备注">
+		                                          <input type="text" id="filters" class="m-wrap span12" placeholder="索引库名,索引表名,备注">
 		                                       </div>
 		                                    </div>
 	                                 	</div>
@@ -59,8 +59,12 @@
 		</div>
 	</div>
 <%@ include file="/WEB-INF/content/common/plugins/page.jsp"%>
+<script type="text/javascript" src="${ctx}/assets/js/map.js"></script>
+
 <script type="text/javascript">
 $(document).ready(function() {
+	var dbtypeMap = new Map();  
+	<mytags:dictSelect field="dbtypeMap" id="dbtypeMap" type="map" hasLabel="false" codeType="13" />
 	
 	App.activeMenu("meta/DBIndex/list");
 	
@@ -73,20 +77,23 @@ $(document).ready(function() {
 		},
 		null,
 		[
-			 	{cName:"dbtable",cValue:"数据表",format:function(i,value,item){
-					  var $a = $('<a data-original-title="点击访问" data-placement="right" class="tooltips" href="../Dbtable/show/'+item.dbtable.id+'" >'+item.dbtable.tablePname+'</a>');
-					  return $a;
-				  }},
-
 			 	{cName:"index_name",cValue:"索引库名"},
-
 			 	{cName:"type_name",cValue:"索引名"},
-
-			 	{cName:"indexType",cValue:"索引类别"},
-
-			 	{cName:"createbyId",cValue:"建立者"},
-			 	{cName:"updatebyId",cValue:"更新者"},
-			 	{cName:"updateDate",cValue:"更新世间"},
+			 	{cName:"indexType",cValue:"索引类别",format:function(i,value,item){
+			 		return dbtypeMap.get(item.indexType);
+			 	}},
+			 	{cName:"creater",cValue:"建立者",format:function(i,value,item){
+			 		return item.creater.name;
+			 	}},
+			 	{cName:"updater",cValue:"更新者",format:function(i,value,item){
+			 		return item.updater.name;
+			 	}},
+			 	{cName:"updateDate",cValue:"更新时间",format:function(i,value,item){
+					 if(App.isNundef(value)){
+						 return new Date(value).format("yyyy-MM-dd hh:mm");
+					 }
+					 return value;
+				 }},
 			  	{cName:"remark",cValue:"备注"}
 		 ]
 	);
@@ -94,7 +101,7 @@ $(document).ready(function() {
 
 function doQuery(){
 	var queryObj = {
-			search_LIKES_dbtable_OR_index_name_OR_type_name_OR_indexType_OR_createbyId_OR_updatebyId_OR_createDate_OR_updateDate_OR_remark : App.isEqPlacehoder($("#filters"))
+			search_LIKES_index_name_OR_type_name_OR_remark : App.isEqPlacehoder($("#filters"))
 		};
 	Page.doQuery(queryObj);
 }

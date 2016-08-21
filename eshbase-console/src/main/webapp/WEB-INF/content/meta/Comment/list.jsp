@@ -59,38 +59,49 @@
 		</div>
 	</div>
 <%@ include file="/WEB-INF/content/common/plugins/page.jsp"%>
+<script type="text/javascript" src="${ctx}/assets/js/map.js"></script>
 <script type="text/javascript">
 $(document).ready(function() {
 	
 	App.activeMenu("meta/Comment/list");
+	var objtypeMap = new Map();  
+	<mytags:dictSelect field="objtypeMap" id="objtypeMap" type="map" hasLabel="false" codeType="20" />
 	
 	Page.initData(
 		{
-			url:"${ctx}/meta/Comment/page",
+			url:"${ctx}/meta/Comment/page?userId=${param.userId}",
 			pageNo : 1,
 			pageSize : 10,
 			tableId : "#sample_1"
 		},
 		null,
 		[
-			 	{cName:"userId",cValue:"注释人ID"},
-
+			 	{cName:"user",cValue:"注释人",format:function(i,value,item){
+			 		return  item.user.name;
+				 }},
 			 	{cName:"comment",cValue:"注释"},
-
-			 	{cName:"objectType",cValue:"关联对象类别"},
-
-			 	{cName:"objectId",cValue:"关联对象Id"},
-
-			 	{cName:"createDate",cValue:"建立时间"},
-
-			  	{cName:"updateDate",cValue:"更新时间"}
+			 	{cName:"objectType",cValue:"关联对象类别",format:function(i,value,item){
+			  		return objtypeMap.get(item.objectType);
+				}},
+				{cName:"objectName",cValue:"对象名",format:function(i,value,item){
+					return "<a href='${ctx}/meta/Comment/showObj/"+item.objectType+"/"+item.objectId+"' target='_blank'>"+item.objectName+"</a>";
+				}},
+			 	{cName:"objectPname",cValue:"逻辑名",format:function(i,value,item){
+					return "<a href='${ctx}/meta/Comment/showObj/"+item.objectType+"/"+item.objectId+"' target='_blank'>"+item.objectPname+"</a>";
+				}},
+			 	{cName:"createDate",cValue:"建立时间",format:function(i,value,item){
+					 if(App.isNundef(value)){
+						 return new Date(value).format("yyyy-MM-dd hh:mm");
+					 }
+					 return value;
+				 }}
 		 ]
 	);
 });
 
 function doQuery(){
 	var queryObj = {
-			search_LIKES_userId_OR_comment_OR_objectType_OR_objectId_OR_createDate_OR_updateDate : App.isEqPlacehoder($("#filters"))
+			search_LIKES_comment_OR_objectName_OR_objectPname_OR_objectRemark : App.isEqPlacehoder($("#filters"))
 		};
 	Page.doQuery(queryObj);
 }

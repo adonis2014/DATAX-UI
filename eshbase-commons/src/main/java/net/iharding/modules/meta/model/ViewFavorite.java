@@ -19,7 +19,7 @@ import org.hibernate.annotations.NotFound;
 import org.hibernate.annotations.NotFoundAction;
 
 @Entity
-@Table(name = "VIEW_META_FAVORITE")
+@Table(name = "\"VIEW_META_FAVORITE\"")
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class ViewFavorite extends IdEntity {
 
@@ -31,7 +31,9 @@ public class ViewFavorite extends IdEntity {
 	@NotFound(action = NotFoundAction.IGNORE)
 	@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 	private User user;
-
+	
+	@Column(name="user_id",insertable=false,updatable=false)
+	private Long userId;
 	/**
 	 * 关联对象类别
 	 */
@@ -64,6 +66,14 @@ public class ViewFavorite extends IdEntity {
 	@Column(name = "check_label")
 	private Integer checkLabel;
 	
+
+	public Long getUserId() {
+		return userId;
+	}
+
+	public void setUserId(Long userId) {
+		this.userId = userId;
+	}
 
 	public User getUser() {
 		return user;

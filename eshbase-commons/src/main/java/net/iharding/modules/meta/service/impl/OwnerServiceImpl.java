@@ -1,8 +1,12 @@
 package net.iharding.modules.meta.service.impl;
 
-import org.guess.core.service.BaseServiceImpl;
+import net.iharding.modules.meta.dao.OwnerDao;
 import net.iharding.modules.meta.model.Owner;
 import net.iharding.modules.meta.service.OwnerService;
+
+import org.guess.core.service.BaseServiceImpl;
+import org.guess.sys.model.User;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 /**
@@ -15,5 +19,18 @@ import org.springframework.stereotype.Service;
 */
 @Service
 public class OwnerServiceImpl extends BaseServiceImpl<Owner, Long> implements OwnerService {
+
+	@Autowired
+	private OwnerDao ownerDao;
+	
+	@Override
+	public Owner getOwner(User user, Integer objectType, Long objectId) {
+		return ownerDao.getOwner(user, objectType, objectId);
+	}
+
+	@Override
+	public long getOwnerNum(int objectType, Long id) {
+		return ownerDao.getOwnerNum(objectType,id);
+	}
 
 }

@@ -4,13 +4,19 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import net.iharding.Constants;
 import net.iharding.modules.meta.model.DataSource;
 import net.iharding.modules.meta.model.DataSourceWrapper;
 import net.iharding.modules.meta.model.MetaProperty;
 import net.iharding.modules.meta.service.DataSourceService;
+import net.iharding.modules.meta.service.FavoriteService;
+import net.iharding.modules.meta.service.MetaCommentService;
+import net.iharding.modules.meta.service.OwnerService;
+import net.iharding.modules.meta.service.WatchService;
 
 import org.apache.commons.lang3.math.NumberUtils;
 import org.guess.core.web.BaseController;
+import org.guess.sys.model.User;
 import org.guess.sys.util.UserUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -40,6 +46,17 @@ public class DataSourceController extends BaseController<DataSource>{
 	
 	@Autowired
 	private DataSourceService dataSourceService;
+	@Autowired
+	private MetaCommentService commentService;
+	
+	@Autowired
+	private FavoriteService favoriteService;
+	
+	@Autowired
+	private OwnerService ownerService;
+	
+	@Autowired
+	private WatchService watchService;
 	
 	@RequestMapping(method = RequestMethod.GET, value = "/setCheckLabel/{id}")
 	public String setCheckLabel(@PathVariable("id") Long id) throws Exception {
@@ -102,11 +119,20 @@ public class DataSourceController extends BaseController<DataSource>{
 	 */
 	@RequestMapping(value = "/show/{id}")
 	public ModelAndView show(@PathVariable("id") Long id) throws Exception{
-		DataSource obj = dataSourceService.get(id);
+		DataSource object = dataSourceService.get(id);
 		ModelAndView mav = new ModelAndView(showView);
-		mav.addObject("obj", obj);
-		List<MetaProperty> properties=dataSourceService.getProperties(obj.getDbType(),id);
+		mav.addObject("obj", object);
+		List<MetaProperty> properties=dataSourceService.getProperties(object.getDbType(),id);
 		mav.addObject("properties", properties);
+		mav.addObject("obj", object);
+		User cuser = UserUtil.getCurrentUser();
+		mav.addObject("favorite", favoriteService.getFavorite(cuser, Constants.OBJECT_TYPE_DATASOURCE, object.getId()));
+		mav.addObject("favoriteNum", favoriteService.getFavoriteNum(Constants.OBJECT_TYPE_DATASOURCE, object.getId()));
+		mav.addObject("watch", watchService.getWatch(cuser, Constants.OBJECT_TYPE_DATASOURCE, object.getId()));
+		mav.addObject("watchNum", watchService.getWatchNum(Constants.OBJECT_TYPE_DATASOURCE, object.getId()));
+		mav.addObject("owner", ownerService.getOwner(cuser, Constants.OBJECT_TYPE_DATASOURCE, object.getId()));
+		mav.addObject("ownerNum", ownerService.getOwnerNum(Constants.OBJECT_TYPE_DATASOURCE, object.getId()));
+		mav.addObject("commentNum", commentService.getCommentNum(Constants.OBJECT_TYPE_DATASOURCE, object.getId()));
 		return mav;
 	}
 	

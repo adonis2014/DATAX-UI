@@ -16,7 +16,7 @@ public class CmsUtil {
 	//保存在session中的当前站点key
 	public static String CURRENT_SITE_STR = "cursite";
 	//session中没有当前站点信息是根据name取出当期站点并设置进去
-	public static final String DEF_SITE_NAME = "blog";
+	public static final String DEF_SITE_NAME = "kms";
 	
 	
 	/**

@@ -8,7 +8,7 @@
 	<div class="page-content">
 		<div class="container-fluid">
 			<!-- 页面导航 -->
-			<tool:navBar pageTitle="评论列表" pageTitleContent="内容管理-评论管理-评论列表" titleIcon="icon-home"/>
+			<tool:navBar pageTitle="评论列表" pageTitleContent="知识管理-评论管理-评论列表" titleIcon="icon-home"/>
 			<!-- 主体内容 -->
 			<div class="row-fluid">
 				<div class="span12">

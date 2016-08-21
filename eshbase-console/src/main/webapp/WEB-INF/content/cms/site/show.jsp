@@ -1,6 +1,6 @@
 <%@ page contentType="text/html;charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/content/common/common.jsp"%>
-<c:set var="pageTitle" value="${empty obj ? '添加评论':'修改评论' }" scope="page" />
+<c:set var="pageTitle" value="${'站点信息'}" scope="page" />
 <html>
 <head>
 <title>${pageTitle }</title>
@@ -10,14 +10,14 @@
 		<div class="container-fluid">
 			<!-- 页面导航 -->
 			<tool:navBar pageTitle="${pageTitle }"
-				pageTitleContent="知识管理-{functionName}管理-${pageTitle }" titleIcon="icon-home" />
+				pageTitleContent="知识管理-站点管理-${pageTitle }" titleIcon="icon-home" />
 			<!-- 主体内容 -->
 			<div class="row-fluid">
 				<div class="span12">
 					<div class="portlet box blue">
 						<div class="portlet-title">
 							<h4>
-								<i class="icon-reorder"></i>请填写表单
+								<i class="icon-reorder"></i>${pageTitle }
 							</h4>
 							<div class="tools">
 								<a href="javascript:;" class="collapse"></a> <a
@@ -25,64 +25,48 @@
 							</div>
 						</div>
 						<div class="portlet-body form">
-							<form action="${ctx}/cms/comment/edit" class="form-horizontal form_sync"
-								method="post" id="form1">
-								
+							<form action="${ctx}/cms/site/edit" class="form-horizontal form_sync" method="post" id="form1">
 								<input type="hidden" value="${obj.id}" name="id">
 								<div class="control-group">
-									<label class="control-label">内容:</label>
+									<label class="control-label">站点名称:</label>
 									<div class="controls">
-										<input type="text" class="span6 m-wrap"
-											validate="{required:true}"
-											name="content" value="${obj.content }" />
+										${obj.name }
 									</div>
 								</div>
 								<div class="control-group">
-									<label class="control-label">名称:</label>
+									<label class="control-label">站点标题:</label>
 									<div class="controls">
-										<input type="text" class="span6 m-wrap"
-											validate="{required:true}"
-											name="name" value="${obj.name }" />
+										${obj.title }
 									</div>
 								</div>
 								<div class="control-group">
-									<label class="control-label">ip地址:</label>
+									<label class="control-label">站点logo:</label>
 									<div class="controls">
-										<input type="text" class="span6 m-wrap"
-											validate="{required:true}"
-											name="ip" value="${obj.ip }" />
+										${obj.logo }
 									</div>
 								</div>
 								<div class="control-group">
-									<label class="control-label">日期:</label>
+									<label class="control-label">描述:</label>
 									<div class="controls">
-										<input type="text" class="span6 m-wrap"
-											validate="{required:true}"
-											name="createDate" value="${obj.createDate }" />
+										${obj.description }
 									</div>
 								</div>
 								<div class="control-group">
-									<label class="control-label">审核人:</label>
+									<label class="control-label">关键字:</label>
 									<div class="controls">
-										<input type="text" class="span6 m-wrap"
-											validate="{required:true}"
-											name="auditUser" value="${obj.auditUser }" />
+										${obj.keywords }
 									</div>
 								</div>
 								<div class="control-group">
-									<label class="control-label">审核日期:</label>
+									<label class="control-label">主题:</label>
 									<div class="controls">
-										<input type="text" class="span6 m-wrap"
-											validate="{required:true}"
-											name="auditDate" value="${obj.auditDate }" />
+										${obj.theme }
 									</div>
 								</div>
 								<div class="control-group">
-									<label class="control-label">标记:</label>
+									<label class="control-label">版权信息:</label>
 									<div class="controls">
-										<input type="text" class="span6 m-wrap"
-											validate="{required:true}"
-											name="delFlag" value="${obj.delFlag }" />
+										${obj.copyright }
 									</div>
 								</div>
 								
@@ -101,7 +85,7 @@
 <%@ include file="/WEB-INF/content/common/plugins/jquery-validation.jsp"%>
 <script type="text/javascript">
 	$(function(){
-		App.activeMenu("cms/comment/list");
+		App.activeMenu("cms/site/list");
 	});
 </script>
 </body>

@@ -20,7 +20,7 @@ import org.hibernate.annotations.NotFoundAction;
 
 
 @Entity
-@Table(name = "VIEW_META_OWNER")
+@Table(name = "\"VIEW_META_OWNER\"")
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class ViewOwner extends IdEntity {
 
@@ -32,6 +32,9 @@ public class ViewOwner extends IdEntity {
 	@NotFound(action = NotFoundAction.IGNORE)
 	@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 	private User user;
+	
+	@Column(name="user_id",insertable=false,updatable=false)
+	private Long userId;
 	/**
 	 * 关联对象类别
 	 */
@@ -65,6 +68,14 @@ public class ViewOwner extends IdEntity {
 	@Column(name = "check_label")
 	private Integer checkLabel;
 	
+	public Long getUserId() {
+		return userId;
+	}
+
+	public void setUserId(Long userId) {
+		this.userId = userId;
+	}
+
 	public String getObjectName() {
 		return objectName;
 	}

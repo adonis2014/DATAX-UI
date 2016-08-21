@@ -8,7 +8,7 @@
 	<div class="page-content">
 		<div class="container-fluid">
 			<!-- 页面导航 -->
-			<tool:navBar pageTitle="站点列表" pageTitleContent="内容管理-站点管理-站点列表" titleIcon="icon-home"/>
+			<tool:navBar pageTitle="站点列表" pageTitleContent="知识管理-站点管理-站点列表" titleIcon="icon-home"/>
 			<!-- 主体内容 -->
 			<div class="row-fluid">
 				<div class="span12">
@@ -24,7 +24,7 @@
 						</div>
 						<div class="portlet-body">
 							<div class="row-fluid">
-								<form class="queryForm span8">
+								<form class="queryForm span7">
 									<div class="row-fluid">
 	                                 	<div class="span7 ">
 		                                    <div class="control-group">
