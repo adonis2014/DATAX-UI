@@ -6,6 +6,7 @@
 <title>${pageTitle }</title>
 </head>
 <body>
+<%@ include file="/WEB-INF/content/meta/DBTable/selTable.jsp" %>
 	<div class="page-content">
 		<div class="container-fluid">
 			<!-- 页面导航 -->
@@ -55,7 +56,36 @@
 								</table>
 								<div class="form-actions">
 									<button type="submit" class="btn blue">提交</button>
+									<button type="button" class="btn yellow" onclick="javascript:showTree();">添加表单</button>
 									<a class='btn' href="${header.Referer }">返回</a>
+								</div>
+								<div class="portlet-body">
+								<table width="100%" class="dbgrid">
+									<thead>
+										<tr>
+											<th>数据源</th>
+											<th>表名</th>
+											<th>逻辑名</th>
+											<th>建立者</th>
+											<th>最后更新者</th>
+											<th>最后更新时间</th>
+											<th>操作</th>
+										</tr>
+									</thead>
+									<tbody>
+									<c:forEach items="${obj.tables}" var="table">
+										<tr>
+											<td><a href="${ctx}/meta/Database/show/${table.database.id}">${table.database.dbname}</a></td>
+											<td><a href='${ctx}/meta/DBTable/show/${table.id}' >${table.tableName}</a></td>
+											<td>${table.tablePname}</td>
+											<td>${table.creater.name}</td>
+											<td>${table.updater.name}</td>
+											<td>${table.updateDate}</td>
+											<td><a href='${ctx}/meta/DBIndex/removeIndexTable/${obj.id}/${table.id}'>删除</a></td>
+										</tr>
+									</c:forEach>
+									</tbody>
+							</table>
 								</div>
 							</form>
 						</div>
@@ -65,11 +95,20 @@
 		</div>
 	</div>
 	<%@ include file="/WEB-INF/content/common/plugins/jquery-validation.jsp"%>
+	<%@ include file="/WEB-INF/content/common/plugins/bootstrap-tree.jsp"%>
 	<script type="text/javascript">
 		$(function() {
 			App.activeMenu("meta/DBIndex/list");
 		});
+		function showTree(){
+			$("#metaDBTree").modal();
+		}
 		
+		function selTable(){
+			$obj = $("#tree_1").find("a.selected:first");
+			$('#metaDBTree').modal('hide');
+			window.location.href="${ctx}/meta/DBIndex/addIndexTable/${obj.id}/"+$obj.attr("data-id");
+		}
 	</script>
 </body>
 </html>

@@ -86,7 +86,7 @@
 	<%@ include file="/WEB-INF/content/common/plugins/jquery-validation.jsp"%>
 	<script type="text/javascript">
 		$(function() {
-			App.activeMenu("job/jobFlow/list");
+			App.activeMenu("job/JobFlow/list");
 		});
 		function showJobClass(){
 			$("#jobClassList").modal();

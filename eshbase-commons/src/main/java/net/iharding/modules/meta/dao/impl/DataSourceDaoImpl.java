@@ -1,5 +1,7 @@
 package net.iharding.modules.meta.dao.impl;
 
+import java.util.List;
+
 import net.iharding.modules.meta.dao.DataSourceDao;
 import net.iharding.modules.meta.model.DataSource;
 
@@ -23,5 +25,10 @@ public class DataSourceDaoImpl extends HibernateDao<DataSource,Long> implements 
 	public void save(DataSource datasource) {
 		Session session = getSession();
 		session.merge(datasource);
+	}
+
+	@Override
+	public List<DataSource> getCDataSources() {
+		return this.findBy("checkLabel", 1);
 	}
 }

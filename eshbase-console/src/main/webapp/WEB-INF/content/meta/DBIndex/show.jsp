@@ -106,24 +106,22 @@
 											<th>数据源</th>
 											<th>表名</th>
 											<th>逻辑名</th>
-											<th>表类别</th>
 											<th>建立者</th>
 											<th>最后更新者</th>
 											<th>最后更新时间</th>
-											<th>备注</th>
+											<th>操作</th>
 										</tr>
 									</thead>
 									<tbody>
 									<c:forEach items="${obj.tables}" var="table">
 										<tr>
-											<td><a href="">${table.datasource.dsName}</a></td>
-											<td>${table.tableName}</td>
+											<td><a href="${ctx}/meta/Database/show/${table.database.id}">${table.database.dbname}</a></td>
+											<td><a href='${ctx}/meta/DBTable/show/${table.id}' >${table.tableName}</a></td>
 											<td>${table.tablePname}</td>
-											<td><mytags:dictSelect field="tableType" defaultVal="${table.tableType}" type="label" hasLabel="false"/> </td>
 											<td>${table.creater.name}</td>
 											<td>${table.updater.name}</td>
 											<td>${table.updateDate}</td>
-											<td>${table.remark}</td>
+											<td><a href='${ctx}/meta/DBIndex/removeIndexTable/${obj.id}/${table.id}'>删除</a></td>
 										</tr>
 									</c:forEach>
 									</tbody>
@@ -155,7 +153,7 @@
 										<div>注释</div>
 										<span class="badge badge-info" id="commentNum">${commentNum}</span>
 									</a>
-									<a href="${ctx}/meta/DBTable/update/${obj.id}" class="icon-btn span2">
+									<a href="${ctx}/meta/DBIndex/update/${obj.id}" class="icon-btn span2">
 										<i class="icon-edit"></i>
 										<div>修改</div>
 									</a>

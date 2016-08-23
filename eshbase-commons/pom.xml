@@ -63,16 +63,9 @@
 				</exclusion>
 			</exclusions>
 		</dependency>
-		<dependency>
-			<groupId>com.dangdang</groupId>
-			<artifactId>elastic-job-core</artifactId>
-			<version>1.0.2</version>
-		</dependency>
-		<dependency>
-			<groupId>com.dangdang</groupId>
-			<artifactId>elastic-job-spring</artifactId>
-			<version>1.0.2</version>
-		</dependency>
+		<!-- 引入elastic-job核心模块 -->
+
+<!-- 使用springframework自定义命名空间时引入 -->
 	</dependencies>
 
 

@@ -1,26 +1,23 @@
 package net.iharding.modules.job.jobtype;
 
-import net.iharding.datax.engine.DataExector;
+import org.springframework.stereotype.Component;
 
-import com.dangdang.ddframe.job.api.JobExecutionMultipleShardingContext;
-import com.dangdang.ddframe.job.plugin.job.type.AbstractSimpleElasticJob;
 /**
  * 执行单个datax engine任务
- * @author  Joe.zhang
+ * 
+ * @author Joe.zhang
  *
  */
-public class DataxETLJob  extends AbstractSimpleElasticJob{
+@Component
+public class DataxETLJob {
+	
+	/**
+	 * 执行 datax etl job
+	 * 
+	 * @param jobId
+	 */
+	public void executeDataxJob(String jobId) {
 
-	@Override
-	public void process(JobExecutionMultipleShardingContext shardingContext) {
-		try {
-			String jobId=shardingContext.getJobParameter();
-			DataExector exector=new DataExector(jobId);
-			exector.execute();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		
 	}
 
 }

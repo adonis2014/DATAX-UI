@@ -1,7 +1,10 @@
 package net.iharding.modules.meta.dao;
 
-import org.guess.core.orm.EntityDao;
+import java.util.List;
+
 import net.iharding.modules.meta.model.DataSource;
+
+import org.guess.core.orm.EntityDao;
 
 /**
 * 
@@ -12,5 +15,9 @@ import net.iharding.modules.meta.model.DataSource;
 *
 */
 public interface DataSourceDao extends EntityDao<DataSource, Long>{
-	
+	/**
+	 * 获取数据源
+	 * @return
+	 */
+	public List<DataSource> getCDataSources();
 }

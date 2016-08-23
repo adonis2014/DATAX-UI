@@ -11,7 +11,6 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import net.iharding.core.orm.IdEntity;
-import net.iharding.modules.meta.model.DataSource;
 
 import org.guess.sys.model.User;
 import org.hibernate.annotations.Cache;

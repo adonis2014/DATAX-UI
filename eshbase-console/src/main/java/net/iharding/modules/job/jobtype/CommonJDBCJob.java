@@ -1,18 +1,20 @@
 package net.iharding.modules.job.jobtype;
 
-import com.dangdang.ddframe.job.api.JobExecutionMultipleShardingContext;
-import com.dangdang.ddframe.job.plugin.job.type.AbstractSimpleElasticJob;
+import org.springframework.stereotype.Component;
+
 /**
  * 通用jdbc命令调度
  * @author  Joe.zhang
  *
  */
-public class CommonJDBCJob extends AbstractSimpleElasticJob {
+@Component
+public class CommonJDBCJob  {
 
-	@Override
-	public void process(JobExecutionMultipleShardingContext shardingContext) {
-		// TODO Auto-generated method stub
-		
+	/**
+	 * 批量执行sql,按照\n换行符间隔
+	 * @param sql
+	 */
+	public void executeSql(String sql) {
+
 	}
-
 }

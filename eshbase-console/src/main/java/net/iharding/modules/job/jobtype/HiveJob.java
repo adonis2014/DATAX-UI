@@ -1,18 +1,22 @@
 package net.iharding.modules.job.jobtype;
 
-import com.dangdang.ddframe.job.api.JobExecutionMultipleShardingContext;
-import com.dangdang.ddframe.job.plugin.job.type.AbstractSimpleElasticJob;
+import org.springframework.stereotype.Component;
+
 /**
  * 批量执行hive任务调度任务
+ * 
  * @author Joe.zhang
  *
  */
-public class HiveJob extends AbstractSimpleElasticJob{
+@Component
+public class HiveJob {
+	/**
+	 * 批量执行hql,多行采用换行符执行
+	 * 
+	 * @param hql
+	 */
+	public void exeHql(String hql) {
 
-	@Override
-	public void process(JobExecutionMultipleShardingContext shardingContext) {
-		// TODO Auto-generated method stub
-		
 	}
 
 }

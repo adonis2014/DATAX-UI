@@ -9,7 +9,6 @@ import net.iharding.modules.job.model.RegCenter;
 
 import org.guess.core.service.BaseService;
 
-import com.dangdang.ddframe.job.console.domain.RegistryCenterClient;
 
 /**
  * 
@@ -21,29 +20,7 @@ import com.dangdang.ddframe.job.console.domain.RegistryCenterClient;
  */
 public interface RegCenterService extends BaseService<RegCenter, Long> {
 
-	/**
-	 * 连接注册中心，更新作业终端和作业任务状态信息
-	 * 
-	 * @param name
-	 * @return
-	 */
-	public RegistryCenterClient connect(String name);
-
-	/**
-	 * 连接注册中心，更新作业终端和作业任务状态信息
-	 * 
-	 * @param rc
-	 * @return
-	 */
-	public RegistryCenterClient connect(RegCenter rc);
-
-	/**
-	 * 连接注册中心，更新作业终端和作业任务状态信息
-	 * 
-	 * @param id
-	 * @return
-	 */
-	public RegistryCenterClient connect(Long id);
+	
 
 	public List<Machine> getMachines(Long id);
 

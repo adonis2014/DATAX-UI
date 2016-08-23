@@ -2,10 +2,10 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>net.iharding</groupId>
-	<artifactId>eshbase-realtime-dc</artifactId>
+	<artifactId>eshbase-stream</artifactId>
 	<packaging>jar</packaging>
 	<description>elasticsearch hbase dbms realtime data collection engine</description>
-	<name>eshbase-realtime-dc</name>
+	<name>eshbase-stream</name>
 	<url>https://github.com/joezxh/Datax-ui/</url>
 	
 	<version>0.1-beta</version>

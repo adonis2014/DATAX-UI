@@ -18,8 +18,8 @@
 				},
 				null,
 				[
-					 	{cName:"productId",cValue:"作业产品ID"},
 					 	{cName:"name",cValue:"作业名"},
+					 	{cName:"methodName",cValue:"方法名"},
 					 	{
 							cName : "jobType",
 							cValue : "作业类型",format:function(i,value,item){

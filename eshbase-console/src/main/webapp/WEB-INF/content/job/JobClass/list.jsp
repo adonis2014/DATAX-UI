@@ -23,7 +23,7 @@
 						</div>
 						<div class="portlet-body">
 							<div class="row-fluid">
-								<form class="queryForm span8">
+								<form class="queryForm span7">
 									<div class="row-fluid">
 										<div class="span7 ">
 											<div class="control-group">
@@ -86,8 +86,8 @@
 			},
 
 			{
-				cName : "productId",
-				cValue : "作业产品ID"
+				cName : "methodName",
+				cValue : "方法名"
 			},
 			{
 				cName : "createDate",

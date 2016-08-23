@@ -1,18 +1,23 @@
 package net.iharding.modules.job.jobtype;
 
-import com.dangdang.ddframe.job.api.JobExecutionMultipleShardingContext;
-import com.dangdang.ddframe.job.plugin.job.type.AbstractSimpleElasticJob;
+import org.springframework.stereotype.Component;
+
 /**
  * 执行shell 命令任务
- * @author  Joe.zhang
+ * 
+ * @author Joe.zhang
  *
  */
-public class CommandJob extends AbstractSimpleElasticJob{
+@Component
+public class CommandJob {
+	
+	/**
+	 * 执行命令 批量，多个命令按照\n换行符分割
+	 * 
+	 * @param cmd
+	 */
+	public void executeCmd(String cmd) {
 
-	@Override
-	public void process(JobExecutionMultipleShardingContext shardingContext) {
-		
-		
 	}
 
 }

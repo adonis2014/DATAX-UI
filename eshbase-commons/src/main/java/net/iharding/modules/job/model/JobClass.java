@@ -14,7 +14,6 @@ import javax.persistence.OrderBy;
 import javax.persistence.Table;
 
 import net.iharding.core.orm.IdEntity;
-import net.iharding.modules.meta.model.Database;
 
 import org.guess.sys.model.User;
 import org.hibernate.annotations.Cache;
@@ -57,8 +56,8 @@ public class JobClass extends IdEntity {
 	/**
 	 * 作业产品ID
 	 */
-	@Column(name="product_id")
-	private String productId;
+	@Column(name="method_name")
+	private String methodName;
 	/**
 	 * 最后更新人
 	 */
@@ -139,14 +138,14 @@ public class JobClass extends IdEntity {
 		this.version = version;
 	}
 	
-	public String getProductId() {
-		return productId;
+	public String getMethodName() {
+		return methodName;
 	}
 
-	public void setProductId(String productId) {
-		this.productId = productId;
+	public void setMethodName(String methodName) {
+		this.methodName = methodName;
 	}
-	
+
 	public User getUpdater() {
 		return updater;
 	}

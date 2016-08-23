@@ -56,6 +56,11 @@
 			</exclusions>
 		</dependency>
 		<dependency>
+			<groupId>cn.uncode</groupId>
+			<artifactId>eshbase-schedule</artifactId>
+			<version>0.1-beta</version>
+		</dependency>
+		<dependency>
 			<groupId>net.iharding</groupId>
 			<artifactId>eshbase-datax-engine</artifactId>
 			<version>0.1-beta</version>

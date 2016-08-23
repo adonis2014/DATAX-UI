@@ -40,8 +40,8 @@
 										<td class="fieldvalue"><input type="text"  validate="{required:true}" name="version" value="${obj.version }" /></td>
 									</tr>
 									<tr>
-										<td class="fieldtitle">作业产品ID:</td>
-										<td class="fieldvalue"><input type="text"  validate="{required:true}" name="productId" value="${obj.productId }" /></td>
+										<td class="fieldtitle">方法:</td>
+										<td class="fieldvalue"><input type="text"  validate="{required:true}" name="methodName" value="${obj.methodName }" /></td>
 										<td class="fieldtitle">备注:</td>
 										<td class="fieldvalue"><input type="text"   name="remark" value="${obj.remark }" /></td>
 									</tr>

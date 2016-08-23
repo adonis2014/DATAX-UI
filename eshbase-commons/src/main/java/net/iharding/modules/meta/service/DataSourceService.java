@@ -2,11 +2,12 @@ package net.iharding.modules.meta.service;
 
 import java.util.List;
 
-import org.guess.core.service.BaseService;
-
 import net.iharding.modules.meta.model.DataSource;
 import net.iharding.modules.meta.model.DataSourceWrapper;
 import net.iharding.modules.meta.model.MetaProperty;
+import net.iharding.modules.meta.model.TreeNode;
+
+import org.guess.core.service.BaseService;
 
 /**
  * 
@@ -42,5 +43,17 @@ public interface DataSourceService extends BaseService<DataSource, Long> {
 	public DataSource importMeta(Long id);
 	
 	public List<MetaProperty> getProperties(Integer dbtype,Long id);
+	
+	/**
+	 * 获取数据源
+	 * @return
+	 */
+	public List<DataSource> getCDataSources();
+	
+	/**
+	 * 获取元数据树
+	 * @return
+	 */
+	public List<TreeNode> getMetaDBTree();
 
 }

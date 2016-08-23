@@ -1,5 +1,6 @@
 package net.iharding.modules.meta.service.impl;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
@@ -33,6 +34,7 @@ import net.iharding.modules.meta.model.DataSourceWrapper;
 import net.iharding.modules.meta.model.Database;
 import net.iharding.modules.meta.model.DbColumn;
 import net.iharding.modules.meta.model.MetaProperty;
+import net.iharding.modules.meta.model.TreeNode;
 import net.iharding.modules.meta.service.DataSourceService;
 import net.iharding.modules.meta.util.MetaPropertyComparator;
 
@@ -275,5 +277,20 @@ public class DataSourceServiceImpl extends BaseServiceImpl<DataSource, Long> imp
 			return revDao.reverseMeta(dw, mproes,cuser);
 		}
 		return dw;
+	}
+
+	@Override
+	public List<DataSource> getCDataSources() {
+		return dataSourceDao.getCDataSources();
+	}
+
+	@Override
+	public List<TreeNode> getMetaDBTree() {
+		List<DataSource> dss=dataSourceDao.getCDataSources();
+		List<TreeNode> nodes=new ArrayList<TreeNode>();
+		for(DataSource ds:dss){
+			nodes.add(ds.toTreeNodes());
+		}
+		return nodes;
 	}
 }

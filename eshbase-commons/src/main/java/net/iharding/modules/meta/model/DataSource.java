@@ -1,7 +1,9 @@
 package net.iharding.modules.meta.model;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -17,7 +19,6 @@ import javax.persistence.Table;
 import net.iharding.core.orm.IdEntity;
 
 import org.guess.sys.model.User;
-import org.guess.sys.util.UserUtil;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.annotations.NotFound;
@@ -85,6 +86,40 @@ public class DataSource extends IdEntity {
 	
 	@Column(name="check_label")
 	private Integer checkLabel;
+	
+	public TreeNode toTreeNodes(){
+		TreeNode dsNode=new TreeNode();
+		dsNode.setId(id);
+		dsNode.setCode(this.dsName);
+		dsNode.setName(schemaName);
+		dsNode.setGrade(1);
+		dsNode.setType("数据源");
+		List<TreeNode> dbnodes=new ArrayList<TreeNode>();
+		for(Database db:this.getDatabases()){
+			TreeNode dbNode=new TreeNode();
+			dbNode.setId(db.getId());
+			dbNode.setCode(db.getDbname());
+			dbNode.setName(db.getSchemaName());
+			dbNode.setType("数据库");
+			dbNode.setGrade(2);
+			List<TreeNode> tablenodes=new ArrayList<TreeNode>();
+			for(DBTable table:db.getTables()){
+				TreeNode tableNode=new TreeNode();
+				tableNode.setId(table.getId());
+				tableNode.setCode(table.getTableName());
+				tableNode.setName(table.getTablePname());
+				tableNode.setType("表");
+				tableNode.setGrade(3);
+				tablenodes.add(tableNode);
+			}
+			dbNode.setChildNode(tablenodes);
+			dbnodes.add(dbNode);
+		}
+		dsNode.setChildNode(dbnodes);
+		return dsNode;
+	}
+	
+	
 	
 	public Set<Database> getDatabases() {
 		return databases;

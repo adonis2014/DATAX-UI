@@ -40,8 +40,8 @@
 										<td class="fieldvalue">${obj.version }</td>
 									</tr>
 									<tr>
-										<td class="fieldtitle">作业产品ID:</td>
-										<td class="fieldvalue">${obj.productId }</td>
+										<td class="fieldtitle">方法名:</td>
+										<td class="fieldvalue">${obj.methodName }</td>
 										<td class="fieldtitle">备注:</td>
 										<td class="fieldvalue">${obj.remark}</td>
 									</tr>

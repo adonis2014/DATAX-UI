@@ -8,6 +8,7 @@ import net.iharding.Constants;
 import net.iharding.modules.meta.model.DataSource;
 import net.iharding.modules.meta.model.DataSourceWrapper;
 import net.iharding.modules.meta.model.MetaProperty;
+import net.iharding.modules.meta.model.TreeNode;
 import net.iharding.modules.meta.service.DataSourceService;
 import net.iharding.modules.meta.service.FavoriteService;
 import net.iharding.modules.meta.service.MetaCommentService;
@@ -23,6 +24,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 
@@ -73,7 +75,12 @@ public class DataSourceController extends BaseController<DataSource>{
 	}
 	
 	
-	
+	@RequestMapping(method = RequestMethod.GET, value = "/metaDBTree")
+	@ResponseBody
+	public List<TreeNode> metaDBTree() throws Exception {
+		List<TreeNode> res = dataSourceService.getMetaDBTree();
+		return res;
+	}
 	
 	@RequestMapping(method = RequestMethod.GET, value = "/setupParam/{id}")
 	public ModelAndView setupParam(@PathVariable("id") Long id) throws Exception {
