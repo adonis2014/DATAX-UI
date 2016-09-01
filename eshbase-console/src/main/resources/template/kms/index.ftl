@@ -4,7 +4,7 @@
 <html>
 <head>
 <title>rguess's博客|互联网技术个人博客</title>
-<meta name="decorator" content="cms_blog"/>
+<meta name="decorator" content="cms_kms"/>
 </head>
 <body>
 	<div id="art_main" class="fl">

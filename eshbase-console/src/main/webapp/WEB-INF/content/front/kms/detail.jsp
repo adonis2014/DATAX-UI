@@ -10,7 +10,7 @@
 <html>
 <head>
 <title>${obj.title }|rguess's 博客</title>
-<meta name="decorator" content="cms_blog"/>
+<meta name="decorator" content="cms_kms"/>
 <link href="${ctx }/assets/comp/ueditor/third-party/SyntaxHighlighter/shCoreDefault.css" rel="stylesheet" type="text/css" />
 <style type="text/css">
 	.c_s_face{

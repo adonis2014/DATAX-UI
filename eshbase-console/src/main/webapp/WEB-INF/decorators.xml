@@ -19,6 +19,8 @@
          <pattern>/druid/*</pattern>
 	</decorator>
 	
-	<!-- CMS博客主题 -->
-	<decorator name="cms_blog" page="/WEB-INF/content/front/blog/template/default.jsp" />
+	<!-- KMS主题 -->
+	<decorator name="cms_kms" page="/WEB-INF/content/front/kms/template/default.jsp" />
+	<!-- 元数据管理前台主题 -->
+	<decorator name="meta_portal" page="/WEB-INF/content/front/meta/template/default.jsp" />
 </decorators>
