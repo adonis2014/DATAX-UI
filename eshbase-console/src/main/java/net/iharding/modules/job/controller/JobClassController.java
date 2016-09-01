@@ -10,7 +10,6 @@ import org.guess.sys.util.UserUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -35,7 +34,7 @@ public class JobClassController extends BaseController<JobClass>{
 	@Autowired
 	private JobClassService jobClassService;
 	
-	@RequestMapping(method = RequestMethod.POST, value = "setCheckLabel")
+	@RequestMapping(value = "setCheckLabel")
 	@ResponseBody
 	public int setCheckLabel(@RequestParam("id") Long id) throws Exception {
 		JobClass obj = jobClassService.get(id);

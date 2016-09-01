@@ -112,8 +112,8 @@
 			{
 				cName : "checkLabel",
 				cValue : "启用标记",format:function(i,value,item){
-					<shiro:hasPermission name="job:JobClass:changeJobClassCL">
-					 var $a = $('<a href="javascript:void(0)" data-id="'+item.id+'" data-placement="right"  onclick="javascript:changeJobClassCL(this)"></a>');
+					<shiro:hasPermission name="job:jobclass:check">
+					 var $a = $('<a href="javascript:void(0)" id="thea'+item.id+'" data-id="'+item.id+'" data-placement="right"  onclick="javascript:changeJobClassCL(this)"></a>');
 					 if(value === 1){
 						 return $a.clone().attr("data-original-title","点击禁用").addClass("green").html('<i class="icon-unlock"></i>&nbsp;&nbsp;已启用');
 					 }
@@ -150,6 +150,25 @@
 			};
 			App.confirm(callback);
 			
+		}
+		
+		function checkObj(){
+			var flag = Page.selectsPrompt();
+			if(!flag) return;
+			$.ajax({
+				type : "POST",
+				dataType : "json",
+				url : Page.subUrl()+"/setCheckLabel",
+				data : {"id":flag},
+				success : function(data){
+					if(data == 1){
+						$('#thea'+flag).removeAttr("data-original-title").attr("data-original-title","点击禁用").removeClass("grey").addClass("green").html('<i class="icon-unlock"></i>已启用');
+					}else{
+						$('#thea'+flag).removeAttr("data-original-title").attr("data-original-title","点击启用").removeClass("green").addClass("grey").html('<i class="icon-lock"></i>已禁用');
+					}
+					unBlockUI();
+				}
+			});
 		}
 		
 		function doQuery() {

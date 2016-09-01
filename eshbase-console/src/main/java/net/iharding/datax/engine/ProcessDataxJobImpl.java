@@ -4,7 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import net.iharding.modules.job.dao.JobWorkerDao;
-import net.iharding.modules.job.jobtype.DataxETLJob;
+import net.iharding.modules.job.jobtype.DataxETLTask;
 import net.iharding.modules.job.model.JobWorker;
 import net.iharding.utils.PropertyUtils;
 

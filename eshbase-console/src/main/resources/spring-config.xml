@@ -15,6 +15,23 @@
        		http://www.springframework.org/schema/util
        		http://www.springframework.org/schema/util/spring-util-4.0.xsd http://www.springframework.org/schema/task http://www.springframework.org/schema/task/spring-task.xsd">
 
+ <bean id="zkScheduleManager" class="cn.uncode.schedule.ZKScheduleManager"
+			init-method="init">
+			<property name="zkConfig">
+		           <map>
+		              <entry key="zkConnectString" value="127.0.0.1:2181" />
+		              <entry key="rootPath" value="/dbcenter/schedule" />
+		              <entry key="zkSessionTimeout" value="60000" />
+		              <entry key="userName" value="ScheduleAdmin" />
+		              <entry key="password" value="password" />
+		              <entry key="autoRegisterTask" value="true" />
+		           </map>
+			</property>
+		</bean>	
+<!-- 导入元数据任务 -->
+	    <bean id="importMetaTask" class="net.iharding.modules.job.jobtype.ImportMetaDataTask"/>
+<!-- datax etl任务 -->
+	    
  <import resource="spring-data.xml"/>
     <import resource="shiro/spring-config-shiro.xml"/>
     <import resource="workflow/spring-config-activiti.xml"/>

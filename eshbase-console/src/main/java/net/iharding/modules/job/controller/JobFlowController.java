@@ -72,5 +72,22 @@ public class JobFlowController extends BaseController<JobFlow> {
 		mav.addObject("obj", worker);
 		return mav;
 	}
+	
+	/**
+	 * 获取cron 备注和字符串
+	 * @param cron
+	 * @return
+	 * @throws Exception
+	 */
+	@RequestMapping(value = "/getCronString")
+	public ModelAndView getCronString(@Valid JobFlowCron cron) throws Exception {
+		JobFlowWrapper object = jobFlowService.CheckJobFlow(cron.getId());
+		String[] cronString = HBStringUtils.getCronRemark(cron);
+		ModelAndView mav = new ModelAndView("/job/JobFlow/checkJobView");
+		mav.addObject("obj", object);
+		mav.addObject("cronStr", cronString[0]);
+		mav.addObject("cronRemark", cronString[1]);
+		return mav;
+	}
 
 }

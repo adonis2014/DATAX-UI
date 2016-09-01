@@ -8,6 +8,25 @@ public class JobFlowCron extends JobFlow {
 	private String cronrepeat="0";
 	private String cronrepeatimes;
 	private String cronunit;
+	private String isLast;//是否最后一天
+
+	private String remark;
+	
+	public String getRemark() {
+		return remark;
+	}
+
+	public void setRemark(String remark) {
+		this.remark = remark;
+	}
+
+	public String getIsLast() {
+		return isLast;
+	}
+
+	public void setIsLast(String isLast) {
+		this.isLast = isLast;
+	}
 
 	public String getStrategy() {
 		return strategy;

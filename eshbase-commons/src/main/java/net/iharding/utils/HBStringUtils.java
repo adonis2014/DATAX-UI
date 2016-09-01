@@ -619,11 +619,139 @@ public class HBStringUtils extends StringUtils {
 	}
 	
 	private static Map<String,HBaseKeyManager> hbaseKMMap=new HashMap<String,HBaseKeyManager>();
+	/**
+	 * 获取cron设置后的说明和表达式
+	 */
+	public static String[] getCronRemark(JobFlowCron cron) {
+		String cronStr="";
+		String[] hourminiute=StringUtils.split(cron.getCrontime(),":");
+		if ("1".equalsIgnoreCase(cron.getCronrepeat())){//重复执行任务
+			if ("d".equalsIgnoreCase(cron.getCronunit())){//单位为天
+				cronStr="0 * * */"+cron.getCronrepeatimes()+" * ?";
+				cron.setRemark("每隔"+cron.getCronrepeatimes()+"天执行一次!");
+			}else if ("h".equalsIgnoreCase(cron.getCronunit())){//小时
+				cronStr="0 * */"+cron.getCronrepeatimes()+" * * ?";
+				cron.setRemark("每隔"+cron.getCronrepeatimes()+"小时执行一次!");
+			}else if ("s".equalsIgnoreCase(cron.getCronunit())){//秒
+				cronStr="*/"+cron.getCronrepeatimes()+" * * * * ?";
+				cron.setRemark("每隔"+cron.getCronrepeatimes()+"秒执行一次!");
+			}else if ("mi".equalsIgnoreCase(cron.getCronunit())){//分钟
+				cronStr="* */"+cron.getCronrepeatimes()+" * * * ?";
+				cron.setRemark("每隔"+cron.getCronrepeatimes()+"分钟执行一次!");
+			}else if ("M".equalsIgnoreCase(cron.getCronunit())){//月
+				cronStr="not supported!";
+				cron.setRemark("不支持!");
+			}else if ("w".equalsIgnoreCase(cron.getCronunit())){//周
+				cronStr="not supported!";
+				cron.setRemark("不支持!");
+			}
+		}else if("2".equalsIgnoreCase(cron.getCronrepeat())){//某单位时间(天)固定时间执行
+			if ("d".equalsIgnoreCase(cron.getCronunit())){//单位为天
+				if (cron.getCronrepeatimes().contains(",")){
+					cronStr="0 * "+cron.getCronrepeatimes()+" * ?";
+					cron.setRemark("每天"+cron.getCronrepeatimes()+"点执行!");
+				}else{
+					cronStr="0 "+NumberUtils.toInt(hourminiute[1])+" "+NumberUtils.toInt(hourminiute[0])+" * * ?";
+					cron.setRemark("每天"+NumberUtils.toInt(hourminiute[0])+"点"+NumberUtils.toInt(hourminiute[1])+"分执行一次!");
+				}
+			}else if ("h".equalsIgnoreCase(cron.getCronunit())){//小时
+				cronStr="0 "+cron.getCronrepeatimes()+" * * * ?";
+				cron.setRemark("每小时在"+cron.getCronrepeatimes()+"分执行一次!");
+			}else if ("s".equalsIgnoreCase(cron.getCronunit())){//秒
+				cronStr="*/"+cron.getCronrepeatimes()+" * * * * ?";
+				cron.setRemark("每隔"+cron.getCronrepeatimes()+"秒执行一次!");
+			}else if ("mi".equalsIgnoreCase(cron.getCronunit())){//分钟
+				cronStr=cron.getCronrepeatimes()+" * * * * ?";
+				cron.setRemark("每分钟在"+cron.getCronrepeatimes()+"秒执行一次!");
+			}else if ("M".equalsIgnoreCase(cron.getCronunit())){//月
+				if ("1".equalsIgnoreCase(cron.getIsLast())){
+					cronStr="0 "+NumberUtils.toInt(hourminiute[1])+" "+NumberUtils.toInt(hourminiute[0])+" L * ?";
+					cron.setRemark("每月最后一天"+NumberUtils.toInt(hourminiute[0])+"点"+NumberUtils.toInt(hourminiute[1])+"分执行一次!");
+				}else{
+					//0 0 1 1 * ?
+					cronStr="0 "+NumberUtils.toInt(hourminiute[1])+" "+NumberUtils.toInt(hourminiute[0])+" "+cron.getCronrepeat()+" * ?";
+					cron.setRemark("每月"+cron.getCronrepeat()+"号 "+NumberUtils.toInt(hourminiute[0])+"点 "+NumberUtils.toInt(hourminiute[1])+"分 执行一次!");
+				}
+			}else if ("w".equalsIgnoreCase(cron.getCronunit())){//周
+				if ("1".equalsIgnoreCase(cron.getIsLast())){
+					//0 0 1 ? * L
+					cronStr="0 "+NumberUtils.toInt(hourminiute[1])+" "+NumberUtils.toInt(hourminiute[0])+" ? * L";
+					cron.setRemark("每周最后一天"+NumberUtils.toInt(hourminiute[0])+"点"+NumberUtils.toInt(hourminiute[1])+"分执行一次!");
+				}else{
+					//0 0 1 ? * 5
+					cronStr="0 "+NumberUtils.toInt(hourminiute[1])+" "+NumberUtils.toInt(hourminiute[0])+" ? * "+cron.getCronrepeat();
+					cron.setRemark("每周星期"+cron.getCronrepeat()+" "+NumberUtils.toInt(hourminiute[0])+"点 "+NumberUtils.toInt(hourminiute[1])+"分 执行一次!");
+				}
+			}
+		}else{//执行一次
+			String[] times=StringUtils.split(cron.getCrontime(), ":");
+			String[] dates=StringUtils.split(cron.getCrondate(),"-"); 
+			cronStr="0 "+NumberUtils.toInt(times[1])+" "+NumberUtils.toInt(times[0])+" "
+					+NumberUtils.toInt(dates[2])+" "+NumberUtils.toInt(dates[1])+" ? "+NumberUtils.toInt(dates[0]);
+			cron.setRemark("预约在"+cron.getCrondate()+cron.getCrontime()+" 执行一次!");
+		}
+		return StringUtils.split(cronStr+"||"+cron.getRemark(), "||");
+	}
 
 	public static String getCronString(JobFlowCron cron) {
 		String cronStr="";
+		String[] hourminiute=StringUtils.split(cron.getCrontime(),":");
 		if ("1".equalsIgnoreCase(cron.getCronrepeat())){//重复执行任务
-//			if (cron.getCrondate())
+			if ("d".equalsIgnoreCase(cron.getCronunit())){//单位为天
+				cronStr="0 * * */"+cron.getCronrepeat()+" * ?";
+				cron.setRemark("每隔"+cron.getCronrepeat()+"天执行一次!");
+			}else if ("h".equalsIgnoreCase(cron.getCronunit())){//小时
+				cronStr="0 * */"+cron.getCronrepeat()+" * * ?";
+				cron.setRemark("每隔"+cron.getCronrepeat()+"小时执行一次!");
+			}else if ("s".equalsIgnoreCase(cron.getCronunit())){//秒
+				cronStr="*/"+cron.getCronrepeat()+" * * * * ?";
+				cron.setRemark("每隔"+cron.getCronrepeat()+"秒执行一次!");
+			}else if ("mi".equalsIgnoreCase(cron.getCronunit())){//分钟
+				cronStr="* */"+cron.getCronrepeat()+" * * * ?";
+				cron.setRemark("每隔"+cron.getCronrepeat()+"分钟执行一次!");
+			}else if ("M".equalsIgnoreCase(cron.getCronunit())){//月
+				cron.setRemark("不支持!");
+			}else if ("w".equalsIgnoreCase(cron.getCronunit())){//周
+				cron.setRemark("不支持!");
+			}
+		}else if("1".equalsIgnoreCase(cron.getCronrepeat())){//某单位时间(天)固定时间执行
+			if ("d".equalsIgnoreCase(cron.getCronunit())){//单位为天
+				if (cron.getCronrepeat().contains(",")){
+					cronStr="0 * "+cron.getCronrepeat()+" * ?";
+					cron.setRemark("每天"+cron.getCronrepeat()+"点执行!");
+				}else{
+					cronStr="0 "+NumberUtils.toInt(hourminiute[1])+" "+NumberUtils.toInt(hourminiute[0])+" * * ?";
+					cron.setRemark("每天"+NumberUtils.toInt(hourminiute[0])+"点"+NumberUtils.toInt(hourminiute[1])+"分执行一次!");
+				}
+			}else if ("h".equalsIgnoreCase(cron.getCronunit())){//小时
+				cronStr="0 "+cron.getCronrepeat()+" * * * ?";
+				cron.setRemark("每小时在"+cron.getCronrepeat()+"分执行一次!");
+			}else if ("s".equalsIgnoreCase(cron.getCronunit())){//秒
+				cronStr="*/"+cron.getCronrepeat()+" * * * * ?";
+				cron.setRemark("每隔"+cron.getCronrepeat()+"秒执行一次!");
+			}else if ("mi".equalsIgnoreCase(cron.getCronunit())){//分钟
+				cronStr=cron.getCronrepeat()+" * * * * ?";
+				cron.setRemark("每分钟在"+cron.getCronrepeat()+"秒执行一次!");
+			}else if ("M".equalsIgnoreCase(cron.getCronunit())){//月
+				if ("1".equalsIgnoreCase(cron.getIsLast())){
+					cronStr="0 "+NumberUtils.toInt(hourminiute[1])+" "+NumberUtils.toInt(hourminiute[0])+" L * ?";
+					cron.setRemark("每月最后一天"+NumberUtils.toInt(hourminiute[0])+"点"+NumberUtils.toInt(hourminiute[1])+"分执行一次!");
+				}else{
+					//0 0 1 1 * ?
+					cronStr="0 "+NumberUtils.toInt(hourminiute[1])+" "+NumberUtils.toInt(hourminiute[0])+" "+cron.getCronrepeat()+" * ?";
+					cron.setRemark("每月"+cron.getCronrepeat()+"号 "+NumberUtils.toInt(hourminiute[0])+"点 "+NumberUtils.toInt(hourminiute[1])+"分 执行一次!");
+				}
+			}else if ("w".equalsIgnoreCase(cron.getCronunit())){//周
+				if ("1".equalsIgnoreCase(cron.getIsLast())){
+					//0 0 1 ? * L
+					cronStr="0 "+NumberUtils.toInt(hourminiute[1])+" "+NumberUtils.toInt(hourminiute[0])+" ? * L";
+					cron.setRemark("每周最后一天"+NumberUtils.toInt(hourminiute[0])+"点"+NumberUtils.toInt(hourminiute[1])+"分执行一次!");
+				}else{
+					//0 0 1 ? * 5
+					cronStr="0 "+NumberUtils.toInt(hourminiute[1])+" "+NumberUtils.toInt(hourminiute[0])+" ? * "+cron.getCronrepeat();
+					cron.setRemark("每周星期"+cron.getCronrepeat()+" "+NumberUtils.toInt(hourminiute[0])+"点 "+NumberUtils.toInt(hourminiute[1])+"分 执行一次!");
+				}
+			}
 		}else{//执行一次
 			String[] times=StringUtils.split(cron.getCrontime(), ":");
 			String[] dates=StringUtils.split(cron.getCrondate(),"-"); 
