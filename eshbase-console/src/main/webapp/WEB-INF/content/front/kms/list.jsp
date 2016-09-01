@@ -8,7 +8,7 @@
 <body>
 	<div id="breadcrumbs" class="con_box clearfix">
 		<div class="bcrumbs"><strong>
-			<a href="${ctx }/blog/index.html" title="返回首页">home</a></strong>
+			<a href="${ctx }/kms/index.html" title="返回首页">home</a></strong>
 			<c:choose>
 				<c:when test="${not empty category }">
 					<a>栏目为${category.name }的文章</a>
@@ -26,7 +26,7 @@
 					<ul class="al_mon_list">
 						<c:forEach var="obj" items="${articles }">
 							<li>
-								<a href="${ctx }/blog/article/${obj.id}.html">${obj.title }</a>
+								<a href="${ctx }/kms/article/${obj.id}.html">${obj.title }</a>
 								<span class="date fr"><fmt:formatDate value="${obj.createDate}" pattern="yyyy-MM-dd"/></span>
 								<em>(${obj.hits})</em>
 							</li>

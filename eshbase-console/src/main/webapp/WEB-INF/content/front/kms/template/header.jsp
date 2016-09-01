@@ -2,10 +2,10 @@
 <div id="header">
    	<div id="header_in">
        	<div class="logo">
-       		<a href="http://www.rguess.com" title="thinker"><img src="${ctx }/assets/xyz/bg/images/logo1.png" alt="thinker"></a>
+       		<a href="http://www.github.org/joezxh/" title="kms"><img src="${ctx }/assets/xyz/bg/images/logo1.png" width='220' height='52' alt="thinker"></a>
    		</div>
 	<div class="yiyu">
-		<p><br>一直被超越，从未被模仿</p>
+		<p><br>能做个统一的大数据中心控制台吗？</p>
 	</div>
 	</div>
 </div>

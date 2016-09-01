@@ -15,7 +15,7 @@
 					<h2>
 						<span class="date fr">2014-05-26</span>
 						<span class="zhiding">[置顶]</span>
-						<a href="${ctx }/blog/article/35.html" title="关于我"> 关于我
+						<a href="${ctx }/kms/article/35.html" title="关于我"> 关于我
 						</a>			
 					</h2>
 				</li>
@@ -33,7 +33,7 @@
 			<div class="art_img_box clearfix">
 	 			<div class="fr box_content">
 					<h2>
-						<a href="${ctx}/blog/article/${article.id}.html" title="${article.title}" target="_blank">${article.title}</a>
+						<a href="${ctx}/kms/article/${article.id}.html" title="${article.title}" target="_blank">${article.title}</a>
 					</h2>
 		            <div class="jiange"></div>
 					<p class="intro">
@@ -51,7 +51,7 @@
 										<span>标签：<a href="#">${article.keywords}</a></span>    
 										<span></span>
 									</td>
-		                           	<td width="80"><span><a href="${ctx}{ctx}/blog/article/${article.id}.html" title="${article.title}" target	="_blank">[阅读全文]</a></span>
+		                           	<td width="80"><span><a href="${ctx}{ctx}/kms/article/${article.id}.html" title="${article.title}" target	="_blank">[阅读全文]</a></span>
 		                           	</td>
 		                        </tr>
 		                     </tbody>
@@ -67,7 +67,7 @@
 					<a href="http://www.rguess.com" ${curNo == s ? 'class="current"' : '' }>${s}</a>
 				</c:when>
 				<c:otherwise>
-					<a href="${ctx}/blog/page/${s}" ${curNo == s ? 'class="current"' : '' }>${s}</a>
+					<a href="${ctx}/kms/page/${s}" ${curNo == s ? 'class="current"' : '' }>${s}</a>
 				</c:otherwise>
 			</c:choose>
 		</c:forEach>

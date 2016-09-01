@@ -3,7 +3,7 @@
 <c:set var="ctx" value="${pageContext.request.contextPath}" />
 <html>
 <head>
-<title>rguess's博客|互联网技术个人博客</title>
+<title>大数据相关知识库</title>
 <meta name="decorator" content="cms_kms"/>
 </head>
 <body>
@@ -14,7 +14,7 @@
 					<h2>
 						<span class="date fr">2014-05-26</span>
 						<span class="zhiding">[置顶]</span>
-						<a href="${ctx }/blog/article/35.html" title="关于我"> 关于我
+						<a href="${ctx }/kms/article/35.html" title="关于我"> 关于我
 						</a>			
 					</h2>
 				</li>
@@ -31,7 +31,7 @@
 		<div class="art_img_box clearfix">
  			<div class="fr box_content">
 				<h2>
-					<a href="${ctx}/blog/article/72.html" title="好久没写博客了" target="_blank">好久没写博客了</a>
+					<a href="${ctx}/kms/article/72.html" title="好久没写博客了" target="_blank">好久没写博客了</a>
 				</h2>
 	            <div class="jiange"></div>
 				<p class="intro">
@@ -49,7 +49,7 @@
 									<span>标签：<a href="#">随意</a></span>    
 									<span></span>
 								</td>
-	                           	<td width="80"><span><a href="${ctx}/blog/article/72.html" title="好久没写博客了" target	="_blank">[阅读全文]</a></span>
+	                           	<td width="80"><span><a href="${ctx}/kms/article/72.html" title="好久没写博客了" target	="_blank">[阅读全文]</a></span>
 	                           	</td>
 	                        </tr>
 	                     </tbody>
@@ -60,7 +60,7 @@
 		<div class="art_img_box clearfix">
  			<div class="fr box_content">
 				<h2>
-					<a href="${ctx}/blog/article/71.html" title="css兼容IE8不支持position:fixed情况" target="_blank">css兼容IE8不支持position:fixed情况</a>
+					<a href="${ctx}/kms/article/71.html" title="css兼容IE8不支持position:fixed情况" target="_blank">css兼容IE8不支持position:fixed情况</a>
 				</h2>
 	            <div class="jiange"></div>
 				<p class="intro">
@@ -78,7 +78,7 @@
 									<span>标签：<a href="#">css,ie8</a></span>    
 									<span></span>
 								</td>
-	                           	<td width="80"><span><a href="${ctx}/blog/article/71.html" title="css兼容IE8不支持position:fixed情况" target	="_blank">[阅读全文]</a></span>
+	                           	<td width="80"><span><a href="${ctx}/kms/article/71.html" title="css兼容IE8不支持position:fixed情况" target	="_blank">[阅读全文]</a></span>
 	                           	</td>
 	                        </tr>
 	                     </tbody>
@@ -89,7 +89,7 @@
 		<div class="art_img_box clearfix">
  			<div class="fr box_content">
 				<h2>
-					<a href="${ctx}/blog/article/70.html" title="一个站长回忆自己的报价网站的发展模式（一）之报价信息模式" target="_blank">一个站长回忆自己的报价网站的发展模式（一）之报价信息模式</a>
+					<a href="${ctx}/kms/article/70.html" title="一个站长回忆自己的报价网站的发展模式（一）之报价信息模式" target="_blank">一个站长回忆自己的报价网站的发展模式（一）之报价信息模式</a>
 				</h2>
 	            <div class="jiange"></div>
 				<p class="intro">
@@ -107,7 +107,7 @@
 									<span>标签：<a href="#">美乐车,报价网站,发展模式</a></span>    
 									<span></span>
 								</td>
-	                           	<td width="80"><span><a href="${ctx}/blog/article/70.html" title="一个站长回忆自己的报价网站的发展模式（一）之报价信息模式" target	="_blank">[阅读全文]</a></span>
+	                           	<td width="80"><span><a href="${ctx}/kms/article/70.html" title="一个站长回忆自己的报价网站的发展模式（一）之报价信息模式" target	="_blank">[阅读全文]</a></span>
 	                           	</td>
 	                        </tr>
 	                     </tbody>
@@ -118,7 +118,7 @@
 		<div class="art_img_box clearfix">
  			<div class="fr box_content">
 				<h2>
-					<a href="${ctx}/blog/article/69.html" title="设计模式-责任型模式-单例模式" target="_blank">设计模式-责任型模式-单例模式</a>
+					<a href="${ctx}/kms/article/69.html" title="设计模式-责任型模式-单例模式" target="_blank">设计模式-责任型模式-单例模式</a>
 				</h2>
 	            <div class="jiange"></div>
 				<p class="intro">
@@ -136,7 +136,7 @@
 									<span>标签：<a href="#">设计模式</a></span>    
 									<span></span>
 								</td>
-	                           	<td width="80"><span><a href="${ctx}/blog/article/69.html" title="设计模式-责任型模式-单例模式" target	="_blank">[阅读全文]</a></span>
+	                           	<td width="80"><span><a href="${ctx}/kms/article/69.html" title="设计模式-责任型模式-单例模式" target	="_blank">[阅读全文]</a></span>
 	                           	</td>
 	                        </tr>
 	                     </tbody>
@@ -147,7 +147,7 @@
 		<div class="art_img_box clearfix">
  			<div class="fr box_content">
 				<h2>
-					<a href="${ctx}/blog/article/68.html" title="取两个数组最大公共子数组长度" target="_blank">取两个数组最大公共子数组长度</a>
+					<a href="${ctx}/kms/article/68.html" title="取两个数组最大公共子数组长度" target="_blank">取两个数组最大公共子数组长度</a>
 				</h2>
 	            <div class="jiange"></div>
 				<p class="intro">
@@ -165,7 +165,7 @@
 									<span>标签：<a href="#">算法</a></span>    
 									<span></span>
 								</td>
-	                           	<td width="80"><span><a href="${ctx}/blog/article/68.html" title="取两个数组最大公共子数组长度" target	="_blank">[阅读全文]</a></span>
+	                           	<td width="80"><span><a href="${ctx}/kms/article/68.html" title="取两个数组最大公共子数组长度" target	="_blank">[阅读全文]</a></span>
 	                           	</td>
 	                        </tr>
 	                     </tbody>
@@ -176,7 +176,7 @@
 		<div class="art_img_box clearfix">
  			<div class="fr box_content">
 				<h2>
-					<a href="${ctx}/blog/article/67.html" title="程序员的思考" target="_blank">程序员的思考</a>
+					<a href="${ctx}/kms/article/67.html" title="程序员的思考" target="_blank">程序员的思考</a>
 				</h2>
 	            <div class="jiange"></div>
 				<p class="intro">
@@ -194,7 +194,7 @@
 									<span>标签：<a href="#">程序员,美乐车,思考,rguess</a></span>    
 									<span></span>
 								</td>
-	                           	<td width="80"><span><a href="${ctx}/blog/article/67.html" title="程序员的思考" target	="_blank">[阅读全文]</a></span>
+	                           	<td width="80"><span><a href="${ctx}/kms/article/67.html" title="程序员的思考" target	="_blank">[阅读全文]</a></span>
 	                           	</td>
 	                        </tr>
 	                     </tbody>
@@ -205,7 +205,7 @@
 		<div class="art_img_box clearfix">
  			<div class="fr box_content">
 				<h2>
-					<a href="${ctx}/blog/article/65.html" title="nginx反向代理配置location与proxy_pass路径不一致问题" target="_blank">nginx反向代理配置location与proxy_pass路径不一致问题</a>
+					<a href="${ctx}/kms/article/65.html" title="nginx反向代理配置location与proxy_pass路径不一致问题" target="_blank">nginx反向代理配置location与proxy_pass路径不一致问题</a>
 				</h2>
 	            <div class="jiange"></div>
 				<p class="intro">
@@ -223,7 +223,7 @@
 									<span>标签：<a href="#">nginx</a></span>    
 									<span></span>
 								</td>
-	                           	<td width="80"><span><a href="${ctx}/blog/article/65.html" title="nginx反向代理配置location与proxy_pass路径不一致问题" target	="_blank">[阅读全文]</a></span>
+	                           	<td width="80"><span><a href="${ctx}/kms/article/65.html" title="nginx反向代理配置location与proxy_pass路径不一致问题" target	="_blank">[阅读全文]</a></span>
 	                           	</td>
 	                        </tr>
 	                     </tbody>
@@ -234,7 +234,7 @@
 		<div class="art_img_box clearfix">
  			<div class="fr box_content">
 				<h2>
-					<a href="${ctx}/blog/article/64.html" title="location.href在IE下清空header[referer]解决办法" target="_blank">location.href在IE下清空header[referer]解决办法</a>
+					<a href="${ctx}/kms/article/64.html" title="location.href在IE下清空header[referer]解决办法" target="_blank">location.href在IE下清空header[referer]解决办法</a>
 				</h2>
 	            <div class="jiange"></div>
 				<p class="intro">
@@ -252,7 +252,7 @@
 									<span>标签：<a href="#">js</a></span>    
 									<span></span>
 								</td>
-	                           	<td width="80"><span><a href="${ctx}/blog/article/64.html" title="location.href在IE下清空header[referer]解决办法" target	="_blank">[阅读全文]</a></span>
+	                           	<td width="80"><span><a href="${ctx}/kms/article/64.html" title="location.href在IE下清空header[referer]解决办法" target	="_blank">[阅读全文]</a></span>
 	                           	</td>
 	                        </tr>
 	                     </tbody>
@@ -263,7 +263,7 @@
 		<div class="art_img_box clearfix">
  			<div class="fr box_content">
 				<h2>
-					<a href="${ctx}/blog/article/66.html" title="windows系统杀死某个端口的进程" target="_blank">windows系统杀死某个端口的进程</a>
+					<a href="${ctx}/kms/article/66.html" title="windows系统杀死某个端口的进程" target="_blank">windows系统杀死某个端口的进程</a>
 				</h2>
 	            <div class="jiange"></div>
 				<p class="intro">
@@ -281,7 +281,7 @@
 									<span>标签：<a href="#"></a></span>    
 									<span></span>
 								</td>
-	                           	<td width="80"><span><a href="${ctx}/blog/article/66.html" title="windows系统杀死某个端口的进程" target	="_blank">[阅读全文]</a></span>
+	                           	<td width="80"><span><a href="${ctx}/kms/article/66.html" title="windows系统杀死某个端口的进程" target	="_blank">[阅读全文]</a></span>
 	                           	</td>
 	                        </tr>
 	                     </tbody>
@@ -292,7 +292,7 @@
 		<div class="art_img_box clearfix">
  			<div class="fr box_content">
 				<h2>
-					<a href="${ctx}/blog/article/63.html" title="我们知道自己在做什么吗" target="_blank">我们知道自己在做什么吗</a>
+					<a href="${ctx}/kms/article/63.html" title="我们知道自己在做什么吗" target="_blank">我们知道自己在做什么吗</a>
 				</h2>
 	            <div class="jiange"></div>
 				<p class="intro">
@@ -310,7 +310,7 @@
 									<span>标签：<a href="#">生活,做什么,行业,it</a></span>    
 									<span></span>
 								</td>
-	                           	<td width="80"><span><a href="${ctx}/blog/article/63.html" title="我们知道自己在做什么吗" target	="_blank">[阅读全文]</a></span>
+	                           	<td width="80"><span><a href="${ctx}/kms/article/63.html" title="我们知道自己在做什么吗" target	="_blank">[阅读全文]</a></span>
 	                           	</td>
 	                        </tr>
 	                     </tbody>
@@ -320,9 +320,9 @@
      	</div>
  	<div class="page_navi">
 			    <a href="http://www.rguess.com" class="current">1</a>
-				<a href="${ctx}/blog/page/2">2</a>
-				<a href="${ctx}/blog/page/3">3</a>
-				<a href="${ctx}/blog/page/4">4</a>
+				<a href="${ctx}/kms/page/2">2</a>
+				<a href="${ctx}/kms/page/3">3</a>
+				<a href="${ctx}/kms/page/4">4</a>
 	</div>
  	</div>
 </body>

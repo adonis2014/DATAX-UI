@@ -32,7 +32,7 @@
 <body>
 	<div id="breadcrumbs" class="con_box clearfix">
 		<div class="bcrumbs"><strong>
-			<a href="${ctx }/blog/index.html" title="返回首页">home</a></strong>
+			<a href="${ctx }/kms/index.html" title="返回首页">home</a></strong>
 			<a href="#" title="查看随笔中的全部文章">${obj.category.name }</a>	
 			<a>${obj.title }</a>
 		</div>
@@ -44,7 +44,7 @@
 			<div class="b2"></div>
 			<p class="info" align="center">
 				<small>时间 : <fmt:formatDate value="${obj.createDate}" pattern="yyyy-MM-dd"/> </small>
-				<small>栏目 : <a href="${ctx }/blog/list/${obj.category.id }.html" title="查看${obj.category.name }中的全部文章">${obj.category.name }</a> </small>
+				<small>栏目 : <a href="${ctx }/kms/list/${obj.category.id }.html" title="查看${obj.category.name }中的全部文章">${obj.category.name }</a> </small>
 				<small>作者 : </small>
 				<small>点击 :  ${obj.hits }次</small>
 			</p>
@@ -59,7 +59,7 @@
 				<strong>本文标签</strong>： 
 			</p>				
 			<p> 转载请保留链接:
-				<a href="http://www.rguess.com/blog/article/${obj.id}.html" title="${obj.title }">http://www.rguess.com/blog/article/${obj.id}.html</a>
+				<a href="http://www.rguess.com/kms/article/${obj.id}.html" title="${obj.title }">http://www.rguess.com/kms/article/${obj.id}.html</a>
 			</p>
 		</div>
 		<!-- 评论 -->
@@ -114,7 +114,7 @@
 					</div>
 					<a rel="nofollow" id="cancel-comment-reply-link" href="/105.html#respond" style="display:none;">点击这里取消回复。</a>
 				</div>
-		    	<form action="${ctx }/blog/comment" method="post" id="commentform" onsubmit="return validate();">
+		    	<form action="${ctx }/kms/comment" method="post" id="commentform" onsubmit="return validate();">
 		    		<input type="hidden" name="article.id" value="${obj.id }">
 		    		<input id="face_path" type="hidden" name="headPath" value="${ctx }/assets/img/face/1.png">
       				<div id="comment-author-info">
