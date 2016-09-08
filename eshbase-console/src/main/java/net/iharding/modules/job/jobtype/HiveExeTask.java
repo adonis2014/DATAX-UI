@@ -9,14 +9,14 @@ import org.springframework.stereotype.Component;
  *
  */
 @Component("HiveExeTask")
-public class HiveExeTask {
+public class HiveExeTask  extends AbstractTask{
 	/**
 	 * 批量执行hql,多行采用换行符执行
 	 * 
 	 * @param hql
 	 */
-	public void exeHql(String hql) {
-
+	public String execute(String hql) {
+		return hql;
 	}
 
 }

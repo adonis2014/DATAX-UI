@@ -31,4 +31,6 @@ public interface MachineDao extends EntityDao<Machine, Long> {
 	 */
 	public List<Machine> findByRegCenter(Long id);
 
+
+
 }

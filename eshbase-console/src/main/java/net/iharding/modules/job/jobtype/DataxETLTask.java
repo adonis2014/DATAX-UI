@@ -9,15 +9,15 @@ import org.springframework.stereotype.Component;
  *
  */
 @Component("DataxETLTask")
-public class DataxETLTask {
+public class DataxETLTask  extends AbstractTask{
 	
 	/**
 	 * 执行 datax etl job
 	 * 
 	 * @param jobId
 	 */
-	public void executeDataxJob(String jobId) {
-
+	public String execute(String jobId) {
+		return jobId;
 	}
 
 }

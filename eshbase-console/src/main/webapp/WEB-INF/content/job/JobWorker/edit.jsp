@@ -23,75 +23,76 @@
 							</div>
 						</div>
 						<div class="portlet-body form">
-							<form action="${ctx}/job/JobWorker/edit" class="form-horizontal form_sync" method="post" id="form1">
+							<form action="${ctx}/job/JobWorker/edit" class="form-horizontal form_sync" method="post" name="form1" id="form1">
 								<input type="hidden" value="${obj.id}" name="id">
+								<input type="hidden" value="1" name="start">
 								<table class="dbform" width="100%">
 									<tr>
 										<td class="fieldtitle">名称:</td>
 										<td class="fieldvalue"><input type="text"  validate="{required:true}" name="name" value="${obj.name }" /></td>
 										<td class="fieldtitle">作业类ID:</td>
-										<td class="fieldvalue"><input type="text"  validate="{required:true}" name="jobClassId" value="${obj.jobClassId }" /></td>
+										<td class="fieldvalue">${obj.jobclass.id }</td>
 									</tr>
 									<tr>
 										<td class="fieldtitle">逻辑名:</td>
-										<td class="fieldvalue"><input type="text"  validate="{required:true}" name="logicName" value="${obj.logicName }" /></td>
+										<td class="fieldvalue">${obj.logicName }</td>
 										<td class="fieldtitle">作业类名:</td>
-										<td class="fieldvalue"><input type="text"  validate="{required:true}" name="jobClassName" value="${obj.jobClassName }" /></td>
+										<td class="fieldvalue">${obj.jobClassName}</td>
 									</tr>
 									<tr>
 										<td class="fieldtitle">作业分片总数:</td>
-										<td class="fieldvalue"><input type="text"  validate="{required:true}" name="shardingTotalCount" value="${obj.shardingTotalCount }" /></td>
+										<td class="fieldvalue">${obj.shardingTotalCount }</td>
 										<td class="fieldtitle">作业启动时间的cron表达式:</td>
 										<td class="fieldvalue"><input type="text"  validate="{required:true}" name="cron" value="${obj.cron }" /></td>
 									</tr>
 									<tr>
 										<td class="fieldtitle">分片序列号和个性化参数对照表:</td>
-										<td class="fieldvalue"><input type="text"  validate="{required:true}" name="shardingItemParameters" value="${obj.shardingItemParameters }" /></td>
+										<td class="fieldvalue">${obj.shardingItemParameters }</td>
 										<td class="fieldtitle">作业自定义参数:</td>
-										<td class="fieldvalue"><input type="text"  validate="{required:true}" name="jobParameter" value="${obj.jobParameter }" /></td>
+										<td class="fieldvalue"><input type="text"   name="jobParameter" value="${obj.jobParameter }" /></td>
 									</tr>
 									<tr>
 										<td class="fieldtitle">监控作业执行时状态:</td>
-										<td class="fieldvalue"><input type="text"  validate="{required:true}" name="monitorExecution" value="${obj.monitorExecution }" /></td>
+										<td class="fieldvalue">${obj.monitorExecution }</td>
 										<td class="fieldtitle">统计作业处理数据数量的间隔时间:</td>
-										<td class="fieldvalue"><input type="text"  validate="{required:true}" name="processCountInterval" value="${obj.processCountInterval }" /></td>
+										<td class="fieldvalue">${obj.processCountInterval }</td>
 									</tr>
 									<tr>
 										<td class="fieldtitle">处理数据的并发线程数:</td>
-										<td class="fieldvalue"><input type="text"  validate="{required:true}" name="dataProcessThread" value="${obj.dataProcessThread }" /></td>
+										<td class="fieldvalue">${obj.dataProcessThread }</td>
 										<td class="fieldtitle">每次抓取的数据量:</td>
-										<td class="fieldvalue"><input type="text"  validate="{required:true}" name="fetchDataCount" value="${obj.fetchDataCount }" /></td>
+										<td class="fieldvalue">${obj.fetchDataCount}</td>
 									</tr>
 									<tr>
 										<td class="fieldtitle">最大容忍的本机与注册中心的时间误差秒数:</td>
-										<td class="fieldvalue"><input type="text"  validate="{required:true}" name="maxtimeDiff" value="${obj.maxtimeDiff }" /></td>
+										<td class="fieldvalue">${obj.maxtimeDiff }</td>
 										<td class="fieldtitle">是否开启失效转移:</td>
-										<td class="fieldvalue"><input type="text"  validate="{required:true}" name="failover" value="${obj.failover }" /></td>
+										<td class="fieldvalue">${obj.failover }</td>
 									</tr>
 									<tr>
 										<td class="fieldtitle">是否开启misfire:</td>
-										<td class="fieldvalue"><input type="text"  validate="{required:true}" name="misfire" value="${obj.misfire }" /></td>
+										<td class="fieldvalue">${obj.misfire }</td>
 										<td class="fieldtitle">作业分片策略实现类全路径:</td>
-										<td class="fieldvalue"><input type="text"  validate="{required:true}" name="shardingStrategyClass" value="${obj.shardingStrategyClass }" /></td>
+										<td class="fieldvalue">${obj.shardingStrategyClass }</td>
 									</tr>
 									<tr>
 										<td class="fieldtitle">作业是否禁止启动:</td>
-										<td class="fieldvalue"><input type="text"  validate="{required:true}" name="disabled" value="${obj.disabled }" /></td>
+										<td class="fieldvalue">${obj.disabled }</td>
 										<td class="fieldtitle">本地配置是否可覆盖注册中心配置:</td>
-										<td class="fieldvalue"><input type="text"  validate="{required:true}" name="overwrite" value="${obj.overwrite }" /></td>
+										<td class="fieldvalue">${obj.overwrite }</td>
 									</tr>
 								<c:if test="${not empty obj}">
 									<tr>
 										<td class="fieldtitle">建立者:</td>
-										<td class="fieldvalue"><input type="text"  name="t" readonly="readonly" value="${obj.creater.name}" /></td>
+										<td class="fieldvalue">${obj.creater.name}</td>
 										<td class="fieldtitle">更新者:</label>
-										<td class="fieldvalue"><input type="text"  name="t" readonly="readonly" value="${obj.updater.name}" /></td>
+										<td class="fieldvalue">${obj.updater.name}</td>
 									</tr>
 									<tr>
 										<td class="fieldtitle">建立时间:</td>
-										<td class="fieldvalue"><input type="text"  name="t" readonly="readonly" value="${obj.createDate }" /></td>
+										<td class="fieldvalue">${obj.createDate }</td>
 										<td class="fieldtitle">更新时间:</td>
-										<td class="fieldvalue"><input type="text"  name="t" readonly="readonly" value="${obj.updateDate}" /></td>
+										<td class="fieldvalue">${obj.updateDate}</td>
 									</tr>
 									
 								</c:if>
@@ -103,7 +104,8 @@
 								</tr>
 								</table>
 								<div class="form-actions">
-									<button type="submit" class="btn blue">提交</button>
+									<a class='btn' href="javascript:commitWork();">启用</a>
+									<a class='btn' href="javascript:saveWork();">保存</a>
 									<a class='btn' href="${header.Referer }">返回</a>
 								</div>
 							</form>
@@ -118,6 +120,14 @@
 		$(function() {
 			App.activeMenu("job/JobWorker/list");
 		});
+		function commitWork(){
+			form1.start.value="1";
+			form1.submit();
+		}
+		function saveWork(){
+			form1.start.value="0";
+			form1.submit();
+		}
 	</script>
 </body>
 </html>

@@ -18,6 +18,8 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.annotations.NotFound;
 import org.hibernate.annotations.NotFoundAction;
 
+import cn.uncode.schedule.core.TaskDefine;
+
 /**
  * 作业执行定义Entity
  * @author Joe.zhang
@@ -50,6 +52,12 @@ public class JobWorker extends IdEntity {
 	 */
 	@Column(name="job_class")
 	private String jobClassName;
+	
+	/**
+	 * 方法名
+	 */
+	@Column(name="method_name")
+	private String methodName;
 	/**
 	 * 作业分片总数
 	 */
@@ -134,6 +142,17 @@ public class JobWorker extends IdEntity {
 	@NotFound(action = NotFoundAction.IGNORE)
 	@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 	private User creater;
+	
+	public TaskDefine covertoTaskDefint(){
+		TaskDefine td=new TaskDefine();
+		td.setCronExpression(this.cron);
+		td.setTargetBean(jobClassName);
+		td.setTargetMethod(methodName);
+		td.setParams(jobParameter);
+		td.setStartTime(new Date());
+		td.setWorkerId(id);
+		return td;
+	}
 	/**
 	 * 建立时间
 	 */
@@ -164,6 +183,14 @@ public class JobWorker extends IdEntity {
 	@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 	private JobFlow jobflow;
 	
+	public String getMethodName() {
+		return methodName;
+	}
+
+	public void setMethodName(String methodName) {
+		this.methodName = methodName;
+	}
+
 	public JobFlow getJobflow() {
 		return jobflow;
 	}

@@ -20,4 +20,6 @@ public interface JobWorkerDao extends EntityDao<JobWorker, Long>{
 
 	public List<JobWorker> findByRegCenter(Long regId);
 	
+	public void update(JobWorker worker);
+	
 }

@@ -57,6 +57,8 @@ public class MachineDaoImpl extends NativeSqlQueryHibernateDao<Machine, Long> im
 		return machines;
 	}
 
+
+
 	// @Override
 	// public void save(Machine machine) {
 	// Session session = getSession();

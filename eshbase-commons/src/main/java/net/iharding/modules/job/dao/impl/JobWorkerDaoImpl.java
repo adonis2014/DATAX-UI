@@ -11,6 +11,7 @@ import net.iharding.modules.job.model.JobWorker;
 
 import org.guess.core.orm.hibernate.NativeSqlQueryHibernateDao;
 import org.guess.sys.dao.UserDao;
+import org.hibernate.Session;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -32,7 +33,12 @@ public class JobWorkerDaoImpl extends NativeSqlQueryHibernateDao<JobWorker, Long
 	public JobWorker get(String jobName) {
 		return this.findUniqueBy("name", jobName);
 	}
-
+	@Override
+	public void save(JobWorker worker) {
+		Session session = getSession();
+		session.merge(worker);
+	}
+	
 	@Override
 	public List<JobWorker> findByRegCenter(Long regId) {
 		List<Map<String, Object>> list = this.findForJdbc("select distinct t1.* from job_task_define t,job_worker t1 where t.reg_id=1 and t1.id=t.worker_id and t.reg_id = ?", regId);
@@ -69,6 +75,14 @@ public class JobWorkerDaoImpl extends NativeSqlQueryHibernateDao<JobWorker, Long
 			workers.add(worker);
 		}
 		return workers;
+	}
+	@Override
+	public void update(JobWorker worker) {
+		Session session = getSession();
+//		session.beginTransaction();
+		session.update(worker);
+//		session.getTransaction().commit();
+		session.flush();
 	}
 
 }

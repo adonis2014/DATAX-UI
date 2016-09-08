@@ -1,6 +1,6 @@
 package net.iharding.modules.job.service.impl;
 
-import org.guess.core.service.BaseServiceImpl;
+import java.util.Date;
 
 import net.iharding.modules.job.dao.JobFlowDao;
 import net.iharding.modules.job.dao.JobWorkerDao;
@@ -8,8 +8,13 @@ import net.iharding.modules.job.model.JobFlowWrapper;
 import net.iharding.modules.job.model.JobWorker;
 import net.iharding.modules.job.service.JobWorkerService;
 
+import org.guess.core.service.BaseServiceImpl;
+import org.guess.sys.util.UserUtil;
+import org.quartz.CronExpression;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import cn.uncode.schedule.ConsoleManager;
 
 /**
 * 
@@ -30,8 +35,30 @@ public class JobWorkerServiceImpl extends BaseServiceImpl<JobWorker, Long> imple
 	public JobWorker schedleJob(JobFlowWrapper object, String cronString) {
 		JobWorker jworker=new JobWorker();
 		jworker.setJobclass(object.getJobclass());
-//		jworker.set
-		return null;
+		jworker.setCron(cronString);
+		jworker.setJobClassName(object.getJobclass().getClassName());
+		jworker.setMethodName(object.getJobclass().getMethodName());
+		jworker.setCheckLabel(1);
+		jworker.setJobParameter(object.getId().toString());
+		ConsoleManager.addScheduleTask(jworker.covertoTaskDefint());
+		return jworker;
+	}
+	@Override
+	public void save(JobWorker object, String start) throws Exception {
+		JobWorker jworker=jobWorkerDao.get(object.getId());
+		jworker.setName(object.getName());
+		jworker.setCron(object.getCron());
+		jworker.setCheckLabel(1);
+		jworker.setJobParameter(object.getJobParameter());
+		jworker.setRemark(object.getRemark());
+		jworker.setUpdateDate(new Date());
+		jworker.setUpdater(UserUtil.getCurrentUser());
+		CronExpression exp = new CronExpression(object.getCron());
+		jworker.setNextExeDate(exp.getNextValidTimeAfter(new Date()));
+		if ("1".equalsIgnoreCase(start)){//提交任务到调度系统
+			ConsoleManager.addScheduleTask(jworker.covertoTaskDefint());
+		}
+		jobWorkerDao.update(jworker);
 	}
 
 }

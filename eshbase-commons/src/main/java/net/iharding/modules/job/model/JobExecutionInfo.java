@@ -2,13 +2,19 @@ package net.iharding.modules.job.model;
 
 import java.util.Date;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import net.iharding.core.orm.IdEntity;
 
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.hibernate.annotations.NotFound;
+import org.hibernate.annotations.NotFoundAction;
 
 /**
  * 作业任务日志Entity
@@ -16,14 +22,54 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
  * @version 2016-02-11
  */
 @Entity
-@Table(name = "job_jobExecutionInfo")
+@Table(name = "job_execution_info")
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class JobExecutionInfo extends IdEntity {
 
 	/**
+	 * 作业终端ID
+	 */
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name="machine_id")
+	@NotFound(action = NotFoundAction.IGNORE)
+	@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
+	private Machine machine;
+	
+	@Column(name="machine_id",insertable = false, updatable = false)
+	private Long machineId;
+	/**
 	 * 作业执行ID
 	 */
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name="worker_id")
+	@NotFound(action = NotFoundAction.IGNORE)
+	@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
+	private JobWorker worker;
+	
+	@Column(name="worker_id",insertable = false, updatable = false)
 	private Long workerId;
+	/**
+	 * 注册中心ID
+	 */
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name="reg_id")
+	@NotFound(action = NotFoundAction.IGNORE)
+	@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
+	private RegCenter regCenter;
+	
+	@Column(name="reg_id",insertable = false, updatable = false)
+	private Long regId;
+	/**
+	 * 执行结果
+	 */
+	@Column(name="exe_result")
+	private String exeResult;
+	/**
+	 * 日志
+	 */
+	@Column(name="log")
+	private String log;
+	
 	/**
 	 * 分片项
 	 */
@@ -31,6 +77,7 @@ public class JobExecutionInfo extends IdEntity {
 	/**
 	 * 失败跳转
 	 */
+	@Column(name="failover_ip")
 	private Integer failoverIp;
 	/**
 	 * 状态
@@ -39,40 +86,79 @@ public class JobExecutionInfo extends IdEntity {
 	/**
 	 * 最后启动时间
 	 */
+	@Column(name="last_begin_time")
 	private Date lastBeginTime;
 	/**
 	 * 下次触发时间
 	 */
+	@Column(name="next_fire_time")
 	private Date nextFireTime;
 	/**
 	 * 最后完成时间
 	 */
+	@Column(name="last_complete_time")
 	private Date lastCompleteTime;
-	/**
-	 * 建立者
-	 */
-	private Long createbyId;
-	/**
-	 * 更新者
-	 */
-	private Long updatebyId;
-	/**
-	 * 建立时间
-	 */
-	private Date createDate;
-	/**
-	 * 更新时间
-	 */
-	private Date updateDate;
-	/**
-	 * 启用标记
-	 */
-	private Integer checkLabel;
-	/**
-	 * 备注
-	 */
-	private String remark;
 	
+	
+	
+	
+	
+	public String getExeResult() {
+		return exeResult;
+	}
+
+	public void setExeResult(String exeResult) {
+		this.exeResult = exeResult;
+	}
+
+	public String getLog() {
+		return log;
+	}
+
+	public void setLog(String log) {
+		this.log = log;
+	}
+
+	public Machine getMachine() {
+		return machine;
+	}
+
+	public void setMachine(Machine machine) {
+		this.machine = machine;
+	}
+
+	public Long getMachineId() {
+		return machineId;
+	}
+
+	public void setMachineId(Long machineId) {
+		this.machineId = machineId;
+	}
+
+	public JobWorker getWorker() {
+		return worker;
+	}
+
+	public void setWorker(JobWorker worker) {
+		this.worker = worker;
+	}
+
+	public RegCenter getRegCenter() {
+		return regCenter;
+	}
+
+	public void setRegCenter(RegCenter regCenter) {
+		this.regCenter = regCenter;
+	}
+
+	public Long getRegId() {
+		return regId;
+	}
+
+	public void setRegId(Long regId) {
+		this.regId = regId;
+	}
+
 	public Long getWorkerId() {
 		return workerId;
 	}
@@ -129,53 +215,7 @@ public class JobExecutionInfo extends IdEntity {
 		this.lastCompleteTime = lastCompleteTime;
 	}
 	
-	public Long getCreatebyId() {
-		return createbyId;
-	}
-
-	public void setCreatebyId(Long createbyId) {
-		this.createbyId = createbyId;
-	}
 	
-	public Long getUpdatebyId() {
-		return updatebyId;
-	}
-
-	public void setUpdatebyId(Long updatebyId) {
-		this.updatebyId = updatebyId;
-	}
-	
-	public Date getCreateDate() {
-		return createDate;
-	}
-
-	public void setCreateDate(Date createDate) {
-		this.createDate = createDate;
-	}
-	
-	public Date getUpdateDate() {
-		return updateDate;
-	}
-
-	public void setUpdateDate(Date updateDate) {
-		this.updateDate = updateDate;
-	}
-	
-	public Integer getCheckLabel() {
-		return checkLabel;
-	}
-
-	public void setCheckLabel(Integer checkLabel) {
-		this.checkLabel = checkLabel;
-	}
-	
-	public String getRemark() {
-		return remark;
-	}
-
-	public void setRemark(String remark) {
-		this.remark = remark;
-	}
 	
 	
 }

@@ -98,6 +98,34 @@ public class Machine extends IdEntity {
 	 */
 	private String remark;
 	
+	/**
+	 * 注册中心ID
+	 */
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name="reg_id")
+	@NotFound(action = NotFoundAction.IGNORE)
+	@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
+	private RegCenter regCenter;
+	
+	@Column(name="reg_id",insertable = false, updatable = false)
+	private Long regId;
+	
+	public RegCenter getRegCenter() {
+		return regCenter;
+	}
+
+	public void setRegCenter(RegCenter regCenter) {
+		this.regCenter = regCenter;
+	}
+
+	public Long getRegId() {
+		return regId;
+	}
+
+	public void setRegId(Long regId) {
+		this.regId = regId;
+	}
+
 	public String getMachineName() {
 		return machineName;
 	}

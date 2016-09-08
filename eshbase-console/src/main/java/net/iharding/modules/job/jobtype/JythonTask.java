@@ -3,15 +3,16 @@ package net.iharding.modules.job.jobtype;
 import org.springframework.stereotype.Component;
 
 @Component("JythonTask")
-public class JythonTask {
+public class JythonTask  extends AbstractTask {
 
 	/**
 	 * 执行python脚本
 	 * 
 	 * @param pythonStr
 	 */
-	public void executeJython(String pythonStr) {
-
+	@Override
+	public String execute(String pythonStr) {
+		return null;
 	}
 
 }

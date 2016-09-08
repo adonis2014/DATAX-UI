@@ -12,7 +12,7 @@ import org.springframework.stereotype.Component;
  *
  */
 @Component("ImportMetaTask")
-public class ImportMetaDataTask  {
+public class ImportMetaDataTask  extends AbstractTask {
 	
 	@Autowired
 	private DataSourceService dataSourceService;
@@ -21,8 +21,10 @@ public class ImportMetaDataTask  {
 	 * 根据dsId执行反转数据导入
 	 * @param dsId
 	 */
-	public void reverseMetaData(String dsId){
+	@Override
+	public String execute(String dsId) {
 		dataSourceService.importMeta(NumberUtils.toLong(dsId));
+		return dsId;
 	}
 	
 }

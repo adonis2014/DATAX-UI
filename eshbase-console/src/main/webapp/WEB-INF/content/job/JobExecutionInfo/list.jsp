@@ -24,7 +24,7 @@
 						</div>
 						<div class="portlet-body">
 							<div class="row-fluid">
-								<form class="queryForm span8">
+								<form class="queryForm span7">
 									<div class="row-fluid">
 	                                 	<div class="span7 ">
 		                                    <div class="control-group">
@@ -66,7 +66,7 @@ $(document).ready(function() {
 	
 	Page.initData(
 		{
-			url:"${ctx}/job/jobExecutionInfo/page",
+			url:"${ctx}/job/JobExecutionInfo/page",
 			pageNo : 1,
 			pageSize : 10,
 			tableId : "#sample_1"
@@ -74,30 +74,34 @@ $(document).ready(function() {
 		null,
 		[
 			 	{cName:"workerId",cValue:"作业执行ID"},
-
 			 	{cName:"item",cValue:"分片项"},
-
-			 	{cName:"failoverIp",cValue:"失败跳转"},
-
-			 	{cName:"status",cValue:"状态"},
-
-			 	{cName:"lastBeginTime",cValue:"最后启动时间"},
-
-			 	{cName:"nextFireTime",cValue:"下次触发时间"},
-
-			 	{cName:"lastCompleteTime",cValue:"最后完成时间"},
-
-			 	{cName:"createbyId",cValue:"建立者"},
-
-			 	{cName:"updatebyId",cValue:"更新者"},
-
-			 	{cName:"createDate",cValue:"建立时间"},
-
-			 	{cName:"updateDate",cValue:"更新时间"},
-
-			 	{cName:"checkLabel",cValue:"启用标记"},
-
-			  	{cName:"remark",cValue:"备注"}
+			 	{cName:"lastBeginTime",cValue:"启动时间",format:function(i,value,item){
+					 if(App.isNundef(value)){
+						 return new Date(value).format("yyyy-MM-dd hh:mm:ss");
+					 }
+					 return value;
+				 }
+			},
+			{cName:"lastCompleteTime",cValue:"完成时间",format:function(i,value,item){
+				 if(App.isNundef(value)){
+					 return new Date(value).format("yyyy-MM-dd hh:mm:ss");
+				 }
+				 return value;
+			 }
+		},{cName:"nextFireTime",cValue:"下次触发时间",format:function(i,value,item){
+					 if(App.isNundef(value)){
+						 return new Date(value).format("yyyy-MM-dd hh:mm:ss");
+					 }
+					 return value;
+				 }
+			},
+			{cName:"machine",cValue:"执行机器",format:function(i,value,item){
+				 if(App.isNundef(value)){
+					 return value.machineName+"["+value.address+"]";
+				 }
+				 return value;
+			 }},
+			{cName:"exeResult",cValue:"执行结果"}
 		 ]
 	);
 });

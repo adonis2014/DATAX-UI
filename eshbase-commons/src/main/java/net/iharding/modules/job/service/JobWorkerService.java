@@ -23,4 +23,12 @@ public interface JobWorkerService extends BaseService<JobWorker, Long> {
 	 */
 	public JobWorker schedleJob(JobFlowWrapper object, String cronString);
 
+	/**
+	 * 保存并提交任务到调度系统
+	 * 
+	 * @param object
+	 * @param start
+	 */
+	public void save(JobWorker object, String start) throws Exception;
+
 }

@@ -46,7 +46,7 @@
 										</div>
 									</div>
 								</form>
-								<tool:operBtns modelKey="jobworker"  modelName="job"></tool:operBtns>
+								<tool:operBtns modelKey="jobworker" modelName="job"></tool:operBtns>
 							</div>
 							<table class="table table-striped table-bordered table-hover" id="sample_1">
 
@@ -58,46 +58,54 @@
 		</div>
 	</div>
 	<%@ include file="/WEB-INF/content/common/plugins/page.jsp"%>
+	<script type="text/javascript" src="${ctx}/assets/js/map.js"></script>
 	<script type="text/javascript">
-		$(document).ready(function() {
+		$(document)
+				.ready(
+						function() {
+							var dbtypeMap = new Map();
+							<mytags:dictSelect field="dbtypeMap" id="dbtypeMap" type="map" hasLabel="false" codeType="17" />
 
-			App.activeMenu("job/JobWorker/list");
+							App.activeMenu("job/JobWorker/list");
 
-			Page.initData({
-				url : "${ctx}/job/JobWorker/page",
-				pageNo : 1,
-				pageSize : 10,
-				tableId : "#sample_1"
-			}, null, [ {
-				cName : "name",
-				cValue : "名称"
-			},
+							Page.initData({
+								url : "${ctx}/job/JobWorker/page",
+								pageNo : 1,
+								pageSize : 10,
+								tableId : "#sample_1"
+							}, null, [ {
+								cName : "name",
+								cValue : "名称"
+							}, {
+								cName : "jobClassName",
+								cValue : "类名"
+							}, {
+								cName : "methodName",
+								cValue : "方法"
+							}, {
+								cName : "jobParameter",
+								cValue : "参数"
+							}, {
+								cName : "cron",
+								cValue : "作业启动时间的cron表达式"
+							}, {
+								cName : "nextExeDate",
+								cValue : "下次执行时间",format:function(i,value,item){
+									 if(App.isNundef(value)){
+										 return new Date(value).format("yyyy-MM-dd hh:mm:ss");
+									 }
+									 return value;
+								 }
+							},
 
-
-			{
-				cName : "logicName",
-				cValue : "逻辑名"
-			},
-
-			{
-				cName : "shardingTotalCount",
-				cValue : "作业分片总数"
-			},
-
-			{
-				cName : "cron",
-				cValue : "作业启动时间的cron表达式"
-			},
-			{
-				cName : "monitorExecution",
-				cValue : "监控作业执行时状态"
-			},
-
-			{
-				cName : "checkLabel",
-				cValue : "启用标记"
-			} ]);
-		});
+							{
+								cName : "checkLabel",
+								cValue : "启用标记",
+								format : function(i, value, item) {
+									return dbtypeMap.get(item.checkLabel);
+								}
+							} ]);
+						});
 
 		function doQuery() {
 			var queryObj = {

@@ -9,12 +9,13 @@ import org.springframework.stereotype.Component;
  *
  */
 @Component("DataxFlowTask")
-public class DataxFlowTask {
+public class DataxFlowTask  extends AbstractTask{
 	
 	/**
 	 * 执行多个datax任务的etl 流程
 	 */
-	public void executeFlowJob(String flowId) {
+	public String execute(String flowId) {
+		return flowId;
 
 	}
 

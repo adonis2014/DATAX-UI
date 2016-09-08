@@ -8,13 +8,15 @@ import org.springframework.stereotype.Component;
  *
  */
 @Component("CommonJDBCTask")
-public class CommonJDBCTask  {
+public class CommonJDBCTask   extends AbstractTask{
 
 	/**
 	 * 批量执行sql,按照\n换行符间隔
 	 * @param sql
 	 */
-	public void executeSql(String sql) {
-
+	public String execute(String sql) {
+		return sql;
 	}
+
+	
 }
