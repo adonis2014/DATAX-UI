@@ -5,6 +5,7 @@ import java.lang.reflect.Method;
 import java.lang.reflect.UndeclaredThrowableException;
 
 import net.iharding.Constants;
+import net.iharding.utils.HBStringUtils;
 
 import org.springframework.util.ReflectionUtils;
 
@@ -87,14 +88,18 @@ public class ScheduledMethodRunnable implements Runnable {
 		}
 		catch (InvocationTargetException ex) {
 			ReflectionUtils.rethrowRuntimeException(ex.getTargetException());
-			result=""+Constants.RET_SUCCESS;
+			log=HBStringUtils.getErrorInfoFromException(ex);
+			result=""+Constants.RET_FAIL;
 		}
 		catch (IllegalAccessException ex) {
-			throw new UndeclaredThrowableException(ex);
+			log=HBStringUtils.getErrorInfoFromException(ex);
+			result=""+Constants.RET_FAIL;
 		} catch (NoSuchMethodException e) {
-			e.printStackTrace();
+			log=HBStringUtils.getErrorInfoFromException(e);
+			result=""+Constants.RET_FAIL;
 		} catch (SecurityException e) {
-			e.printStackTrace();
+			log=HBStringUtils.getErrorInfoFromException(e);
+			result=""+Constants.RET_FAIL;
 		}
 	}
 

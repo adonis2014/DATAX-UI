@@ -45,7 +45,7 @@ public class CronTestController {
 		ModelAndView mav = new ModelAndView("/job/CronTest/show");
 		try {
 			CronExpression exp = new CronExpression(cronString);
-			SimpleDateFormat df = new SimpleDateFormat("YYYYMMDD HH:mm:ss");
+			SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 			Date d = new Date();
 			int i = 0;
 			// 循环得到接下来n此的触发时间点，供验证

@@ -1,6 +1,8 @@
 package net.iharding.utils;
 
 import java.io.IOException;
+import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -73,6 +75,22 @@ public class HBStringUtils extends StringUtils {
 	public static String getRemainderRowId(Long fieldValue, Integer fieldvalueLen, Integer remainder, Integer remainderLen) {
 		return leftPad(String.valueOf(fieldValue % remainder), remainderLen, "0") + leftPad(String.valueOf(fieldValue), fieldvalueLen, "0");
 	}
+	
+	/**
+	 * 将exceptoin转换为String
+	 * @param e
+	 * @return
+	 */
+	public static String getErrorInfoFromException(Exception e) {  
+        try {  
+            StringWriter sw = new StringWriter();  
+            PrintWriter pw = new PrintWriter(sw);  
+            e.printStackTrace(pw);  
+            return "\r\n" + sw.toString() + "\r\n";  
+        } catch (Exception e2) {  
+            return "bad getErrorInfoFromException";  
+        }  
+    }  
 	
 	 /*
      * 直接\u9999表示的很少，基本都会用转义字符即\\u9999,这样一来打印出来的就不是我们需要的字符，而是Unicode码\u9999
@@ -667,16 +685,16 @@ public class HBStringUtils extends StringUtils {
 		String[] hourminiute=StringUtils.split(cron.getCrontime(),":");
 		if ("1".equalsIgnoreCase(cron.getCronrepeat())){//重复执行任务
 			if ("d".equalsIgnoreCase(cron.getCronunit())){//单位为天
-				cronStr="0 * * */"+cron.getCronrepeatimes()+" * ?";
+				cronStr="0 0 0 */"+cron.getCronrepeatimes()+" * ?";
 				cron.setRemark("每隔"+cron.getCronrepeatimes()+"天执行一次!");
 			}else if ("h".equalsIgnoreCase(cron.getCronunit())){//小时
-				cronStr="0 * */"+cron.getCronrepeatimes()+" * * ?";
+				cronStr="0 0 */"+cron.getCronrepeatimes()+" * * ?";
 				cron.setRemark("每隔"+cron.getCronrepeatimes()+"小时执行一次!");
 			}else if ("s".equalsIgnoreCase(cron.getCronunit())){//秒
 				cronStr="*/"+cron.getCronrepeatimes()+" * * * * ?";
 				cron.setRemark("每隔"+cron.getCronrepeatimes()+"秒执行一次!");
 			}else if ("mi".equalsIgnoreCase(cron.getCronunit())){//分钟
-				cronStr="* */"+cron.getCronrepeatimes()+" * * * ?";
+				cronStr="0 */"+cron.getCronrepeatimes()+" * * * ?";
 				cron.setRemark("每隔"+cron.getCronrepeatimes()+"分钟执行一次!");
 			}else if ("M".equalsIgnoreCase(cron.getCronunit())){//月
 				cronStr="not supported!";
@@ -688,7 +706,7 @@ public class HBStringUtils extends StringUtils {
 		}else if("2".equalsIgnoreCase(cron.getCronrepeat())){//某单位时间(天)固定时间执行
 			if ("d".equalsIgnoreCase(cron.getCronunit())){//单位为天
 				if (cron.getCronrepeatimes().contains(",")){
-					cronStr="0 * "+cron.getCronrepeatimes()+" * ?";
+					cronStr="0 0 "+cron.getCronrepeatimes()+" * ?";
 					cron.setRemark("每天"+cron.getCronrepeatimes()+"点执行!");
 				}else{
 					cronStr="0 "+NumberUtils.toInt(hourminiute[1])+" "+NumberUtils.toInt(hourminiute[0])+" * * ?";
@@ -738,40 +756,42 @@ public class HBStringUtils extends StringUtils {
 		String[] hourminiute=StringUtils.split(cron.getCrontime(),":");
 		if ("1".equalsIgnoreCase(cron.getCronrepeat())){//重复执行任务
 			if ("d".equalsIgnoreCase(cron.getCronunit())){//单位为天
-				cronStr="0 * * */"+cron.getCronrepeat()+" * ?";
-				cron.setRemark("每隔"+cron.getCronrepeat()+"天执行一次!");
+				cronStr="0 0 0 */"+cron.getCronrepeatimes()+" * ?";
+				cron.setRemark("每隔"+cron.getCronrepeatimes()+"天执行一次!");
 			}else if ("h".equalsIgnoreCase(cron.getCronunit())){//小时
-				cronStr="0 * */"+cron.getCronrepeat()+" * * ?";
-				cron.setRemark("每隔"+cron.getCronrepeat()+"小时执行一次!");
+				cronStr="0 0 */"+cron.getCronrepeatimes()+" * * ?";
+				cron.setRemark("每隔"+cron.getCronrepeatimes()+"小时执行一次!");
 			}else if ("s".equalsIgnoreCase(cron.getCronunit())){//秒
-				cronStr="*/"+cron.getCronrepeat()+" * * * * ?";
-				cron.setRemark("每隔"+cron.getCronrepeat()+"秒执行一次!");
+				cronStr="*/"+cron.getCronrepeatimes()+" * * * * ?";
+				cron.setRemark("每隔"+cron.getCronrepeatimes()+"秒执行一次!");
 			}else if ("mi".equalsIgnoreCase(cron.getCronunit())){//分钟
-				cronStr="* */"+cron.getCronrepeat()+" * * * ?";
-				cron.setRemark("每隔"+cron.getCronrepeat()+"分钟执行一次!");
+				cronStr="0 */"+cron.getCronrepeatimes()+" * * * ?";
+				cron.setRemark("每隔"+cron.getCronrepeatimes()+"分钟执行一次!");
 			}else if ("M".equalsIgnoreCase(cron.getCronunit())){//月
+				cronStr="not supported!";
 				cron.setRemark("不支持!");
 			}else if ("w".equalsIgnoreCase(cron.getCronunit())){//周
+				cronStr="not supported!";
 				cron.setRemark("不支持!");
 			}
-		}else if("1".equalsIgnoreCase(cron.getCronrepeat())){//某单位时间(天)固定时间执行
+		}else if("2".equalsIgnoreCase(cron.getCronrepeat())){//某单位时间(天)固定时间执行
 			if ("d".equalsIgnoreCase(cron.getCronunit())){//单位为天
-				if (cron.getCronrepeat().contains(",")){
-					cronStr="0 * "+cron.getCronrepeat()+" * ?";
-					cron.setRemark("每天"+cron.getCronrepeat()+"点执行!");
+				if (cron.getCronrepeatimes().contains(",")){
+					cronStr="0 0 "+cron.getCronrepeatimes()+" * ?";
+					cron.setRemark("每天"+cron.getCronrepeatimes()+"点执行!");
 				}else{
 					cronStr="0 "+NumberUtils.toInt(hourminiute[1])+" "+NumberUtils.toInt(hourminiute[0])+" * * ?";
 					cron.setRemark("每天"+NumberUtils.toInt(hourminiute[0])+"点"+NumberUtils.toInt(hourminiute[1])+"分执行一次!");
 				}
 			}else if ("h".equalsIgnoreCase(cron.getCronunit())){//小时
-				cronStr="0 "+cron.getCronrepeat()+" * * * ?";
-				cron.setRemark("每小时在"+cron.getCronrepeat()+"分执行一次!");
+				cronStr="0 "+cron.getCronrepeatimes()+" * * * ?";
+				cron.setRemark("每小时在"+cron.getCronrepeatimes()+"分执行一次!");
 			}else if ("s".equalsIgnoreCase(cron.getCronunit())){//秒
-				cronStr="*/"+cron.getCronrepeat()+" * * * * ?";
-				cron.setRemark("每隔"+cron.getCronrepeat()+"秒执行一次!");
+				cronStr="*/"+cron.getCronrepeatimes()+" * * * * ?";
+				cron.setRemark("每隔"+cron.getCronrepeatimes()+"秒执行一次!");
 			}else if ("mi".equalsIgnoreCase(cron.getCronunit())){//分钟
-				cronStr=cron.getCronrepeat()+" * * * * ?";
-				cron.setRemark("每分钟在"+cron.getCronrepeat()+"秒执行一次!");
+				cronStr=cron.getCronrepeatimes()+" * * * * ?";
+				cron.setRemark("每分钟在"+cron.getCronrepeatimes()+"秒执行一次!");
 			}else if ("M".equalsIgnoreCase(cron.getCronunit())){//月
 				if ("1".equalsIgnoreCase(cron.getIsLast())){
 					cronStr="0 "+NumberUtils.toInt(hourminiute[1])+" "+NumberUtils.toInt(hourminiute[0])+" L * ?";
@@ -795,7 +815,9 @@ public class HBStringUtils extends StringUtils {
 		}else{//执行一次
 			String[] times=StringUtils.split(cron.getCrontime(), ":");
 			String[] dates=StringUtils.split(cron.getCrondate(),"-"); 
-			cronStr=times[2]+" "+times[1]+" "+times[0]+" "+dates[2]+" "+dates[1]+" ? "+dates[0];
+			cronStr="0 "+NumberUtils.toInt(times[1])+" "+NumberUtils.toInt(times[0])+" "
+					+NumberUtils.toInt(dates[2])+" "+NumberUtils.toInt(dates[1])+" ? "+NumberUtils.toInt(dates[0]);
+			cron.setRemark("预约在"+cron.getCrondate()+cron.getCrontime()+" 执行一次!");
 		}
 		return cronStr;
 	}

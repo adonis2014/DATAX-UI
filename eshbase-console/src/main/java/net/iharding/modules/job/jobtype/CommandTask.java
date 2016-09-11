@@ -4,6 +4,8 @@ import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 
+import net.iharding.utils.HBStringUtils;
+
 import org.datanucleus.util.StringUtils;
 import org.springframework.stereotype.Component;
 
@@ -37,7 +39,7 @@ public class CommandTask extends AbstractTask{
 			log=result;
 			return Constants.RET_SUCCESS+"";
 		} catch (Exception e) {
-			e.printStackTrace();
+			log=HBStringUtils.getErrorInfoFromException(e);
 			return Constants.RET_FAIL+"";
 		}
 	}
