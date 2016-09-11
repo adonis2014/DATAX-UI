@@ -46,5 +46,16 @@ public class JobWorkerDaoImpl extends NativeSqlQueryHibernateDao<JobWorker, Long
 		session.update(worker);
 		session.flush();
 	}
+	
+	@Override
+	public JobWorker saveOrUpdate(JobWorker worker) {
+		Session session = getSession();
+		session.merge(worker);
+		return worker;
+	}
+	@Override
+	public JobWorker getByKey(String jobClassName, String methodName, String jobParameter) {
+		return this.findUnique("from JobWorker where jobClassName=? and methodName=? and jobParameter=?", jobClassName,methodName,jobParameter);
+	}
 
 }

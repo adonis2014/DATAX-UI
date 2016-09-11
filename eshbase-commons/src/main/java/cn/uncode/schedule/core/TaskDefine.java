@@ -4,6 +4,8 @@ import java.util.Date;
 
 import org.apache.commons.lang3.StringUtils;
 
+import cn.uncode.schedule.util.ScheduleUtil;
+
 /**
  * 任务定义，提供关键信息给使用者
  * @author juny.ye
@@ -115,11 +117,7 @@ public class TaskDefine {
 	}
 	
 	public String stringKey(){
-		if (StringUtils.isEmpty(params)){
-			return getTargetBean() + "#" + getTargetMethod();
-		}else{
-			return getTargetBean() + "#" + getTargetMethod()+"#"+getParams();
-		}
+		return ScheduleUtil.getTaskNameFormBean(getTargetBean(),getTargetMethod(),getParams());
 	}
 
 	public String getParams() {

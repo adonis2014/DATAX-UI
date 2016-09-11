@@ -273,16 +273,18 @@ public class ZKScheduleManager extends ThreadPoolTaskScheduler implements Applic
 			public void run() {
 				long currtime=System.currentTimeMillis();
 				Method targetMethod = null;
+				String params="";
 				if (task instanceof ScheduledMethodRunnable) {
 					ScheduledMethodRunnable uncodeScheduledMethodRunnable = (ScheduledMethodRunnable) task;
 					targetMethod = uncodeScheduledMethodRunnable.getMethod();
+					params=uncodeScheduledMethodRunnable.getParams();
 				} else {
 					org.springframework.scheduling.support.ScheduledMethodRunnable springScheduledMethodRunnable = (org.springframework.scheduling.support.ScheduledMethodRunnable) task;
 					targetMethod = springScheduledMethodRunnable.getMethod();
 				}
 				String[] beanNames = applicationcontext.getBeanNamesForType(targetMethod.getDeclaringClass());
 				if (null != beanNames && StringUtils.isNotEmpty(beanNames[0])) {
-					String name = ScheduleUtil.getTaskNameFormBean(beanNames[0], targetMethod.getName());
+					String name = ScheduleUtil.getTaskNameFormBean(beanNames[0], targetMethod.getName(),params);
 					boolean isOwner = false;
 					try {
 						if (!isScheduleServerRegister) {
@@ -316,8 +318,10 @@ public class ZKScheduleManager extends ThreadPoolTaskScheduler implements Applic
 								if (machine!=null){
 									jobExecutionInfo.setMachine(machine);
 									jobExecutionInfo.setMachineId(machine.getId());
-									jobExecutionInfo.setRegCenter(machine.getRegCenter());
-									jobExecutionInfo.setRegId(machine.getRegCenter().getId());
+									if (machine.getRegCenter()!=null){
+										jobExecutionInfo.setRegCenter(machine.getRegCenter());
+										jobExecutionInfo.setRegId(machine.getRegCenter().getId());
+									}
 								}
 								jobWorkerService.save(jworker);
 								jobExecutionInfoService.save(jobExecutionInfo);

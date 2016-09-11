@@ -312,7 +312,7 @@ public class MethodInvokingJobDetailFactoryBean extends ArgumentConvertingMethod
 		@Override
 		protected void executeInternal(JobExecutionContext context) throws JobExecutionException {
 			try {
-				String name = ScheduleUtil.getTaskNameFormBean(context.getJobDetail().getKey().getName(), this.methodInvoker.getTargetMethod());
+				String name = ScheduleUtil.getTaskNameFormBean(context.getJobDetail().getKey().getName(), this.methodInvoker.getTargetMethod(),"");
 				boolean isOwner = false;
 				try {
 					if(ConsoleManager.getScheduleManager().getZkManager().checkZookeeperState()){

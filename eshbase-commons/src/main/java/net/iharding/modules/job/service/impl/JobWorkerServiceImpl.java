@@ -4,6 +4,7 @@ import java.util.Date;
 
 import net.iharding.modules.job.dao.JobFlowDao;
 import net.iharding.modules.job.dao.JobWorkerDao;
+import net.iharding.modules.job.model.JobFlowCron;
 import net.iharding.modules.job.model.JobFlowWrapper;
 import net.iharding.modules.job.model.JobWorker;
 import net.iharding.modules.job.service.JobWorkerService;
@@ -14,6 +15,7 @@ import org.guess.sys.util.UserUtil;
 import org.quartz.CronExpression;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import cn.uncode.schedule.ConsoleManager;
 
@@ -32,22 +34,28 @@ public class JobWorkerServiceImpl extends BaseServiceImpl<JobWorker, Long> imple
 	
 	@Autowired
 	private JobWorkerDao jobWorkerDao;
+	
+	@Transactional
 	@Override
-	public JobWorker schedleJob(JobFlowWrapper object, String cronString) {
+	public JobWorker schedleJob(JobFlowWrapper object,JobFlowCron cron, String cronString) {
 		JobWorker jworker=new JobWorker();
 		jworker.setJobclass(object.getJobclass());
 		jworker.setCron(cronString);
-		jworker.setName(object.getJobclass().getName());
+		jworker.setName(cron.getName());
+		jworker.setLogicName(cron.getLogicName());
 		jworker.setJobClassName(object.getJobclass().getClassName());
 		jworker.setMethodName(object.getJobclass().getMethodName());
 		jworker.setCheckLabel(1);
-		jworker.setJobParameter(object.getId().toString());
+		jworker.setJobParameter(cron.getJobParameter());
 		User user=UserUtil.getCurrentUser();
 		jworker.setCreateDate(new Date());
 		jworker.setCreater(user);
 		jworker.setUpdateDate(new Date());
 		jworker.setUpdater(user);
+		jworker.setJobflow(object);
+		jworker.setRemark(cron.getRemark());
 		jobWorkerDao.save(jworker);
+		jworker=jobWorkerDao.getByKey(jworker.getJobClassName(),jworker.getMethodName(),jworker.getJobParameter());
 		ConsoleManager.addScheduleTask(jworker.covertoTaskDefint());
 		return jworker;
 	}

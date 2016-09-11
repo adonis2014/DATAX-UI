@@ -127,6 +127,7 @@
             <tx:method name="start*" propagation="REQUIRED" />
             <tx:method name="order" propagation="REQUIRED" />
             <tx:method name="connect*" propagation="REQUIRED" />
+            <tx:method name="schedleJob*" propagation="REQUIRED" />
         </tx:attributes>
     </tx:advice>
 

@@ -68,7 +68,7 @@ public class JobFlowController extends BaseController<JobFlow> {
 	public ModelAndView generateJob(@Valid JobFlowCron cron) throws Exception {
 		JobFlowWrapper object = jobFlowService.CheckJobFlow(cron.getId());
 		String cronString = HBStringUtils.getCronString(cron);
-		JobWorker worker = jobWorkerService.schedleJob(object, cronString);
+		JobWorker worker = jobWorkerService.schedleJob(object,cron, cronString);
 		ModelAndView mav = new ModelAndView("/job/JobFlow/JobWorkerView");
 		mav.addObject("obj", worker);
 		return mav;

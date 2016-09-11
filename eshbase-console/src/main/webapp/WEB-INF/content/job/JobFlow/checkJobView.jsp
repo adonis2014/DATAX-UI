@@ -31,13 +31,19 @@
 										<td class="fieldtitle">名称:</td>
 										<td class="fieldvalue"><input type="text"  validate="{required:true}" name="name" value="${empty param.name?obj.name:param.name}" /></td>
 										<td class="fieldtitle">作业类ID:</td>
-										<td class="fieldvalue"><input type="text"  validate="{required:true}" name="jobClassId" value="${empty param.jobClassId?obj.jobclass.id:param.jobClassId}" /></td>
+										<td class="fieldvalue"><input type="text"  readonly="readonly" name="jobClassId" value="${empty param.jobClassId?obj.jobclass.id:param.jobClassId}" /></td>
 									</tr>
 									<tr>
 										<td class="fieldtitle">逻辑名:</td>
-										<td class="fieldvalue"><input type="text"  validate="{required:true}" name="logicName" value="${empty param.logicName?obj.jobclass.name:param.logicName}" /></td>
+										<td class="fieldvalue"><input type="text"   readonly="readonly" name="logicName" value="${empty param.logicName?obj.jobclass.name:param.logicName}" /></td>
 										<td class="fieldtitle">作业类名:</td>
-										<td class="fieldvalue"><input type="text"  validate="{required:true}" name="jobClassName" value="${empty param.jobClassName?obj.jobclass.className:param.jobClassName}" /></td>
+										<td class="fieldvalue"><input type="text"  readonly="readonly"  name="jobClassName" value="${empty param.jobClassName?obj.jobclass.className:param.jobClassName}" /></td>
+									</tr>
+									<tr>
+										<td class="fieldtitle">方法名:</td>
+										<td class="fieldvalue">${obj.jobclass.methodName}</td>
+										<td class="fieldtitle">参数:</td>
+										<td class="fieldvalue"><input type="text"   name=jobParameter value="${param.jobParameter}" /></td>
 									</tr>
 									<tr>
 										<td class="fieldtitle">个性化参数对照表:</td>

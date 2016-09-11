@@ -19,6 +19,7 @@ import org.springframework.util.ReflectionUtils;
 
 import cn.uncode.schedule.core.ScheduledMethodRunnable;
 import cn.uncode.schedule.core.TaskDefine;
+import cn.uncode.schedule.util.ScheduleUtil;
 
 
 
@@ -64,7 +65,7 @@ public class DynamicTaskManager {
 	 * @param period
 	 */
 	public static void scheduleTask(String targetBean, String targetMethod, String cronExpression, Date startTime, long period, String params,long workerId){
-		String scheduleKey = buildScheduleKey(targetBean, targetMethod);
+		String scheduleKey = buildScheduleKey(targetBean, targetMethod,params);
 		try {
 			ScheduledFuture<?> scheduledFuture = null;
 			ScheduledMethodRunnable scheduledMethodRunnable = buildScheduledRunnable(targetBean, targetMethod, params,workerId);
@@ -94,8 +95,8 @@ public class DynamicTaskManager {
 	}
 	
 	
-	private static String buildScheduleKey(String targetBean, String targetMethod){
-		return targetBean + "#" + targetMethod;
+	private static String buildScheduleKey(String targetBean, String targetMethod,String params){
+		return ScheduleUtil.getTaskNameFormBean( targetBean,targetMethod,params);
 	}
 	
 	/**

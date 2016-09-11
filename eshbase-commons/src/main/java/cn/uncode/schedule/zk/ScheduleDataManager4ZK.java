@@ -33,6 +33,7 @@ import cn.uncode.schedule.DynamicTaskManager;
 import cn.uncode.schedule.core.IScheduleDataManager;
 import cn.uncode.schedule.core.ScheduleServer;
 import cn.uncode.schedule.core.TaskDefine;
+import cn.uncode.schedule.util.ScheduleUtil;
 
 /**
  * zk实现类
@@ -378,7 +379,7 @@ public class ScheduleDataManager4ZK implements IScheduleDataManager {
 	public void delTask(String targetBean, String targetMethod,String params) throws Exception {
 		String zkPath = this.pathTask;
 		if(this.getZooKeeper().exists(zkPath,false) != null){
-			zkPath = zkPath + "/" + targetBean + "#" + targetMethod+"#"+params;
+			zkPath = zkPath + "/" + ScheduleUtil.getTaskNameFormBean(targetBean,targetMethod,params);
 			if(this.getZooKeeper().exists(zkPath, false) != null){
 				ZKTools.deleteTree(this.getZooKeeper(), zkPath);
 			}

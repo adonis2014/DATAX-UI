@@ -9,15 +9,23 @@ public class JobFlowCron extends JobFlow {
 	private String cronrepeatimes;
 	private String cronunit;
 	private String isLast;//是否最后一天
-
-	private String remark;
+	private String logicName;
+	private String jobParameter;
 	
-	public String getRemark() {
-		return remark;
+	public String getJobParameter() {
+		return jobParameter;
 	}
 
-	public void setRemark(String remark) {
-		this.remark = remark;
+	public void setJobParameter(String jobParameter) {
+		this.jobParameter = jobParameter;
+	}
+
+	public String getLogicName() {
+		return logicName;
+	}
+
+	public void setLogicName(String logicName) {
+		this.logicName = logicName;
 	}
 
 	public String getIsLast() {

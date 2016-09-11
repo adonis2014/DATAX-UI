@@ -2,9 +2,9 @@ package net.iharding.modules.job.dao;
 
 import java.util.List;
 
-import org.guess.core.orm.EntityDao;
-
 import net.iharding.modules.job.model.JobWorker;
+
+import org.guess.core.orm.EntityDao;
 
 /**
 * 
@@ -21,5 +21,18 @@ public interface JobWorkerDao extends EntityDao<JobWorker, Long>{
 	public List<JobWorker> findByRegCenter(Long regId);
 	
 	public void update(JobWorker worker);
-	
+	/**
+	 * 保存并放回JobWorker对象
+	 * @param worker
+	 * @return
+	 */
+	public JobWorker saveOrUpdate(JobWorker worker);
+/**
+ * 根据stringkey获取worker
+ * @param jobClassName
+ * @param methodName
+ * @param jobParameter
+ * @return
+ */
+	public JobWorker getByKey(String jobClassName, String methodName, String jobParameter);
 }

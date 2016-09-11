@@ -2,6 +2,7 @@ package net.iharding.modules.job.service;
 
 import org.guess.core.service.BaseService;
 
+import net.iharding.modules.job.model.JobFlowCron;
 import net.iharding.modules.job.model.JobFlowWrapper;
 import net.iharding.modules.job.model.JobWorker;
 
@@ -21,7 +22,7 @@ public interface JobWorkerService extends BaseService<JobWorker, Long> {
 	 * @param cronString
 	 * @return
 	 */
-	public JobWorker schedleJob(JobFlowWrapper object, String cronString);
+	public JobWorker schedleJob(JobFlowWrapper object, JobFlowCron cron, String cronString);
 
 	/**
 	 * 保存并提交任务到调度系统
@@ -30,5 +31,7 @@ public interface JobWorkerService extends BaseService<JobWorker, Long> {
 	 * @param start
 	 */
 	public void save(JobWorker object, String start) throws Exception;
+
+	
 
 }

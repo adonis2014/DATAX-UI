@@ -6,6 +6,10 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import net.iharding.utils.HBStringUtils;
+
+import org.apache.commons.lang3.StringUtils;
+
 
 /**
  * 调度处理工具类
@@ -77,8 +81,12 @@ public class ScheduleUtil {
          }
     }
     
-    public static String getTaskNameFormBean(String beanName, String methodName){
-    	return beanName + "#" + methodName;
+    public static String getTaskNameFormBean(String beanName, String methodName,String params){
+    	if (StringUtils.isEmpty(params)){
+			return beanName + "#" + methodName;
+		}else{
+			return beanName + "#" + methodName+"#"+HBStringUtils.string2unicode(params);
+		}
     }
     
     /**

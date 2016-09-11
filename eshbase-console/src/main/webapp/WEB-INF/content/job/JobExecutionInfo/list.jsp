@@ -63,7 +63,6 @@
 $(document).ready(function() {
 	
 	App.activeMenu("job/JobExecutionInfo/list");
-	
 	Page.initData(
 		{
 			url:"${ctx}/job/JobExecutionInfo/page",
@@ -71,7 +70,8 @@ $(document).ready(function() {
 			pageSize : 10,
 			tableId : "#sample_1"
 		},
-		null,
+		{orderBy : "lastCompleteTime",
+		orderDir : "desc"},
 		[
 			 	{cName:"id",cValue:"ID",format:function(i,value,item){
 					 if(App.isNundef(value)){

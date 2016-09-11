@@ -23,4 +23,6 @@ public class JobFlowDaoImpl extends HibernateDao<JobFlow,Long> implements JobFlo
 		Session session = getSession();
 		session.merge(jobFlow);
 	}
+
+	
 }
