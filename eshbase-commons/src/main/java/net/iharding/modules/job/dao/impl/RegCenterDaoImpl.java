@@ -28,4 +28,9 @@ public class RegCenterDaoImpl extends HibernateDao<RegCenter, Long> implements R
 	public RegCenter getByName(String name) {
 		return this.findUniqueBy("name", name);
 	}
+
+	@Override
+	public RegCenter get(String zkQuorumPeer, String nameSpace) {
+		return this.findUnique("from RegCenter where zkQuorumPeer=? and nameSpace=? ", zkQuorumPeer,nameSpace);
+	}
 }

@@ -59,11 +59,14 @@
 		</div>
 	</div>
 <%@ include file="/WEB-INF/content/common/plugins/page.jsp"%>
+	<script type="text/javascript" src="${ctx}/assets/js/map.js"></script>
+
 <script type="text/javascript">
 $(document).ready(function() {
 	
 	App.activeMenu("job/Machine/list");
-	
+	var dbtypeMap = new Map();
+	<mytags:dictSelect field="dbtypeMap" id="dbtypeMap" type="map" hasLabel="false" codeType="17" />
 	Page.initData(
 		{
 			url:"${ctx}/job/Machine/page",
@@ -74,28 +77,22 @@ $(document).ready(function() {
 		null,
 		[
 			 	{cName:"machineName",cValue:"终端名"},
-
 			 	{cName:"address",cValue:"终端地址"},
-
+			 	{cName:"hostName",cValue:"机器名"},
 			 	{cName:"sshPort",cValue:"ssh端口"},
-
 			 	{cName:"loginName",cValue:"登录名"},
-
 			 	{cName:"loginPassword",cValue:"登录密码"},
-
 			 	{cName:"userDir",cValue:"工作路径"},
-
-			 	{cName:"createbyId",cValue:"建立者"},
-
-			 	{cName:"updatebyId",cValue:"更新者"},
-
-			 	{cName:"createDate",cValue:"建立时间"},
-
-			 	{cName:"updateDate",cValue:"更新时间"},
-
-			 	{cName:"checkLabel",cValue:"启用标记"},
-
-			  	{cName:"remark",cValue:"备注"}
+			 	{cName:"updateDate",cValue:"更新时间",format:function(i,value,item){
+					 if(App.isNundef(value)){
+						 return new Date(value).format("yyyy-MM-dd hh:mm:ss");
+					 }
+					 return value;
+				 }},
+			 	{cName:"checkLabel",cValue:"启用标记",
+					format : function(i, value, item) {
+						return dbtypeMap.get(item.checkLabel);
+					}}
 		 ]
 	);
 });

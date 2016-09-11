@@ -1,6 +1,6 @@
 <%@ page contentType="text/html;charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/content/common/common.jsp"%>
-<c:set var="pageTitle" value="${empty obj ? '添加作业任务日志':'修改作业任务日志' }" scope="page" />
+<c:set var="pageTitle" value="${empty obj ? '添加流程接点':'修改流程接点' }" scope="page" />
 <html>
 <head>
 <title>${pageTitle }</title>
@@ -25,104 +25,48 @@
 							</div>
 						</div>
 						<div class="portlet-body form">
-							<form action="${ctx}/job/jobExecutionInfo/edit" class="form-horizontal form_sync"
+							<form action="${ctx}/job/jobActivity/edit" class="form-horizontal form_sync"
 								method="post" id="form1">
 								
 								<input type="hidden" value="${obj.id}" name="id">
 								<div class="control-group">
-									<label class="control-label">作业执行ID:</label>
+									<label class="control-label">节点类ID:</label>
 									<div class="controls">
 										<input type="text" class="span6 m-wrap"
 											validate="{required:true}"
-											name="workerId" value="${obj.workerId }" />
+											name="actClassId" value="${obj.actClassId }" />
 									</div>
 								</div>
 								<div class="control-group">
-									<label class="control-label">分片项:</label>
+									<label class="control-label">名称:</label>
 									<div class="controls">
 										<input type="text" class="span6 m-wrap"
 											validate="{required:true}"
-											name="item" value="${obj.item }" />
+											name="name" value="${obj.name }" />
 									</div>
 								</div>
 								<div class="control-group">
-									<label class="control-label">失败跳转:</label>
+									<label class="control-label">参数:</label>
 									<div class="controls">
 										<input type="text" class="span6 m-wrap"
 											validate="{required:true}"
-											name="failoverIp" value="${obj.failoverIp }" />
+											name="params" value="${obj.params }" />
 									</div>
 								</div>
 								<div class="control-group">
-									<label class="control-label">状态:</label>
+									<label class="control-label">图标:</label>
 									<div class="controls">
 										<input type="text" class="span6 m-wrap"
 											validate="{required:true}"
-											name="status" value="${obj.status }" />
+											name="icon" value="${obj.icon }" />
 									</div>
 								</div>
 								<div class="control-group">
-									<label class="control-label">最后启动时间:</label>
+									<label class="control-label">风格:</label>
 									<div class="controls">
 										<input type="text" class="span6 m-wrap"
 											validate="{required:true}"
-											name="lastBeginTime" value="${obj.lastBeginTime }" />
-									</div>
-								</div>
-								<div class="control-group">
-									<label class="control-label">下次触发时间:</label>
-									<div class="controls">
-										<input type="text" class="span6 m-wrap"
-											validate="{required:true}"
-											name="nextFireTime" value="${obj.nextFireTime }" />
-									</div>
-								</div>
-								<div class="control-group">
-									<label class="control-label">最后完成时间:</label>
-									<div class="controls">
-										<input type="text" class="span6 m-wrap"
-											validate="{required:true}"
-											name="lastCompleteTime" value="${obj.lastCompleteTime }" />
-									</div>
-								</div>
-								<div class="control-group">
-									<label class="control-label">建立者:</label>
-									<div class="controls">
-										<input type="text" class="span6 m-wrap"
-											validate="{required:true}"
-											name="createbyId" value="${obj.createbyId }" />
-									</div>
-								</div>
-								<div class="control-group">
-									<label class="control-label">更新者:</label>
-									<div class="controls">
-										<input type="text" class="span6 m-wrap"
-											validate="{required:true}"
-											name="updatebyId" value="${obj.updatebyId }" />
-									</div>
-								</div>
-								<div class="control-group">
-									<label class="control-label">建立时间:</label>
-									<div class="controls">
-										<input type="text" class="span6 m-wrap"
-											validate="{required:true}"
-											name="createDate" value="${obj.createDate }" />
-									</div>
-								</div>
-								<div class="control-group">
-									<label class="control-label">更新时间:</label>
-									<div class="controls">
-										<input type="text" class="span6 m-wrap"
-											validate="{required:true}"
-											name="updateDate" value="${obj.updateDate }" />
-									</div>
-								</div>
-								<div class="control-group">
-									<label class="control-label">启用标记:</label>
-									<div class="controls">
-										<input type="text" class="span6 m-wrap"
-											validate="{required:true}"
-											name="checkLabel" value="${obj.checkLabel }" />
+											name="style" value="${obj.style }" />
 									</div>
 								</div>
 								<div class="control-group">
@@ -131,6 +75,22 @@
 										<input type="text" class="span6 m-wrap"
 											validate="{required:true}"
 											name="remark" value="${obj.remark }" />
+									</div>
+								</div>
+								<div class="control-group">
+									<label class="control-label">节点类ID:</label>
+									<div class="controls">
+										<input type="text" class="span6 m-wrap"
+											validate="{required:true}"
+											name="flowId" value="${obj.flowId }" />
+									</div>
+								</div>
+								<div class="control-group">
+									<label class="control-label">节点类别:</label>
+									<div class="controls">
+										<input type="text" class="span6 m-wrap"
+											validate="{required:true}"
+											name="activityType" value="${obj.activityType }" />
 									</div>
 								</div>
 								
@@ -149,7 +109,7 @@
 <%@ include file="/WEB-INF/content/common/plugins/jquery-validation.jsp"%>
 <script type="text/javascript">
 	$(function(){
-		App.activeMenu("job/jobExecutionInfo/list");
+		App.activeMenu("job/jobActivity/list");
 	});
 </script>
 </body>

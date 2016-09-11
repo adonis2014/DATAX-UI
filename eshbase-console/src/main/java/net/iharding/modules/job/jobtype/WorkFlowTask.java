@@ -8,15 +8,15 @@ import org.springframework.stereotype.Component;
  * @author Joe.zhang
  *
  */
-@Component("DataxFlowTask")
-public class DataxFlowTask  extends AbstractTask{
+@Component("WorkFlowTask")
+public class WorkFlowTask  extends AbstractTask{
 	
 	/**
 	 * 执行多个datax任务的etl 流程
 	 */
 	public String execute(String flowId) {
+		
 		return flowId;
-
 	}
 
 }

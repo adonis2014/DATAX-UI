@@ -2,7 +2,6 @@ package net.iharding.modules.job.service;
 
 import java.util.List;
 
-import net.iharding.modules.job.model.JobTaskDefine;
 import net.iharding.modules.job.model.JobWorker;
 import net.iharding.modules.job.model.Machine;
 import net.iharding.modules.job.model.RegCenter;
@@ -26,6 +25,7 @@ public interface RegCenterService extends BaseService<RegCenter, Long> {
 
 	public List<JobWorker> getJobWorkers(Long id);
 
-	public List<JobTaskDefine> getJobTaskDefines(Long id);
+
+	public void connect(Long id);
 
 }

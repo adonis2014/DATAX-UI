@@ -44,4 +44,6 @@ public class JobFlowWrapper extends JobFlow {
 		this.setUpdateDate(flow.getUpdateDate());
 		this.setUpdater(flow.getUpdater());
 	}
+	
+	
 }

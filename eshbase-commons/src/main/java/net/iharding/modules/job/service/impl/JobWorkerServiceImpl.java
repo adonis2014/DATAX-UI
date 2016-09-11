@@ -9,6 +9,7 @@ import net.iharding.modules.job.model.JobWorker;
 import net.iharding.modules.job.service.JobWorkerService;
 
 import org.guess.core.service.BaseServiceImpl;
+import org.guess.sys.model.User;
 import org.guess.sys.util.UserUtil;
 import org.quartz.CronExpression;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,13 +37,21 @@ public class JobWorkerServiceImpl extends BaseServiceImpl<JobWorker, Long> imple
 		JobWorker jworker=new JobWorker();
 		jworker.setJobclass(object.getJobclass());
 		jworker.setCron(cronString);
+		jworker.setName(object.getJobclass().getName());
 		jworker.setJobClassName(object.getJobclass().getClassName());
 		jworker.setMethodName(object.getJobclass().getMethodName());
 		jworker.setCheckLabel(1);
 		jworker.setJobParameter(object.getId().toString());
+		User user=UserUtil.getCurrentUser();
+		jworker.setCreateDate(new Date());
+		jworker.setCreater(user);
+		jworker.setUpdateDate(new Date());
+		jworker.setUpdater(user);
+		jobWorkerDao.save(jworker);
 		ConsoleManager.addScheduleTask(jworker.covertoTaskDefint());
 		return jworker;
 	}
+	
 	@Override
 	public void save(JobWorker object, String start) throws Exception {
 		JobWorker jworker=jobWorkerDao.get(object.getId());

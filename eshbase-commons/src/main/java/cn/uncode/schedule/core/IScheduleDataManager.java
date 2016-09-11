@@ -34,6 +34,7 @@ public interface IScheduleDataManager{
 
 	public void clearExpireScheduleServer() throws Exception;
 	
+	public List<String> loadAllScheduleServer() throws Exception;
 	
 	public List<String> loadScheduleServerNames() throws Exception;
 	
@@ -50,9 +51,16 @@ public interface IScheduleDataManager{
 	 * @throws Exception
 	 */
 	@Deprecated
-	public void delTask(String targetBean, String targetMethod)throws Exception;
+	public void delTask(String targetBean, String targetMethod,String params) throws Exception;
 	
 	public void delTask(TaskDefine taskDefine) throws Exception;
+	
+	/**
+	 * 获取所有终端服务信息
+	 * @return
+	 * @throws Exception
+	 */
+	public List<ScheduleServer> selectServer()throws Exception;
 	
 	public List<TaskDefine> selectTask()throws Exception;
 	

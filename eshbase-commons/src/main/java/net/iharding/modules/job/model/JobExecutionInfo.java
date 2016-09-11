@@ -75,6 +75,11 @@ public class JobExecutionInfo extends IdEntity {
 	 */
 	private Integer item;
 	/**
+	 * 日志对象类别
+	 */
+	@Column(name="object_type")
+	private Integer objectType;
+	/**
 	 * 失败跳转
 	 */
 	@Column(name="failover_ip")
@@ -99,10 +104,14 @@ public class JobExecutionInfo extends IdEntity {
 	@Column(name="last_complete_time")
 	private Date lastCompleteTime;
 	
-	
-	
-	
-	
+	public Integer getObjectType() {
+		return objectType;
+	}
+
+	public void setObjectType(Integer objectType) {
+		this.objectType = objectType;
+	}
+
 	public String getExeResult() {
 		return exeResult;
 	}

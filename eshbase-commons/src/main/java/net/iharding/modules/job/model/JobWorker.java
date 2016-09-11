@@ -127,6 +127,17 @@ public class JobWorker extends IdEntity {
 	 */
 	private Integer overwrite;
 	/**
+	 * 注册中心ID
+	 */
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name="reg_id")
+	@NotFound(action = NotFoundAction.IGNORE)
+	@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
+	private RegCenter regCenter;
+	
+	@Column(name="reg_id",insertable = false, updatable = false)
+	private Long regId;
+	/**
 	 * 最后更新人
 	 */
 	@ManyToOne(cascade = { CascadeType.PERSIST, CascadeType.MERGE },targetEntity = User.class,fetch = FetchType.LAZY)
@@ -174,6 +185,21 @@ public class JobWorker extends IdEntity {
 	 */
 	private String remark;
 	
+	public RegCenter getRegCenter() {
+		return regCenter;
+	}
+
+	public void setRegCenter(RegCenter regCenter) {
+		this.regCenter = regCenter;
+	}
+
+	public Long getRegId() {
+		return regId;
+	}
+
+	public void setRegId(Long regId) {
+		this.regId = regId;
+	}
 	/**
 	 * 调度任务流程对象
 	 */

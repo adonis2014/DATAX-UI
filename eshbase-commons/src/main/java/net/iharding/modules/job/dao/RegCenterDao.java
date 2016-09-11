@@ -15,5 +15,7 @@ import net.iharding.modules.job.model.RegCenter;
 public interface RegCenterDao extends EntityDao<RegCenter, Long>{
 
 	public RegCenter getByName(String name);
+
+	public RegCenter get(String zkQuorumPeer, String nameSpace);
 	
 }

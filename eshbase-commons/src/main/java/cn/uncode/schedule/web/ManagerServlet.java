@@ -180,6 +180,7 @@ public class ManagerServlet extends HttpServlet{
 			String[] dels = del.split("_");
 			taskDefine.setTargetBean(dels[0]);
 			taskDefine.setTargetMethod(dels[1]);
+			if (dels.length>2)taskDefine.setParams(dels[2]);
 			ConsoleManager.delScheduleTask(taskDefine);
 			response.sendRedirect(request.getSession().getServletContext().getContextPath()+"/uncode/schedule");
 		}else if(StringUtils.isNotEmpty(bean) && StringUtils.isNotEmpty(method)){

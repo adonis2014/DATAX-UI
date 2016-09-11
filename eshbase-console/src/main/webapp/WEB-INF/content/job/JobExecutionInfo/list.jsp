@@ -73,8 +73,30 @@ $(document).ready(function() {
 		},
 		null,
 		[
-			 	{cName:"workerId",cValue:"作业执行ID"},
-			 	{cName:"item",cValue:"分片项"},
+			 	{cName:"id",cValue:"ID",format:function(i,value,item){
+					 if(App.isNundef(value)){
+						 return '<a href="${ctx}/job/JobExecutionInfo/show/'+value+'">'+value+'</a>';
+					 }
+					 return value;
+				 }},
+			 	{cName:"workerId",cValue:"执行作业",format:function(i,value,item){
+					 if(App.isNundef(value)){
+						 return '<a href="${ctx}/job/JobWorker/show/'+value+'">'+item.worker.name+'</a>';
+					 }
+					 return value;
+				 }},
+			 	{cName:"worker",cValue:"执行类",format:function(i,value,item){
+					 if(App.isNundef(value)){
+						 return  '<a href="${ctx}/job/JobClass/show/'+item.worker.jobclass.id+'">'+item.worker.jobClassName+'#'+item.worker.methodName+'</a>';
+					 }
+					 return  value;
+				 }},
+				 {cName:"machine",cValue:"执行机器",format:function(i,value,item){
+					 if(App.isNundef(value)){
+						 return '<a href="${ctx}/job/Machine/show/'+item.machineId+'">'+item.machine.machineName+"["+item.machine.address+"]"+'</a>';
+					 }
+					 return value;
+				 }},
 			 	{cName:"lastBeginTime",cValue:"启动时间",format:function(i,value,item){
 					 if(App.isNundef(value)){
 						 return new Date(value).format("yyyy-MM-dd hh:mm:ss");
@@ -95,13 +117,16 @@ $(document).ready(function() {
 					 return value;
 				 }
 			},
-			{cName:"machine",cValue:"执行机器",format:function(i,value,item){
-				 if(App.isNundef(value)){
-					 return value.machineName+"["+value.address+"]";
+			
+			{cName:"exeResult",cValue:"执行结果",format:function(i,value,item){
+				 if(value=="0"){
+					 return "成功";
+				 }else if(value=="-1"){
+					 return "失败";
+				 }else{
+					 return value;
 				 }
-				 return value;
-			 }},
-			{cName:"exeResult",cValue:"执行结果"}
+			 }}
 		 ]
 	);
 });

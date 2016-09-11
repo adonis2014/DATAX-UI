@@ -28,7 +28,7 @@
 										<div class="span7 ">
 											<div class="control-group">
 												<div class="controls">
-													<input type="text" id="filters" class="m-wrap span12" placeholder="名称,ZK列表,命名空间,待重试间隔时间,待重试间隔时间最大值,最大重试次数,登录凭证,备注">
+													<input type="text" id="filters" class="m-wrap span12" placeholder="名称,ZK列表,登录凭证,备注">
 												</div>
 											</div>
 										</div>
@@ -133,7 +133,7 @@
 
 		function doQuery() {
 			var queryObj = {
-				search_LIKES_name_OR_zkQuorumPeer_OR_nameSpace_OR_baseSleepTime_OR_maxSleepTime_OR_maxRetries_OR_loginCert_OR_remark : App
+				search_LIKES_name_OR_zkQuorumPeer_OR_loginCert_OR_remark : App
 						.isEqPlacehoder($("#filters"))
 			};
 			Page.doQuery(queryObj);

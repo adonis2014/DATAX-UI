@@ -35,11 +35,33 @@ public class CodeGenerate {
 
 		// packageName
 		// 包名，这里如果更改包名，请在applicationContext.xml和spring-mvc.xml中配置base-package、packagesToScan属性，来指定多个（共4处需要修改）。
-		String packageName = "com.github";
+		String packageName = "net.iharding";
 		List<Field> fields = new ArrayList<Field>();
 		
 		String classAuthor = "Joe.zhang"; // 类作者，例：
-		String moduleName = "eswrapper"; // 模块名，例：sys  
+		String moduleName = "job"; // 模块名，例：sys  
+		String className = "JobActivityResult"; // 类名，例：user
+		String functionName = "流程输出配置"; // 功能名，例：用户
+		fields.add(new Field("activityId", "节点ID", "Long"));
+		fields.add(new Field("resultValue", "结果值", "String"));
+		fields.add(new Field("processTo", "下一处理节点ID", "String"));
+//		String className = "JobActivityClass"; // 类名，例：user
+//		String functionName = "流程节点类"; // 功能名，例：用户
+//		fields.add(new Field("code", "spring code", "String"));
+//		fields.add(new Field("name", "名称", "String"));
+//		fields.add(new Field("params", "参数", "String"));
+//		fields.add(new Field("methodName", "方法名", "String"));
+//		fields.add(new Field("output", "输出数据", "String"));
+//		fields.add(new Field("remark", "备注", "String"));
+//		String functionName = "流程节点"; // 功能名，例：用户
+//		fields.add(new Field("actClassId", "节点类ID", "Long"));
+//		fields.add(new Field("name", "名称", "String"));
+//		fields.add(new Field("params", "参数", "String"));
+//		fields.add(new Field("icon", "图标", "String"));
+//		fields.add(new Field("style", "风格", "String"));
+//		fields.add(new Field("remark", "备注", "String"));
+//		fields.add(new Field("flowId", "节点类ID", "Long"));
+//		fields.add(new Field("activityType", "节点类别", "Long"));
 //		String className = "datasource"; // 类名，例：user
 //		String functionName = "集群数据源";
 //		fields.add(new Field("name", "名称", "String"));
@@ -218,18 +240,18 @@ public class CodeGenerate {
 //		fields.add(new Field("indexType", "索引类别", "Integer"));
 		
 //		fields.add(new Field("moduleName", "模块名", "String"));
-		String className = "MonitorLogDetail"; // 类名，例：user
-		String functionName = "监控记录明细"; // 功能名，例：用户
-		fields.add(new Field("clusterName", "集群名", "String"));
-		fields.add(new Field("node", "接点", "String"));	
-		fields.add(new Field("successCount", "成功次数", "Integer"));	
-		fields.add(new Field("successTps", "成功TPS", "float"));	
-		fields.add(new Field("failureCount", "失败次数", "Integer"));	
-		fields.add(new Field("failureTps", "失败Tps", "float"));	
-		fields.add(new Field("concurrentMin", "线程池最小值", "Integer"));	
-		fields.add(new Field("concurrentAve", "线程池平均值", "float"));	
-		fields.add(new Field("concurrentMax", "线程池最大值", "Integer"));
-		fields.add(new Field("logId", "logId", "Long"));	
+//		String className = "MonitorLogDetail"; // 类名，例：user
+//		String functionName = "监控记录明细"; // 功能名，例：用户
+//		fields.add(new Field("clusterName", "集群名", "String"));
+//		fields.add(new Field("node", "接点", "String"));	
+//		fields.add(new Field("successCount", "成功次数", "Integer"));	
+//		fields.add(new Field("successTps", "成功TPS", "float"));	
+//		fields.add(new Field("failureCount", "失败次数", "Integer"));	
+//		fields.add(new Field("failureTps", "失败Tps", "float"));	
+//		fields.add(new Field("concurrentMin", "线程池最小值", "Integer"));	
+//		fields.add(new Field("concurrentAve", "线程池平均值", "float"));	
+//		fields.add(new Field("concurrentMax", "线程池最大值", "Integer"));
+//		fields.add(new Field("logId", "logId", "Long"));	
 		
 		
 //		fields.add(new Field("dbtype", "数据源类别", "Integer"));

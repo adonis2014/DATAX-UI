@@ -2,10 +2,8 @@ package net.iharding.modules.job.controller;
 
 import java.util.List;
 
-import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
-import net.iharding.modules.job.model.JobTaskDefine;
 import net.iharding.modules.job.model.JobWorker;
 import net.iharding.modules.job.model.Machine;
 import net.iharding.modules.job.model.RegCenter;
@@ -65,7 +63,7 @@ public class RegCenterController extends BaseController<RegCenter> {
 	 */
 	@RequestMapping(value = "connect/{id}", method = RequestMethod.GET)
 	public ModelAndView connect(@PathVariable("id") Long id)  throws Exception{
-//		regCenterService.connect(id);
+		regCenterService.connect(id);
 		return show(id);
 	}
 	
@@ -84,8 +82,6 @@ public class RegCenterController extends BaseController<RegCenter> {
 		mav.addObject("machines", machines);
 		List<JobWorker> workers=regCenterService.getJobWorkers(id);
 		mav.addObject("workers", workers);
-		List<JobTaskDefine> taskDefines=regCenterService.getJobTaskDefines(id);
-		mav.addObject("taskDefines", taskDefines);
 		return mav;
 	}
 

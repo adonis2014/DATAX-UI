@@ -409,6 +409,10 @@ public class ZKScheduleManager extends ThreadPoolTaskScheduler implements Applic
 		return zkManager;
 	}
 
+	public Map<String, String> getZkConfig() {
+		return zkConfig;
+	}
+
 	public void setZkConfig(Map<String, String> zkConfig) {
 		this.zkConfig = zkConfig;
 	}

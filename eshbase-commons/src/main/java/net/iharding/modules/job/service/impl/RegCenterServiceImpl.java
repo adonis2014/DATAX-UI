@@ -1,30 +1,26 @@
 package net.iharding.modules.job.service.impl;
 
-import java.util.Collection;
 import java.util.Date;
 import java.util.List;
-import java.util.concurrent.ConcurrentHashMap;
-
-import javax.annotation.Resource;
 
 import net.iharding.modules.job.dao.JobClassDao;
-import net.iharding.modules.job.dao.JobTaskDefineDao;
 import net.iharding.modules.job.dao.JobWorkerDao;
 import net.iharding.modules.job.dao.MachineDao;
 import net.iharding.modules.job.dao.RegCenterDao;
-import net.iharding.modules.job.model.JobClass;
-import net.iharding.modules.job.model.JobTaskDefine;
 import net.iharding.modules.job.model.JobWorker;
 import net.iharding.modules.job.model.Machine;
 import net.iharding.modules.job.model.RegCenter;
 import net.iharding.modules.job.service.RegCenterService;
 
-import org.apache.curator.framework.CuratorFramework;
 import org.guess.core.service.BaseServiceImpl;
 import org.guess.sys.model.User;
 import org.guess.sys.util.UserUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import cn.uncode.schedule.ConsoleManager;
+import cn.uncode.schedule.core.ScheduleServer;
 
 
 /**
@@ -47,9 +43,6 @@ public class RegCenterServiceImpl extends BaseServiceImpl<RegCenter, Long> imple
 	
 	@Autowired
 	private JobWorkerDao jobWorkerDao;
-	
-	@Autowired
-	private JobTaskDefineDao jobTaskDefineDao;
 	
 	@Autowired
 	private JobClassDao jobClassDao;
@@ -91,9 +84,47 @@ public class RegCenterServiceImpl extends BaseServiceImpl<RegCenter, Long> imple
 		return jobWorkerDao.findByRegCenter(id);
 	}
 
+	
+
 	@Override
-	public List<JobTaskDefine> getJobTaskDefines(Long id) {
-		return jobTaskDefineDao.findByRegCenter(id);
+	@Transactional
+	public void connect(Long id) {
+		try {
+			String zkConnectString=ConsoleManager.getScheduleManager().getZkConfig().get("zkConnectString");
+			String rootPath=ConsoleManager.getScheduleManager().getZkConfig().get("rootPath");
+			RegCenter regCenter=regCenterDao.get(zkConnectString,rootPath);
+			User user=UserUtil.getCurrentUser();
+			if (regCenter==null){
+				regCenter=new RegCenter();
+				regCenter.setCreateDate(new Date());
+				regCenter.setCreater(user);
+				regCenter.setNameSpace(rootPath);
+				regCenter.setZkQuorumPeer(zkConnectString);
+			}else{
+				regCenter.setUpdateDate(new Date());
+				regCenter.setUpdater(UserUtil.getCurrentUser());
+			}
+			regCenter.setCheckLabel(1);
+			regCenterDao.save(regCenter);
+			//machine
+			List<ScheduleServer> servers = ConsoleManager.getScheduleManager().getScheduleDataManager().selectServer();
+			for(ScheduleServer server:servers){
+				Machine machine=machineDao.get(server.getIp());
+				if (machine==null){
+					machine=new Machine();
+					machine.setAddress(server.getIp());
+					machine.setCreateDate(new Date());
+				}
+				machine.setCheckLabel(1);
+				machine.setHostName(server.getHostName());
+				machine.setRegCenter(regCenter);
+				machine.setUpdateDate(new Date());
+				machine.setUpdater(user);
+				machineDao.save(machine);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 
 }

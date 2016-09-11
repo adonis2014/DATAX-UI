@@ -352,7 +352,7 @@ public class ScheduleDataManager4ZK implements IScheduleDataManager {
 				this.getZooKeeper().setData(zkPath, newVal.getBytes(), -1);
 				
 			} catch (Exception e) {
-				// TODO: handle exception
+				
 			}
 		}
 		return true;
@@ -375,11 +375,10 @@ public class ScheduleDataManager4ZK implements IScheduleDataManager {
 		this.getZooKeeper().setData(zkPath, json.getBytes(), -1);
 	}
 	
-	@Override
-	public void delTask(String targetBean, String targetMethod) throws Exception {
+	public void delTask(String targetBean, String targetMethod,String params) throws Exception {
 		String zkPath = this.pathTask;
 		if(this.getZooKeeper().exists(zkPath,false) != null){
-			zkPath = zkPath + "/" + targetBean + "#" + targetMethod;
+			zkPath = zkPath + "/" + targetBean + "#" + targetMethod+"#"+params;
 			if(this.getZooKeeper().exists(zkPath, false) != null){
 				ZKTools.deleteTree(this.getZooKeeper(), zkPath);
 			}
@@ -463,13 +462,24 @@ public class ScheduleDataManager4ZK implements IScheduleDataManager {
 		return false;
 	}
 
-
-	
-
-	
-
-	
-
+	@Override
+	public List<ScheduleServer> selectServer() throws Exception {
+		String zkPath = this.pathServer;
+		List<ScheduleServer> scheduleServers = new ArrayList<ScheduleServer>();
+		if(this.getZooKeeper().exists(zkPath,false) != null){
+			List<String> childes = this.getZooKeeper().getChildren(zkPath, false);
+			for(String child:childes){
+				byte[] data = this.getZooKeeper().getData(zkPath+"/"+child, null, null);
+				ScheduleServer scheduleServer = null;
+				if (null != data) {
+					 String json = new String(data);
+					 scheduleServer = this.gson.fromJson(json, ScheduleServer.class);
+					 scheduleServers.add(scheduleServer);
+				}				
+			}
+		}
+		return scheduleServers;
+	}
 
 }
 
