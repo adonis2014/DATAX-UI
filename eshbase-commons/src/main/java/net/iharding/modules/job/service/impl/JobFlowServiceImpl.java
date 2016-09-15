@@ -5,12 +5,14 @@ import java.util.List;
 
 import net.iharding.DictConstants;
 import net.iharding.modules.job.dao.JobFlowDao;
+import net.iharding.modules.job.model.JobExecutionInfo;
 import net.iharding.modules.job.model.JobFlow;
 import net.iharding.modules.job.model.JobFlowWrapper;
 import net.iharding.modules.job.service.JobFlowService;
 import net.iharding.modules.meta.dao.MetaPropertyDao;
 import net.iharding.modules.meta.model.MetaProperty;
 
+import org.guess.core.orm.Page;
 import org.guess.core.service.BaseServiceImpl;
 import org.guess.sys.model.User;
 import org.guess.sys.util.UserUtil;
@@ -83,6 +85,11 @@ public class JobFlowServiceImpl extends BaseServiceImpl<JobFlow, Long> implement
 			e.printStackTrace();
 		}
 		return flowrapper;
+	}
+
+	@Override
+	public Page<JobExecutionInfo> findExecutionPage(Page<JobExecutionInfo> page, Long flowId) {
+		return jobFlowDao.findExecutionPage(page,flowId);
 	}
 
 }

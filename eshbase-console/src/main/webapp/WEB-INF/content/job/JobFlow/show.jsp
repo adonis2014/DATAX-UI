@@ -6,7 +6,6 @@
 <title>${pageTitle }</title>
 </head>
 <body>
-	<%@ include file="/WEB-INF/content/job/JobClass/selJobClass.jsp"%>
 	<div class="page-content">
 		<div class="container-fluid">
 			<!-- 页面导航 -->
@@ -64,14 +63,35 @@
 										</form>
 									</div>
 									<div class="tab-pane" id="portlet_tab2">
-										<table class="table table-striped table-bordered table-hover" id="workers">
-
+										<table class="table table-striped table-bordered table-hover" id="workers" width="100%">
+											<thead>
+												<tr>
+													<th>名称</th>
+													<th>类名</th>
+													<th>方法</th>
+													<th>参数</th>
+													<th>作业启动时间的cron表达式</th>
+													<th>下次执行时间</th>
+													<th>启用标记</th>
+												</tr>
+											</thead>
+											<tbody>
+												<c:forEach items="${workers}" var="worker">
+												<tr>
+													<td>${worker.name}</td>
+													<td>${worker.jobClassName}</td>
+													<td>${worker.methodName}</td>
+													<td>${worker.jobParameter}</td>
+													<td>${worker.cron}</td>
+													<td>${worker.nextExeDate}</td>
+													<td><mytags:dictSelect field="checkLabel" codeType="17" defaultVal="${worker.checkLabel}" type="label" hasLabel="false"/> </td>
+												</tr>
+												</c:forEach>
+											</tbody>
 										</table>
 									</div>
 									<div class="tab-pane" id="portlet_tab3">
-										<table class="table table-striped table-bordered table-hover" id="executeLogs">
-
-										</table>
+											<table class="table table-striped table-bordered table-hover" id="executeLogs"></table>
 									</div>
 								</div>
 							</div>
@@ -82,58 +102,18 @@
 		</div>
 	</div>
 	<%@ include file="/WEB-INF/content/common/plugins/jquery-validation.jsp"%>
-	<%@ include file="/WEB-INF/content/common/plugins/page.jsp"%>
-	<script type="text/javascript" src="${ctx}/assets/js/map.js"></script>
+<%@ include file="/WEB-INF/content/common/plugins/page.jsp"%>
 	<script type="text/javascript">
 		$(function() {
 			App.activeMenu("job/JobFlow/list");
-			var dbtypeMap = new Map();
-			<mytags:dictSelect field="dbtypeMap" id="dbtypeMap" type="map" hasLabel="false" codeType="17" />
-			Page.initData({
-				url : "${ctx}/job/JobWorker/page",
-				pageNo : 1,
-				pageSize : 10,
-				tableId : "#workers"
-			}, null, [ {
-				cName : "name",
-				cValue : "名称"
-			}, {
-				cName : "jobClassName",
-				cValue : "类名"
-			}, {
-				cName : "methodName",
-				cValue : "方法"
-			}, {
-				cName : "jobParameter",
-				cValue : "参数"
-			}, {
-				cName : "cron",
-				cValue : "作业启动时间的cron表达式"
-			}, {
-				cName : "nextExeDate",
-				cValue : "下次执行时间",format:function(i,value,item){
-					 if(App.isNundef(value)){
-						 return new Date(value).format("yyyy-MM-dd hh:mm:ss");
-					 }
-					 return value;
-				 }
-			},
-
-			{
-				cName : "checkLabel",
-				cValue : "启用标记",
-				format : function(i, value, item) {
-					return dbtypeMap.get(item.checkLabel);
-				}
-			} ]);
 			Page.initData(
 					{
-						url:"${ctx}/job/JobExecutionInfo/page",
+						url:"${ctx}/job/JobFlow/executionPage",
 						pageNo : 1,
 						pageSize : 10,
 						tableId : "#executeLogs"
 					},
-					{search_EQL_workerId:${obj.id}},
+					{flowId:${obj.id}},
 					[
 						 	{cName:"id",cValue:"ID",format:function(i,value,item){
 								 if(App.isNundef(value)){
@@ -153,7 +133,13 @@
 								 }
 								 return  value;
 							 }},
-							{cName:"lastBeginTime",cValue:"启动时间",format:function(i,value,item){
+							 {cName:"machine",cValue:"执行机器",format:function(i,value,item){
+								 if(App.isNundef(value)){
+									 return '<a href="${ctx}/job/Machine/show/'+item.machineId+'">'+item.machine.machineName+"["+item.machine.address+"]"+'</a>';
+								 }
+								 return value;
+							 }},
+						 	{cName:"lastBeginTime",cValue:"启动时间",format:function(i,value,item){
 								 if(App.isNundef(value)){
 									 return new Date(value).format("yyyy-MM-dd hh:mm:ss");
 								 }
@@ -185,6 +171,7 @@
 						 }}
 					 ]
 				);
+		
 		});
 	</script>
 </body>

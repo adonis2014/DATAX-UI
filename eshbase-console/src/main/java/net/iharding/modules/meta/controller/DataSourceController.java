@@ -155,12 +155,12 @@ public class DataSourceController extends BaseController<DataSource>{
 		ModelAndView mav = new ModelAndView(showView);
 		try{
 			obj = dataSourceService.importMeta(id);
+			mav.addObject("obj", obj);
+			List<MetaProperty> properties=dataSourceService.getProperties(obj.getDbType(),id);
+			mav.addObject("properties", properties);
 		}catch(Exception ex){
 			mav.addObject("msg", "连接数据源失败！"+ex.getMessage());
 		}
-		mav.addObject("obj", obj);
-		List<MetaProperty> properties=dataSourceService.getProperties(obj.getDbType(),id);
-		mav.addObject("properties", properties);
 		return mav;
 	}
 }

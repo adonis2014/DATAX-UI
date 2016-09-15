@@ -5,7 +5,6 @@ package net.iharding.modules.meta.dao.reverse;
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
-import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -31,7 +30,6 @@ import org.elasticsearch.common.settings.Settings;
 import org.elasticsearch.common.transport.InetSocketTransportAddress;
 import org.elasticsearch.shield.ShieldPlugin;
 import org.guess.sys.model.User;
-import org.guess.sys.util.UserUtil;
 
 import com.carrotsearch.hppc.cursors.ObjectObjectCursor;
 

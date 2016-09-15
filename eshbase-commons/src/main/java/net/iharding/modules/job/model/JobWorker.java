@@ -209,6 +209,17 @@ public class JobWorker extends IdEntity {
 	@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 	private JobFlow jobflow;
 	
+	@Column(name="flow_id",insertable = false, updatable = false)
+	private Long jobFlowId;
+	
+	public Long getJobFlowId() {
+		return jobFlowId;
+	}
+
+	public void setJobFlowId(Long jobFlowId) {
+		this.jobFlowId = jobFlowId;
+	}
+
 	public String getMethodName() {
 		return methodName;
 	}

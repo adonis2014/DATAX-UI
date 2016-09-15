@@ -80,10 +80,10 @@ $(document).ready(function() {
 					 return value;
 				 }},
 			 	{cName:"workerId",cValue:"执行作业",format:function(i,value,item){
-					 if(App.isNundef(value)){
+					 //if(App.isNundef(value)){
 						 return '<a href="${ctx}/job/JobWorker/show/'+value+'">'+item.worker.name+'</a>';
-					 }
-					 return value;
+					 //}
+					 //return value;
 				 }},
 			 	{cName:"worker",cValue:"执行类",format:function(i,value,item){
 					 if(App.isNundef(value)){

@@ -38,7 +38,15 @@ public class JobWorkerServiceImpl extends BaseServiceImpl<JobWorker, Long> imple
 	@Transactional
 	@Override
 	public JobWorker schedleJob(JobFlowWrapper object,JobFlowCron cron, String cronString) {
-		JobWorker jworker=new JobWorker();
+		JobWorker jworker=jobWorkerDao.getByKey(object.getJobclass().getClassName(),object.getJobclass().getMethodName(),cron.getJobParameter());
+		User user=UserUtil.getCurrentUser();
+		boolean isNew=false;
+		if (jworker==null){
+			jworker=new JobWorker();
+			jworker.setCreateDate(new Date());
+			jworker.setCreater(user);
+			isNew=true;
+		}
 		jworker.setJobclass(object.getJobclass());
 		jworker.setCron(cronString);
 		jworker.setName(cron.getName());
@@ -47,15 +55,12 @@ public class JobWorkerServiceImpl extends BaseServiceImpl<JobWorker, Long> imple
 		jworker.setMethodName(object.getJobclass().getMethodName());
 		jworker.setCheckLabel(1);
 		jworker.setJobParameter(cron.getJobParameter());
-		User user=UserUtil.getCurrentUser();
-		jworker.setCreateDate(new Date());
-		jworker.setCreater(user);
 		jworker.setUpdateDate(new Date());
 		jworker.setUpdater(user);
 		jworker.setJobflow(object);
 		jworker.setRemark(cron.getRemark());
-		jobWorkerDao.save(jworker);
-		jworker=jobWorkerDao.getByKey(jworker.getJobClassName(),jworker.getMethodName(),jworker.getJobParameter());
+		jobWorkerDao.saveOrUpdate(jworker);
+		if (isNew)jworker=jobWorkerDao.getByKey(jworker.getJobClassName(),jworker.getMethodName(),jworker.getJobParameter());
 		ConsoleManager.addScheduleTask(jworker.covertoTaskDefint());
 		return jworker;
 	}

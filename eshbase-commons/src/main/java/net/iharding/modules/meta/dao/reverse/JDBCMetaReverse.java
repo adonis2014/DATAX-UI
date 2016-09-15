@@ -4,12 +4,13 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.sql.Types;
 import java.util.List;
 
-import org.apache.commons.lang.StringUtils;
-
 import net.iharding.modules.meta.model.MetaProperty;
+
+import org.apache.commons.lang.StringUtils;
 
 
 public abstract class JDBCMetaReverse extends AbstractMetaReverse {
@@ -89,6 +90,17 @@ public abstract class JDBCMetaReverse extends AbstractMetaReverse {
 			conn=null;
 		}
 			
+	}
+	
+	protected void closeStatement(Statement stmt) {
+		try {
+			if (stmt!=null){
+				if (stmt.isClosed()) stmt.close();
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		stmt=null;
 	}
 
 	protected void closeResult(ResultSet rs) {

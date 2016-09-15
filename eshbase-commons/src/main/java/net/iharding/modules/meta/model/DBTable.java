@@ -72,6 +72,14 @@ public class DBTable extends IdEntity {
 	 * 备注
 	 */
 	private String remark;
+	@Column(name = "column_count")
+	private Integer columnCount;
+	@Column(name = "row_count")
+	private Long rowCount;
+	@Column(name = "sample_rows")
+	private String sampleRows;
+	
+	
 	/**
 	 * 最后更新人
 	 */
@@ -116,6 +124,31 @@ public class DBTable extends IdEntity {
 	@Column(name="check_label")
 	private Integer checkLabel;
 	
+	
+	public Integer getColumnCount() {
+		return columnCount;
+	}
+
+	public void setColumnCount(Integer columnCount) {
+		this.columnCount = columnCount;
+	}
+
+	public Long getRowCount() {
+		return rowCount;
+	}
+
+	public void setRowCount(Long rowCount) {
+		this.rowCount = rowCount;
+	}
+
+	public String getSampleRows() {
+		return sampleRows;
+	}
+
+	public void setSampleRows(String sampleRows) {
+		this.sampleRows = sampleRows;
+	}
+
 	public Integer getCheckLabel() {
 		return checkLabel;
 	}

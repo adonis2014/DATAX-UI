@@ -727,8 +727,8 @@ public class HBStringUtils extends StringUtils {
 					cron.setRemark("每月最后一天"+NumberUtils.toInt(hourminiute[0])+"点"+NumberUtils.toInt(hourminiute[1])+"分执行一次!");
 				}else{
 					//0 0 1 1 * ?
-					cronStr="0 "+NumberUtils.toInt(hourminiute[1])+" "+NumberUtils.toInt(hourminiute[0])+" "+cron.getCronrepeat()+" * ?";
-					cron.setRemark("每月"+cron.getCronrepeat()+"号 "+NumberUtils.toInt(hourminiute[0])+"点 "+NumberUtils.toInt(hourminiute[1])+"分 执行一次!");
+					cronStr="0 "+NumberUtils.toInt(hourminiute[1])+" "+NumberUtils.toInt(hourminiute[0])+" "+cron.getCronrepeatimes()+" * ?";
+					cron.setRemark("每月"+cron.getCronrepeatimes()+"号 "+NumberUtils.toInt(hourminiute[0])+"点 "+NumberUtils.toInt(hourminiute[1])+"分 执行一次!");
 				}
 			}else if ("w".equalsIgnoreCase(cron.getCronunit())){//周
 				if ("1".equalsIgnoreCase(cron.getIsLast())){
@@ -737,8 +737,8 @@ public class HBStringUtils extends StringUtils {
 					cron.setRemark("每周最后一天"+NumberUtils.toInt(hourminiute[0])+"点"+NumberUtils.toInt(hourminiute[1])+"分执行一次!");
 				}else{
 					//0 0 1 ? * 5
-					cronStr="0 "+NumberUtils.toInt(hourminiute[1])+" "+NumberUtils.toInt(hourminiute[0])+" ? * "+cron.getCronrepeat();
-					cron.setRemark("每周星期"+cron.getCronrepeat()+" "+NumberUtils.toInt(hourminiute[0])+"点 "+NumberUtils.toInt(hourminiute[1])+"分 执行一次!");
+					cronStr="0 "+NumberUtils.toInt(hourminiute[1])+" "+NumberUtils.toInt(hourminiute[0])+" ? * "+cron.getCronrepeatimes();
+					cron.setRemark("每周星期"+cron.getCronrepeatimes()+" "+NumberUtils.toInt(hourminiute[0])+"点 "+NumberUtils.toInt(hourminiute[1])+"分 执行一次!");
 				}
 			}
 		}else{//执行一次
@@ -798,8 +798,8 @@ public class HBStringUtils extends StringUtils {
 					cron.setRemark("每月最后一天"+NumberUtils.toInt(hourminiute[0])+"点"+NumberUtils.toInt(hourminiute[1])+"分执行一次!");
 				}else{
 					//0 0 1 1 * ?
-					cronStr="0 "+NumberUtils.toInt(hourminiute[1])+" "+NumberUtils.toInt(hourminiute[0])+" "+cron.getCronrepeat()+" * ?";
-					cron.setRemark("每月"+cron.getCronrepeat()+"号 "+NumberUtils.toInt(hourminiute[0])+"点 "+NumberUtils.toInt(hourminiute[1])+"分 执行一次!");
+					cronStr="0 "+NumberUtils.toInt(hourminiute[1])+" "+NumberUtils.toInt(hourminiute[0])+" "+cron.getCronrepeatimes()+" * ?";
+					cron.setRemark("每月"+cron.getCronrepeatimes()+"号 "+NumberUtils.toInt(hourminiute[0])+"点 "+NumberUtils.toInt(hourminiute[1])+"分 执行一次!");
 				}
 			}else if ("w".equalsIgnoreCase(cron.getCronunit())){//周
 				if ("1".equalsIgnoreCase(cron.getIsLast())){
@@ -808,8 +808,8 @@ public class HBStringUtils extends StringUtils {
 					cron.setRemark("每周最后一天"+NumberUtils.toInt(hourminiute[0])+"点"+NumberUtils.toInt(hourminiute[1])+"分执行一次!");
 				}else{
 					//0 0 1 ? * 5
-					cronStr="0 "+NumberUtils.toInt(hourminiute[1])+" "+NumberUtils.toInt(hourminiute[0])+" ? * "+cron.getCronrepeat();
-					cron.setRemark("每周星期"+cron.getCronrepeat()+" "+NumberUtils.toInt(hourminiute[0])+"点 "+NumberUtils.toInt(hourminiute[1])+"分 执行一次!");
+					cronStr="0 "+NumberUtils.toInt(hourminiute[1])+" "+NumberUtils.toInt(hourminiute[0])+" ? * "+cron.getCronrepeatimes();
+					cron.setRemark("每周 星期"+cron.getCronrepeatimes()+" "+NumberUtils.toInt(hourminiute[0])+"点 "+NumberUtils.toInt(hourminiute[1])+"分 执行一次!");
 				}
 			}
 		}else{//执行一次

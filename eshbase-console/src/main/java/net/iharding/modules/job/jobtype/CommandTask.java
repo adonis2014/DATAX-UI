@@ -35,8 +35,11 @@ public class CommandTask extends AbstractTask{
 			pro.waitFor();
 			in = pro.getInputStream();
 			BufferedReader read = new BufferedReader(new InputStreamReader(in));
-			String result = read.readLine();
-			log=result;
+//			String result = read.readLine();
+			String line = null;  
+			while((line = read.readLine()) != null) {  
+				log += line;  
+			}  
 			return Constants.RET_SUCCESS+"";
 		} catch (Exception e) {
 			log=HBStringUtils.getErrorInfoFromException(e);

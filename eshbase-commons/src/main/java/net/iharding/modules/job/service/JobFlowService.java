@@ -1,8 +1,10 @@
 package net.iharding.modules.job.service;
 
+import net.iharding.modules.job.model.JobExecutionInfo;
 import net.iharding.modules.job.model.JobFlow;
 import net.iharding.modules.job.model.JobFlowWrapper;
 
+import org.guess.core.orm.Page;
 import org.guess.core.service.BaseService;
 
 /**
@@ -22,5 +24,12 @@ public interface JobFlowService extends BaseService<JobFlow, Long>{
  * @return
  */
 	public JobFlowWrapper CheckJobFlow(Long id);
+	/**
+	 * 查询
+	 * @param page
+	 * @param buildFromHttpRequest
+	 * @return
+	 */
+public Page<JobExecutionInfo> findExecutionPage(Page<JobExecutionInfo> page,Long  flowId);
 
 }

@@ -6,7 +6,7 @@
 	<div class="navbar-inner">
 		<div class="container-fluid">
 			<!-- BEGIN LOGO -->
-			<a class="brand" href="index.html">数据中心控制台</a>
+			<a class="brand" href="index.html">控制台</a>
 			<!-- BEGIN TOP NAVIGATION MENU -->
 			<ul class="nav pull-right">
 				<!-- BEGIN NOTIFICATION DROPDOWN -->

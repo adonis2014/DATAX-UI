@@ -1,6 +1,7 @@
 package cn.uncode.schedule;
 
 import java.lang.reflect.Method;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -55,11 +56,11 @@ public class ZKScheduleManager extends ThreadPoolTaskScheduler implements Applic
 	protected ZKManager zkManager;
 
 	private IScheduleDataManager scheduleDataManager;
-	
+
 	private JobExecutionInfoService jobExecutionInfoService;
 
 	private JobWorkerService jobWorkerService;
-	
+
 	private MachineService machineService;
 
 	/**
@@ -93,9 +94,14 @@ public class ZKScheduleManager extends ThreadPoolTaskScheduler implements Applic
 
 	private volatile String errorMessage = "No config Zookeeper connect information";
 	private InitialThread initialThread;
+	private static List<JobExecutionInfo> JobExecutionInfos=new ArrayList<JobExecutionInfo>();
 
 	public ZKScheduleManager() {
 		this.currenScheduleServer = ScheduleServer.createScheduleServer(null);
+	}
+	
+	public static List<JobExecutionInfo> getJobExecutionInfos(){
+		return JobExecutionInfos;
 	}
 
 	/**
@@ -123,16 +129,18 @@ public class ZKScheduleManager extends ThreadPoolTaskScheduler implements Applic
 		}
 		this.init(p);
 	}
-/**
- * 初始化方法
- * @param p
- * @throws Exception
- */
+
+	/**
+	 * 初始化方法
+	 * 
+	 * @param p
+	 * @throws Exception
+	 */
 	public void init(Properties p) throws Exception {
-		if (this.initialThread != null) {//停止启动的线程，reinit时需要
+		if (this.initialThread != null) {// 停止启动的线程，reinit时需要
 			this.initialThread.stopThread();
 		}
-		//ReentrantLock 锁定同步
+		// ReentrantLock 锁定同步
 		this.initLock.lock();
 		try {
 			this.scheduleDataManager = null;
@@ -255,9 +263,9 @@ public class ZKScheduleManager extends ThreadPoolTaskScheduler implements Applic
 	public void initialData() throws Exception {
 		this.zkManager.initial();
 		this.scheduleDataManager = new ScheduleDataManager4ZK(this.zkManager);
-		this.jobExecutionInfoService=applicationcontext.getBean(JobExecutionInfoService.class);
-		this.jobWorkerService=applicationcontext.getBean(JobWorkerService.class);
-		this.machineService=applicationcontext.getBean(MachineService.class);
+		this.jobExecutionInfoService = applicationcontext.getBean(JobExecutionInfoService.class);
+		this.jobWorkerService = applicationcontext.getBean(JobWorkerService.class);
+		this.machineService = applicationcontext.getBean(MachineService.class);
 		if (this.start) {
 			// 注册调度管理器
 			this.scheduleDataManager.registerScheduleServer(this.currenScheduleServer);
@@ -271,22 +279,41 @@ public class ZKScheduleManager extends ThreadPoolTaskScheduler implements Applic
 	private Runnable taskWrapper(final Runnable task) {
 		return new Runnable() {
 			public void run() {
-				long currtime=System.currentTimeMillis();
-				Method targetMethod = null;
-				String params="";
-				if (task instanceof ScheduledMethodRunnable) {
-					ScheduledMethodRunnable uncodeScheduledMethodRunnable = (ScheduledMethodRunnable) task;
+				ScheduledMethodRunnable uncodeScheduledMethodRunnable = null;
+				try {
+					if (!(task instanceof ScheduledMethodRunnable)) {
+						return;
+					} else {
+						uncodeScheduledMethodRunnable = (ScheduledMethodRunnable) task;
+					}
+					JobExecutionInfo jobExecutionInfo = new JobExecutionInfo();
+					jobExecutionInfo.setLastBeginTime(new Date(System.currentTimeMillis()));
+					JobWorker jworker = jobWorkerService.get(uncodeScheduledMethodRunnable.getWorkerId());
+					CronExpression exp = new CronExpression(jworker.getCron());
+					jworker.setNextExeDate(exp.getNextValidTimeAfter(new Date()));
+					jobExecutionInfo.setWorkerId(uncodeScheduledMethodRunnable.getWorkerId());
+					jobExecutionInfo.setWorker(jworker);
+					jobExecutionInfo.setNextFireTime(jworker.getNextExeDate());
+					Machine machine = machineService.get(currenScheduleServer.getIp());
+					if (machine != null) {
+						jobExecutionInfo.setMachine(machine);
+						jobExecutionInfo.setMachineId(machine.getId());
+						if (machine.getRegCenter() != null) {
+							jobExecutionInfo.setRegCenter(machine.getRegCenter());
+							jobExecutionInfo.setRegId(machine.getRegCenter().getId());
+						}
+					}
+					//增加信息到正在执行的列表
+					JobExecutionInfos.add(jobExecutionInfo);
+					jobWorkerService.save(jworker);
+					Method targetMethod = null;
+					String params = "";
 					targetMethod = uncodeScheduledMethodRunnable.getMethod();
-					params=uncodeScheduledMethodRunnable.getParams();
-				} else {
-					org.springframework.scheduling.support.ScheduledMethodRunnable springScheduledMethodRunnable = (org.springframework.scheduling.support.ScheduledMethodRunnable) task;
-					targetMethod = springScheduledMethodRunnable.getMethod();
-				}
-				String[] beanNames = applicationcontext.getBeanNamesForType(targetMethod.getDeclaringClass());
-				if (null != beanNames && StringUtils.isNotEmpty(beanNames[0])) {
-					String name = ScheduleUtil.getTaskNameFormBean(beanNames[0], targetMethod.getName(),params);
-					boolean isOwner = false;
-					try {
+					params = uncodeScheduledMethodRunnable.getParams();
+					String[] beanNames = applicationcontext.getBeanNamesForType(targetMethod.getDeclaringClass());
+					if (null != beanNames && StringUtils.isNotEmpty(beanNames[0])) {
+						String name = ScheduleUtil.getTaskNameFormBean(beanNames[0], targetMethod.getName(), params);
+						boolean isOwner = false;
 						if (!isScheduleServerRegister) {
 							Thread.sleep(1000);
 						}
@@ -301,37 +328,18 @@ public class ZKScheduleManager extends ThreadPoolTaskScheduler implements Applic
 						}
 						if (isOwner) {
 							task.run();
-							if (task instanceof ScheduledMethodRunnable) {
-								JobExecutionInfo jobExecutionInfo=new JobExecutionInfo();
-								jobExecutionInfo.setLastBeginTime(new Date(currtime));
-								jobExecutionInfo.setLastCompleteTime(new Date());
-								ScheduledMethodRunnable scheduleRunnable = (ScheduledMethodRunnable) task;
-								JobWorker jworker=jobWorkerService.get(scheduleRunnable.getWorkerId());
-								jobExecutionInfo.setWorkerId(scheduleRunnable.getWorkerId());
-								jobExecutionInfo.setWorker(jworker);
-								CronExpression exp = new CronExpression(jworker.getCron());
-								jworker.setNextExeDate(exp.getNextValidTimeAfter(new Date()));
-								jobExecutionInfo.setNextFireTime(jworker.getNextExeDate());
-								jobExecutionInfo.setExeResult(scheduleRunnable.getResult());
-								jobExecutionInfo.setLog(scheduleRunnable.getLog());
-								Machine machine=machineService.get(currenScheduleServer.getIp());
-								if (machine!=null){
-									jobExecutionInfo.setMachine(machine);
-									jobExecutionInfo.setMachineId(machine.getId());
-									if (machine.getRegCenter()!=null){
-										jobExecutionInfo.setRegCenter(machine.getRegCenter());
-										jobExecutionInfo.setRegId(machine.getRegCenter().getId());
-									}
-								}
-								jobWorkerService.save(jworker);
-								jobExecutionInfoService.save(jobExecutionInfo);
-							}
+							//执行完毕，清除
+							JobExecutionInfos.remove(jobExecutionInfo);
+							jobExecutionInfo.setLastCompleteTime(new Date());
+							jobExecutionInfo.setExeResult(uncodeScheduledMethodRunnable.getResult());
+							jobExecutionInfo.setLog(uncodeScheduledMethodRunnable.getLog());
+							jobExecutionInfoService.save(jobExecutionInfo);
 							scheduleDataManager.saveRunningInfo(name, currenScheduleServer.getUuid());
 							LOGGER.info("Cron job has been executed.");
 						}
-					} catch (Exception e) {
-						LOGGER.error("Check task owner error.", e);
 					}
+				} catch (Exception e) {
+					LOGGER.error("Check task owner error.", e);
 				}
 			}
 		};

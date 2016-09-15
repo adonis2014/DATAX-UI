@@ -43,53 +43,58 @@
 										<td class="fieldtitle">方法名:</td>
 										<td class="fieldvalue">${obj.jobclass.methodName}</td>
 										<td class="fieldtitle">参数:</td>
-										<td class="fieldvalue"><input type="text"   name=jobParameter value="${param.jobParameter}" /></td>
+										<td class="fieldvalue"><input type="text"   name="jobParameter" value="${param.jobParameter}" /></td>
 									</tr>
 									<tr>
-										<td class="fieldtitle">个性化参数对照表:</td>
-										<td class="fieldvalue"><input type="text"   name="shardingItemParameters" value="${param.shardingItemParameters}" /></td>
+										<td class="fieldtitle">分片参数对照表:</td>
+										<td class="fieldvalue"><input type="text"    readonly="readonly" name="shardingItemParameters" value="${param.shardingItemParameters}" /></td>
 										<td class="fieldtitle">任务分割策略:</td>
 										<td class="fieldvalue"><input type="text"  readonly="readonly" name="strategy" value="${param.strategy}" /></td>
 									</tr>
 									<tr>
-										<td class="fieldtitle">日期:</td>
-										<td class="fieldvalue" >
-											<div id="crondate" class="input-append date form_datetime"  >
-												<input class="m-wrap"  name="crondate" type="text" value="${param.crondate}" validate="{required:true}" readonly="readonly"> 
-												<span class="add-on"> <i class="icon-th"></i> </span>
-											</div>
-										</td>
-										<td class="fieldtitle">时间:</td>
-										<td class="fieldvalue"> <input class="m-wrap"  id="crontime" name="crontime" type="text" value="${param.crontime}" validate="{required:true}" readonly="readonly">  </td>
-									</tr>
-									<tr>
 										<td class="fieldtitle">类型:</td>
 										<td class="fieldvalue" >
-											<select name="cronrepeat"  style="width:90px;">
-												<option value="1" <c:if test="${param.cronrepeat==1}">selected</c:if> >循环<option>
-												<option value="2" <c:if test="${param.cronrepeat==2}">selected</c:if>>固定时间</option>
+											<select name="cronrepeat" onchange="javascript:changeRepeat();" style="width:90px;">
+												<option value="1" <c:if test="${param.cronrepeat==1}">selected</c:if>>循环</option>
+												<option value="2" <c:if test="${param.cronrepeat==2}">selected</c:if>>指定时间</option>
 												<option value="3" <c:if test="${param.cronrepeat==3}">selected</c:if>>执行一次</option>
 											</select>
+										</td>
+										<td class="fieldtitle">cron设置:</td>
+										<td class="fieldvalue">
+											<div id="cronset">
 											<input type="text" value="${empty param.cronrepeatimes?1:param.cronrepeatimes}"  style="width:60px;" validate="{required:true}" name="cronrepeatimes"  />&nbsp;&nbsp;
-											<select name="cronunit" style="width:60px;">
+											<select name="cronunit" id="cronunit" style="width:60px;">
 												<option value="d"  <c:if test="${param.cronunit=='d'}">selected</c:if>>天</option>
 						                      	<option value="h"  <c:if test="${param.cronunit=='h'}">selected</c:if>>小时</option>
 						                      	<option value="mi" <c:if test="${param.cronunit=='mi'}">selected</c:if>>分</option>
 						                      	<option value="M" <c:if test="${param.cronunit=='M'}">selected</c:if>>月</option>
 						                      	<option value="w" <c:if test="${param.cronunit=='w'}">selected</c:if>>周</option>
-						                     </select>
+						                     </select></div>
+						               	</td>
+									</tr>
+									<tr>
+										<td class="fieldtitle">日期/时间:</td>
+										<td class="fieldvalue" >
+											<div id="crondate" class="input-append date form_datetime"  >
+												<input class="m-wrap"  name="crondate" type="text" style="width:90px" value="${param.crondate}" validate="{required:true}" readonly="readonly"/> 
+												<input class="m-wrap"  id="crontime" name="crontime" style="width:60px" type="text" value="${param.crontime}" validate="{required:true}" readonly="readonly"/>
+												<span class="add-on"> <i class="icon-th"></i> </span>
+											</div>
 										</td>
-										<td class="fieldtitle">时区/最后一天:</td>
-										<td class="fieldvalue"><select name="cronutc" style="width:60px;" >
+										<td class="fieldtitle">是否最后一天:</td>
+										<td class="fieldvalue"><!-- <select name="cronutc" style="width:60px;" >
 																	<option value="utc"  <c:if test="${param.cronutc=='utc'}">selected</c:if>>UTC</option>
 																	<option value="cst"  <c:if test="${param.cronutc=='cst'}">selected</c:if>>CST</option>
-																</select>
-																是否最后一天<input type="checkbox" name="isLast" <c:if test="${not empty param.isLast}">checked</c:if> value="1"/>
+																</select> -->
+																<div id="isLast"><input type="checkbox" name="isLast" <c:if test="${not empty param.isLast}">checked</c:if> value="1"/></div>
 										</td>
 									</tr>
 									<tr>
 										<td class="fieldtitle">表达式:</td>
-										<td class="fieldvalue"><input type="text"   readonly="readonly"   name="cronStr" value="${cronStr}" /></td>
+										<td class="fieldvalue"><input type="text"   readonly="readonly"   name="cronStr" value="${cronStr}" />
+										${exeTime}
+										</td>
 										<td class="fieldtitle">说明:</td>
 										<td class="fieldvalue"><input type="text"  readonly="readonly" name="cronRemark" value="${cronRemark}" /></td>
 									</tr>
@@ -114,7 +119,31 @@
 	<script type="text/javascript">
 		$(function() {
 			App.activeMenu("job/JobFlow/list");
+			changeRepeat();
 		});
+		function changeRepeat(){
+			if ("1"==frmCron.cronrepeat.value){//循环执行，隐藏日期时间显示
+				$("#cronset").show();
+				$("#cronunit option[value='M']").remove();
+				$("#cronunit option[value='w']").remove();
+				$("#crondate").hide();
+				$("#isLast").hide();
+			}else if ("2"==frmCron.cronrepeat.value){//指定
+				if ($("#cronunit option[value='M']").val()!='M'){
+					$("#cronunit").append("<option value='M'>月</option>");
+				}
+				if ($("#cronunit option[value='w']").val()!='w'){
+					$("#cronunit").append("<option value='w'>周</option>");
+				}
+				$("#cronset").show();
+				$("#crondate").show();
+				$("#isLast").show();
+			}else if ("3"==frmCron.cronrepeat.value){//固定时间执行
+				$("#crondate").show();
+				$("#cronset").hide();
+				$("#isLast").hide();
+			}
+		}
 		function submitCron(){
 			frmCron.action="${ctx}/job/JobFlow/generateJob";
 			frmCron.submit();

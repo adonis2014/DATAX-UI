@@ -87,7 +87,7 @@ $(document).ready(function() {
 			{cName:"checkLabel",cValue:"状态",format:function(i,value,item){
 			  		return statusMap.get(item.checkLabel);
 			}},{cName:"operate",cValue:"元数据",format:function(i,value,item){
-			  		return '<a href="${ctx}/meta/DataSource/importMeta/'+item.id+'">导入</a>&nbsp;&nbsp;<a href="${ctx}/meta/DataSource/addJob/'+item.id+'">调度作业</a>';
+			  		return '<a href="${ctx}/meta/DataSource/importMeta/'+item.id+'">导入</a>&nbsp;&nbsp;<a href="${ctx}/job/JobFlow/checkJobFlow/2?jobParameter='+item.id+'">调度作业</a>';
 			}}
 		 ]
 	);

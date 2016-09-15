@@ -16,9 +16,13 @@ public class UserUtil {
 	 * @return
 	 */
 	public static User getCurrentUser(){
-		Subject subject = SecurityUtils.getSubject();
-		String loginId = (String) subject.getPrincipal();
-		return userService.findUniqueBy("loginId", loginId);
+		try{
+			Subject subject = SecurityUtils.getSubject();
+			String loginId = (String) subject.getPrincipal();
+			return userService.findUniqueBy("loginId", loginId);
+		}catch(Exception ex){
+			return null;
+		}
 	}
 	
 	

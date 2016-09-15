@@ -41,6 +41,7 @@ import net.iharding.modules.meta.util.MetaPropertyComparator;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.math.NumberUtils;
 import org.guess.core.service.BaseServiceImpl;
+import org.guess.sys.dao.UserDao;
 import org.guess.sys.model.User;
 import org.guess.sys.util.UserUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -74,7 +75,10 @@ public class DataSourceServiceImpl extends BaseServiceImpl<DataSource, Long> imp
 
 	@Autowired
 	private DBIndexDao dbIndexDao;
-
+	
+	@Autowired
+	private UserDao userDao;
+	
 	public void save(DataSource datasource) throws Exception {
 		if (datasource.getId() != null) {
 
@@ -207,8 +211,10 @@ public class DataSourceServiceImpl extends BaseServiceImpl<DataSource, Long> imp
 		datasource.setCheckLabelFalse();
 		List<MetaProperty> mproes = metaPropertyDao.getProperties(datasource.getDbType(), datasource.getId());
 		try {
-			User cuser = UserUtil.getCurrentUser();
+			User cuser =UserUtil.getCurrentUser();
+			if (cuser==null)cuser=userDao.findUniqueBy("loginId", "admin");
 			DataSource ds = getDbDataSource(datasource, mproes,cuser);
+			dataSourceDao.save(ds);
 			// 保存完整的数据定义信息
 			for (Database db : ds.getDatabases()) {
 				db.setCreateDate(new Date());
@@ -225,7 +231,6 @@ public class DataSourceServiceImpl extends BaseServiceImpl<DataSource, Long> imp
 					}
 				}
 			}
-			dataSourceDao.save(ds);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

@@ -64,6 +64,8 @@
 $(document).ready(function() {
 	var dbtypeMap = new Map();  
 	<mytags:dictSelect field="dbtypeMap" id="dbtypeMap" type="map" hasLabel="false" codeType="17" />
+	var flowTypeMap = new Map();  
+	<mytags:dictSelect field="flowTypeMap" id="flowTypeMap" type="map" hasLabel="false" codeType="1050" />
 	App.activeMenu("job/JobFlow/list");
 	Page.initData(
 		{
@@ -79,30 +81,15 @@ $(document).ready(function() {
 					  var $a = $('<a data-original-title="点击访问" data-placement="right" class="tooltips" href="../JobClass/show/'+item.jobclass.id+'" >'+item.jobclass.name+'</a>');
 					  return $a;
 				  }},
-				 {cName:"creater",cValue:"建立者",format:function(i,value,item){
-						 if(App.isNundef(value)){
-							 return value.name;
-						 }
+				 {cName:"jobclass",cValue:"执行类",format:function(i,value,item){
+						 return "<a href='${ctx}/job/JobClass/show/"+item.jobclass.id+"'>"+value.name+"["+value.className+"#"+value.methodName+"]</a>";
 				 }},
-				 {cName:"updater",cValue:"更新者",format:function(i,value,item){
+				 {cName:"jobclass",cValue:"类型",format:function(i,value,item){
 						 if(App.isNundef(value)){
-							 return value.name;
+							 return flowTypeMap.get(value.jobType);
 						 }
 					 }},
-				 	
-			 	{cName:"createDate",cValue:"建立时间",format:function(i,value,item){
-					 if(App.isNundef(value)){
-						 return new Date(value).format("yyyy-MM-dd hh:mm:ss");
-					 }
-					 return value;
-				 }},
-			 	{cName:"updateDate",cValue:"更新时间",format:function(i,value,item){
-					 if(App.isNundef(value)){
-						 return new Date(value).format("yyyy-MM-dd hh:mm:ss");
-					 }
-					 return value;
-				 }},
-			 	{cName:"checkLabel",cValue:"启用标记",format:function(i,value,item){
+				{cName:"checkLabel",cValue:"启用标记",format:function(i,value,item){
 			 		return dbtypeMap.get(item.checkLabel);
 			 	}},
 			  	{cName:"id",cValue:"操作",format:function(i,value,item){
