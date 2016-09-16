@@ -51,7 +51,7 @@
 		<standard.version>1.1.2</standard.version>
 		<!-- druid -->
 		<druid.version>1.0.11</druid.version>
-		
+
 		<jdk.version>1.8</jdk.version>
 		<!-- cxf -->
 		<cxf.version>2.7.11</cxf.version>
@@ -546,10 +546,34 @@
 			<version>9.4-1204-jdbc41</version>
 		</dependency>
 		<dependency>
-  <groupId>org.apache.phoenix</groupId>
-  <artifactId>phoenix-core</artifactId>
-  <version>4.6.0-HBase-1.0</version>
-</dependency>
+			<groupId>org.apache.phoenix</groupId>
+			<artifactId>phoenix-core</artifactId>
+			<version>4.6.0-HBase-1.0</version>
+			<exclusions>
+				<exclusion>
+					<artifactId>hbase-common</artifactId>
+					<groupId>org.apache.hbase</groupId>
+				</exclusion>
+				<exclusion>
+					<artifactId>hbase-protocol</artifactId>
+					<groupId>org.apache.hbase</groupId>
+				</exclusion>
+				<exclusion>
+					<artifactId>hbase-client</artifactId>
+					<groupId>org.apache.hbase</groupId>
+				</exclusion>
+				<exclusion>
+					<artifactId>hbase-server</artifactId>
+					<groupId>org.apache.hbase</groupId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.phoenix</groupId>
+			<artifactId>phoenix-server-client</artifactId>
+			<version>4.6.0-HBase-1.0</version>
+		</dependency>
+
 		<dependency>
 			<groupId>org.apache.hive</groupId>
 			<artifactId>hive-jdbc</artifactId>
@@ -827,53 +851,6 @@
 			<version>0.9.4</version>
 		</dependency>
 		<dependency>
-			<groupId>org.apache.hbase</groupId>
-			<artifactId>hbase-server</artifactId>
-			<version>1.0.1.1</version>
-			<exclusions>
-				<exclusion>
-					<artifactId>jsp-2.1</artifactId>
-					<groupId>org.mortbay.jetty</groupId>
-				</exclusion>
-				<exclusion>
-					<artifactId>jsp-api-2.1</artifactId>
-					<groupId>org.mortbay.jetty</groupId>
-				</exclusion>
-				<exclusion>
-					<artifactId>servlet-api-2.5</artifactId>
-					<groupId>org.mortbay.jetty</groupId>
-				</exclusion>
-				<exclusion>
-					<artifactId>jdk.tools</artifactId>
-					<groupId>jdk.tools</groupId>
-				</exclusion>
-				<exclusion>
-					<artifactId>jasper-runtime</artifactId>
-					<groupId>tomcat</groupId>
-				</exclusion>
-				<exclusion>
-					<artifactId>jasper-compiler</artifactId>
-					<groupId>tomcat</groupId>
-				</exclusion>
-				<exclusion>
-					<artifactId>jackson-mapper-asl</artifactId>
-					<groupId>org.codehaus.jackson</groupId>
-				</exclusion>
-				<exclusion>
-					<artifactId>jackson-core-asl</artifactId>
-					<groupId>org.codehaus.jackson</groupId>
-				</exclusion>
-				<exclusion>
-					<artifactId>jackson-jaxrs</artifactId>
-					<groupId>org.codehaus.jackson</groupId>
-				</exclusion>
-				<exclusion>
-					<artifactId>jackson-xc</artifactId>
-					<groupId>org.codehaus.jackson</groupId>
-				</exclusion>
-			</exclusions>
-		</dependency>
-		<dependency>
 			<groupId>org.freemarker</groupId>
 			<artifactId>freemarker</artifactId>
 		</dependency>
@@ -926,6 +903,6 @@
 		<module>eshbase-stream</module>
 		<module>eshbase-jdbc</module>
 		<module>eshbase-sql</module>
-		
+
 	</modules>
 </project>

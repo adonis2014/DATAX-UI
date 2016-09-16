@@ -1,6 +1,7 @@
 package net.iharding.modules.job.jobtype;
 
 import net.iharding.modules.meta.service.DataSourceService;
+import net.iharding.utils.HBStringUtils;
 
 import org.apache.commons.lang3.math.NumberUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,7 +24,11 @@ public class ImportMetaDataTask  extends AbstractTask {
 	 */
 	@Override
 	public String execute(String dsId) {
-		dataSourceService.importMeta(NumberUtils.toLong(dsId));
+		try {
+			dataSourceService.importMeta(NumberUtils.toLong(dsId));
+		} catch (Exception e) {
+			log=HBStringUtils.getErrorInfoFromException(e);
+		}
 		return dsId;
 	}
 	

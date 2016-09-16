@@ -40,7 +40,7 @@ public interface DataSourceService extends BaseService<DataSource, Long> {
 	 * @param id
 	 * @return
 	 */
-	public DataSource importMeta(Long id);
+	public DataSource importMeta(Long id) throws Exception ;
 	
 	public List<MetaProperty> getProperties(Integer dbtype,Long id);
 	

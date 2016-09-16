@@ -75,10 +75,10 @@ public class DataSourceServiceImpl extends BaseServiceImpl<DataSource, Long> imp
 
 	@Autowired
 	private DBIndexDao dbIndexDao;
-	
+
 	@Autowired
 	private UserDao userDao;
-	
+
 	public void save(DataSource datasource) throws Exception {
 		if (datasource.getId() != null) {
 
@@ -110,33 +110,33 @@ public class DataSourceServiceImpl extends BaseServiceImpl<DataSource, Long> imp
 		List<MetaProperty> mproes = metaPropertyDao.getProperties(oriDatasource.getDbType(), oriDatasource.getId());
 		Properties properties = new Properties();
 		try {
-			if (dw.getDbType()==1){//MySQL数据库
+			if (dw.getDbType() == 1) {// MySQL数据库
 				properties.load(DataSourceServiceImpl.class.getClassLoader().getResourceAsStream("dsproperty/mysql.properties"));
-			}else if (dw.getDbType()==2){//HBase
+			} else if (dw.getDbType() == 2) {// HBase
 				properties.load(DataSourceServiceImpl.class.getClassLoader().getResourceAsStream("dsproperty/hbase.properties"));
-			}else if (dw.getDbType()==3){//HDFS
+			} else if (dw.getDbType() == 3) {// HDFS
 				properties.load(DataSourceServiceImpl.class.getClassLoader().getResourceAsStream("dsproperty/hdfs.properties"));
-			}else if (dw.getDbType()==4){//ElasticSeach库
+			} else if (dw.getDbType() == 4) {// ElasticSeach库
 				properties.load(DataSourceServiceImpl.class.getClassLoader().getResourceAsStream("dsproperty/elasticsearch.properties"));
-			}else if (dw.getDbType()==5){//MongoDB数据库
+			} else if (dw.getDbType() == 5) {// MongoDB数据库
 				properties.load(DataSourceServiceImpl.class.getClassLoader().getResourceAsStream("dsproperty/mongodb.properties"));
-			}else if (dw.getDbType()==6){//Solr库
+			} else if (dw.getDbType() == 6) {// Solr库
 				properties.load(DataSourceServiceImpl.class.getClassLoader().getResourceAsStream("dsproperty/solr.properties"));
-			}else if (dw.getDbType()==7){//Kafka队列
+			} else if (dw.getDbType() == 7) {// Kafka队列
 				properties.load(DataSourceServiceImpl.class.getClassLoader().getResourceAsStream("dsproperty/kafka.properties"));
-			}else if (dw.getDbType()==8){//PrestoDB
+			} else if (dw.getDbType() == 8) {// PrestoDB
 				properties.load(DataSourceServiceImpl.class.getClassLoader().getResourceAsStream("dsproperty/prestodb.properties"));
-			}else if (dw.getDbType()==9){//cassandra
+			} else if (dw.getDbType() == 9) {// cassandra
 				properties.load(DataSourceServiceImpl.class.getClassLoader().getResourceAsStream("dsproperty/cassandra.properties"));
-			}else if (dw.getDbType()==10){//hive
+			} else if (dw.getDbType() == 10) {// hive
 				properties.load(DataSourceServiceImpl.class.getClassLoader().getResourceAsStream("dsproperty/hive.properties"));
-			}else if (dw.getDbType()==11){//oracle
+			} else if (dw.getDbType() == 11) {// oracle
 				properties.load(DataSourceServiceImpl.class.getClassLoader().getResourceAsStream("dsproperty/oracle.properties"));
-			}else if (dw.getDbType()==12){//phoenix
+			} else if (dw.getDbType() == 12) {// phoenix
 				properties.load(DataSourceServiceImpl.class.getClassLoader().getResourceAsStream("dsproperty/phoenix.properties"));
-			}else if (dw.getDbType()==13){//pgsql
+			} else if (dw.getDbType() == 13) {// pgsql
 				properties.load(DataSourceServiceImpl.class.getClassLoader().getResourceAsStream("dsproperty/pgsql.properties"));
-			}else if (dw.getDbType()==14){//sql server
+			} else if (dw.getDbType() == 14) {// sql server
 				properties.load(DataSourceServiceImpl.class.getClassLoader().getResourceAsStream("dsproperty/sqlserver.properties"));
 			}
 			for (Map.Entry<Object, Object> entry : properties.entrySet()) {
@@ -157,7 +157,7 @@ public class DataSourceServiceImpl extends BaseServiceImpl<DataSource, Long> imp
 				}
 			}
 			MetaPropertyComparator mc = new MetaPropertyComparator();
-		    Collections.sort(mproes,mc);  
+			Collections.sort(mproes, mc);
 			dw.setProperties(mproes);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -197,89 +197,86 @@ public class DataSourceServiceImpl extends BaseServiceImpl<DataSource, Long> imp
 			metaPropertyDao.save(mp);
 		}
 	}
-	
+
 	@Override
-	public List<MetaProperty> getProperties(Integer dbtype,Long id) {
-		return metaPropertyDao.getProperties(dbtype,id);
+	public List<MetaProperty> getProperties(Integer dbtype, Long id) {
+		return metaPropertyDao.getProperties(dbtype, id);
 	}
 
-
 	@Override
-	public DataSource importMeta(Long id) {
+	public DataSource importMeta(Long id) throws Exception {
 		DataSource datasource = dataSourceDao.get(id);
 		// 设置所有对象为非启用，在搜索到的时候再设置为启用
 		datasource.setCheckLabelFalse();
 		List<MetaProperty> mproes = metaPropertyDao.getProperties(datasource.getDbType(), datasource.getId());
-		try {
-			User cuser =UserUtil.getCurrentUser();
-			if (cuser==null)cuser=userDao.findUniqueBy("loginId", "admin");
-			DataSource ds = getDbDataSource(datasource, mproes,cuser);
-			dataSourceDao.save(ds);
-			// 保存完整的数据定义信息
-			for (Database db : ds.getDatabases()) {
-				db.setCreateDate(new Date());
-				db.setCreater(cuser);
-				db.setUpdater(cuser);
-				db.setUpdateDate(new Date());
-				databaseDao.save(db);
-				for (DBTable table : db.getTables()) {
-					table.setUpdater(cuser);
-					table.setUpdateDate(new Date());
-					dbTableDao.save(table);
-					for (DbColumn column : table.getColumns()) {
-						dbColumnDao.save(column);
-					}
+		User cuser = UserUtil.getCurrentUser();
+		if (cuser == null)
+			cuser = userDao.findUniqueBy("loginId", "admin");
+		DataSource ds = getDbDataSource(datasource, mproes, cuser);
+		dataSourceDao.save(ds);
+		// 保存完整的数据定义信息
+		for (Database db : ds.getDatabases()) {
+			db.setCreateDate(new Date());
+			db.setCreater(cuser);
+			db.setUpdater(cuser);
+			db.setUpdateDate(new Date());
+			databaseDao.save(db);
+			for (DBTable table : db.getTables()) {
+				table.setUpdater(cuser);
+				table.setUpdateDate(new Date());
+				dbTableDao.save(table);
+				for (DbColumn column : table.getColumns()) {
+					dbColumnDao.save(column);
 				}
 			}
-		} catch (Exception e) {
-			e.printStackTrace();
 		}
+
 		return datasource;
 	}
 
-	private DataSource getDbDataSource(DataSource dw, List<MetaProperty> mproes,User cuser) throws Exception {
-		if (dw.getDbType()==1){//MySQL数据库
+	private DataSource getDbDataSource(DataSource dw, List<MetaProperty> mproes, User cuser) throws Exception {
+		if (dw.getDbType() == 1) {// MySQL数据库
 			MetaReverseDao revDao = new MySqlMetaReverseImpl();
-			return revDao.reverseMeta(dw, mproes,cuser);
-		}else if (dw.getDbType()==2){//HBase
+			return revDao.reverseMeta(dw, mproes, cuser);
+		} else if (dw.getDbType() == 2) {// HBase
 			MetaReverseDao revDao = new HBaseMetaReverseImpl();
-			return revDao.reverseMeta(dw, mproes,cuser);
-		}else if (dw.getDbType()==3){//HDFS
+			return revDao.reverseMeta(dw, mproes, cuser);
+		} else if (dw.getDbType() == 3) {// HDFS
 			MetaReverseDao revDao = new HDFSMetaReverseImpl();
-			return revDao.reverseMeta(dw, mproes,cuser);
-		}else if (dw.getDbType()==4){//ElasticSeach库
+			return revDao.reverseMeta(dw, mproes, cuser);
+		} else if (dw.getDbType() == 4) {// ElasticSeach库
 			MetaReverseDao revDao = new ElasticSearchMetaReverseImpl();
-			return revDao.reverseMeta(dw, mproes,cuser);
-		}else if (dw.getDbType()==5){//MongoDB数据库
+			return revDao.reverseMeta(dw, mproes, cuser);
+		} else if (dw.getDbType() == 5) {// MongoDB数据库
 			MetaReverseDao revDao = new MongoDBMetaReverseImpl();
-			return revDao.reverseMeta(dw, mproes,cuser);
-		}else if (dw.getDbType()==6){//Solr库
+			return revDao.reverseMeta(dw, mproes, cuser);
+		} else if (dw.getDbType() == 6) {// Solr库
 			MetaReverseDao revDao = new SolrMetaReverseImpl();
-			return revDao.reverseMeta(dw, mproes,cuser);
-		}else if (dw.getDbType()==7){//Kafka队列
+			return revDao.reverseMeta(dw, mproes, cuser);
+		} else if (dw.getDbType() == 7) {// Kafka队列
 			MetaReverseDao revDao = new KafkaMetaReverseImpl();
-			return revDao.reverseMeta(dw, mproes,cuser);
-		}else if (dw.getDbType()==8){//PrestoDB
+			return revDao.reverseMeta(dw, mproes, cuser);
+		} else if (dw.getDbType() == 8) {// PrestoDB
 			MetaReverseDao revDao = new PrestoDBMetaReverseImpl();
-			return revDao.reverseMeta(dw, mproes,cuser);
-		}else if (dw.getDbType()==9){//cassandra
+			return revDao.reverseMeta(dw, mproes, cuser);
+		} else if (dw.getDbType() == 9) {// cassandra
 			MetaReverseDao revDao = new CassandraMetaReverseImpl();
-			return revDao.reverseMeta(dw, mproes,cuser);
-		}else if (dw.getDbType()==10){//hive
+			return revDao.reverseMeta(dw, mproes, cuser);
+		} else if (dw.getDbType() == 10) {// hive
 			MetaReverseDao revDao = new HiveMetaReverseImpl();
-			return revDao.reverseMeta(dw, mproes,cuser);
-		}else if (dw.getDbType()==11){//oracle
+			return revDao.reverseMeta(dw, mproes, cuser);
+		} else if (dw.getDbType() == 11) {// oracle
 			MetaReverseDao revDao = new OracleMetaReverseImpl();
-			return revDao.reverseMeta(dw, mproes,cuser);
-		}else if (dw.getDbType()==12){//phoenix
+			return revDao.reverseMeta(dw, mproes, cuser);
+		} else if (dw.getDbType() == 12) {// phoenix
 			MetaReverseDao revDao = new PhoenixMetaReverseImpl();
-			return revDao.reverseMeta(dw, mproes,cuser);
-		}else if (dw.getDbType()==13){//pgsql
+			return revDao.reverseMeta(dw, mproes, cuser);
+		} else if (dw.getDbType() == 13) {// pgsql
 			MetaReverseDao revDao = new PgSqlMetaReverseImpl();
-			return revDao.reverseMeta(dw, mproes,cuser);
-		}else if (dw.getDbType()==14){//sql server
+			return revDao.reverseMeta(dw, mproes, cuser);
+		} else if (dw.getDbType() == 14) {// sql server
 			MetaReverseDao revDao = new SqlServerMetaReverseImpl();
-			return revDao.reverseMeta(dw, mproes,cuser);
+			return revDao.reverseMeta(dw, mproes, cuser);
 		}
 		return dw;
 	}
@@ -291,9 +288,9 @@ public class DataSourceServiceImpl extends BaseServiceImpl<DataSource, Long> imp
 
 	@Override
 	public List<TreeNode> getMetaDBTree() {
-		List<DataSource> dss=dataSourceDao.getCDataSources();
-		List<TreeNode> nodes=new ArrayList<TreeNode>();
-		for(DataSource ds:dss){
+		List<DataSource> dss = dataSourceDao.getCDataSources();
+		List<TreeNode> nodes = new ArrayList<TreeNode>();
+		for (DataSource ds : dss) {
 			nodes.add(ds.toTreeNodes());
 		}
 		return nodes;
