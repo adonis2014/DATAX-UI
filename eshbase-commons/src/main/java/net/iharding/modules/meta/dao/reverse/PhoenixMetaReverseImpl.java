@@ -15,7 +15,9 @@ import net.iharding.modules.meta.model.MetaProperty;
 
 import org.apache.commons.lang.StringUtils;
 import org.guess.sys.model.User;
+import org.springframework.stereotype.Repository;
 
+@Repository("MetaReverse12")
 public class PhoenixMetaReverseImpl  extends JDBCMetaReverse {
 	
 	@Override

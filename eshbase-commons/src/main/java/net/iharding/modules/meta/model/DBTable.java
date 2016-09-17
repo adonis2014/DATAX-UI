@@ -305,5 +305,25 @@ public class DBTable extends IdEntity {
 		return new DbColumn();
 	}
 
+	@Override  
+    public boolean equals(Object obj) {  
+        if(obj == null) return false;  
+        if(this == obj) return true;  
+        if(obj instanceof DBTable){   
+        	DBTable dbtable =(DBTable)obj;  
+            if( dbtable.getTableName().equals(this.tableName)) return true;  
+        }  
+        return false;  
+    }  
+  
+  
+  
+    /** 
+     * 重写hashcode 方法，返回的hashCode 不一样才认定为不同的对象 
+     */  
+    @Override  
+    public int hashCode() {  
+        return tableName.hashCode();  
+    }  
 
 }

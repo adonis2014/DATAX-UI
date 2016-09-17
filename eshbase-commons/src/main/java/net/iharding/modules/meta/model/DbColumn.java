@@ -213,5 +213,22 @@ public class DbColumn extends IdEntity {
 		this.remark = remark;
 	}
 	
-	
+	@Override  
+    public boolean equals(Object obj) {  
+        if(obj == null) return false;  
+        if(this == obj) return true;  
+        if(obj instanceof DbColumn){   
+        	DbColumn db =(DbColumn)obj;  
+            if( db.getColumnName().equals(this.columnName)) return true;  
+        }  
+        return false;  
+    }  
+  
+    /** 
+     * 重写hashcode 方法，返回的hashCode 不一样才认定为不同的对象 
+     */  
+    @Override  
+    public int hashCode() {  
+        return columnName.hashCode();  
+    }  
 }

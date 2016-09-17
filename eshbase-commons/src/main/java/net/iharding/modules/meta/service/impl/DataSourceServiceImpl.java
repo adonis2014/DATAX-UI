@@ -41,6 +41,7 @@ import net.iharding.modules.meta.util.MetaPropertyComparator;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.math.NumberUtils;
 import org.guess.core.service.BaseServiceImpl;
+import org.guess.core.utils.spring.SpringContextUtil;
 import org.guess.sys.dao.UserDao;
 import org.guess.sys.model.User;
 import org.guess.sys.util.UserUtil;
@@ -235,50 +236,8 @@ public class DataSourceServiceImpl extends BaseServiceImpl<DataSource, Long> imp
 	}
 
 	private DataSource getDbDataSource(DataSource dw, List<MetaProperty> mproes, User cuser) throws Exception {
-		if (dw.getDbType() == 1) {// MySQL数据库
-			MetaReverseDao revDao = new MySqlMetaReverseImpl();
-			return revDao.reverseMeta(dw, mproes, cuser);
-		} else if (dw.getDbType() == 2) {// HBase
-			MetaReverseDao revDao = new HBaseMetaReverseImpl();
-			return revDao.reverseMeta(dw, mproes, cuser);
-		} else if (dw.getDbType() == 3) {// HDFS
-			MetaReverseDao revDao = new HDFSMetaReverseImpl();
-			return revDao.reverseMeta(dw, mproes, cuser);
-		} else if (dw.getDbType() == 4) {// ElasticSeach库
-			MetaReverseDao revDao = new ElasticSearchMetaReverseImpl();
-			return revDao.reverseMeta(dw, mproes, cuser);
-		} else if (dw.getDbType() == 5) {// MongoDB数据库
-			MetaReverseDao revDao = new MongoDBMetaReverseImpl();
-			return revDao.reverseMeta(dw, mproes, cuser);
-		} else if (dw.getDbType() == 6) {// Solr库
-			MetaReverseDao revDao = new SolrMetaReverseImpl();
-			return revDao.reverseMeta(dw, mproes, cuser);
-		} else if (dw.getDbType() == 7) {// Kafka队列
-			MetaReverseDao revDao = new KafkaMetaReverseImpl();
-			return revDao.reverseMeta(dw, mproes, cuser);
-		} else if (dw.getDbType() == 8) {// PrestoDB
-			MetaReverseDao revDao = new PrestoDBMetaReverseImpl();
-			return revDao.reverseMeta(dw, mproes, cuser);
-		} else if (dw.getDbType() == 9) {// cassandra
-			MetaReverseDao revDao = new CassandraMetaReverseImpl();
-			return revDao.reverseMeta(dw, mproes, cuser);
-		} else if (dw.getDbType() == 10) {// hive
-			MetaReverseDao revDao = new HiveMetaReverseImpl();
-			return revDao.reverseMeta(dw, mproes, cuser);
-		} else if (dw.getDbType() == 11) {// oracle
-			MetaReverseDao revDao = new OracleMetaReverseImpl();
-			return revDao.reverseMeta(dw, mproes, cuser);
-		} else if (dw.getDbType() == 12) {// phoenix
-			MetaReverseDao revDao = new PhoenixMetaReverseImpl();
-			return revDao.reverseMeta(dw, mproes, cuser);
-		} else if (dw.getDbType() == 13) {// pgsql
-			MetaReverseDao revDao = new PgSqlMetaReverseImpl();
-			return revDao.reverseMeta(dw, mproes, cuser);
-		} else if (dw.getDbType() == 14) {// sql server
-			MetaReverseDao revDao = new SqlServerMetaReverseImpl();
-			return revDao.reverseMeta(dw, mproes, cuser);
-		}
-		return dw;
+		MetaReverseDao revDao =SpringContextUtil.getBean("MetaReverse"+dw.getDbType());
+		return revDao.reverseMeta(dw, mproes, cuser);
 	}
 
 	@Override

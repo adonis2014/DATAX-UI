@@ -3,6 +3,7 @@ package net.iharding.modules.meta.dao.reverse;
 import java.util.List;
 
 import org.guess.sys.model.User;
+import org.springframework.stereotype.Repository;
 
 import net.iharding.modules.meta.dao.MetaReverseDao;
 import net.iharding.modules.meta.model.DBTable;
@@ -10,6 +11,7 @@ import net.iharding.modules.meta.model.DataSource;
 import net.iharding.modules.meta.model.Database;
 import net.iharding.modules.meta.model.MetaProperty;
 
+@Repository("MetaReverse9")
 public class CassandraMetaReverseImpl implements MetaReverseDao {
 
 	@Override

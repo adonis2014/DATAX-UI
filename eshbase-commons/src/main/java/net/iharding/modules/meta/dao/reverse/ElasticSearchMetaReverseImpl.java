@@ -30,6 +30,7 @@ import org.elasticsearch.common.settings.Settings;
 import org.elasticsearch.common.transport.InetSocketTransportAddress;
 import org.elasticsearch.shield.ShieldPlugin;
 import org.guess.sys.model.User;
+import org.springframework.stereotype.Repository;
 
 import com.carrotsearch.hppc.cursors.ObjectObjectCursor;
 
@@ -39,6 +40,7 @@ import com.carrotsearch.hppc.cursors.ObjectObjectCursor;
  * @author admin
  *
  */
+@Repository("MetaReverse4")
 public class ElasticSearchMetaReverseImpl implements MetaReverseDao {
 
 	private Map<String, Client> esclientMap = new ConcurrentHashMap<String, Client>();

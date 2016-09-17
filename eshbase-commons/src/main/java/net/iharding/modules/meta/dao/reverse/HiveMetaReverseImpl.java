@@ -20,7 +20,9 @@ import net.iharding.modules.meta.model.MetaProperty;
 
 import org.apache.commons.lang.StringUtils;
 import org.guess.sys.model.User;
+import org.springframework.stereotype.Repository;
 
+@Repository("MetaReverse10")
 public class HiveMetaReverseImpl extends JDBCMetaReverse {
 
 	private Map<String, SimpleDateFormat> dateFormatMap = null;

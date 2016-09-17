@@ -18,7 +18,6 @@ import net.iharding.core.orm.IdEntity;
 import net.iharding.modules.job.model.JobExecutionInfo;
 
 import org.guess.sys.model.User;
-import org.guess.sys.util.UserUtil;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.annotations.NotFound;
@@ -211,4 +210,25 @@ public class Database extends IdEntity {
 		}catch(Exception ex){}
 		return table;
 	}
+	
+	@Override  
+    public boolean equals(Object obj) {  
+        if(obj == null) return false;  
+        if(this == obj) return true;  
+        if(obj instanceof Database){   
+        	Database db =(Database)obj;  
+            if( db.getDbname().equals(this.dbname)) return true;  
+        }  
+        return false;  
+    }  
+  
+  
+  
+    /** 
+     * 重写hashcode 方法，返回的hashCode 不一样才认定为不同的对象 
+     */  
+    @Override  
+    public int hashCode() {  
+        return dbname.hashCode();  
+    }  
 }
