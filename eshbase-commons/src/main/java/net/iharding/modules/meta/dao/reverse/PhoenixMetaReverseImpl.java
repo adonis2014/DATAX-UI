@@ -1,11 +1,15 @@
 package net.iharding.modules.meta.dao.reverse;
 
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import net.iharding.modules.meta.model.DBTable;
 import net.iharding.modules.meta.model.DataSource;
@@ -14,12 +18,15 @@ import net.iharding.modules.meta.model.DbColumn;
 import net.iharding.modules.meta.model.MetaProperty;
 
 import org.apache.commons.lang.StringUtils;
+import org.codehaus.jackson.map.ObjectMapper;
 import org.guess.sys.model.User;
 import org.springframework.stereotype.Repository;
 
 @Repository("MetaReverse12")
 public class PhoenixMetaReverseImpl  extends JDBCMetaReverse {
 	
+	ObjectMapper mapper = new ObjectMapper();  
+
 	@Override
 	public DataSource reverseMeta(DataSource datasource, List<MetaProperty> mproes,User cuser) {
 		Connection conn = null;
@@ -85,6 +92,36 @@ public class PhoenixMetaReverseImpl  extends JDBCMetaReverse {
 		return db;
 	}
 	
+	private String getResults(List<MetaProperty> mproes,DBTable table){
+		Statement stmt = null;
+		ResultSet rs = null;
+		Connection conn = null;
+		try {
+			conn = getConnection(mproes);
+			stmt=conn.createStatement();
+			rs=stmt.executeQuery("select * from "+table.getTableName());
+			List<Map<String,String>> rows=new ArrayList<Map<String,String>>();
+			int i=0;
+			while (rs.next()) {
+				Map<String,String> row=new HashMap<String,String>();
+				for(DbColumn column:table.getColumns()){
+					row.put(column.getColumnName(),rs.getString(column.getColumnName()));
+				}
+				rows.add(row);
+				i++;
+				if (i>10)break;
+			}
+			return mapper.writeValueAsString(rows);
+		} catch (SQLException | ClassNotFoundException | IOException e) {
+			e.printStackTrace();
+		} finally {
+			closeResult(rs);
+			this.closeStatement(stmt);
+			this.closeConnection(conn);
+		}
+		return null;
+	}
+
 
 	private DBTable reverseTableMeta(DataSource datasource, List<MetaProperty> mproes, User cuser, Database db,Statement stmt,  ResultSet rs, String tableName) {
 		ResultSet rsColumn = null;
@@ -140,6 +177,8 @@ public class PhoenixMetaReverseImpl  extends JDBCMetaReverse {
 						table.addColumn(col);
 					}
 				}
+				table.setColumnCount(table.getColumns().size());
+				table.setSampleRows(this.getResults(mproes, table));
 				rsColumn.close();
 			}
 		} catch (SQLException e) {

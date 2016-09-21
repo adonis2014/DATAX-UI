@@ -81,10 +81,10 @@
 									<tbody>
 									<c:forEach items="${obj.tables}" var="table">
 										<tr>
-											<td><a href="${ctx}/meta/DataSource/show/${table.datasource.id}">${table.datasource.dsName}</a></td>
+											<td><a href="${ctx}/meta/DataSource/show/${table.database.datasource.id}">${table.database.datasource.dsName}</a></td>
 											<td><a href='${ctx}/meta/DBTable/show/${table.id}' >${table.tableName}</a></td>
 											<td>${table.tablePname}</td>
-											<td><mytags:dictSelect field="tableType" defaultVal="${table.tableType}" type="label" hasLabel="false"/> </td>
+											<td><mytags:dictSelect field="tableType" defaultVal="${table.tableType}" type="label" hasLabel="false" codeType="12"/> </td>
 											<td>${table.creater.name}</td>
 											<td>${table.updater.name}</td>
 											<td>${table.updateDate}</td>

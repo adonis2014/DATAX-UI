@@ -59,6 +59,17 @@ public class EtlTaskParam extends IdEntity {
 	 */
 	private String remark;
 	
+	@Column(name="is_column")
+	private Integer isColumn;
+	
+	public Integer getIsColumn() {
+		return isColumn;
+	}
+
+	public void setIsColumn(Integer isColumn) {
+		this.isColumn = isColumn;
+	}
+
 	public EtlTask getTask() {
 		return task;
 	}

@@ -1,7 +1,6 @@
 package net.iharding.modules.etl.service.impl;
 
 import java.util.Date;
-import java.util.List;
 import java.util.Set;
 
 import net.iharding.modules.etl.dao.EtlPluginDao;
@@ -59,6 +58,7 @@ public class EtlTaskServiceImpl extends BaseServiceImpl<EtlTask, Long> implement
 			etlTask.setCreater(cuser);
 			etlTask.setCreateDate(new Date());
 			etlTask.setCheckLabel(0);
+			if (etlTask.getPlugin()!=null)etlTask.setPlugin(etlPluginDao.get(etlTask.getPlugin().getId()));
 			super.save(etlTask);
 		}
 	}

@@ -10,7 +10,7 @@
     <div class="container-fluid" style="padding-top: 25px">
         <div class="alert alert-error">
             <button class="close" data-dismiss="alert"></button>
-            大数据实时处理即席查询分析平台
+            大数据查询分析平台
             
            
             

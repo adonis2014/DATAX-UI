@@ -163,4 +163,34 @@ public class DataSourceController extends BaseController<DataSource>{
 		}
 		return mav;
 	}
+	
+	@RequestMapping(method = RequestMethod.GET, value = "/importDbMeta/{id}/{dbName}")
+	public ModelAndView importDbMeta(@PathVariable("id") Long id,@PathVariable("dbName")String dbName)  {
+		DataSource obj =null;
+		ModelAndView mav = new ModelAndView(showView);
+		try{
+			obj = dataSourceService.importDbMeta(id,dbName);
+			mav.addObject("obj", obj);
+			List<MetaProperty> properties=dataSourceService.getProperties(obj.getDbType(),id);
+			mav.addObject("properties", properties);
+		}catch(Exception ex){
+			mav.addObject("msg", "连接数据源失败！"+ex.getMessage());
+		}
+		return mav;
+	}
+	
+	@RequestMapping(method = RequestMethod.GET, value = "/importTableMeta/{id}/{dbName}/{tableName}")
+	public ModelAndView importTableMeta(@PathVariable("id") Long id,@PathVariable("dbName")String dbName,@PathVariable("tableName")String tableName)  {
+		DataSource obj =null;
+		ModelAndView mav = new ModelAndView(showView);
+		try{
+			obj = dataSourceService.importTableMeta(id, dbName, tableName);
+			mav.addObject("obj", obj);
+			List<MetaProperty> properties=dataSourceService.getProperties(obj.getDbType(),id);
+			mav.addObject("properties", properties);
+		}catch(Exception ex){
+			mav.addObject("msg", "连接数据源失败！"+ex.getMessage());
+		}
+		return mav;
+	}
 }

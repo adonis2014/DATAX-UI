@@ -106,7 +106,7 @@ public class HiveMetaReverseImpl extends JDBCMetaReverse {
 		return dateFormatMap;
 	}
 
-	public List<Map<String, String>> getHiveSqlQuery(Connection conn, String sql, String dbname) {
+	private List<Map<String, String>> getHiveSqlQuery(Connection conn, String sql, String dbname) {
 		ResultSet resultSet = null;
 		Statement stmt = null;
 		List<Map<String, String>> results = new ArrayList<Map<String, String>>();

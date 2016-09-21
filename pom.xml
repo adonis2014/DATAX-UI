@@ -546,6 +546,11 @@
 			<version>9.4-1204-jdbc41</version>
 		</dependency>
 		<dependency>
+			<artifactId>presto-jdbc</artifactId>
+			<groupId>com.facebook.presto</groupId>
+			<version>0.135</version>
+		</dependency>
+		<dependency>
 			<groupId>org.apache.phoenix</groupId>
 			<artifactId>phoenix-core</artifactId>
 			<version>4.6.0-HBase-1.0</version>

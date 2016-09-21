@@ -14,6 +14,7 @@ import javax.persistence.OrderBy;
 import javax.persistence.Table;
 
 import net.iharding.core.orm.IdEntity;
+import net.iharding.modules.meta.model.DataSource;
 
 import org.guess.sys.model.User;
 import org.hibernate.annotations.Cache;
@@ -96,6 +97,31 @@ public class EtlTask extends IdEntity {
 	@OrderBy("id ASC")
 	private Set<EtlTaskParam> taskParams;
 	
+	@Column(name="datasource_id",insertable=false,updatable=false)
+	private long datasourceId;
+	
+	@ManyToOne(cascade = { CascadeType.PERSIST, CascadeType.MERGE },targetEntity = DataSource.class,fetch = FetchType.LAZY)
+	@JoinColumn(name="datasource_id")
+	@NotFound(action = NotFoundAction.IGNORE)
+	@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
+	private DataSource dataSource;
+	
+	public long getDatasourceId() {
+		return datasourceId;
+	}
+
+	public void setDatasourceId(long datasourceId) {
+		this.datasourceId = datasourceId;
+	}
+
+	public DataSource getDataSource() {
+		return dataSource;
+	}
+
+	public void setDataSource(DataSource dataSource) {
+		this.dataSource = dataSource;
+	}
+
 	public Set<EtlTaskParam> getTaskParams() {
 		return taskParams;
 	}

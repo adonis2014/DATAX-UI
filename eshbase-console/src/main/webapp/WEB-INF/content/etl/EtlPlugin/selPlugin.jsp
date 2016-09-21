@@ -24,13 +24,12 @@
 					}},
 					{cName:"version",cValue:"版本"},
 					{cName:"target",cValue:"数据源目标"},
-					{cName:"jarName",cValue:"jar包名"},
 					{cName:"remark",cValue:"备注"}
 				 ]
 			);
 	});
 </script>
-<div id="pluginList" class="modal hide fade" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+<div id="pluginList" class="modal hide fade" style="width:640px;height:480px;" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 	<div class="modal-header">
 		<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
 		<h3>选择插件</h3>

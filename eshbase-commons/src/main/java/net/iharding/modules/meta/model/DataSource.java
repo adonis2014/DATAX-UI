@@ -246,4 +246,33 @@ public class DataSource extends IdEntity {
 		}
 	}
 	
+	public void setDBCheckLabelFalse(String dbName){
+		for (Database db:databases){
+			if (dbName.equalsIgnoreCase(db.getDbname())){
+				db.setCheckLabel(0);
+				for(DBTable table:db.getTables()){
+					table.setCheckLabel(0);
+					for(DbColumn column:table.getColumns()){
+						column.setCheckLabel(0);
+					}
+				}
+			}
+		}
+	}
+	
+	public void setTableCheckLabelFalse(String dbName,String tableName){
+		for (Database db:databases){
+			if (dbName.equalsIgnoreCase(db.getDbname())){
+				for(DBTable table:db.getTables()){
+					if (tableName.equalsIgnoreCase(table.getTableName())){
+						table.setCheckLabel(0);
+						for(DbColumn column:table.getColumns()){
+							column.setCheckLabel(0);
+						}
+					}
+				}
+			}
+		}
+	}
+	
 }

@@ -15,8 +15,6 @@
 		<pattern>/mobile/*</pattern>
 		<pattern>/workflow/*</pattern>
         <pattern>/chat/*</pattern>
-         <pattern>/finance/*</pattern>
-         <pattern>/druid/*</pattern>
 	</decorator>
 	
 	<!-- KMS主题 -->

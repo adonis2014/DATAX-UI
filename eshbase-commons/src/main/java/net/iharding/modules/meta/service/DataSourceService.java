@@ -41,6 +41,22 @@ public interface DataSourceService extends BaseService<DataSource, Long> {
 	 * @return
 	 */
 	public DataSource importMeta(Long id) throws Exception ;
+	/**
+	 * 根据数据库和数据源定义
+	 * @param dsid
+	 * @param dbname
+	 * @return
+	 * @throws Exception
+	 */
+	public DataSource importDbMeta(Long dsid,String dbname) throws Exception ;
+	/**
+	 * 根据数据源和表定义
+	 * @param dsid
+	 * @param dbname
+	 * @return
+	 * @throws Exception
+	 */
+	public DataSource importTableMeta(Long dsid,String dbname,String tableName) throws Exception ;
 	
 	public List<MetaProperty> getProperties(Integer dbtype,Long id);
 	

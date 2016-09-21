@@ -60,6 +60,33 @@ public class EtlJobLog extends IdEntity {
 	@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 	private User creater;
 	
+	@ManyToOne(cascade = { CascadeType.PERSIST, CascadeType.MERGE },targetEntity = EtlJobExecution.class,fetch = FetchType.LAZY)
+	@JoinColumn(name="execution_id")
+	@NotFound(action = NotFoundAction.IGNORE)
+	@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
+	private EtlJobExecution executionInfo;
+	
+	@Column(name="execution_id",insertable=false,updatable=false)
+	private Long exectionId;
+	
+	
+
+	public Long getExectionId() {
+		return exectionId;
+	}
+
+	public void setExectionId(Long exectionId) {
+		this.exectionId = exectionId;
+	}
+
+	public EtlJobExecution getExecutionInfo() {
+		return executionInfo;
+	}
+
+	public void setExecutionInfo(EtlJobExecution executionInfo) {
+		this.executionInfo = executionInfo;
+	}
+
 	public EtlTask getTask() {
 		return task;
 	}

@@ -1,8 +1,9 @@
 package net.iharding.modules.etl.controller;
 
+import net.iharding.modules.etl.model.EtlJobExecution;
+import net.iharding.modules.etl.service.EtlJobExecutionService;
+
 import org.guess.core.web.BaseController;
-import net.iharding.modules.etl.model.TaskDsDefine;
-import net.iharding.modules.etl.service.TaskDsDefineService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -16,15 +17,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 *
 */
 @Controller
-@RequestMapping("/etl/taskDsDefine")
-public class TaskDsDefineController extends BaseController<TaskDsDefine>{
+@RequestMapping("/etl/jobExecution")
+public class JobExecutionController extends BaseController<EtlJobExecution>{
 
 	{
-		editView = "/etl/taskDsDefine/edit";
-		listView = "/etl/taskDsDefine/list";
-		showView = "/etl/taskDsDefine/show";
+		listView = "/etl/jobExecution/list";
+		showView = "/etl/jobExecution/show";
 	}
 	
 	@Autowired
-	private TaskDsDefineService taskDsDefineService;
+	private EtlJobExecutionService jobExecutionService;
 }

@@ -14,20 +14,6 @@ import net.iharding.modules.meta.dao.DatabaseDao;
 import net.iharding.modules.meta.dao.DbColumnDao;
 import net.iharding.modules.meta.dao.MetaPropertyDao;
 import net.iharding.modules.meta.dao.MetaReverseDao;
-import net.iharding.modules.meta.dao.reverse.CassandraMetaReverseImpl;
-import net.iharding.modules.meta.dao.reverse.ElasticSearchMetaReverseImpl;
-import net.iharding.modules.meta.dao.reverse.HBaseMetaReverseImpl;
-import net.iharding.modules.meta.dao.reverse.HDFSMetaReverseImpl;
-import net.iharding.modules.meta.dao.reverse.HiveMetaReverseImpl;
-import net.iharding.modules.meta.dao.reverse.KafkaMetaReverseImpl;
-import net.iharding.modules.meta.dao.reverse.MongoDBMetaReverseImpl;
-import net.iharding.modules.meta.dao.reverse.MySqlMetaReverseImpl;
-import net.iharding.modules.meta.dao.reverse.OracleMetaReverseImpl;
-import net.iharding.modules.meta.dao.reverse.PgSqlMetaReverseImpl;
-import net.iharding.modules.meta.dao.reverse.PhoenixMetaReverseImpl;
-import net.iharding.modules.meta.dao.reverse.PrestoDBMetaReverseImpl;
-import net.iharding.modules.meta.dao.reverse.SolrMetaReverseImpl;
-import net.iharding.modules.meta.dao.reverse.SqlServerMetaReverseImpl;
 import net.iharding.modules.meta.model.DBTable;
 import net.iharding.modules.meta.model.DataSource;
 import net.iharding.modules.meta.model.DataSourceWrapper;
@@ -213,7 +199,7 @@ public class DataSourceServiceImpl extends BaseServiceImpl<DataSource, Long> imp
 		User cuser = UserUtil.getCurrentUser();
 		if (cuser == null)
 			cuser = userDao.findUniqueBy("loginId", "admin");
-		DataSource ds = getDbDataSource(datasource, mproes, cuser);
+		DataSource ds = getDbmsDataSource(datasource, mproes, cuser);
 		dataSourceDao.save(ds);
 		// 保存完整的数据定义信息
 		for (Database db : ds.getDatabases()) {
@@ -235,8 +221,8 @@ public class DataSourceServiceImpl extends BaseServiceImpl<DataSource, Long> imp
 		return datasource;
 	}
 
-	private DataSource getDbDataSource(DataSource dw, List<MetaProperty> mproes, User cuser) throws Exception {
-		MetaReverseDao revDao =SpringContextUtil.getBean("MetaReverse"+dw.getDbType());
+	private DataSource getDbmsDataSource(DataSource dw, List<MetaProperty> mproes, User cuser) throws Exception {
+		MetaReverseDao revDao = SpringContextUtil.getBean("MetaReverse" + dw.getDbType());
 		return revDao.reverseMeta(dw, mproes, cuser);
 	}
 
@@ -253,5 +239,60 @@ public class DataSourceServiceImpl extends BaseServiceImpl<DataSource, Long> imp
 			nodes.add(ds.toTreeNodes());
 		}
 		return nodes;
+	}
+
+	@Override
+	public DataSource importDbMeta(Long dsid, String dbname) throws Exception {
+		DataSource datasource = dataSourceDao.get(dsid);
+		// 设置所有对象为非启用，在搜索到的时候再设置为启用
+		datasource.setDBCheckLabelFalse(dbname);
+		List<MetaProperty> mproes = metaPropertyDao.getProperties(datasource.getDbType(), datasource.getId());
+		User cuser = UserUtil.getCurrentUser();
+		if (cuser == null)
+			cuser = userDao.findUniqueBy("loginId", "admin");
+		Database db = getDatabase(datasource, mproes, cuser, dbname);
+		db.setUpdater(cuser);
+		db.setUpdateDate(new Date());
+		databaseDao.save(db);
+		for (DBTable table : db.getTables()) {
+			table.setUpdater(cuser);
+			table.setUpdateDate(new Date());
+			dbTableDao.save(table);
+			for (DbColumn column : table.getColumns()) {
+				dbColumnDao.save(column);
+			}
+		}
+		datasource.addDatabase(db);
+		return datasource;
+	}
+
+	private Database getDatabase(DataSource dw, List<MetaProperty> mproes, User cuser, String dbname) throws Exception {
+		MetaReverseDao revDao = SpringContextUtil.getBean("MetaReverse" + dw.getDbType());
+		return revDao.reverseDatabaseMeta(dw, mproes, cuser, dbname);
+	}
+
+	private DBTable getDbTable(DataSource dw, List<MetaProperty> mproes, User cuser, String dbname, String tablename) throws Exception {
+		MetaReverseDao revDao = SpringContextUtil.getBean("MetaReverse" + dw.getDbType());
+		return revDao.reverseTableMeta(dw, mproes, cuser, dbname, tablename);
+	}
+
+	@Override
+	public DataSource importTableMeta(Long dsid, String dbname, String tableName) throws Exception {
+		DataSource datasource = dataSourceDao.get(dsid);
+		// 设置所有对象为非启用，在搜索到的时候再设置为启用
+		datasource.setCheckLabelFalse();
+		List<MetaProperty> mproes = metaPropertyDao.getProperties(datasource.getDbType(), datasource.getId());
+		User cuser = UserUtil.getCurrentUser();
+		if (cuser == null)
+			cuser = userDao.findUniqueBy("loginId", "admin");
+		DBTable table = getDbTable(datasource, mproes, cuser, dbname, tableName);
+		table.setUpdater(cuser);
+		table.setUpdateDate(new Date());
+		dbTableDao.save(table);
+		for (DbColumn column : table.getColumns()) {
+			dbColumnDao.save(column);
+		}
+		datasource.getDatabase(dbname, cuser).addTable(table);
+		return datasource;
 	}
 }
