@@ -1,7 +1,7 @@
 package net.iharding.modules.meta.service;
 
 import org.guess.core.service.BaseService;
-import net.iharding.modules.meta.model.DBTable;
+import net.iharding.modules.meta.model.Dataset;
 
 /**
 * 
@@ -11,6 +11,6 @@ import net.iharding.modules.meta.model.DBTable;
 * @date 2014-8-5 下午02:04:46
 *
 */
-public interface DBTableService extends BaseService<DBTable, Long>{
+public interface DatasetService extends BaseService<Dataset, Long>{
 
 }

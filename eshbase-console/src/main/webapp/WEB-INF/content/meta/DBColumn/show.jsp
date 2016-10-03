@@ -33,7 +33,7 @@
 								<table width="100%" class="dbform">
 									<tr>
 										<td class="fieldtitle">表对象:</td>
-										<td class="fieldvalue">${obj.dbtable.tableName}</td>
+										<td class="fieldvalue">${obj.dbtable.datasetName}</td>
 										<td class="fieldtitle">字段属性编码:</td>
 										<td class="fieldvalue">${obj.fieldCode }</td>
 									</tr>

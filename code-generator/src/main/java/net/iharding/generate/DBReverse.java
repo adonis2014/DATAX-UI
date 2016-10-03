@@ -2,15 +2,14 @@ package net.iharding.generate;
 
 import java.sql.Connection;
 import java.sql.DatabaseMetaData;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Types;
 
 import net.iharding.Constants;
-import net.iharding.modules.meta.model.DBTable;
 import net.iharding.modules.meta.model.DataSource;
+import net.iharding.modules.meta.model.Dataset;
 import net.iharding.modules.meta.model.DbColumn;
 import net.iharding.modules.meta.model.Module;
 
@@ -83,15 +82,15 @@ public class DBReverse {
 		return comments;
 	}
 	
-	public DBTable getTableDescription(DatabaseMetaData dmd, String tableName, DataSource dataSource) {
+	public Dataset getTableDescription(DatabaseMetaData dmd, String tableName, DataSource dataSource) {
 		ResultSet rs = null;
-		DBTable bean = new DBTable();
+		Dataset bean = new Dataset();
 		
 		try {
 			if (dataSource.getDbType()==Constants.DBMS_TYPE_ORACLE){
-				bean.setTablePname(this.getOracleTableComments(dataSource,tableName));
+				bean.setDatasetPname(this.getOracleTableComments(dataSource,tableName));
 			}
-			bean.setTableName(tableName);
+			bean.setDatasetName(tableName);
 			//primaryKey
 //			if (dataSource.getDbType()==Constants.DBMS_TYPE_MSSQL){
 //				rs = dmd.getPrimaryKeys(null, null, tableName);

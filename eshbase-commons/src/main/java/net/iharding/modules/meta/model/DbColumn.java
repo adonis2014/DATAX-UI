@@ -31,7 +31,7 @@ public class DbColumn extends IdEntity {
 	@JoinColumn(name="table_id")
 	@NotFound(action = NotFoundAction.EXCEPTION)
 	@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
-	private DBTable dbtable;
+	private Dataset dbtable;
 	
 	/**
 	 * 字段属性编码
@@ -125,11 +125,11 @@ public class DbColumn extends IdEntity {
 		this.dbindex = dbindex;
 	}
 	
-	public DBTable getDbtable() {
+	public Dataset getDbtable() {
 		return dbtable;
 	}
 
-	public void setDbtable(DBTable dbtable) {
+	public void setDbtable(Dataset dbtable) {
 		this.dbtable = dbtable;
 	}
 

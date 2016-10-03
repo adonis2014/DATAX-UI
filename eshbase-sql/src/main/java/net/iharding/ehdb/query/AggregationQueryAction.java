@@ -1,42 +1,33 @@
 package net.iharding.ehdb.query;
 
 import java.util.List;
-import java.util.Map;
 
 import net.iharding.Constants;
 import net.iharding.core.model.Response;
 import net.iharding.ehdb.QueryAction;
 import net.iharding.ehdb.ehsql.ESSearchRequest;
-import net.iharding.ehdb.ehsql.HBaseRequest;
 import net.iharding.ehdb.ehsql.SQLRequest;
 import net.iharding.ehdb.exception.ErrorSqlException;
 import net.iharding.ehdb.exception.NotSupportedException;
 import net.iharding.ehdb.query.maker.AggMaker;
-import net.iharding.ehdb.query.maker.FilterMaker;
 import net.iharding.ehdb.query.maker.QueryMaker;
 import net.iharding.modules.meta.model.DBIndex;
-import net.iharding.modules.meta.model.DBTable;
-import net.iharding.modules.meta.service.DBTableService;
-import net.iharding.modules.meta.service.impl.DBTableServiceImpl;
+import net.iharding.modules.meta.model.Dataset;
+import net.iharding.modules.meta.service.DatasetService;
+import net.iharding.modules.meta.service.impl.DatasetServiceImpl;
 import net.sf.jsqlparser.expression.Expression;
 import net.sf.jsqlparser.expression.Function;
 import net.sf.jsqlparser.schema.Column;
 import net.sf.jsqlparser.schema.Table;
-import net.sf.jsqlparser.statement.select.OrderByElement;
 import net.sf.jsqlparser.statement.select.PlainSelect;
 import net.sf.jsqlparser.statement.select.Select;
-import net.sf.jsqlparser.statement.select.SelectBody;
 import net.sf.jsqlparser.statement.select.SelectExpressionItem;
 import net.sf.jsqlparser.statement.select.SelectItem;
 
-import org.elasticsearch.action.search.SearchRequestBuilder;
-import org.elasticsearch.action.search.SearchType;
 import org.elasticsearch.client.Client;
 import org.elasticsearch.index.query.QueryBuilder;
-import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.search.aggregations.AbstractAggregationBuilder;
 import org.elasticsearch.search.aggregations.AggregationBuilder;
-import org.elasticsearch.search.aggregations.bucket.terms.Terms;
 import org.elasticsearch.search.aggregations.bucket.terms.TermsBuilder;
 
 /**
@@ -46,10 +37,10 @@ public class AggregationQueryAction extends QueryAction {
 
 	private AggMaker aggMaker = new AggMaker();
 	private PlainSelect psel;
-	DBTableService tableService=new DBTableServiceImpl();
+	DatasetService tableService=new DatasetServiceImpl();
 	private SQLRequest request;
 	private ESSearchRequest esrequest=new ESSearchRequest();
-	private DBTable dbtable;
+	private Dataset dbtable;
 	private DBIndex esindex;
 	
 	
@@ -57,11 +48,11 @@ public class AggregationQueryAction extends QueryAction {
 		super(client, select);
 		this.psel = (PlainSelect)select.getSelectBody();
 		Table table=(Table)psel.getFromItem();
-		List<DBTable> tables=tableService.findBy("tableName", table.getName());
+		List<Dataset> tables=tableService.findBy("datasetName", table.getName());
 		if (tables==null || tables.size()>0){
 			throw new ErrorSqlException("元数据库中找不到该表定义！");
 		}else{
-			dbtable=(DBTable)tables.get(0);
+			dbtable=(Dataset)tables.get(0);
 			esindex=dbtable.getDBIndex(Constants.INDEX_TYPE_ELASTICSEARCH);
 		}
 	}

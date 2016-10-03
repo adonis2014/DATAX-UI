@@ -1,6 +1,7 @@
 package net.iharding.modules.etl.model;
 
 import java.util.Date;
+import java.util.HashSet;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -14,7 +15,7 @@ import javax.persistence.OrderBy;
 import javax.persistence.Table;
 
 import net.iharding.core.orm.IdEntity;
-import net.iharding.modules.meta.model.DataSource;
+import net.iharding.modules.meta.model.Dataset;
 
 import org.guess.sys.model.User;
 import org.hibernate.annotations.Cache;
@@ -97,29 +98,62 @@ public class EtlTask extends IdEntity {
 	@OrderBy("id ASC")
 	private Set<EtlTaskParam> taskParams;
 	
-	@Column(name="datasource_id",insertable=false,updatable=false)
-	private long datasourceId;
+	@Column(name="dataset_id",insertable=false,updatable=false)
+	private long datasetId;
 	
-	@ManyToOne(cascade = { CascadeType.PERSIST, CascadeType.MERGE },targetEntity = DataSource.class,fetch = FetchType.LAZY)
-	@JoinColumn(name="datasource_id")
+	@ManyToOne(cascade = { CascadeType.PERSIST, CascadeType.MERGE },targetEntity = Dataset.class,fetch = FetchType.LAZY)
+	@JoinColumn(name="dataset_id")
 	@NotFound(action = NotFoundAction.IGNORE)
 	@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
-	private DataSource dataSource;
+	private Dataset dataset;
 	
-	public long getDatasourceId() {
-		return datasourceId;
+	public long getDatasetId() {
+		return datasetId;
+	}
+	/**
+	 * 判断参数是否存在
+	 * @param key
+	 * @return
+	 */
+	private boolean existParam(String key){
+		if (taskParams==null){
+			taskParams=new HashSet<EtlTaskParam>();
+			return false;
+		}
+		for(EtlTaskParam tparam:taskParams){
+			if (key.equalsIgnoreCase(tparam.getParamKey())){
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	public void convertParams(){
+		for(EtlPluginParam param:plugin.getPluginParams()){
+			if (!existParam(param.getName())){
+				EtlTaskParam tparam=new EtlTaskParam();
+				tparam.setIsColumn(param.getIsColumn());
+				tparam.setParamKey(param.getName());
+				tparam.setParamValue(param.getDefaultValue());
+				tparam.setPluginParamId(param.getId());
+				tparam.setRemark(param.getDescription());
+				tparam.setTask(this);
+				tparam.setTaskId(this.id);
+				taskParams.add(tparam);
+			}
+		}
 	}
 
-	public void setDatasourceId(long datasourceId) {
-		this.datasourceId = datasourceId;
+	public void setDatasetId(long datasetId) {
+		this.datasetId = datasetId;
 	}
 
-	public DataSource getDataSource() {
-		return dataSource;
+	public Dataset getDataset() {
+		return dataset;
 	}
 
-	public void setDataSource(DataSource dataSource) {
-		this.dataSource = dataSource;
+	public void setDataset(Dataset dataset) {
+		this.dataset = dataset;
 	}
 
 	public Set<EtlTaskParam> getTaskParams() {

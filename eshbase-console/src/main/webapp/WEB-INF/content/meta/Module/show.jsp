@@ -82,9 +82,9 @@
 									<c:forEach items="${obj.tables}" var="table">
 										<tr>
 											<td><a href="${ctx}/meta/DataSource/show/${table.database.datasource.id}">${table.database.datasource.dsName}</a></td>
-											<td><a href='${ctx}/meta/DBTable/show/${table.id}' >${table.tableName}</a></td>
-											<td>${table.tablePname}</td>
-											<td><mytags:dictSelect field="tableType" defaultVal="${table.tableType}" type="label" hasLabel="false" codeType="12"/> </td>
+											<td><a href='${ctx}/meta/Dataset/show/${table.id}' >${table.datasetName}</a></td>
+											<td>${table.datasetPname}</td>
+											<td><mytags:dictSelect field="tableType" defaultVal="${table.datasetType}" type="label" hasLabel="false" codeType="12"/> </td>
 											<td>${table.creater.name}</td>
 											<td>${table.updater.name}</td>
 											<td>${table.updateDate}</td>

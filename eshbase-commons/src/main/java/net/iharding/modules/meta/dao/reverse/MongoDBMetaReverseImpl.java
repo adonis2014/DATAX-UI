@@ -6,7 +6,7 @@ import org.guess.sys.model.User;
 import org.springframework.stereotype.Repository;
 
 import net.iharding.modules.meta.dao.MetaReverseDao;
-import net.iharding.modules.meta.model.DBTable;
+import net.iharding.modules.meta.model.Dataset;
 import net.iharding.modules.meta.model.DataSource;
 import net.iharding.modules.meta.model.Database;
 import net.iharding.modules.meta.model.MetaProperty;
@@ -27,7 +27,7 @@ public class MongoDBMetaReverseImpl implements MetaReverseDao {
 	}
 
 	@Override
-	public DBTable reverseTableMeta(DataSource datasource, List<MetaProperty> mproes, User cuser, String dbName, String tableName) {
+	public Dataset reverseTableMeta(DataSource datasource, List<MetaProperty> mproes, User cuser, String dbName, String tableName) {
 		// TODO Auto-generated method stub
 		return null;
 	}

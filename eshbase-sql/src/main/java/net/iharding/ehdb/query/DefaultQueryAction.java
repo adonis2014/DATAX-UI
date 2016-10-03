@@ -12,10 +12,10 @@ import net.iharding.ehdb.ehsql.SQLRequest;
 import net.iharding.ehdb.exception.ErrorSqlException;
 import net.iharding.ehdb.query.maker.QueryMaker;
 import net.iharding.modules.meta.model.DBIndex;
-import net.iharding.modules.meta.model.DBTable;
+import net.iharding.modules.meta.model.Dataset;
 import net.iharding.modules.meta.model.DbColumn;
-import net.iharding.modules.meta.service.DBTableService;
-import net.iharding.modules.meta.service.impl.DBTableServiceImpl;
+import net.iharding.modules.meta.service.DatasetService;
+import net.iharding.modules.meta.service.impl.DatasetServiceImpl;
 import net.sf.jsqlparser.expression.Expression;
 import net.sf.jsqlparser.schema.Column;
 import net.sf.jsqlparser.schema.Table;
@@ -26,7 +26,6 @@ import net.sf.jsqlparser.statement.select.SelectExpressionItem;
 import net.sf.jsqlparser.statement.select.SelectItem;
 
 import org.elasticsearch.client.Client;
-import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.search.sort.SortBuilder;
 import org.elasticsearch.search.sort.SortBuilders;
@@ -41,21 +40,21 @@ public class DefaultQueryAction extends QueryAction {
 	private SQLRequest request;
 	private ESSearchRequest esrequest=new ESSearchRequest();
 	private HBaseRequest hbrequest=new HBaseRequest();
-	private DBTable dbtable;
+	private Dataset dbtable;
 	private DBIndex esindex;
 	private PlainSelect psel;
-	DBTableService tableService=new DBTableServiceImpl();
+	DatasetService tableService=new DatasetServiceImpl();
 	
 	public DefaultQueryAction(Client client, Select select) throws ErrorSqlException {
 		super(client, select);
 		psel=(PlainSelect)select.getSelectBody();
 		//获取table信息
 		Table table=(Table)psel.getFromItem();
-		List<DBTable> tables=tableService.findBy("tableName",table.getSchemaName()+"."+ table.getName());
+		List<Dataset> tables=tableService.findBy("tableName",table.getSchemaName()+"."+ table.getName());
 		if (tables==null || tables.size()>0){
 			throw new ErrorSqlException("元数据库中找不到该表定义！");
 		}else{
-			dbtable=(DBTable)tables.get(0);
+			dbtable=(Dataset)tables.get(0);
 			esindex=dbtable.getDBIndex(Constants.INDEX_TYPE_ELASTICSEARCH);
 		}
 	}

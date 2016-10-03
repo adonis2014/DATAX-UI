@@ -2,7 +2,7 @@ package net.iharding.modules.meta.dao;
 
 import java.util.List;
 
-import net.iharding.modules.meta.model.DBTable;
+import net.iharding.modules.meta.model.Dataset;
 import net.iharding.modules.meta.model.DataSource;
 import net.iharding.modules.meta.model.Database;
 import net.iharding.modules.meta.model.MetaProperty;
@@ -40,6 +40,6 @@ public interface MetaReverseDao {
 	 * @return
 	 * @throws Exception
 	 */
-	public DBTable reverseTableMeta(DataSource datasource, List<MetaProperty> mproes,User cuser,String dbName,String tableName) ;
+	public Dataset reverseTableMeta(DataSource datasource, List<MetaProperty> mproes,User cuser,String dbName,String tableName) ;
 
 }

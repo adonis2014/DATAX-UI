@@ -28,7 +28,7 @@
 							</div>
 						</div>
 						<div class="portlet-body form">
-							<form action="${ctx}/meta/DBTable/edit" class="form-horizontal form_sync" method="post" id="form1">
+							<form action="${ctx}/meta/Dataset/edit" class="form-horizontal form_sync" method="post" id="form1">
 								<table width="100%" class="dbform">
 									<tr>
 										<td class="fieldtitle">索引库名:</td>
@@ -116,8 +116,8 @@
 									<c:forEach items="${obj.tables}" var="table">
 										<tr>
 											<td><a href="${ctx}/meta/Database/show/${table.database.id}">${table.database.dbname}</a></td>
-											<td><a href='${ctx}/meta/DBTable/show/${table.id}' >${table.tableName}</a></td>
-											<td>${table.tablePname}</td>
+											<td><a href='${ctx}/meta/Dataset/show/${table.id}' >${table.datasetName}</a></td>
+											<td>${table.datasetPname}</td>
 											<td>${table.creater.name}</td>
 											<td>${table.updater.name}</td>
 											<td>${table.updateDate}</td>

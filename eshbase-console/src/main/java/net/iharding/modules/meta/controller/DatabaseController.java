@@ -1,7 +1,7 @@
 package net.iharding.modules.meta.controller;
 
 import net.iharding.Constants;
-import net.iharding.modules.meta.model.DBTable;
+import net.iharding.modules.meta.model.Dataset;
 import net.iharding.modules.meta.model.Database;
 import net.iharding.modules.meta.service.DatabaseService;
 import net.iharding.modules.meta.service.FavoriteService;
@@ -56,8 +56,8 @@ public class DatabaseController extends BaseController<Database>{
 	public ModelAndView saveDatabase(Database cobj) throws Exception {
 		Database obj = databaseService.get(cobj.getId());
 		obj.setRemark(cobj.getRemark());
-		for(DBTable table:obj.getTables()){
-			table.setTablePname(request.getParameter("tablePname_"+table.getId()));
+		for(Dataset table:obj.getTables()){
+			table.setDatasetPname(request.getParameter("tablePname_"+table.getId()));
 			table.setRemark(request.getParameter("remark_"+table.getId()));
 		}
 		ModelAndView mav = new ModelAndView(showView);

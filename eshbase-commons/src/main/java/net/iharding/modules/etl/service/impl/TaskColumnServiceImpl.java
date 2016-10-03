@@ -1,8 +1,13 @@
 package net.iharding.modules.etl.service.impl;
 
-import org.guess.core.service.BaseServiceImpl;
+import java.util.List;
+
+import net.iharding.modules.etl.dao.TaskColumnDao;
 import net.iharding.modules.etl.model.TaskColumn;
 import net.iharding.modules.etl.service.TaskColumnService;
+
+import org.guess.core.service.BaseServiceImpl;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 /**
@@ -15,5 +20,13 @@ import org.springframework.stereotype.Service;
 */
 @Service
 public class TaskColumnServiceImpl extends BaseServiceImpl<TaskColumn, Long> implements TaskColumnService {
+
+	@Autowired
+	private TaskColumnDao taskColumnDao; 
+	
+	@Override
+	public List<TaskColumn> getTaskColumns(Long readTaskId) {
+		return taskColumnDao.getTaskColumns(readTaskId);
+	}
 
 }

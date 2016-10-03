@@ -33,10 +33,10 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
  * @version 2015-12-01
  */
 @Entity
-@Table(name = "meta_dbtable")
+@Table(name = "meta_dataset")
 @JsonIgnoreProperties(value = { "columns","modules","dbIndexs"})
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
-public class DBTable extends IdEntity {
+public class Dataset extends IdEntity {
 
 	/**
 	 * 数据源ID
@@ -55,19 +55,19 @@ public class DBTable extends IdEntity {
 	/**
 	 * 表名
 	 */
-	@Column(name = "table_name")
-	private String tableName;
+	@Column(name = "dataset_name")
+	private String datasetName;
 	
 	/**
 	 * 逻辑名
 	 */
-	@Column(name = "table_pname")
-	private String tablePname;
+	@Column(name = "dataset_pname")
+	private String datasetPname;
 	/**
 	 * 表类别
 	 */
-	@Column(name = "table_type")
-	private Integer tableType;
+	@Column(name = "dataset_type")
+	private Integer datasetType;
 	/**
 	 * 备注
 	 */
@@ -78,6 +78,9 @@ public class DBTable extends IdEntity {
 	private Long rowCount;
 	@Column(name = "sample_rows")
 	private String sampleRows;
+	//数据模型id,数据模型类别的需要建立id
+	@Column(name = "datamodel_id")
+	private Long datamodelId;
 	
 	
 	/**
@@ -168,6 +171,14 @@ public class DBTable extends IdEntity {
 		return null;
 	}
 
+	public Long getDatamodelId() {
+		return datamodelId;
+	}
+
+	public void setDatamodelId(Long datamodelId) {
+		this.datamodelId = datamodelId;
+	}
+
 	public String getClassName() {
 		return className;
 	}
@@ -208,28 +219,14 @@ public class DBTable extends IdEntity {
 		this.modules = modules;
 	}
 
-	public String getTableName() {
-		return tableName;
-	}
 
-	public void setTableName(String tableName) {
-		this.tableName = tableName;
-	}
-
-	public String getTablePname() {
-		return tablePname;
-	}
-
-	public void setTablePname(String tablePname) {
-		this.tablePname = tablePname;
-	}
 
 	public Integer getTableType() {
-		return tableType;
+		return datasetType;
 	}
 
 	public void setTableType(Integer tableType) {
-		this.tableType = tableType;
+		this.datasetType = tableType;
 	}
 
 	public String getRemark() {
@@ -273,6 +270,32 @@ public class DBTable extends IdEntity {
 	public void setCreateDate(Date createDate) {
 		this.createDate = createDate;
 	}
+	
+	
+
+	public String getDatasetName() {
+		return datasetName;
+	}
+
+	public void setDatasetName(String datasetName) {
+		this.datasetName = datasetName;
+	}
+
+	public String getDatasetPname() {
+		return datasetPname;
+	}
+
+	public void setDatasetPname(String datasetPname) {
+		this.datasetPname = datasetPname;
+	}
+
+	public Integer getDatasetType() {
+		return datasetType;
+	}
+
+	public void setDatasetType(Integer datasetType) {
+		this.datasetType = datasetType;
+	}
 
 	public void addColumn(DbColumn col) {
 		if (columns == null) {
@@ -309,9 +332,9 @@ public class DBTable extends IdEntity {
     public boolean equals(Object obj) {  
         if(obj == null) return false;  
         if(this == obj) return true;  
-        if(obj instanceof DBTable){   
-        	DBTable dbtable =(DBTable)obj;  
-            if( dbtable.getTableName().equals(this.tableName)) return true;  
+        if(obj instanceof Dataset){   
+        	Dataset dbtable =(Dataset)obj;  
+            if( dbtable.getDatasetName().equals(this.datasetName)) return true;  
         }  
         return false;  
     }  
@@ -323,7 +346,7 @@ public class DBTable extends IdEntity {
      */  
     @Override  
     public int hashCode() {  
-        return tableName.hashCode();  
+        return datasetName.hashCode();  
     }  
 
 }

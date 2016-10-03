@@ -24,7 +24,7 @@
 							</div>
 						</div>
 						<div class="portlet-body form">
-							<form action="${ctx}/meta/DBTable/saveTable" class="form-horizontal form_sync" method="post" id="form1">
+							<form action="${ctx}/meta/Dataset/saveTable" class="form-horizontal form_sync" method="post" id="form1">
 							<input type="hidden" value="${obj.id}" name="id">
 							<table width="100%" class="dbform">
 									<tr>
@@ -35,9 +35,9 @@
 									</tr>
 									<tr>
 										<td class="fieldtitle">表名:</td>
-										<td class="fieldvalue">${obj.tableName }</td>
+										<td class="fieldvalue">${obj.datasetName }</td>
 										<td class="fieldtitle">逻辑名:</td>
-										<td class="fieldvalue"><input type="text" class="span6 m-wrap" validate="{required:true}" name="tablePname" value="${obj.tablePname}" /></td>
+										<td class="fieldvalue"><input type="text" class="span6 m-wrap" validate="{required:true}" name="datasetPname" value="${obj.datasetPname}" /></td>
 									</tr>
 								<c:if test="${not empty obj}">
 									<tr>
@@ -63,7 +63,7 @@
 								</c:if>
 								<tr>
 									<td class="fieldtitle">表类别:</td>
-									<td class="fieldvalue"><mytags:dictSelect field="tableType" id="tableType" defaultVal="${obj.tableType}" hasLabel="false" codeType="12" /></td>
+									<td class="fieldvalue"><mytags:dictSelect field="datasetType" id="datasetType" defaultVal="${obj.datasetType}" hasLabel="false" codeType="12" /></td>
 									<td class="fieldtitle">备注:</td>
 									<td class="fieldvalue" ><input type="text" class="span12 m-wrap" name="remark" value="${obj.remark}"/></td>
 								</tr>
@@ -87,10 +87,10 @@
 													<tr>
 														<td><a href='${ctx}/meta/DBColumn/show/${column.id}' >${column.fieldCode}</a></td>
 														<td>${column.columnName}</td>
-														<td><input type="text"  name="columnPname_${table.id}" value="${column.columnPname}"/></td>
+														<td><input type="text"  name="columnPname_${column.id}" value="${column.columnPname}"/></td>
 														<td>${column.type}</td>
 														<td>${column.required}</td>
-														<td><input type="text"  name="remark_${table.id}" value="${table.remark}"/></td>
+														<td><input type="text"  name="remark_${column.id}" value="${table.remark}"/></td>
 													</tr>
 												</c:forEach>
 											</tbody>
@@ -111,8 +111,9 @@
 	<%@ include file="/WEB-INF/content/common/plugins/jquery-validation.jsp"%>
 	<script type="text/javascript">
 		$(function() {
-			App.activeMenu("meta/DBTable/list");
+			App.activeMenu("meta/Dataset/list");
 		});
+		
 		function showDatasource() {
 			$("#datasourceList").modal();
 		}

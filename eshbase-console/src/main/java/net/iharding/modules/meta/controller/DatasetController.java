@@ -5,9 +5,9 @@ import java.util.Date;
 import javax.validation.Valid;
 
 import net.iharding.Constants;
-import net.iharding.modules.meta.model.DBTable;
+import net.iharding.modules.meta.model.Dataset;
 import net.iharding.modules.meta.model.DbColumn;
-import net.iharding.modules.meta.service.DBTableService;
+import net.iharding.modules.meta.service.DatasetService;
 import net.iharding.modules.meta.service.FavoriteService;
 import net.iharding.modules.meta.service.MetaCommentService;
 import net.iharding.modules.meta.service.OwnerService;
@@ -33,17 +33,17 @@ import org.springframework.web.servlet.ModelAndView;
 *
 */
 @Controller
-@RequestMapping("/meta/DBTable")
-public class DBTableController extends BaseController<DBTable>{
+@RequestMapping("/meta/Dataset")
+public class DatasetController extends BaseController<Dataset>{
 
 	{
-		editView = "/meta/DBTable/edit";
-		listView = "/meta/DBTable/list";
-		showView = "/meta/DBTable/show";
+		editView = "/meta/Dataset/edit";
+		listView = "/meta/Dataset/list";
+		showView = "/meta/Dataset/show";
 	}
 	
 	@Autowired
-	private DBTableService dbTableService;
+	private DatasetService dbTableService;
 	
 	@Autowired
 	private UserService userService;
@@ -65,7 +65,7 @@ public class DBTableController extends BaseController<DBTable>{
 	 * @throws Exception
 	 */
 	@RequestMapping(method = RequestMethod.POST, value = "/edit")
-	public String create(@Valid DBTable object) throws Exception {
+	public String create(@Valid Dataset object) throws Exception {
 		dbTableService.save(object);
 		return REDIRECT + listView;
 	}
@@ -78,7 +78,7 @@ public class DBTableController extends BaseController<DBTable>{
 	 */
 	@RequestMapping(method = RequestMethod.GET, value = "/update/{id}")
 	public ModelAndView update(@PathVariable("id") Long id) throws Exception {
-		DBTable obj = dbTableService.get(id);
+		Dataset obj = dbTableService.get(id);
 		ModelAndView mav = new ModelAndView(editView);
 		mav.addObject("obj", obj);
 		return mav;
@@ -86,7 +86,7 @@ public class DBTableController extends BaseController<DBTable>{
 	
 	@RequestMapping(method = RequestMethod.GET, value = "/setCheckLabel/{id}")
 	public String setCheckLabel(@PathVariable("id") Long id) throws Exception {
-		DBTable obj = dbTableService.get(id);
+		Dataset obj = dbTableService.get(id);
 		if (obj.getCheckLabel()==0){
 			obj.setCheckLabel(1);
 		}else{
@@ -99,11 +99,11 @@ public class DBTableController extends BaseController<DBTable>{
 	}
 	
 	@RequestMapping(method = RequestMethod.POST, value = "/saveTable")
-	public ModelAndView saveTable(DBTable cobj) throws Exception {
-		DBTable obj = dbTableService.get(cobj.getId());
+	public ModelAndView saveTable(Dataset cobj) throws Exception {
+		Dataset obj = dbTableService.get(cobj.getId());
 		obj.setRemark(cobj.getRemark());
-		obj.setTablePname(cobj.getTablePname());
-		obj.setTableType(cobj.getTableType());
+		obj.setDatasetPname(cobj.getDatasetPname());
+		obj.setDatasetType(cobj.getDatasetType());
 		for(DbColumn column:obj.getColumns()){
 			column.setColumnPname(request.getParameter("columnPname_"+column.getId()));
 			column.setRemark(request.getParameter("remark_"+column.getId()));
@@ -116,7 +116,7 @@ public class DBTableController extends BaseController<DBTable>{
 	
 	@RequestMapping(value = "/show/{id}")
 	public ModelAndView show(@PathVariable("id") Long id) throws Exception{
-		DBTable object = dbTableService.get(id);
+		Dataset object = dbTableService.get(id);
 		ModelAndView mav = new ModelAndView(showView);
 		mav.addObject("obj", object);
 		User cuser = UserUtil.getCurrentUser();

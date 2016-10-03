@@ -2,20 +2,20 @@
 <%@ include file="/WEB-INF/content/common/common.jsp"%>
 <html>
 <head>
-<title>表对象列表</title>
+<title>数据集列表</title>
 </head>
 <body>
 	<div class="page-content">
 		<div class="container-fluid">
 			<!-- 页面导航 -->
-			<tool:navBar pageTitle="表对象列表" pageTitleContent="元数据管理-表对象管理-表对象列表" titleIcon="icon-home"/>
+			<tool:navBar pageTitle="表对象列表" pageTitleContent="元数据管理-数据集管理-数据集列表" titleIcon="icon-home"/>
 			<!-- 主体内容 -->
 			<div class="row-fluid">
 				<div class="span12">
 					<div class="portlet box purple">
 						<div class="portlet-title">
 							<h4>
-								<i class="icon-globe"></i>列表
+								<i class="icon-globe"></i>数据集列表
 							</h4>
 							<div class="tools">
 								<a href="javascript:;" class="collapse"></a><a
@@ -29,7 +29,7 @@
 	                                 	<div class="span6 ">
 		                                    <div class="control-group">
 		                                       <div class="controls">
-		                                          <input type="text" id="filters" class="m-wrap span12" placeholder="类名,表名,逻辑名,备注">
+		                                          <input type="text" id="filters" class="m-wrap span12" placeholder="类名,数据集名,逻辑名,备注">
 		                                       </div>
 		                                    </div>
 	                                 	</div>
@@ -47,7 +47,7 @@
 	                                 	</div>
 									</div>
 								</form>
-								<tool:operBtns modelKey="dbtable" modelName="meta"></tool:operBtns>
+								<tool:operBtns modelKey="dataset" modelName="meta"></tool:operBtns>
 							</div>
 							<table class="table table-striped table-bordered table-hover" id="sample_1">
 								
@@ -62,11 +62,11 @@
 <script type="text/javascript">
 $(document).ready(function() {
 	
-	App.activeMenu("meta/DBTable/list");
+	App.activeMenu("meta/Dataset/list");
 	
 	Page.initData(
 		{
-			url:"${ctx}/meta/DBTable/page",
+			url:"${ctx}/meta/Dataset/page",
 			pageNo : 1,
 			pageSize : 10,
 			tableId : "#sample_1"
@@ -77,8 +77,8 @@ $(document).ready(function() {
 					  var $a = $('<a data-original-title="点击访问" data-placement="right" class="tooltips" href="${ctx}/meta/Database/show/'+item.database.id+'" >'+item.database.dbname+'</a>');
 					  return $a;
 				  }},
-			 	{cName:"tableName",cValue:"表名"},
-			 	{cName:"tablePname",cValue:"逻辑名"},
+			 	{cName:"datasetName",cValue:"数据集"},
+			 	{cName:"datasetPname",cValue:"逻辑名"},
 			 	{cName:"updateDate",cValue:"更新时间",format:function(i,value,item){
 					 if(App.isNundef(value)){
 						 return new Date(value).format("yyyy-MM-dd hh:mm");
@@ -92,7 +92,7 @@ $(document).ready(function() {
 
 function doQuery(){
 	var queryObj = {
-			search_LIKES_datasource_OR_className_OR_tableName_OR_tablePname_OR_remark : App.isEqPlacehoder($("#filters"))
+			search_LIKES_datasource_OR_className_OR_datasetName_OR_datasetPname_OR_remark : App.isEqPlacehoder($("#filters"))
 		};
 	Page.doQuery(queryObj);
 }

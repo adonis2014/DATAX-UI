@@ -8,13 +8,13 @@ import java.util.Map;
 import java.util.Properties;
 
 import net.iharding.modules.meta.dao.DBIndexDao;
-import net.iharding.modules.meta.dao.DBTableDao;
+import net.iharding.modules.meta.dao.DatasetDao;
 import net.iharding.modules.meta.dao.DataSourceDao;
 import net.iharding.modules.meta.dao.DatabaseDao;
 import net.iharding.modules.meta.dao.DbColumnDao;
 import net.iharding.modules.meta.dao.MetaPropertyDao;
 import net.iharding.modules.meta.dao.MetaReverseDao;
-import net.iharding.modules.meta.model.DBTable;
+import net.iharding.modules.meta.model.Dataset;
 import net.iharding.modules.meta.model.DataSource;
 import net.iharding.modules.meta.model.DataSourceWrapper;
 import net.iharding.modules.meta.model.Database;
@@ -55,7 +55,7 @@ public class DataSourceServiceImpl extends BaseServiceImpl<DataSource, Long> imp
 	private DatabaseDao databaseDao;
 
 	@Autowired
-	private DBTableDao dbTableDao;
+	private DatasetDao dbTableDao;
 
 	@Autowired
 	private DbColumnDao dbColumnDao;
@@ -208,7 +208,7 @@ public class DataSourceServiceImpl extends BaseServiceImpl<DataSource, Long> imp
 			db.setUpdater(cuser);
 			db.setUpdateDate(new Date());
 			databaseDao.save(db);
-			for (DBTable table : db.getTables()) {
+			for (Dataset table : db.getTables()) {
 				table.setUpdater(cuser);
 				table.setUpdateDate(new Date());
 				dbTableDao.save(table);
@@ -254,7 +254,7 @@ public class DataSourceServiceImpl extends BaseServiceImpl<DataSource, Long> imp
 		db.setUpdater(cuser);
 		db.setUpdateDate(new Date());
 		databaseDao.save(db);
-		for (DBTable table : db.getTables()) {
+		for (Dataset table : db.getTables()) {
 			table.setUpdater(cuser);
 			table.setUpdateDate(new Date());
 			dbTableDao.save(table);
@@ -271,7 +271,7 @@ public class DataSourceServiceImpl extends BaseServiceImpl<DataSource, Long> imp
 		return revDao.reverseDatabaseMeta(dw, mproes, cuser, dbname);
 	}
 
-	private DBTable getDbTable(DataSource dw, List<MetaProperty> mproes, User cuser, String dbname, String tablename) throws Exception {
+	private Dataset getDbTable(DataSource dw, List<MetaProperty> mproes, User cuser, String dbname, String tablename) throws Exception {
 		MetaReverseDao revDao = SpringContextUtil.getBean("MetaReverse" + dw.getDbType());
 		return revDao.reverseTableMeta(dw, mproes, cuser, dbname, tablename);
 	}
@@ -285,7 +285,7 @@ public class DataSourceServiceImpl extends BaseServiceImpl<DataSource, Long> imp
 		User cuser = UserUtil.getCurrentUser();
 		if (cuser == null)
 			cuser = userDao.findUniqueBy("loginId", "admin");
-		DBTable table = getDbTable(datasource, mproes, cuser, dbname, tableName);
+		Dataset table = getDbTable(datasource, mproes, cuser, dbname, tableName);
 		table.setUpdater(cuser);
 		table.setUpdateDate(new Date());
 		dbTableDao.save(table);

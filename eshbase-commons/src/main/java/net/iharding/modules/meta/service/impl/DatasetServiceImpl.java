@@ -2,9 +2,9 @@ package net.iharding.modules.meta.service.impl;
 
 import java.util.Date;
 
-import net.iharding.modules.meta.dao.DBTableDao;
-import net.iharding.modules.meta.model.DBTable;
-import net.iharding.modules.meta.service.DBTableService;
+import net.iharding.modules.meta.dao.DatasetDao;
+import net.iharding.modules.meta.model.Dataset;
+import net.iharding.modules.meta.service.DatasetService;
 
 import org.guess.core.service.BaseServiceImpl;
 import org.guess.sys.model.User;
@@ -21,17 +21,15 @@ import org.springframework.stereotype.Service;
 *
 */
 @Service
-public class DBTableServiceImpl extends BaseServiceImpl<DBTable, Long> implements DBTableService {
+public class DatasetServiceImpl extends BaseServiceImpl<Dataset, Long> implements DatasetService {
 	
 	@Autowired
-	private DBTableDao dbTableDao; 
+	private DatasetDao dbTableDao; 
 	
 	@Override
-	public void save(DBTable dbtable) throws Exception {
+	public void save(Dataset dbtable) throws Exception {
 		if(dbtable.getId() != null){
-			
-			DBTable table = dbTableDao.get(dbtable.getId());
-			
+			Dataset table = dbTableDao.get(dbtable.getId());
 			//保留发表者以及发表提起
 			dbtable.setCreater(table.getCreater());
 			dbtable.setCreateDate(table.getCreateDate());

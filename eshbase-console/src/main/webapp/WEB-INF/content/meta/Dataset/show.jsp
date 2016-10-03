@@ -1,6 +1,6 @@
 <%@ page contentType="text/html;charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/content/common/common.jsp"%>
-<c:set var="pageTitle" value="${'查看表对象'}" scope="page" />
+<c:set var="pageTitle" value="${'查看数据集'}" scope="page" />
 <html>
 <head>
 <title>${pageTitle }</title>
@@ -13,21 +13,21 @@
 	<div class="page-content">
 		<div class="container-fluid">
 			<!-- 页面导航 -->
-			<tool:navBar pageTitle="${pageTitle }" pageTitleContent="元数据管理-表单管理-${pageTitle }" titleIcon="icon-home" />
+			<tool:navBar pageTitle="${pageTitle }" pageTitleContent="元数据管理-数据集管理-${pageTitle }" titleIcon="icon-home" />
 			<!-- 主体内容 -->
 			<div class="row-fluid">
 				<div class="span12">
 					<div class="portlet box blue">
 						<div class="portlet-title">
 							<h4>
-								<i class="icon-reorder"></i>表单设置信息
+								<i class="icon-reorder"></i>数据集设置信息
 							</h4>
 							<div class="tools">
 								<a href="javascript:;" class="collapse"></a> <a href="javascript:;" class="remove"></a>
 							</div>
 						</div>
 						<div class="portlet-body form">
-							<form action="${ctx}/meta/DBTable/edit" class="form-horizontal form_sync" method="post" id="form1">
+							<form action="${ctx}/meta/Dataset/edit" class="form-horizontal form_sync" method="post" id="form1">
 								<div class="row-fluid">
 									<table width="100%" class="dbform">
 									<tr>
@@ -37,10 +37,10 @@
 										<td class="fieldvalue"><a href="${ctx}/meta/Database/show/${obj.database.id}">${obj.database.dbname}</a></td>
 									</tr>
 									<tr>
-										<td class="fieldtitle">表名:</td>
-										<td class="fieldvalue">${obj.tableName }</td>
+										<td class="fieldtitle">数据集:</td>
+										<td class="fieldvalue">${obj.datasetName }</td>
 										<td class="fieldtitle">逻辑名:</td>
-										<td class="fieldvalue">${obj.tablePname}</td>
+										<td class="fieldvalue">${obj.datasetPname}</td>
 									</tr>
 								<c:if test="${not empty obj}">
 									<tr>
@@ -65,8 +65,8 @@
 									</tr>
 								</c:if>
 								<tr>
-									<td class="fieldtitle">表类别:</td>
-									<td class="fieldvalue"><mytags:dictSelect field="tableType" type="label" id="tableType" defaultVal="${obj.tableType}" hasLabel="false" codeType="12" /></td>
+									<td class="fieldtitle">数据集类别:</td>
+									<td class="fieldvalue"><mytags:dictSelect field="tableType" type="label" id="tableType" defaultVal="${obj.datasetType}" hasLabel="false" codeType="12" /></td>
 									<td class="fieldtitle">备注:</td>
 									<td class="fieldvalue" >${obj.remark}</td>
 								</tr>
@@ -176,7 +176,7 @@
 										<div>注释</div>
 										<span class="badge badge-info" id="commentNum">${commentNum}</span>
 									</a>
-									<a href="${ctx}/meta/DBTable/update/${obj.id}" class="icon-btn span2">
+									<a href="${ctx}/meta/Dataset/update/${obj.id}" class="icon-btn span2">
 										<i class="icon-edit"></i>
 										<div>修改</div>
 									</a>
@@ -192,7 +192,7 @@
 	<%@ include file="/WEB-INF/content/common/plugins/jquery-validation.jsp"%>
 	<script type="text/javascript">
 		$(function() {
-			App.activeMenu("meta/DBTable/list");
+			App.activeMenu("meta/Dataset/list");
 		});
 
 		function countNum(eleId,opId){

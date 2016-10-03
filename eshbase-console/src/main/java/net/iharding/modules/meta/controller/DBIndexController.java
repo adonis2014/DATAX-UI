@@ -6,10 +6,10 @@ import javax.validation.Valid;
 
 import net.iharding.Constants;
 import net.iharding.modules.meta.model.DBIndex;
-import net.iharding.modules.meta.model.DBTable;
+import net.iharding.modules.meta.model.Dataset;
 import net.iharding.modules.meta.model.Module;
 import net.iharding.modules.meta.service.DBIndexService;
-import net.iharding.modules.meta.service.DBTableService;
+import net.iharding.modules.meta.service.DatasetService;
 import net.iharding.modules.meta.service.DbColumnService;
 import net.iharding.modules.meta.service.FavoriteService;
 import net.iharding.modules.meta.service.MetaCommentService;
@@ -50,7 +50,7 @@ public class DBIndexController extends BaseController<DBIndex>{
 	
 
 	@Autowired
-	private DBTableService dbTableService;
+	private DatasetService dbTableService;
 	@Autowired
 	private UserService userService;
 	
@@ -126,7 +126,7 @@ public class DBIndexController extends BaseController<DBIndex>{
 	@RequestMapping(method = RequestMethod.GET, value = "/addIndexTable/{id}/{tableId}")
 	public ModelAndView addIndexTable(@PathVariable("id") Long moduleId,@PathVariable("tableId")Long tableId) throws Exception {
 		DBIndex dbindex=dbindexService.get(moduleId);
-		DBTable dbtable=dbTableService.get(tableId);
+		Dataset dbtable=dbTableService.get(tableId);
 		dbindex.getTables().add(dbtable);
 		dbindexService.save(dbindex);
 		ModelAndView mav = new ModelAndView(editView);
@@ -137,7 +137,7 @@ public class DBIndexController extends BaseController<DBIndex>{
 	@RequestMapping(method = RequestMethod.GET, value = "/removeIndexTable/{id}/{tableId}")
 	public ModelAndView removeIndexTable(@PathVariable("id") Long moduleId,@PathVariable("tableId")Long tableId) throws Exception {
 		DBIndex dbindex=dbindexService.get(moduleId);
-		DBTable dbtable=dbTableService.get(tableId);
+		Dataset dbtable=dbTableService.get(tableId);
 		dbindex.getTables().remove(dbtable);
 		dbindexService.save(dbindex);
 		ModelAndView mav = new ModelAndView(editView);

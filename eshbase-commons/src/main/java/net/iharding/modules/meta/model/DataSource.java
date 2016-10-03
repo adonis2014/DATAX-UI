@@ -103,11 +103,11 @@ public class DataSource extends IdEntity {
 			dbNode.setType("数据库");
 			dbNode.setGrade(2);
 			List<TreeNode> tablenodes=new ArrayList<TreeNode>();
-			for(DBTable table:db.getTables()){
+			for(Dataset table:db.getTables()){
 				TreeNode tableNode=new TreeNode();
 				tableNode.setId(table.getId());
-				tableNode.setCode(table.getTableName());
-				tableNode.setName(table.getTablePname());
+				tableNode.setCode(table.getDatasetName());
+				tableNode.setName(table.getDatasetPname());
 				tableNode.setType("表");
 				tableNode.setGrade(3);
 				tablenodes.add(tableNode);
@@ -237,7 +237,7 @@ public class DataSource extends IdEntity {
 	public void setCheckLabelFalse(){
 		for (Database db:databases){
 			db.setCheckLabel(0);
-			for(DBTable table:db.getTables()){
+			for(Dataset table:db.getTables()){
 				table.setCheckLabel(0);
 				for(DbColumn column:table.getColumns()){
 					column.setCheckLabel(0);
@@ -250,7 +250,7 @@ public class DataSource extends IdEntity {
 		for (Database db:databases){
 			if (dbName.equalsIgnoreCase(db.getDbname())){
 				db.setCheckLabel(0);
-				for(DBTable table:db.getTables()){
+				for(Dataset table:db.getTables()){
 					table.setCheckLabel(0);
 					for(DbColumn column:table.getColumns()){
 						column.setCheckLabel(0);
@@ -263,8 +263,8 @@ public class DataSource extends IdEntity {
 	public void setTableCheckLabelFalse(String dbName,String tableName){
 		for (Database db:databases){
 			if (dbName.equalsIgnoreCase(db.getDbname())){
-				for(DBTable table:db.getTables()){
-					if (tableName.equalsIgnoreCase(table.getTableName())){
+				for(Dataset table:db.getTables()){
+					if (tableName.equalsIgnoreCase(table.getDatasetName())){
 						table.setCheckLabel(0);
 						for(DbColumn column:table.getColumns()){
 							column.setCheckLabel(0);

@@ -1,7 +1,7 @@
 package net.iharding.modules.meta.dao.impl;
 
-import net.iharding.modules.meta.dao.DBTableDao;
-import net.iharding.modules.meta.model.DBTable;
+import net.iharding.modules.meta.dao.DatasetDao;
+import net.iharding.modules.meta.model.Dataset;
 
 import org.guess.core.orm.hibernate.HibernateDao;
 import org.hibernate.Session;
@@ -16,10 +16,10 @@ import org.springframework.stereotype.Repository;
  * 
  */
 @Repository
-public class DBTableDaoImpl extends HibernateDao<DBTable, Long> implements DBTableDao {
+public class DatasetDaoImpl extends HibernateDao<Dataset, Long> implements DatasetDao {
 	
 	@Override
-	public void save(DBTable dbtable) {
+	public void save(Dataset dbtable) {
 		Session session = getSession();
 		session.merge(dbtable);
 	}

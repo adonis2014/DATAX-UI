@@ -9,8 +9,8 @@ import org.guess.sys.util.UserUtil;
 import net.iharding.modules.etl.dao.EtlPluginParamDao;
 import net.iharding.modules.etl.model.EtlPluginParam;
 import net.iharding.modules.etl.service.EtlPluginParamService;
-import net.iharding.modules.meta.dao.DBTableDao;
-import net.iharding.modules.meta.model.DBTable;
+import net.iharding.modules.meta.dao.DatasetDao;
+import net.iharding.modules.meta.model.Dataset;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

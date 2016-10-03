@@ -12,7 +12,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import net.iharding.modules.meta.model.DBTable;
+import net.iharding.modules.meta.model.Dataset;
 import net.iharding.modules.meta.model.DataSource;
 import net.iharding.modules.meta.model.Database;
 import net.iharding.modules.meta.model.DbColumn;
@@ -47,11 +47,11 @@ public class HiveMetaReverseImpl extends JDBCMetaReverse {
 				for (Map<String, String> tab : tabs) {
 					String tableName = tab.get("tab_name");
 					if (StringUtils.isNotEmpty(tableName)) {
-						DBTable table = db.getDBTable(tableName, cuser);// new
+						Dataset table = db.getDBTable(tableName, cuser);// new
 																		// DBTable();
-						table.setTableName(tableName);
+						table.setDatasetName(tableName);
 						table.setCheckLabel(1);
-						table.setTablePname(tableName);
+						table.setDatasetPname(tableName);
 						table.setRemark(tableName);
 						table.setClassName(this.sql2javaName(tableName));
 						table.setDatabase(db);
@@ -220,11 +220,11 @@ public class HiveMetaReverseImpl extends JDBCMetaReverse {
 	 * @param conn
 	 * @return
 	 */
-	private DBTable reverseTableMeta(DataSource datasource, List<MetaProperty> mproes, User cuser, Database db, String tableName, Connection conn) {
-		DBTable table = db.getDBTable(tableName, cuser);// new
-		table.setTableName(tableName);
+	private Dataset reverseTableMeta(DataSource datasource, List<MetaProperty> mproes, User cuser, Database db, String tableName, Connection conn) {
+		Dataset table = db.getDBTable(tableName, cuser);// new
+		table.setDatasetName(tableName);
 		table.setCheckLabel(1);
-		table.setTablePname(tableName);
+		table.setDatasetPname(tableName);
 		table.setRemark(tableName);
 		table.setClassName(this.sql2javaName(tableName));
 		table.setDatabase(db);
@@ -256,8 +256,8 @@ public class HiveMetaReverseImpl extends JDBCMetaReverse {
 	}
 
 	@Override
-	public DBTable reverseTableMeta(DataSource datasource, List<MetaProperty> mproes, User cuser, String dbname, String tableName) {
-		Connection conn = null;DBTable table =null;
+	public Dataset reverseTableMeta(DataSource datasource, List<MetaProperty> mproes, User cuser, String dbname, String tableName) {
+		Connection conn = null;Dataset table =null;
 		Database db = datasource.getDatabase(dbname, cuser);
 		db.setDatasource(datasource);
 		db.setDbname(dbname);

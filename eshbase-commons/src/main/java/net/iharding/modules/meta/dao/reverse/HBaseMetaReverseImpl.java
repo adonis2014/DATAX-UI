@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.Map;
 
 import net.iharding.modules.meta.dao.MetaReverseDao;
-import net.iharding.modules.meta.model.DBTable;
+import net.iharding.modules.meta.model.Dataset;
 import net.iharding.modules.meta.model.DataSource;
 import net.iharding.modules.meta.model.Database;
 import net.iharding.modules.meta.model.DbColumn;
@@ -94,7 +94,7 @@ public class HBaseMetaReverseImpl implements MetaReverseDao {
 			Admin hbadmin = getConnection(mproes).getAdmin();
 			HTableDescriptor[] htables = hbadmin.listTables();
 			for (HTableDescriptor tableDesc : htables) {
-				DBTable table = this.reverseTableMeta(datasource, mproes, cuser, db, tableDesc);
+				Dataset table = this.reverseTableMeta(datasource, mproes, cuser, db, tableDesc);
 				db.addTable(table);
 			}
 			datasource.addDatabase(db);
@@ -131,13 +131,13 @@ public class HBaseMetaReverseImpl implements MetaReverseDao {
  * @param tableDesc
  * @return
  */
-	private DBTable reverseTableMeta(DataSource datasource, List<MetaProperty> mproes, User cuser, Database db, HTableDescriptor tableDesc) {
-		DBTable table = null;
+	private Dataset reverseTableMeta(DataSource datasource, List<MetaProperty> mproes, User cuser, Database db, HTableDescriptor tableDesc) {
+		Dataset table = null;
 		try {
 			table = db.getDBTable(tableDesc.getNameAsString(), cuser);// new DBTable();
-			table.setTableName(tableDesc.getNameAsString());
+			table.setDatasetName(tableDesc.getNameAsString());
 			table.setCheckLabel(1);
-			table.setTablePname(tableDesc.getNameAsString());
+			table.setDatasetPname(tableDesc.getNameAsString());
 			table.setRemark(tableDesc.getNameAsString());
 			table.setTableType(1);
 			table.setClassName(this.sql2javaName(tableDesc.getNameAsString()));
@@ -177,19 +177,19 @@ public class HBaseMetaReverseImpl implements MetaReverseDao {
 	}
 
 	@Override
-	public DBTable reverseTableMeta(DataSource datasource, List<MetaProperty> mproes, User cuser, String dbName, String tableName) {
+	public Dataset reverseTableMeta(DataSource datasource, List<MetaProperty> mproes, User cuser, String dbName, String tableName) {
 		Database db = datasource.getDatabase(dbName, cuser);
 		db.setDatasource(datasource);
 		db.setDbname(dbName);
 		db.setCheckLabel(1);
-		DBTable table = null;
+		Dataset table = null;
 		try {
 			Admin hbadmin = getConnection(mproes).getAdmin();
 			HTableDescriptor tableDesc=hbadmin.getTableDescriptor(TableName.valueOf(tableName));
 			table = db.getDBTable(tableDesc.getNameAsString(), cuser);// new DBTable();
-			table.setTableName(tableDesc.getNameAsString());
+			table.setDatasetName(tableDesc.getNameAsString());
 			table.setCheckLabel(1);
-			table.setTablePname(tableDesc.getNameAsString());
+			table.setDatasetPname(tableDesc.getNameAsString());
 			table.setRemark(tableDesc.getNameAsString());
 			table.setTableType(1);
 			table.setClassName(this.sql2javaName(tableDesc.getNameAsString()));

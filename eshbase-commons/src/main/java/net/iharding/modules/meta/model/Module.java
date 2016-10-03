@@ -98,10 +98,10 @@ public class Module extends IdEntity {
 	@Column(name="create_date")
 	private Date createDate;
 	
-	@ManyToMany(cascade = { CascadeType.PERSIST, CascadeType.MERGE }, targetEntity = DBTable.class)
+	@ManyToMany(cascade = { CascadeType.PERSIST, CascadeType.MERGE }, targetEntity = Dataset.class)
 	@JoinTable(name = "meta_module_table", joinColumns = { @JoinColumn(name = "module_id") }, inverseJoinColumns = { @JoinColumn(name = "table_id") })
 	@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
-	private Set<DBTable> tables = new HashSet<DBTable>(0);
+	private Set<Dataset> tables = new HashSet<Dataset>(0);
 	
 	@Column(name="check_label")
 	private Integer checkLabel;
@@ -139,11 +139,11 @@ public class Module extends IdEntity {
 		this.project = project;
 	}
 
-	public Set<DBTable> getTables() {
+	public Set<Dataset> getTables() {
 		return tables;
 	}
 
-	public void setTables(Set<DBTable> tables) {
+	public void setTables(Set<Dataset> tables) {
 		this.tables = tables;
 	}
 

@@ -2,6 +2,7 @@ package net.iharding.modules.etl.model;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -88,7 +89,7 @@ public class EtlJob extends IdEntity {
 	 */
 	private String remark;
 	
-	@OneToMany(targetEntity=EtlTask.class,fetch = FetchType.LAZY,cascade=CascadeType.ALL,mappedBy="job")
+	@OneToMany(targetEntity=EtlTask.class,cascade=CascadeType.ALL,mappedBy="job")
 	@OrderBy("id ASC")
 	private Set<EtlTask> tasks;
 	
@@ -173,9 +174,25 @@ public class EtlJob extends IdEntity {
 		this.tasks = tasks;
 	}
 	
+	public void addTask(EtlTask task){
+		if (this.tasks==null){
+			this.tasks=new HashSet<EtlTask>();
+		}
+		this.tasks.add(task);
+	}
+	
 	public EtlTask getReaderTask(){
 		for (EtlTask dpc : tasks) {
 			if (dpc.getPlugin().getPluginType()==1){
+				return dpc;
+			}
+		}
+		return null;
+	}
+	
+	public EtlTask getWriterTask(){
+		for (EtlTask dpc : tasks) {
+			if (dpc.getPlugin().getPluginType()==2){
 				return dpc;
 			}
 		}
@@ -211,12 +228,18 @@ public class EtlJob extends IdEntity {
 
 	public List<EtlTask> getWriterTasks() {
 		List<EtlTask> wtasks=new ArrayList<EtlTask>(); 
-		for(EtlTask task:wtasks){
+		for(EtlTask task:tasks){
 			if (task.getPlugin().getPluginType()==2){
 				wtasks.add(task);
 			}
 		}
 		return wtasks;
+	}
+
+	public void setTasksParams() {
+		for(EtlTask task:tasks){
+			task.convertParams();
+		}
 	}
 	
 }

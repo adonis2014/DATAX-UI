@@ -1,6 +1,6 @@
 package net.iharding.ehdb.query.maker;
 
-import net.iharding.modules.meta.model.DBTable;
+import net.iharding.modules.meta.model.Dataset;
 import net.iharding.modules.meta.model.DbColumn;
 import net.sf.jsqlparser.expression.Expression;
 import net.sf.jsqlparser.expression.StringValue;
@@ -28,10 +28,10 @@ import org.elasticsearch.index.query.WildcardQueryBuilder;
 
 public abstract class Maker {
 
-	private DBTable dbtable;
+	private Dataset dbtable;
 	private boolean isQuery = false;
 
-	protected Maker( DBTable dbtable,Boolean isQuery) {
+	protected Maker( Dataset dbtable,Boolean isQuery) {
 		this.dbtable=dbtable;
 		this.isQuery = isQuery;
 	}

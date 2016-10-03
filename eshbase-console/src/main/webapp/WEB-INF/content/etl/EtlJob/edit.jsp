@@ -16,7 +16,7 @@
 </head>
 <body>
 
-<%@ include file="/WEB-INF/content/etl/EtlPlugin/selPlugin.jsp" %>
+<%@ include file="/WEB-INF/content/meta/Dataset/selTable.jsp" %>
 	<div class="page-content">
 		<div class="container-fluid">
 			<!-- 页面导航 -->
@@ -70,7 +70,7 @@
                                         <li class="span2">
                                           <a href="#tab5" data-toggle="tab" class="step">
                                           <span class="number">5</span>
-                                          <span class="desc"><i class="icon-ok"></i>确认调度</span>   
+                                          <span class="desc"><i class="icon-ok"></i>调度执行</span>   
                                           </a> 
                                        </li>
                                     </ul>
@@ -88,9 +88,9 @@
 												<td class="fieldtitle">调度作业名:</td>
 												<td class="fieldvalue"><input type="text" validate="{required:true}" name="jobName" value="${obj.jobName }" /></td>
 												<td class="fieldtitle">ETL类型:</td>
-												<td class="fieldvalue"><mytags:dictSelect field="etlType" id="etlType" type="select" hasLabel="false" defaultVal="${obj.etlType}" codeType="1034" /></td>
+												<td class="fieldvalue"><mytags:dictSelect field="etlType" id="etlType" type="select" hasLabel="false" defaultVal="${obj.etlType}" codeType="1034" hasPSel="false"/></td>
 											</tr>
-										<c:if test="${not empty obj}">
+										<c:if test="${not empty obj.creater}">
 											<tr>
 												<td class="fieldtitle">状态:</td>
 												<td class="fieldvalue"><mytags:dictSelect field="status" id="status" type="label" hasLabel="false" defaultVal="${obj.status}" codeType="1003" /></td>
@@ -118,121 +118,209 @@
                                  </div>
                                  <div class="tab-pane" id="tab2">
                                     <h4 class="block">读取任务设置</h4>
-                                    <input type="hidden" value="" name="id" id="taskId"/>
-                                    <input type="hidden" value="" name="datasource.id" id="datasourceId"/>
-                                    <input type="hidden" value="" name="plugin.id" id="pluginId"/>
+                                    <input type="hidden" value="${obj.readerTask.id}" name="readtask.id" id="taskId"/>
+                                    <input type="hidden" value="${obj.readerTask.dataSource.id}" name="readtask.datasource.id" id="datasourceId"/>
                                     <table width="100%" class="dbform">
                                     	<tr>
                                     		<th class="fieldtitle">插件</th>
-                                    		<td class="fieldvalue"><input type="text" style="width:95%;" id="plugin" value="${task.plugin.pluginName}" validate="{required:true}" name="plugin.pluginName"  readonly="readonly" onfocus="showPlugins(1)" /></td>
+                                    		<td class="fieldvalue">
+                                    			<select name="readtask.plugin.id" id="readtask.pluginId">
+                                    				<c:forEach items="${readPlguins}" var="plugin">
+                                    				<option value="${plugin.id}" <c:if test="${plugin.id==obj.readerTask.plugin.id}">selected</c:if>>${plugin.pluginName}</option>
+                                    				</c:forEach>
+                                    			</select>
+                                    		</td>
 											<th class="fieldtitle">插件类别</th>
                                     		<td class="fieldvalue"><span id="pluginType">读取</span></td>
                                     	</tr>
                                     	<tr>
                                     		<th class="fieldtitle">任务名</th>
-                                    		<td class="fieldvalue"><input type="text" style="width:95%;"  validate="{required:true}" value="${task.taskName}" name="taskName"/></td>
-                                    		<th class="fieldtitle">数据源</th>
-                                    		<td class="fieldvalue"><input type="text" style="width:95%;" id="datasource" value="${datasource.name}"  validate="{required:true}" name="datasource.name"  readonly="readonly" onfocus="showPlugins(1)" /></td>
+                                    		<td class="fieldvalue"><input type="text" style="width:95%;"  validate="{required:true}" value="${obj.readerTask.taskName}" name="readertask.taskName"/></td>
+                                    		<th class="fieldtitle">数据集</th> <input type="hidden" name="readtask.datasetId" />
+                                    		<td class="fieldvalue"><input name="readtask.datasetName" id="rdatasetName" value=""/></td>
                                     	</tr>
                                     	<tr>
                                     		<th class="fieldtitle">备注</th>
-											<td colspan="3" class="fieldvalue"><input type="text"  style="width:95%;"  value="${task.remark}" name="remark"/></td>
+											<td colspan="3" class="fieldvalue"><input type="text"  style="width:95%;"  value="${obj.readerTask.remark}" name="readertask.remark"/></td>
+                                    	</tr>
+                                    	<tr>
+                                    		<td colspan="4">
+                                    			<div id="taskParamters">
+	                                    			<table width="100%" class="dbgrid">
+														<thead>
+															<tr>
+																<th>插件参数ID</th>
+																<th>参数Key</th>
+																<th>参数值</th>
+																<th>备注</th>
+															</tr>
+														</thead>
+														<tbody>
+														<c:forEach items="${obj.readerTask.taskParams}" var="tparam">
+														<tr>
+															<td>${tparam.pluginParamId}</td>
+															<td>${tparam.paramKey}</td>
+															<td><input type="text" name="r_paramValue_${tparam.paramKey}" value="${tparam.paramValue}"/></td>
+															<td><input type="text" name="r_paramRemark_${tparam.paramKey}" value="${tparam.remark}"/></td>
+														</tr>
+														</c:forEach>
+														</tbody>
+													</table>
+                                    			</div>
+                                    		</td>
                                     	</tr>
                                     </table>
                                  </div>
                                  <div class="tab-pane" id="tab3">
                                     <h4 class="block">写入任务设置</h4>
-                                   <input type="hidden" value="" name="id" id="taskId"/>
-                                    <input type="hidden" value="" name="datasource.id" id="datasourceId"/>
-                                    <input type="hidden" value="" name="plugin.id" id="pluginId"/>
+                                   <input type="hidden" value="" name="writertask.id" id="writertaskId"/>
+                                    <input type="hidden" value="" name="writertask.datasource.id" id="writerDatasourceId"/>
                                     <table width="100%" class="dbform">
                                     	<tr>
                                     		<th class="fieldtitle">插件</th>
-                                    		<td class="fieldvalue"><input type="text" style="width:95%;" id="plugin" value="${task.plugin.pluginName}" validate="{required:true}" name="plugin.pluginName"  readonly="readonly" onfocus="showPlugins(1)" /></td>
+                                    		<td class="fieldvalue">
+                                    		<select name="writertask.plugin.id" id="pluginId">
+                                    				<c:forEach items="${writePlguins}" var="plugin">
+                                    				<option value="${plugin.id}" <c:if test="${plugin.id==writerTask.plugin.id}">selected</c:if>>${plugin.pluginName}</option>
+                                    				</c:forEach>
+                                    			</select></td>
 											<th class="fieldtitle">插件类别</th>
                                     		<td class="fieldvalue"><span id="pluginType">写入</span></td>
                                     	</tr>
                                     	<tr>
                                     		<th class="fieldtitle">任务名</th>
-                                    		<td class="fieldvalue"><input type="text" style="width:95%;"  validate="{required:true}" value="${task.taskName}" name="taskName"/></td>
-                                    		<th class="fieldtitle">数据源</th>
-                                    		<td class="fieldvalue"><input type="text" style="width:95%;" id="datasource" value="${datasource.name}"  validate="{required:true}" name="datasource.name"  readonly="readonly" onfocus="showPlugins(1)" /></td>
+                                    		<td class="fieldvalue"><input type="text" style="width:95%;"  validate="{required:true}" value="${writerTask.taskName}" name="writertask.taskName"/></td>
+                                    		<th class="fieldtitle">数据集</th> <input type="hidden" name="writertask.datasetId" />
+                                    		<td class="fieldvalue"><input name="writertask.datasetName" id="wdatasetName" onfocus="javascript:showTree();" value=""/></td>
                                     	</tr>
                                     	<tr>
                                     		<th class="fieldtitle">备注</th>
-											<td colspan="3" class="fieldvalue"><input type="text"  style="width:95%;"  value="${task.remark}" name="remark"/></td>
+											<td colspan="3" class="fieldvalue"><input type="text"  style="width:95%;"  value="${writerTask.remark}" name="writertask.remark"/></td>
+                                    	</tr>
+                                    	<tr>
+                                    		<td colspan="4">
+                                    			<div id="taskParamters">
+	                                    			<table width="100%" class="dbgrid">
+														<thead>
+															<tr>
+																<th>插件参数ID</th>
+																<th>参数Key</th>
+																<th>参数值</th>
+																<th>备注</th>
+															</tr>
+														</thead>
+														<tbody>
+														<c:forEach items="${obj.writerTask.taskParams}" var="tparam">
+														<tr>
+															<td>${tparam.pluginParamId}</td>
+															<td>${tparam.paramKey}</td>
+															<td><input type="text" name="w_paramValue_${tparam.paramKey}" value="${tparam.paramValue}"/></td>
+															<td><input type="text" name="w_paramRemark_${tparam.paramKey}" value="${tparam.remark}"/></td>
+														</tr>
+														</c:forEach>
+														</tbody>
+													</table>
+                                    			</div>
+                                    		</td>
                                     	</tr>
                                     </table>
                                  </div>
                                  <div class="tab-pane" id="tab4">
                                     <h4 class="block">字段映射</h4>
-                                    <div class="control-group">
-                                       <label class="control-label">Fullname:</label>
-                                       <div class="controls">
-                                          <span class="text">Bob Nilson</span>
-                                       </div>
-                                    </div>
-                                    <div class="control-group">
-                                       <label class="control-label">Email:</label>
-                                       <div class="controls">
-                                          <span class="text">bob@nilson.com</span>
-                                       </div>
-                                    </div>
-                                    <div class="control-group">
-                                       <label class="control-label">Phone:</label>
-                                       <div class="controls">
-                                          <span class="text">101234023223</span>
-                                       </div>
-                                    </div>
-                                    <div class="control-group">
-                                       <label class="control-label">Credit Card Number:</label>
-                                       <div class="controls">
-                                          <span class="text">*************1233</span>
-                                       </div>
-                                    </div>
-                                    <div class="control-group">
-                                       <label class="control-label"></label>
-                                       <div class="controls">
-                                          <label class="checkbox">
-                                          <input type="checkbox" value="" /> I confirm my account
-                                          </label>
-                                       </div>
-                                    </div>
+                                   <table width="100%" class="dbgrid">
+                                   		<thead>
+                                   			<tr>
+                                   				<th>列参数</th>
+                                   				<c:forEach items="${taskColumns}" var="taskColumn">
+                                   				<th></th>
+                                   				</c:forEach>
+                                   				<th>新增</th>
+                                   			</tr>
+                                   		</thead>
+                                   		<tbody>
+                                   			<tr>
+                                   				<td>${obj.readerTask.taskName}</td>
+                                   				<c:forEach items="${taskColumns}" var="taskColumn">
+                                   				<td>${taskColumn.readColumnName}</td>
+                                   				</c:forEach>
+                                   				<td><input name="taskColumn.readColumnName" type="text" value=""/></td>
+                                   			</tr>
+                                   			<tr>
+                                   				<td>${obj.writerTask.taskName}</td>
+                                   				<c:forEach items="${taskColumns}" var="taskColumn">
+                                   				<td>${taskColumn.writeColumnName}</td>
+                                   				</c:forEach>
+                                   				<td><input name="taskColumn.writeColumnName" type="text" value=""/></td>
+                                   			</tr>
+                                   			<tr>
+                                   				<td>原数据类别</td>
+                                   				<c:forEach items="${taskColumns}" var="taskColumn">
+                                   				<td>${taskColumn.fieldSourceType}</td>
+                                   				</c:forEach>
+                                   				<td><input name="taskColumn.fieldSourceType" type="text" value=""/></td>
+                                   			</tr>
+                                   			<tr>
+                                   				<td>字段类别</td>
+                                   				<c:forEach items="${taskColumns}" var="taskColumn">
+                                   				<td>${taskColumn.fieldType}</td>
+                                   				</c:forEach>
+                                   				<td><input name="taskColumn.fieldType" type="text" value=""/></td>
+                                   			</tr>
+                                   			<tr>
+                                   				<td>字段数据处理函数</td>
+                                   				<c:forEach items="${taskColumns}" var="taskColumn">
+                                   				<td>${taskColumn.functionName}</td>
+                                   				</c:forEach>
+                                   				<td><input name="taskColumn.functionName" type="text" value=""/></td>
+                                   			</tr>
+                                   			<tr>
+                                   				<td>关键字字段数据处理函数</td>
+                                   				<c:forEach items="${taskColumns}" var="taskColumn">
+                                   				<td>${taskColumn.pkFunctionName}</td>
+                                   				</c:forEach>
+                                   				<td><input name="taskColumn.pkFunctionName" type="text" value=""/></td>
+                                   			</tr>
+                                   			<tr>
+                                   				<td>字段处理脚本</td>
+                                   				<c:forEach items="${taskColumns}" var="taskColumn">
+                                   				<td>${taskColumn.script}</td>
+                                   				</c:forEach>
+                                   				<td><input name="taskColumn.script" type="text" value=""/></td>
+                                   			</tr>
+                                   			<tr>
+                                   				<td>脚本类别</td>
+                                   				<c:forEach items="${taskColumns}" var="taskColumn">
+                                   				<td>${taskColumn.scriptType}</td>
+                                   				</c:forEach>
+                                   				<td><input name="taskColumn.scriptType" type="text" value=""/></td>
+                                   			</tr>
+                                   			<tr>
+                                   				<td>自定义类</td>
+                                   				<c:forEach items="${taskColumns}" var="taskColumn">
+                                   				<td>${taskColumn.class_name}</td>
+                                   				</c:forEach>
+                                   				<td><input name="taskColumn.class_name" type="text" value=""/></td>
+                                   			</tr>
+                                   			<tr>
+                                   				<td>字段排序值</td>
+                                   				<c:forEach items="${taskColumns}" var="taskColumn">
+                                   				<td>${taskColumn.sortId}</td>
+                                   				</c:forEach>
+                                   				<td><input name="taskColumn.sortId" type="text" value=""/></td>
+                                   			</tr>
+                                   			<tr>
+                                   				<td>备注</td>
+                                   				<c:forEach items="${taskColumns}" var="taskColumn">
+                                   				<td>${taskColumn.remark}</td>
+                                   				</c:forEach>
+                                   				<td><input name="taskColumn.remark" type="text" value=""/></td>
+                                   			</tr>
+                                   		</tbody>
+                                   </table>
                                  </div>
                                  <div class="tab-pane" id="tab5">
-                                    <h4 class="block">确认调度</h4>
-                                    <div class="control-group">
-                                       <label class="control-label">Fullname:</label>
-                                       <div class="controls">
-                                          <span class="text">Bob Nilson</span>
-                                       </div>
-                                    </div>
-                                    <div class="control-group">
-                                       <label class="control-label">Email:</label>
-                                       <div class="controls">
-                                          <span class="text">bob@nilson.com</span>
-                                       </div>
-                                    </div>
-                                    <div class="control-group">
-                                       <label class="control-label">Phone:</label>
-                                       <div class="controls">
-                                          <span class="text">101234023223</span>
-                                       </div>
-                                    </div>
-                                    <div class="control-group">
-                                       <label class="control-label">Credit Card Number:</label>
-                                       <div class="controls">
-                                          <span class="text">*************1233</span>
-                                       </div>
-                                    </div>
-                                    <div class="control-group">
-                                       <label class="control-label"></label>
-                                       <div class="controls">
-                                          <label class="checkbox">
-                                          <input type="checkbox" value="" /> I confirm my account
-                                          </label>
-                                       </div>
-                                    </div>
+                                    <h4 class="block">调度执行</h4>
+                                  	
                                  </div>
                               </div>
                               <div class="form-actions clearfix">
@@ -266,6 +354,15 @@
 		App.activeMenu("etl/EtlJob/list");
 	});
 	
+	function showTree(){
+		$("#metaDBTree").modal();
+	}
+	
+	function selTable(){
+		$obj = $("#tree_1").find("a.selected:first");
+		$('#metaDBTree').modal('hide');
+		$obj.attr("data-id");
+	}
 
 	function setupTask(taskId){
 		
@@ -273,23 +370,17 @@
 	function delTask(taskId){
 		self.location.href="${ctx}/etl/EtlTask/delete/"+taskId+"?isEdit=true";
 	}
-	function showPlugins(pluginType) {
-		var queryObj = {
-				search_EQI_pluginType:pluginType
-			};
-			Page.doQuery(queryObj);
-		$("#pluginList").modal();
+	function showDatasources() {
+		$("#datasourceList").modal();
 	}
-	function selPlugin(obj) {
+	function selDataSource(obj) {
 			var flag = Page.selectsPrompt();
 			if (!flag)
 				return;
-
-			var obj = $("#sample_1").find("td :checkbox:checked");
-			$('input[id=plugin]').val(obj.first().attr("data-text"));
-			$('input[id=pluginId]').val(flag);
-			$('input[id=pluginType]').val(obj.first().attr("data-type"));
-			$('#pluginList').modal('hide');
+			var obj = $("#datasourceList").find("td :checkbox:checked");
+			$('input[id=datasource]').val(obj.first().attr("data-text"));
+			$('input[id=datasourceId]').val(flag);
+			$('#datasourceList').modal('hide');
 	}
 </script>
 </body>

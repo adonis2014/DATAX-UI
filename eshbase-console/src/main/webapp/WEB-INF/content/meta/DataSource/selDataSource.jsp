@@ -12,7 +12,7 @@
 					pageNo : 1,
 					pageSize : 10,
 					checkboxType : 1,
-					colName : "dbName",
+					colName : "dsName",
 					tableId : "#datasources"
 				},
 				null,

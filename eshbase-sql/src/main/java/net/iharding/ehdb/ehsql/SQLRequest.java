@@ -3,20 +3,20 @@ package net.iharding.ehdb.ehsql;
 import java.util.ArrayList;
 import java.util.List;
 
-import net.iharding.modules.meta.model.DBTable;
+import net.iharding.modules.meta.model.Dataset;
 
 public class SQLRequest {
 
-	private DBTable table;
+	private Dataset table;
 	private List<EHRequestInf> requests=new ArrayList<EHRequestInf>();
 	private String userId="Anonymous";
 	private String remote="127.0.0.1";
 	
-	public DBTable getTable() {
+	public Dataset getTable() {
 		return table;
 	}
 	
-	public void setTable(DBTable table) {
+	public void setTable(Dataset table) {
 		this.table = table;
 	}
 	

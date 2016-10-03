@@ -9,10 +9,10 @@ import org.guess.core.web.BaseController;
 import org.guess.sys.util.UserUtil;
 
 import net.iharding.modules.meta.model.DBIndex;
-import net.iharding.modules.meta.model.DBTable;
+import net.iharding.modules.meta.model.Dataset;
 import net.iharding.modules.meta.model.DataSource;
 import net.iharding.modules.meta.model.Module;
-import net.iharding.modules.meta.service.DBTableService;
+import net.iharding.modules.meta.service.DatasetService;
 import net.iharding.modules.meta.service.DataSourceService;
 import net.iharding.modules.meta.service.ModuleService;
 
@@ -45,7 +45,7 @@ public class ModuleController extends BaseController<Module>{
 	private ModuleService moduleService;
 	
 	@Autowired
-	private DBTableService dbTableService;
+	private DatasetService dbTableService;
 	
 	@Autowired
 	private DataSourceService dataSourceService;
@@ -108,7 +108,7 @@ public class ModuleController extends BaseController<Module>{
 	@RequestMapping(method = RequestMethod.GET, value = "/addModuleTable/{id}/{tableId}")
 	public ModelAndView addModuleTable(@PathVariable("id") Long moduleId,@PathVariable("tableId")Long tableId) throws Exception {
 		Module module=moduleService.get(moduleId);
-		DBTable dbtable=dbTableService.get(tableId);
+		Dataset dbtable=dbTableService.get(tableId);
 		module.getTables().add(dbtable);
 		moduleService.save(module);
 		ModelAndView mav = new ModelAndView(editView);
@@ -119,7 +119,7 @@ public class ModuleController extends BaseController<Module>{
 	@RequestMapping(method = RequestMethod.GET, value = "/removeModuleTable/{id}/{tableId}")
 	public ModelAndView removeModuleTable(@PathVariable("id") Long moduleId,@PathVariable("tableId")Long tableId) throws Exception {
 		Module module=moduleService.get(moduleId);
-		DBTable dbtable=dbTableService.get(tableId);
+		Dataset dbtable=dbTableService.get(tableId);
 		module.getTables().remove(dbtable);
 		moduleService.save(module);
 		ModelAndView mav = new ModelAndView(editView);

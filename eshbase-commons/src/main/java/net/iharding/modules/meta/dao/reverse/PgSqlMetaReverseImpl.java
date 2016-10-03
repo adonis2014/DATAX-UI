@@ -11,7 +11,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import net.iharding.modules.meta.model.DBTable;
+import net.iharding.modules.meta.model.Dataset;
 import net.iharding.modules.meta.model.DataSource;
 import net.iharding.modules.meta.model.Database;
 import net.iharding.modules.meta.model.DbColumn;
@@ -59,7 +59,7 @@ public class PgSqlMetaReverseImpl extends JDBCMetaReverse {
 			while (rs.next()) {
 				String tableName = rs.getString("TABLE_NAME");
 				if (StringUtils.isNotEmpty(tableName)) {
-					DBTable table = this.reverseTableMeta(datasource, mproes, cuser, db, dmd, rs, tableName);
+					Dataset table = this.reverseTableMeta(datasource, mproes, cuser, db, dmd, rs, tableName);
 					db.addTable(table);
 				}
 			}
@@ -78,12 +78,12 @@ public class PgSqlMetaReverseImpl extends JDBCMetaReverse {
 	}
 
 	@Override
-	public DBTable reverseTableMeta(DataSource datasource, List<MetaProperty> mproes, User cuser, String dbName, String tableName) {
+	public Dataset reverseTableMeta(DataSource datasource, List<MetaProperty> mproes, User cuser, String dbName, String tableName) {
 		Connection conn = null;
 		ResultSet rsSchema = null;
 		ResultSet rs = null;
 		ResultSet rsColumn = null;
-		DBTable table =null;
+		Dataset table =null;
 		try {
 			conn = getConnection(mproes);
 			DatabaseMetaData dmd = conn.getMetaData();
@@ -121,14 +121,14 @@ public class PgSqlMetaReverseImpl extends JDBCMetaReverse {
 		return table;
 	}
 	
-	private String getResults(List<MetaProperty> mproes,DBTable table){
+	private String getResults(List<MetaProperty> mproes,Dataset table){
 		Statement stmt = null;
 		ResultSet rs = null;
 		Connection conn = null;
 		try {
 			conn = getConnection(mproes);
 			stmt=conn.createStatement();
-			rs=stmt.executeQuery("select * from "+table.getTableName());
+			rs=stmt.executeQuery("select * from "+table.getDatasetName());
 			List<Map<String,String>> rows=new ArrayList<Map<String,String>>();
 			int i=0;
 			while (rs.next()) {
@@ -152,20 +152,20 @@ public class PgSqlMetaReverseImpl extends JDBCMetaReverse {
 	}
 
 
-	private DBTable reverseTableMeta(DataSource datasource, List<MetaProperty> mproes, User cuser, Database db, DatabaseMetaData dmd, ResultSet rs, String tableName) {
+	private Dataset reverseTableMeta(DataSource datasource, List<MetaProperty> mproes, User cuser, Database db, DatabaseMetaData dmd, ResultSet rs, String tableName) {
 		ResultSet rsColumn = null;
-		DBTable table = null;
+		Dataset table = null;
 		try {
 			if (StringUtils.isNotEmpty(tableName)) {
 				table = db.getDBTable(tableName, cuser);// new DBTable();
-				table.setTableName(tableName);
+				table.setDatasetName(tableName);
 				table.setCheckLabel(1);
 				String tablecomment = rs.getString("REMARKS");
 				if (StringUtils.isNotEmpty(tablecomment)) {
-					table.setTablePname(tablecomment);
+					table.setDatasetPname(tablecomment);
 					table.setRemark(tablecomment);
 				} else {
-					table.setTablePname(tableName);
+					table.setDatasetPname(tableName);
 					table.setRemark(tableName);
 				}
 				String tableType = rs.getString("TABLE_TYPE");

@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import net.iharding.ehdb.exception.NotSupportedException;
-import net.iharding.modules.meta.model.DBTable;
+import net.iharding.modules.meta.model.Dataset;
 import net.iharding.modules.meta.model.DbColumn;
 import net.sf.jsqlparser.expression.Expression;
 import net.sf.jsqlparser.expression.Function;
@@ -51,7 +51,7 @@ public class AggMaker {
 	 * @throws SqlParseException
 	 *             in case of unrecognized function
 	 */
-	public AbstractAggregationBuilder makeFieldAgg(DBTable dbtable, Function field) throws NotSupportedException {
+	public AbstractAggregationBuilder makeFieldAgg(Dataset dbtable, Function field) throws NotSupportedException {
 		// groupMap.put(field.getAlias(), new KVValue("FIELD", parent));
 		Column column = (Column) field.getParameters().getExpressions().get(0);
 		DbColumn dbColumn = dbtable.getDbColumn(column.getColumnName());
@@ -75,7 +75,7 @@ public class AggMaker {
 		}
 	}
 
-	public ValuesSourceAggregationBuilder<?> makeFunctionGroup(DBTable dbtable, Function field) throws NotSupportedException {
+	public ValuesSourceAggregationBuilder<?> makeFunctionGroup(Dataset dbtable, Function field) throws NotSupportedException {
 		switch (field.getName().toLowerCase()) {
 		case "range":
 			return rangeBuilder(dbtable, field);
@@ -105,7 +105,7 @@ public class AggMaker {
 	 * @param field
 	 * @return
 	 */
-	private ValuesSourceAggregationBuilder<?> dateRange(DBTable dbtable, Function field) {
+	private ValuesSourceAggregationBuilder<?> dateRange(Dataset dbtable, Function field) {
 		String column = field.getParameters().getExpressions().get(0).toString();
 		DbColumn dbColumn = dbtable.getDbColumn(column);
 		DateRangeBuilder dateRange = AggregationBuilders.dateRange(dbColumn.getColumnName()).format(TIME_FARMAT);
@@ -144,7 +144,7 @@ public class AggMaker {
 	 * @return
 	 * @throws SqlParseException
 	 */
-	private DateHistogramBuilder dateHistogram(DBTable dbtable, Function field) throws NotSupportedException {
+	private DateHistogramBuilder dateHistogram(Dataset dbtable, Function field) throws NotSupportedException {
 		String column = field.getParameters().getExpressions().get(0).toString();
 		DbColumn dbColumn = dbtable.getDbColumn(column);
 		DateHistogramBuilder dateHistogram = AggregationBuilders.dateHistogram(dbColumn.getFieldCode()).format(TIME_FARMAT);
@@ -178,7 +178,7 @@ public class AggMaker {
 		return dateHistogram;
 	}
 
-	private HistogramBuilder histogram(DBTable dbtable, Function field) throws NotSupportedException {
+	private HistogramBuilder histogram(Dataset dbtable, Function field) throws NotSupportedException {
 		String column = field.getParameters().getExpressions().get(0).toString();
 		DbColumn dbColumn = dbtable.getDbColumn(column);
 		HistogramBuilder histogram = AggregationBuilders.histogram(dbColumn.getColumnName());
@@ -232,7 +232,7 @@ public class AggMaker {
 	 * @param field
 	 * @return
 	 */
-	private RangeBuilder rangeBuilder(DBTable dbtable, Function field) {
+	private RangeBuilder rangeBuilder(Dataset dbtable, Function field) {
 		int leng = field.getParameters().getExpressions().size();
 		// 第一个参数为字段名
 		Column column = (Column) field.getParameters().getExpressions().get(0);

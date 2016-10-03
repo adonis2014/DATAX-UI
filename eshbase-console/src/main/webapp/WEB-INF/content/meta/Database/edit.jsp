@@ -74,8 +74,8 @@
 											<tbody>
 												<c:forEach var="table" items="${obj.tables}">
 													<tr>
-														<td><a href='${ctx}/meta/DBTable/show/${table.id}' >${table.tableName}</a></td>
-														<td><input type="text"  name="tablePname_${table.id}" value="${table.tablePname}"/></td>
+														<td><a href='${ctx}/meta/Dataset/show/${table.id}' >${table.datasetName}</a></td>
+														<td><input type="text"  name="tablePname_${table.id}" value="${table.datasetPname}"/></td>
 														<td><fmt:formatDate value="${table.updateDate}"  pattern="yyyy-MM-dd HH:mm"/> </td>
 														<td><input type="text"  name="remark_${table.id}" value="${table.remark}"/></td>
 													</tr>

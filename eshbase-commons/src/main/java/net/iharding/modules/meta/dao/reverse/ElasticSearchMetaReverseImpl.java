@@ -11,7 +11,7 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 import net.iharding.modules.meta.dao.MetaReverseDao;
-import net.iharding.modules.meta.model.DBTable;
+import net.iharding.modules.meta.model.Dataset;
 import net.iharding.modules.meta.model.DataSource;
 import net.iharding.modules.meta.model.Database;
 import net.iharding.modules.meta.model.DbColumn;
@@ -73,10 +73,10 @@ public class ElasticSearchMetaReverseImpl implements MetaReverseDao {
 					ImmutableOpenMap<String, MappingMetaData> mappings = getIndexResponse.mappings().get(index);
 					if (mappings != null) {
 						for (ObjectObjectCursor<String, MappingMetaData> typeEntry : mappings) {
-							DBTable table =db.getDBTable(typeEntry.key,cuser);// new DBTable();
-							table.setTableName(typeEntry.key);
+							Dataset table =db.getDBTable(typeEntry.key,cuser);// new DBTable();
+							table.setDatasetName(typeEntry.key);
 							table.setCheckLabel(1);
-							table.setTablePname(typeEntry.key);
+							table.setDatasetPname(typeEntry.key);
 							table.setTableType(1);
 							table.setDatabase(db);
 							table.setRemark("");
@@ -185,7 +185,7 @@ public class ElasticSearchMetaReverseImpl implements MetaReverseDao {
 	}
 
 	@Override
-	public DBTable reverseTableMeta(DataSource datasource, List<MetaProperty> mproes, User cuser, String dbName, String tableName) {
+	public Dataset reverseTableMeta(DataSource datasource, List<MetaProperty> mproes, User cuser, String dbName, String tableName) {
 		// TODO Auto-generated method stub
 		return null;
 	}

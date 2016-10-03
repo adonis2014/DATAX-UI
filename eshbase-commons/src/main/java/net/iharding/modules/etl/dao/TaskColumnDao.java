@@ -1,7 +1,10 @@
 package net.iharding.modules.etl.dao;
 
-import org.guess.core.orm.EntityDao;
+import java.util.List;
+
 import net.iharding.modules.etl.model.TaskColumn;
+
+import org.guess.core.orm.EntityDao;
 
 /**
 * 
@@ -12,5 +15,10 @@ import net.iharding.modules.etl.model.TaskColumn;
 *
 */
 public interface TaskColumnDao extends EntityDao<TaskColumn, Long>{
-	
+	/**
+	 * 获取任务的字段对应数据
+	 * @param readTaskId
+	 * @return
+	 */
+	public List<TaskColumn> getTaskColumns(Long readTaskId);
 }

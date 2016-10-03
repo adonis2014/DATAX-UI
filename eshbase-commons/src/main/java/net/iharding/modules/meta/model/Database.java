@@ -92,9 +92,9 @@ public class Database extends IdEntity {
 	 */
 	private String remark;
 	
-	@OneToMany(targetEntity=DBTable.class,fetch = FetchType.LAZY,cascade=CascadeType.ALL,mappedBy="database")
+	@OneToMany(targetEntity=Dataset.class,fetch = FetchType.LAZY,cascade=CascadeType.ALL,mappedBy="database")
 	@OrderBy("id ASC")
-	private Set<DBTable> tables;
+	private Set<Dataset> tables;
 	
 	
 	
@@ -146,11 +146,11 @@ public class Database extends IdEntity {
 		this.creater = creater;
 	}
 
-	public Set<DBTable> getTables() {
+	public Set<Dataset> getTables() {
 		return tables;
 	}
 
-	public void setTables(Set<DBTable> tables) {
+	public void setTables(Set<Dataset> tables) {
 		this.tables = tables;
 	}
 
@@ -186,24 +186,24 @@ public class Database extends IdEntity {
 		this.remark = remark;
 	}
 	
-	public void addTable(DBTable table) {
+	public void addTable(Dataset table) {
 		if (tables == null) {
-			tables = new HashSet<DBTable>();
+			tables = new HashSet<Dataset>();
 		}
 		tables.add(table);
 	}
 
-	public DBTable getDBTable(String tableName,User cuser) {
+	public Dataset getDBTable(String tableName,User cuser) {
 		if (tables!=null){
-			for(DBTable tdb:tables){
-				if ( tdb.getTableName().equalsIgnoreCase(tableName)){
+			for(Dataset tdb:tables){
+				if ( tdb.getDatasetName().equalsIgnoreCase(tableName)){
 					tdb.setUpdater(cuser);
 					tdb.setUpdateDate(new Date());
 					return tdb;
 				}
 			}
 		}
-		DBTable table=new DBTable();
+		Dataset table=new Dataset();
 		table.setCreateDate(new Date());
 		try{
 			table.setCreater(cuser);

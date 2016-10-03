@@ -79,8 +79,8 @@
 											<tbody>
 												<c:forEach var="table" items="${obj.tables}">
 													<tr>
-														<td><a href='${ctx}/meta/DBTable/show/${table.id}' >${table.tableName}</a></td>
-														<td><a href='${ctx}/meta/DBTable/show/${table.id}' >${table.tablePname}</a></td>
+														<td><a href='${ctx}/meta/Dataset/show/${table.id}' >${table.datasetName}</a></td>
+														<td><a href='${ctx}/meta/Dataset/show/${table.id}' >${table.datasetPname}</a></td>
 														<td>${table.updateDate}</td>
 														<td>${table.remark}</td>
 													</tr>

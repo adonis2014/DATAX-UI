@@ -40,11 +40,11 @@ public class DBIndex extends IdEntity {
 	/**
 	 * 数据表
 	 */
-	@ManyToMany(cascade = { CascadeType.PERSIST, CascadeType.MERGE }, targetEntity = DBTable.class)
+	@ManyToMany(cascade = { CascadeType.PERSIST, CascadeType.MERGE }, targetEntity = Dataset.class)
 	@JoinTable(name = "meta_table_index", joinColumns = { @JoinColumn(name = "index_id") }, inverseJoinColumns = { @JoinColumn(name = "table_id") })
 	@JsonIgnoreProperties(value = { "hibernateLazyInitializer","handler","datasource"})
 	@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
-	private Set<DBTable> tables = new HashSet<DBTable>(0);
+	private Set<Dataset> tables = new HashSet<Dataset>(0);
 	/**
 	 * 索引库名
 	 */
@@ -124,11 +124,11 @@ public class DBIndex extends IdEntity {
 		this.checkLabel = checkLabel;
 	}
 	
-	public Set<DBTable> getTables() {
+	public Set<Dataset> getTables() {
 		return tables;
 	}
 
-	public void setTables(Set<DBTable> tables) {
+	public void setTables(Set<Dataset> tables) {
 		this.tables = tables;
 	}
 

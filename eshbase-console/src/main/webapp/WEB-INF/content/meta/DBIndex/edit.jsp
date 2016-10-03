@@ -6,7 +6,7 @@
 <title>${pageTitle }</title>
 </head>
 <body>
-<%@ include file="/WEB-INF/content/meta/DBTable/selTable.jsp" %>
+<%@ include file="/WEB-INF/content/meta/Dataset/selTable.jsp" %>
 	<div class="page-content">
 		<div class="container-fluid">
 			<!-- 页面导航 -->
@@ -76,8 +76,8 @@
 									<c:forEach items="${obj.tables}" var="table">
 										<tr>
 											<td><a href="${ctx}/meta/Database/show/${table.database.id}">${table.database.dbname}</a></td>
-											<td><a href='${ctx}/meta/DBTable/show/${table.id}' >${table.tableName}</a></td>
-											<td>${table.tablePname}</td>
+											<td><a href='${ctx}/meta/Dataset/show/${table.id}' >${table.datasetName}</a></td>
+											<td>${table.datasetPname}</td>
 											<td>${table.creater.name}</td>
 											<td>${table.updater.name}</td>
 											<td>${table.updateDate}</td>
