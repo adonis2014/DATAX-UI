@@ -22,10 +22,9 @@
 		var li = $("<li></li>");
 		var a = $("<a href='javascript:void(0);' onclick='javascript:selTree(this);' data-id="+data.id+"></a>");
 		if(flag){
-			
-			a.attr("data-role","branch").attr("data-toggle","branch").attr("data-value","Bootstrap_Tree").addClass("tree-toggle").text(data.name+"-"+data.code+"["+data.type+"]");
+			a.attr("data-role","branch").attr("data-toggle","branch").attr("data-value","Bootstrap_Tree").addClass("tree-toggle").text(data.name+"["+data.code+"]");
 		}else{
-			a.attr("data-role","leaf").append($("<i class=icon-cog></i>")).append(data.name+"-"+data.code+"["+data.type+"]");
+			a.attr("data-role","leaf").append($("<i class=icon-cog></i>")).append(data.name+"["+data.code+"]");
 		}
 		var ul = "";
 		if(flag){

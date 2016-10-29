@@ -3,6 +3,7 @@
 	<excludes>
 		<pattern>/cms/article/view/*</pattern>
 		<pattern>/upload/*</pattern>
+		<pattern>/etl/EtlJob/params/*</pattern>
 	</excludes>
 
 	<decorator name="default" page="/WEB-INF/content/common/layouts/default.jsp">

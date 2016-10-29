@@ -12,10 +12,9 @@
    <link rel="stylesheet" href="${ctx}/assets/comp/bootstrap-toggle-buttons/static/stylesheets/bootstrap-toggle-buttons.css" />
    <link rel="stylesheet" href="${ctx}/assets/comp/data-tables/DT_bootstrap.css" />
    <link rel="stylesheet" type="text/css" href="${ctx}/assets/comp/bootstrap-daterangepicker/daterangepicker.css" />
-   <link rel="shortcut icon" href="favicon.ico" />
+   <link rel="shortcut icon" href="${ctx}/assets/favicon.ico" />
 </head>
 <body>
-
 <%@ include file="/WEB-INF/content/meta/Dataset/selTable.jsp" %>
 	<div class="page-content">
 		<div class="container-fluid">
@@ -38,7 +37,7 @@
                         </div>
                      </div>
                      <div class="portlet-body form">
-                        <form action="#" class="form-horizontal">
+                        <form action="${ctx}/etl/EtlJob/edit" class="form-horizontal" method="POST"  id="form_wizard">
                            <div class="form-wizard">
                               <div class="navbar steps">
                                  <div class="navbar-inner">
@@ -55,24 +54,19 @@
                                           <span class="desc"><i class="icon-ok"></i>读取设置</span>   
                                           </a>
                                        </li>
-                                       <li class="span2">
+                                       <li class="span3">
                                           <a href="#tab3" data-toggle="tab" class="step">
                                           <span class="number">3</span>
                                           <span class="desc"><i class="icon-ok"></i>写入设置</span>   
                                           </a>
                                        </li>
-                                       <li class="span2">
+                                       <li class="span3">
                                           <a href="#tab4" data-toggle="tab" class="step">
                                           <span class="number">4</span>
                                           <span class="desc"><i class="icon-ok"></i>字段映射</span>   
                                           </a> 
                                        </li>
-                                        <li class="span2">
-                                          <a href="#tab5" data-toggle="tab" class="step">
-                                          <span class="number">5</span>
-                                          <span class="desc"><i class="icon-ok"></i>调度执行</span>   
-                                          </a> 
-                                       </li>
+                                      
                                     </ul>
                                  </div>
                               </div>
@@ -81,7 +75,6 @@
                               </div>
                               <div class="tab-content">
                                  <div class="tab-pane active" id="tab1">
-                                 <h4 class="block">基本信息</h4>
                                        <input type="hidden" value="${obj.id}" name="id">
 										<table class="dbform" width="100%">
 											<tr>
@@ -117,14 +110,13 @@
 										</table>
                                  </div>
                                  <div class="tab-pane" id="tab2">
-                                    <h4 class="block">读取任务设置</h4>
                                     <input type="hidden" value="${obj.readerTask.id}" name="readtask.id" id="taskId"/>
-                                    <input type="hidden" value="${obj.readerTask.dataSource.id}" name="readtask.datasource.id" id="datasourceId"/>
+                                    <input type="hidden" value="${obj.readerTask.dataset.id}" name="readtask.dataset.id" id="datasetId"/>
                                     <table width="100%" class="dbform">
                                     	<tr>
                                     		<th class="fieldtitle">插件</th>
                                     		<td class="fieldvalue">
-                                    			<select name="readtask.plugin.id" id="readtask.pluginId">
+                                    			<select name="readtask.plugin.id" id="readtaskPluginId" onchange="javascript:changeWizard(1);">
                                     				<c:forEach items="${readPlguins}" var="plugin">
                                     				<option value="${plugin.id}" <c:if test="${plugin.id==obj.readerTask.plugin.id}">selected</c:if>>${plugin.pluginName}</option>
                                     				</c:forEach>
@@ -135,9 +127,9 @@
                                     	</tr>
                                     	<tr>
                                     		<th class="fieldtitle">任务名</th>
-                                    		<td class="fieldvalue"><input type="text" style="width:95%;"  validate="{required:true}" value="${obj.readerTask.taskName}" name="readertask.taskName"/></td>
-                                    		<th class="fieldtitle">数据集</th> <input type="hidden" name="readtask.datasetId" />
-                                    		<td class="fieldvalue"><input name="readtask.datasetName" id="rdatasetName" value=""/></td>
+                                    		<td class="fieldvalue"><input type="text" style="width:95%;"  validate="{required:true}" id="readerTaskName" value="${obj.readerTask.taskName}" name="readertask.taskName"/></td>
+                                    		<th class="fieldtitle">数据集</th> <input type="hidden" value="${obj.readerTask.datasetId}" id="rdatasetId" name="readtask.datasetId" />
+                                    		<td class="fieldvalue"><input name="readtask.datasetName" id="rdatasetName" value="${obj.readerTask.dataset.datasetPname}[${obj.readerTask.dataset.datasetName}]"  onfocus="javascript:showTree(1);"/></td>
                                     	</tr>
                                     	<tr>
                                     		<th class="fieldtitle">备注</th>
@@ -145,43 +137,23 @@
                                     	</tr>
                                     	<tr>
                                     		<td colspan="4">
-                                    			<div id="taskParamters">
-	                                    			<table width="100%" class="dbgrid">
-														<thead>
-															<tr>
-																<th>插件参数ID</th>
-																<th>参数Key</th>
-																<th>参数值</th>
-																<th>备注</th>
-															</tr>
-														</thead>
-														<tbody>
-														<c:forEach items="${obj.readerTask.taskParams}" var="tparam">
-														<tr>
-															<td>${tparam.pluginParamId}</td>
-															<td>${tparam.paramKey}</td>
-															<td><input type="text" name="r_paramValue_${tparam.paramKey}" value="${tparam.paramValue}"/></td>
-															<td><input type="text" name="r_paramRemark_${tparam.paramKey}" value="${tparam.remark}"/></td>
-														</tr>
-														</c:forEach>
-														</tbody>
-													</table>
+                                    			<div id="readerTaskParamters">
+	                                    			
                                     			</div>
                                     		</td>
                                     	</tr>
                                     </table>
                                  </div>
                                  <div class="tab-pane" id="tab3">
-                                    <h4 class="block">写入任务设置</h4>
                                    <input type="hidden" value="" name="writertask.id" id="writertaskId"/>
-                                    <input type="hidden" value="" name="writertask.datasource.id" id="writerDatasourceId"/>
+                                    <input type="hidden" value="" name="writertask.dataset.id" id="writerDatasetId"/>
                                     <table width="100%" class="dbform">
                                     	<tr>
                                     		<th class="fieldtitle">插件</th>
                                     		<td class="fieldvalue">
-                                    		<select name="writertask.plugin.id" id="pluginId">
+                                    		<select name="writertask.plugin.id" id="writertaskPluginId"  onchange="javascript:changeWizard(2);">
                                     				<c:forEach items="${writePlguins}" var="plugin">
-                                    				<option value="${plugin.id}" <c:if test="${plugin.id==writerTask.plugin.id}">selected</c:if>>${plugin.pluginName}</option>
+                                    				<option value="${plugin.id}" <c:if test="${plugin.id==obj.writerTask.plugin.id}">selected</c:if>>${plugin.pluginName}</option>
                                     				</c:forEach>
                                     			</select></td>
 											<th class="fieldtitle">插件类别</th>
@@ -189,144 +161,34 @@
                                     	</tr>
                                     	<tr>
                                     		<th class="fieldtitle">任务名</th>
-                                    		<td class="fieldvalue"><input type="text" style="width:95%;"  validate="{required:true}" value="${writerTask.taskName}" name="writertask.taskName"/></td>
-                                    		<th class="fieldtitle">数据集</th> <input type="hidden" name="writertask.datasetId" />
-                                    		<td class="fieldvalue"><input name="writertask.datasetName" id="wdatasetName" onfocus="javascript:showTree();" value=""/></td>
+                                    		<td class="fieldvalue"><input type="text" style="width:95%;"  validate="{required:true}"  id="writerTaskName" value="${obj.writerTask.taskName}" name="writertask.taskName"/></td>
+                                    		<th class="fieldtitle">数据集</th> <input type="hidden"  value="${obj.writerTask.datasetId}"  id="wdatasetId" name="writertask.datasetId" />
+                                    		<td class="fieldvalue"><input name="writertask.datasetName" value="${obj.writerTask.dataset.datasetPname}[${obj.writerTask.dataset.datasetName}]" id="wdatasetName" onfocus="javascript:showTree(2);" value=""/></td>
                                     	</tr>
                                     	<tr>
                                     		<th class="fieldtitle">备注</th>
-											<td colspan="3" class="fieldvalue"><input type="text"  style="width:95%;"  value="${writerTask.remark}" name="writertask.remark"/></td>
+											<td colspan="3" class="fieldvalue"><input type="text"  style="width:95%;"  value="${obj.writerTask.remark}" name="writertask.remark"/></td>
                                     	</tr>
                                     	<tr>
                                     		<td colspan="4">
-                                    			<div id="taskParamters">
-	                                    			<table width="100%" class="dbgrid">
-														<thead>
-															<tr>
-																<th>插件参数ID</th>
-																<th>参数Key</th>
-																<th>参数值</th>
-																<th>备注</th>
-															</tr>
-														</thead>
-														<tbody>
-														<c:forEach items="${obj.writerTask.taskParams}" var="tparam">
-														<tr>
-															<td>${tparam.pluginParamId}</td>
-															<td>${tparam.paramKey}</td>
-															<td><input type="text" name="w_paramValue_${tparam.paramKey}" value="${tparam.paramValue}"/></td>
-															<td><input type="text" name="w_paramRemark_${tparam.paramKey}" value="${tparam.remark}"/></td>
-														</tr>
-														</c:forEach>
-														</tbody>
-													</table>
+                                    			<div id="writerTaskParamters">
+	                                    			
                                     			</div>
                                     		</td>
                                     	</tr>
                                     </table>
                                  </div>
                                  <div class="tab-pane" id="tab4">
-                                    <h4 class="block">字段映射</h4>
-                                   <table width="100%" class="dbgrid">
-                                   		<thead>
-                                   			<tr>
-                                   				<th>列参数</th>
-                                   				<c:forEach items="${taskColumns}" var="taskColumn">
-                                   				<th></th>
-                                   				</c:forEach>
-                                   				<th>新增</th>
-                                   			</tr>
-                                   		</thead>
-                                   		<tbody>
-                                   			<tr>
-                                   				<td>${obj.readerTask.taskName}</td>
-                                   				<c:forEach items="${taskColumns}" var="taskColumn">
-                                   				<td>${taskColumn.readColumnName}</td>
-                                   				</c:forEach>
-                                   				<td><input name="taskColumn.readColumnName" type="text" value=""/></td>
-                                   			</tr>
-                                   			<tr>
-                                   				<td>${obj.writerTask.taskName}</td>
-                                   				<c:forEach items="${taskColumns}" var="taskColumn">
-                                   				<td>${taskColumn.writeColumnName}</td>
-                                   				</c:forEach>
-                                   				<td><input name="taskColumn.writeColumnName" type="text" value=""/></td>
-                                   			</tr>
-                                   			<tr>
-                                   				<td>原数据类别</td>
-                                   				<c:forEach items="${taskColumns}" var="taskColumn">
-                                   				<td>${taskColumn.fieldSourceType}</td>
-                                   				</c:forEach>
-                                   				<td><input name="taskColumn.fieldSourceType" type="text" value=""/></td>
-                                   			</tr>
-                                   			<tr>
-                                   				<td>字段类别</td>
-                                   				<c:forEach items="${taskColumns}" var="taskColumn">
-                                   				<td>${taskColumn.fieldType}</td>
-                                   				</c:forEach>
-                                   				<td><input name="taskColumn.fieldType" type="text" value=""/></td>
-                                   			</tr>
-                                   			<tr>
-                                   				<td>字段数据处理函数</td>
-                                   				<c:forEach items="${taskColumns}" var="taskColumn">
-                                   				<td>${taskColumn.functionName}</td>
-                                   				</c:forEach>
-                                   				<td><input name="taskColumn.functionName" type="text" value=""/></td>
-                                   			</tr>
-                                   			<tr>
-                                   				<td>关键字字段数据处理函数</td>
-                                   				<c:forEach items="${taskColumns}" var="taskColumn">
-                                   				<td>${taskColumn.pkFunctionName}</td>
-                                   				</c:forEach>
-                                   				<td><input name="taskColumn.pkFunctionName" type="text" value=""/></td>
-                                   			</tr>
-                                   			<tr>
-                                   				<td>字段处理脚本</td>
-                                   				<c:forEach items="${taskColumns}" var="taskColumn">
-                                   				<td>${taskColumn.script}</td>
-                                   				</c:forEach>
-                                   				<td><input name="taskColumn.script" type="text" value=""/></td>
-                                   			</tr>
-                                   			<tr>
-                                   				<td>脚本类别</td>
-                                   				<c:forEach items="${taskColumns}" var="taskColumn">
-                                   				<td>${taskColumn.scriptType}</td>
-                                   				</c:forEach>
-                                   				<td><input name="taskColumn.scriptType" type="text" value=""/></td>
-                                   			</tr>
-                                   			<tr>
-                                   				<td>自定义类</td>
-                                   				<c:forEach items="${taskColumns}" var="taskColumn">
-                                   				<td>${taskColumn.class_name}</td>
-                                   				</c:forEach>
-                                   				<td><input name="taskColumn.class_name" type="text" value=""/></td>
-                                   			</tr>
-                                   			<tr>
-                                   				<td>字段排序值</td>
-                                   				<c:forEach items="${taskColumns}" var="taskColumn">
-                                   				<td>${taskColumn.sortId}</td>
-                                   				</c:forEach>
-                                   				<td><input name="taskColumn.sortId" type="text" value=""/></td>
-                                   			</tr>
-                                   			<tr>
-                                   				<td>备注</td>
-                                   				<c:forEach items="${taskColumns}" var="taskColumn">
-                                   				<td>${taskColumn.remark}</td>
-                                   				</c:forEach>
-                                   				<td><input name="taskColumn.remark" type="text" value=""/></td>
-                                   			</tr>
-                                   		</tbody>
-                                   </table>
+                                   	<div id="taskColumns" style="overflow:auto;width:100%;">
+	                                 </div>
                                  </div>
-                                 <div class="tab-pane" id="tab5">
-                                    <h4 class="block">调度执行</h4>
-                                  	
-                                 </div>
+                                
                               </div>
                               <div class="form-actions clearfix">
                                  <a href="javascript:;" class="btn button-previous"> <i class="m-icon-swapleft"></i> 上一步  </a>
                                  <a href="javascript:;" class="btn blue button-next"> 下一步 <i class="m-icon-swapright m-icon-white"></i> </a>
-                                 <a href="javascript:;" class="btn green button-submit"> 提交 <i class="m-icon-swapright m-icon-white"></i> </a>
+                                 <a href="javascript:;" class="btn green button-addpair"> 增加行 <i class="m-icon-white"></i> </a>
+                                 <a href="javascript:;" class="btn green button-submit"> 提交 <i class="m-icon-white"></i> </a>
                               </div>
                            </div>
                         </form>
@@ -338,6 +200,8 @@
 		</div>
 	</div>
 <%@ include file="/WEB-INF/content/common/plugins/jquery-validation.jsp"%>
+<%@ include file="/WEB-INF/content/common/plugins/datepicker.jsp"%>
+
    <script src="${ctx}/assets/comp/bootstrap-wizard/jquery.bootstrap.wizard.min.js"></script>
    <script type="text/javascript" src="${ctx}/assets/comp/bootstrap-wysihtml5/wysihtml5-0.3.0.js"></script> 
    <script type="text/javascript" src="${ctx}/assets/comp/bootstrap-wysihtml5/bootstrap-wysihtml5.js"></script>
@@ -347,21 +211,83 @@
    <script type="text/javascript" src="${ctx}/assets/comp/bootstrap-daterangepicker/daterangepicker.js"></script> 
    <script type="text/javascript" src="${ctx}/assets/comp/bootstrap-colorpicker/js/bootstrap-colorpicker.js"></script>  
    <script type="text/javascript" src="${ctx}/assets/comp/bootstrap-timepicker/js/bootstrap-timepicker.js"></script>
+   	<%@ include file="/WEB-INF/content/common/plugins/bootstrap-tree.jsp"%>
    
 
 <script type="text/javascript">
 	$(function(){
 		App.activeMenu("etl/EtlJob/list");
+		$('#form_wizard_1').bootstrapWizard('show',${empty param.tabid?0:param.tabid});
+		changeWizard(1);
+		changeWizard(2);
+		changeDataset();
 	});
 	
-	function showTree(){
+	function showTab(index){
+		if (index==3){
+			changeDataset();
+             $('#form_wizard_1').find('.button-addpair').show();
+		}else{
+			$('#form_wizard_1').find('.button-addpair').hide();
+		}
+	}
+	
+	var datasetype=1;
+	function showTree(dtype){
+		datasetype=dtype;
 		$("#metaDBTree").modal();
+	}
+	
+	function submit_form_wizard(){
+		form_wizard.action="${ctx}/etl/EtlJob/edit";
+		form_wizard.submit();
+	}
+	
+	function changeDataset(){
+		$("#taskColumns").empty();
+		if ($("#rdatasetId").val()){
+		$("#taskColumns").load(
+				"${ctx}/etl/EtlJob/params/taskColumns",
+				{rdatasetId: $("#rdatasetId").val(),
+					wdatasetId:$("#wdatasetId").val()},
+				function(resp,status){
+				  
+				});  
+		}
+	}
+	
+	function changeWizard(id){
+		if (id==1){
+			$("#readerTaskParamters").empty();
+			$("#readerTaskParamters").load(
+					"${ctx}/etl/EtlJob/params/readerTaskParams",
+					{readtaskPluginId: $("#readtaskPluginId").val()},
+					function(resp,status){
+					   if ($("#readerTaskName").val()=='')$("#readerTaskName").val($("#readtaskPluginId option:selected").text());
+					});  
+		}else{
+			$("#writerTaskParamters").empty();
+			$("#writerTaskParamters").load(
+					"${ctx}/etl/EtlJob/params/writerTaskParams",
+					{writertaskPluginId: $("#writertaskPluginId").val()},
+					function(resp,status){
+					   if ($("#writerTaskName").val()=='')$("#writerTaskName").val($("#writertaskPluginId option:selected").text());
+					}); 
+		}
+		 
 	}
 	
 	function selTable(){
 		$obj = $("#tree_1").find("a.selected:first");
 		$('#metaDBTree').modal('hide');
-		$obj.attr("data-id");
+		if (datasetype==1){
+			$('#rdatasetName').val($obj.text());
+			$('#rdatasetId').val($obj.attr("data-id"));
+			
+		}else{
+			$('#wdatasetName').val($obj.text());
+			$('#wdatasetId').val($obj.attr("data-id"));
+		}
 	}
 
 	function setupTask(taskId){
@@ -370,18 +296,7 @@
 	function delTask(taskId){
 		self.location.href="${ctx}/etl/EtlTask/delete/"+taskId+"?isEdit=true";
 	}
-	function showDatasources() {
-		$("#datasourceList").modal();
-	}
-	function selDataSource(obj) {
-			var flag = Page.selectsPrompt();
-			if (!flag)
-				return;
-			var obj = $("#datasourceList").find("td :checkbox:checked");
-			$('input[id=datasource]').val(obj.first().attr("data-text"));
-			$('input[id=datasourceId]').val(flag);
-			$('#datasourceList').modal('hide');
-	}
+	
 </script>
 </body>
 </html>

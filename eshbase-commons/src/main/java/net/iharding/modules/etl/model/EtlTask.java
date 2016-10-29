@@ -8,12 +8,17 @@ import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OrderBy;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
+import net.iharding.core.jsonview.IdView;
 import net.iharding.core.orm.IdEntity;
 import net.iharding.modules.meta.model.Dataset;
 
@@ -24,6 +29,7 @@ import org.hibernate.annotations.NotFound;
 import org.hibernate.annotations.NotFoundAction;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonView;
 
 /**
  * ETL任务Entity
@@ -34,8 +40,22 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 @Table(name = "etl_task")
 @JsonIgnoreProperties(value = { "taskParams","job"})
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
-public class EtlTask extends IdEntity {
+public class EtlTask  {
 
+	@Id  
+	@SequenceGenerator(name = "seq_etl_task", allocationSize = 1, initialValue = 1, sequenceName = "seq_etl_task")  
+	@GeneratedValue(generator = "seq_etl_task", strategy = GenerationType.SEQUENCE)  
+	@JsonView(IdView.class)
+	private long id;  
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+	
 	/**
 	 * 任务名
 	 */
@@ -44,7 +64,7 @@ public class EtlTask extends IdEntity {
 	/**
 	 * 调度id
 	 */
-	@ManyToOne(cascade = { CascadeType.PERSIST, CascadeType.MERGE },targetEntity = EtlJob.class,fetch = FetchType.LAZY)
+	@ManyToOne(cascade =CascadeType.REFRESH,targetEntity = EtlJob.class,fetch = FetchType.LAZY)
 	@JoinColumn(name="job_id")
 	@NotFound(action = NotFoundAction.IGNORE)
 	@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
@@ -52,7 +72,7 @@ public class EtlTask extends IdEntity {
 	/**
 	 * 插件id
 	 */
-	@ManyToOne(cascade = { CascadeType.PERSIST, CascadeType.MERGE },targetEntity = EtlPlugin.class,fetch = FetchType.LAZY)
+	@ManyToOne(cascade = CascadeType.REFRESH,targetEntity = EtlPlugin.class,fetch = FetchType.LAZY)
 	@JoinColumn(name="plugin_id")
 	@NotFound(action = NotFoundAction.IGNORE)
 	@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
@@ -60,7 +80,7 @@ public class EtlTask extends IdEntity {
 	/**
 	 * 最后更新人
 	 */
-	@ManyToOne(cascade = { CascadeType.PERSIST, CascadeType.MERGE },targetEntity = User.class,fetch = FetchType.LAZY)
+	@ManyToOne(cascade = CascadeType.REFRESH,targetEntity = User.class,fetch = FetchType.LAZY)
 	@JoinColumn(name="updateby_id")
 	@NotFound(action = NotFoundAction.IGNORE)
 	@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
@@ -68,7 +88,7 @@ public class EtlTask extends IdEntity {
 	/**
 	 * 建立人
 	 */
-	@ManyToOne(cascade = { CascadeType.PERSIST, CascadeType.MERGE },targetEntity = User.class,fetch = FetchType.LAZY)
+	@ManyToOne(cascade =CascadeType.REFRESH,targetEntity = User.class,fetch = FetchType.LAZY)
 	@JoinColumn(name="createby_id")
 	@NotFound(action = NotFoundAction.IGNORE)
 	@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
@@ -87,6 +107,9 @@ public class EtlTask extends IdEntity {
 	 * 备注
 	 */
 	private String remark;
+	//主键key处理函数，默认是字段组合，_分隔
+	@Column(name="pk_function_name")
+	private String pkFunctionName;
 	
 	/**
 	 * 启用标记
@@ -94,14 +117,14 @@ public class EtlTask extends IdEntity {
 	@Column(name="check_label")
 	private Integer checkLabel;
 	
-	@OneToMany(targetEntity=EtlTaskParam.class,fetch = FetchType.LAZY,cascade=CascadeType.ALL,mappedBy="task")
+	@OneToMany(targetEntity=EtlTaskParam.class,fetch = FetchType.LAZY,cascade=CascadeType.REFRESH,mappedBy="task")
 	@OrderBy("id ASC")
 	private Set<EtlTaskParam> taskParams;
 	
 	@Column(name="dataset_id",insertable=false,updatable=false)
 	private long datasetId;
 	
-	@ManyToOne(cascade = { CascadeType.PERSIST, CascadeType.MERGE },targetEntity = Dataset.class,fetch = FetchType.LAZY)
+	@ManyToOne(cascade =CascadeType.REFRESH,targetEntity = Dataset.class,fetch = FetchType.LAZY)
 	@JoinColumn(name="dataset_id")
 	@NotFound(action = NotFoundAction.IGNORE)
 	@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
@@ -142,6 +165,14 @@ public class EtlTask extends IdEntity {
 				taskParams.add(tparam);
 			}
 		}
+	}
+
+	public String getPkFunctionName() {
+		return pkFunctionName;
+	}
+
+	public void setPkFunctionName(String pkFunctionName) {
+		this.pkFunctionName = pkFunctionName;
 	}
 
 	public void setDatasetId(long datasetId) {

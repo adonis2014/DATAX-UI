@@ -10,6 +10,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
+import net.iharding.utils.ETLConstants;
+
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.apache.lucene.queryparser.classic.QueryParser;
@@ -25,7 +27,6 @@ import com.taobao.datax.common.plugin.DataProcessor;
 import com.taobao.datax.common.plugin.Line;
 import com.taobao.datax.common.plugin.RecordValidator;
 import com.taobao.datax.common.plugin.RecordValueProc;
-import com.taobao.datax.common.util.ETLConstants;
 import com.taobao.datax.common.util.ETLStringUtils;
 import com.taobao.datax.common.util.ZipStrUtil;
 

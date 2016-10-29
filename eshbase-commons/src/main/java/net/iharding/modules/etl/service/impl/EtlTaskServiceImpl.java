@@ -40,7 +40,7 @@ public class EtlTaskServiceImpl extends BaseServiceImpl<EtlTask, Long> implement
 	
 	@Override
 	public void save(EtlTask etlTask) throws Exception {
-		if (etlTask.getId() != null) {
+		if (etlTask.getId() != null && etlTask.getId()>0) {
 			EtlTask rc = etlTaskDao.get(etlTask.getId());
 			rc.setCheckLabel(etlTask.getCheckLabel());
 			rc.setTaskName(etlTask.getTaskName());

@@ -3,6 +3,8 @@ package com.taobao.datax.common.util;
 import java.io.IOException;
 import java.util.Map;
 
+import net.iharding.utils.ETLConstants;
+
 import org.apache.hadoop.hbase.client.Get;
 import org.apache.hadoop.hbase.client.Put;
 import org.apache.hadoop.hbase.client.Result;

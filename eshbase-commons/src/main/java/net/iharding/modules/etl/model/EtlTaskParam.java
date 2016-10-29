@@ -31,11 +31,11 @@ public class EtlTaskParam extends IdEntity {
 	/**
 	 * 任务ID
 	 */
-	@Column(name="task_id")
+	@Column(name="task_id",insertable = false, updatable = false)
 	private Long taskId;
 	
 	@ManyToOne(cascade = { CascadeType.PERSIST, CascadeType.MERGE },targetEntity = EtlTask.class,fetch = FetchType.LAZY)
-	@JoinColumn(name="task_id",insertable = false, updatable = false)
+	@JoinColumn(name="task_id")
 	@NotFound(action = NotFoundAction.IGNORE)
 	@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 	private EtlTask task;

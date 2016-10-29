@@ -118,7 +118,7 @@
 			App.activeMenu("etl/EtlPlugin/list");
 		});
 		function delParam(id){
-			self.location.href="${ctx}/etl/EtlPluginParam/delete/"+id;
+			self.location.href="${ctx}/etl/EtlPluginParam/deleteParam/"+id;
 		}
 	</script>
 </body>

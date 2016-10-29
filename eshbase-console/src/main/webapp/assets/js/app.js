@@ -551,10 +551,10 @@ var App = function () {
         $('#form_wizard_1').bootstrapWizard({
             'nextSelector': '.button-next',
             'previousSelector': '.button-previous',
-            onTabClick: function (tab, navigation, index) {
+           // onTabClick: function (tab, navigation, index) {
                // alert('on tab click disabled');
-                return false;
-            },
+           //     return false;
+          //  },
             onNext: function (tab, navigation, index) {
                 var total = navigation.find('li').length;
                 var current = index + 1;
@@ -617,12 +617,13 @@ var App = function () {
                 $('#form_wizard_1').find('.bar').css({
                     width: $percent + '%'
                 });
+                showTab(index);
             }
         });
 
         $('#form_wizard_1').find('.button-previous').hide();
         $('#form_wizard_1 .button-submit').click(function () {
-            alert('Finished! Hope you like it :)');
+        	submit_form_wizard();
         }).hide();
     }
 

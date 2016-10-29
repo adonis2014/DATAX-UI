@@ -2,13 +2,12 @@ package net.iharding.modules.etl.controller;
 
 import javax.validation.Valid;
 
-import org.guess.core.web.BaseController;
-
 import net.iharding.modules.etl.model.EtlPlugin;
 import net.iharding.modules.etl.model.EtlPluginParam;
 import net.iharding.modules.etl.service.EtlPluginParamService;
 import net.iharding.modules.etl.service.EtlPluginService;
 
+import org.guess.core.web.BaseController;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -63,11 +62,13 @@ public class EtlPluginParamController extends BaseController<EtlPluginParam>{
 	 * @return
 	 * @throws Exception
 	 */
-	@RequestMapping(value = "/delete/{id}")
-	public String delete(@PathVariable("id") Long id) throws Exception {
+	@RequestMapping(value = "/deleteParam/{id}")
+	public ModelAndView deleteParam(@PathVariable("id") Long id) throws Exception {
+		EtlPluginParam pparam=etlPluginParamService.get(id);
 		etlPluginParamService.removeById(id);
-		EtlPlugin obj = etlPluginService.get(id);
-		this.request.setAttribute("obj",obj);
-		return REDIRECT + editView;
+		EtlPlugin obj = etlPluginService.get(pparam.getPlugin().getId());
+		ModelAndView mav = new ModelAndView(editView);
+		mav.addObject("obj", obj);
+		return mav;
 	}
 }
