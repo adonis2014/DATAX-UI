@@ -2,12 +2,13 @@ package com.taobao.datax.plugins.writer.agghbasewriter;
 
 import java.util.Map;
 
+import net.iharding.utils.ETLConstants;
+
 import org.apache.commons.lang.StringUtils;
 
 import com.taobao.datax.common.model.DataProcessEntity;
 import com.taobao.datax.common.model.DataProcessField;
 import com.taobao.datax.common.plugin.BaseRecordValidator;
-import com.taobao.datax.common.util.ETLConstants;
 
 public class RepayRecordValidator extends BaseRecordValidator {
 

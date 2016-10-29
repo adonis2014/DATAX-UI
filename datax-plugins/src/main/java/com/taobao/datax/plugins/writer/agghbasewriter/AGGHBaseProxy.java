@@ -6,6 +6,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import net.iharding.utils.ETLConstants;
+
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.fs.Path;
 import org.apache.hadoop.hbase.TableName;
@@ -26,7 +28,6 @@ import org.apache.log4j.Logger;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.taobao.datax.common.model.AggregationRecord;
 import com.taobao.datax.common.model.DataProcessField;
-import com.taobao.datax.common.util.ETLConstants;
 import com.taobao.datax.common.util.ETLStringUtils;
 import com.taobao.datax.common.util.ZipStrUtil;
 

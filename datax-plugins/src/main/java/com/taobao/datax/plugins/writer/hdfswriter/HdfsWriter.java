@@ -18,6 +18,8 @@ import java.util.List;
 import java.util.Random;
 import java.util.concurrent.TimeUnit;
 
+import net.iharding.utils.ETLConstants;
+
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.math.NumberUtils;
 import org.apache.hadoop.conf.Configuration;
@@ -44,7 +46,6 @@ import com.taobao.datax.common.plugin.LineReceiver;
 import com.taobao.datax.common.plugin.PluginParam;
 import com.taobao.datax.common.plugin.PluginStatus;
 import com.taobao.datax.common.plugin.Writer;
-import com.taobao.datax.common.util.ETLConstants;
 import com.taobao.datax.common.util.ETLDateUtils;
 import com.taobao.datax.plugins.common.DFSUtils;
 

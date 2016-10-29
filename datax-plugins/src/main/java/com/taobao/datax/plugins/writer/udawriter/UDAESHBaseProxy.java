@@ -6,6 +6,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import net.iharding.utils.ETLConstants;
+
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.math.NumberUtils;
 import org.apache.hadoop.conf.Configuration;
@@ -39,7 +41,6 @@ import org.elasticsearch.common.settings.Settings;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.taobao.datax.common.model.AggregationRecord;
 import com.taobao.datax.common.model.DataProcessField;
-import com.taobao.datax.common.util.ETLConstants;
 import com.taobao.datax.common.util.ETLStringUtils;
 import com.taobao.datax.common.util.ZipStrUtil;
 

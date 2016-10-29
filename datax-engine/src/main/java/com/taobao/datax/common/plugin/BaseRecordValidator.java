@@ -2,11 +2,12 @@ package com.taobao.datax.common.plugin;
 
 import java.util.Map;
 
+import net.iharding.utils.ETLConstants;
+
 import org.apache.commons.lang.StringUtils;
 
 import com.taobao.datax.common.model.DataProcessEntity;
 import com.taobao.datax.common.model.DataProcessField;
-import com.taobao.datax.common.util.ETLConstants;
 
 public abstract class BaseRecordValidator implements RecordValidator {
 	/**
