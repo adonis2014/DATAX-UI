@@ -73,25 +73,29 @@
 								<table width="100%" class="dbgrid">
 									<thead>
 										<tr>
-											<th>任务名</th>
-											<th>插件</th>
-											<th>插件类别</th>
+											<th></th>
+											<th></th>
+											<th></th>
 											<th>数据集</th>
-											<th>备注</th>
+											<th></th>
 										</tr>
 									</thead>
 									<tbody>
 										<c:forEach items="${obj.tasks}" var="task">
-											<tr>
-												<td>${task.taskName}</td>
-												<td>${task.plugin.pluginName}</td>
-												<td><mytags:dictSelect field="pluginType" id="pluginType" type="label" hasLabel="false" codeType="1031" defaultVal="${task.plugin.pluginType}" /></td>
-												<td>${task.dataset.datasetName}</td>
-												<td>${task.remark}</td>
-											</tr>
-											<tr>
-												<td colspan="5">
-													<table width="100%" class="dbform">
+										<tr>
+											<td class="fieldtitle">任务名</td>
+											<td class="fieldvalue">${task.taskName}</td>
+											<td class="fieldtitle">备注</td>
+											<td class="fieldvalue">${task.remark}</td>
+										</tr>
+										<tr>
+											<td class="fieldtitle">插件</td>
+											<td class="fieldvalue">${task.plugin.pluginName}</td>
+											<td class="fieldtitle">插件类别</td>
+											<td class="fieldvalue"><mytags:dictSelect field="pluginType" id="pluginType" type="label" hasLabel="false" codeType="1031" defaultVal="${task.plugin.pluginType}" /></td>
+										</tr>
+										<tr>
+											<td colspan="4">插件参数<table width="100%" class="dbform">
 														<tr>
 															<c:forEach items="${task.taskParams}" var="taskParam" varStatus="status">
 																<td class="fieldtitle">${taskParam.remark}[${taskParam.paramKey}]</td>
@@ -102,9 +106,79 @@
 															</c:if>
 															</c:forEach>
 														</tr>
-													</table>
-												</td>
+													</table></td>
+										</tr>
+											<tr>
+												<td colspan="4">数据集：${task.dataset.datasetName}
+												<table width="100%" class="dbform">
+									<tr>
+										<td class="fieldtitle">数据库说明:</td>
+										<td class="fieldvalue">${task.dataset.database.remark}</td>
+										<td class="fieldtitle">数据库名:</td>
+										<td class="fieldvalue"><a href="${ctx}/meta/Database/show/${task.dataset.database.id}">${task.dataset.database.dbname}</a></td>
+									</tr>
+									<tr>
+										<td class="fieldtitle">数据集:</td>
+										<td class="fieldvalue">${task.dataset.datasetName }</td>
+										<td class="fieldtitle">逻辑名:</td>
+										<td class="fieldvalue">${task.dataset.datasetPname}</td>
+									</tr>
+								<c:if test="${not empty task.dataset}">
+									<tr>
+										<td class="fieldtitle">建立者:</td>
+										<td class="fieldvalue">${task.dataset.creater.name}</td>
+										<td class="fieldtitle">更新者:</td>
+										<td class="fieldvalue">${task.dataset.updater.name}</td>
+									</tr>
+									<tr>
+										<td class="fieldtitle">建立时间:</td>
+										<td class="fieldvalue">${task.dataset.createDate }</td>
+										<td class="fieldtitle">更新时间:</td>
+										<td class="fieldvalue">${task.dataset.updateDate }</td>
+									</tr>
+									<tr>
+										<td class="fieldtitle">类名:</td>
+										<td class="fieldvalue">${task.dataset.className}</td>
+										<td class="fieldtitle">启用标记:</td>
+										<td class="fieldvalue">
+										<mytags:dictSelect field="checkLabel" type="label" id="checkLabel" defaultVal="${task.dataset.checkLabel}" hasLabel="false" codeType="17" />
+										</td>
+									</tr>
+								</c:if>
+								<tr>
+									<td class="fieldtitle">数据集类别:</td>
+									<td class="fieldvalue"><mytags:dictSelect field="tableType" type="label" id="tableType" defaultVal="${task.dataset.datasetType}" hasLabel="false" codeType="12" /></td>
+									<td class="fieldtitle">备注:</td>
+									<td class="fieldvalue" >${task.dataset.remark}</td>
+								</tr>
+								</table>
+								<table class="table table-striped table-bordered table-hover" id="sample_2">
+								<thead>
+									<tr>
+										<th>字段编码</th>
+										<th>字段名</th>
+										<th>逻辑名</th>
+										<th>字段类别</th>
+										<th>是否必须</th>
+										<th>备注</th>
+									</tr>
+								</thead>
+								<tbody>
+									<c:forEach var="column" items="${task.dataset.columns}">
+									<tr>
+										<td><a href='${ctx}/meta/DBColumn/show/${column.id}' >${column.fieldCode}</a></td>
+										<td>${column.columnName}</td>
+										<td>${column.columnPname}</td>
+										<td>${column.type}</td>
+										<td>${column.required}</td>
+										<td>${table.remark}</td>
+									</tr>
+									</c:forEach>
+								</tbody>
+							</table>
+							</td>
 											</tr>
+											
 										</c:forEach>
 									</tbody>
 								</table>

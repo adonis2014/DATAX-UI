@@ -6,6 +6,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 import net.iharding.modules.etl.model.EtlJob;
@@ -13,11 +14,11 @@ import net.iharding.modules.etl.model.EtlPlugin;
 import net.iharding.modules.etl.model.EtlPluginParam;
 import net.iharding.modules.etl.model.EtlTask;
 import net.iharding.modules.etl.model.EtlTaskParam;
-import net.iharding.modules.etl.model.JobColumnPair;
 import net.iharding.modules.etl.service.EtlJobService;
 import net.iharding.modules.etl.service.EtlPluginService;
-import net.iharding.modules.etl.service.ColumnPairService;
 import net.iharding.modules.meta.model.Dataset;
+import net.iharding.modules.meta.model.ColumnPair;
+import net.iharding.modules.meta.service.ColumnPairService;
 import net.iharding.modules.meta.service.DatasetService;
 
 import org.apache.commons.lang3.StringUtils;
@@ -30,6 +31,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 /**
@@ -45,10 +47,12 @@ import org.springframework.web.servlet.ModelAndView;
 public class EtlJobController extends BaseController<EtlJob>{
 
 	{
-		editView = "/etl/EtlJob/edit";
+		editView = "/etl/EtlJob/add";
 		listView = "/etl/EtlJob/list";
 		showView = "/etl/EtlJob/show";
 	}
+	
+	private String updateView = "/etl/EtlJob/edit";;
 	
 	@Autowired
 	private EtlJobService etlJobService;
@@ -165,12 +169,52 @@ public class EtlJobController extends BaseController<EtlJob>{
 		return mav;
 	}
 	
+	@RequestMapping(method = RequestMethod.GET, value = "/params/addColumnPair")
+	public ModelAndView addColumnPair() throws Exception{
+		EtlJob obj =(EtlJob)session.getAttribute("currentEtlJob");
+		Set<ColumnPair> tcols=obj.getColumnPairs();
+		ColumnPair cp=new ColumnPair();
+		cp.setReadColumnName(request.getParameter("readColumnName"));
+		cp.setReadColumnName(request.getParameter("writeColumnName"));
+		cp.setReadColumnName(request.getParameter("readerFieldType"));
+		cp.setReadColumnName(request.getParameter("writerFieldType"));
+		cp.setReadColumnName(request.getParameter("functionName"));
+		cp.setReadColumnName(request.getParameter("script"));
+		cp.setReadColumnName(request.getParameter("scriptType"));
+		cp.setReadColumnName(request.getParameter("class_name"));
+		cp.setReadColumnName(request.getParameter("sortId"));
+		cp.setReadColumnName(request.getParameter("cloumn_remark"));
+		tcols.add(cp);
+		ModelAndView mav = new ModelAndView("/etl/EtlJob/taskColumns");
+		mav.addObject("obj", tcols);
+		obj.setColumnPairs(tcols);
+		session.setAttribute("currentEtlJob", obj);
+		return mav;
+	}
+	
+	@RequestMapping(method = RequestMethod.GET, value = "/params/removeColumnPair")
+	public ModelAndView removeColumnPair(@RequestParam("pairId")  Long pairId) throws Exception{
+		EtlJob obj =(EtlJob)session.getAttribute("currentEtlJob");
+		Set<ColumnPair> tcols=obj.getColumnPairs();
+		for(ColumnPair cp:tcols){
+			if (cp.getId()==pairId){
+				tcols.remove(cp);
+				break;
+			}
+		}
+		ModelAndView mav = new ModelAndView("/etl/EtlJob/taskColumns");
+		mav.addObject("obj", tcols);
+		obj.setColumnPairs(tcols);
+		session.setAttribute("currentEtlJob", obj);
+		return mav;
+	}
+	
 	@RequestMapping(method = RequestMethod.POST, value = "/params/taskColumns")
 	public ModelAndView taskColumns() throws Exception{
 		EtlJob obj =(EtlJob)session.getAttribute("currentEtlJob");
 		long rdatasetId=NumberUtils.toLong(request.getParameter("rdatasetId"));
 		long wdatasetId=NumberUtils.toLong(request.getParameter("wdatasetId"));
-		List<JobColumnPair> tcols=null;
+		List<ColumnPair> tcols=null;
 		if (rdatasetId==0l){
 			EtlTask readerTask=obj.getReaderTask();
 			if (readerTask!=null){
@@ -179,7 +223,7 @@ public class EtlJobController extends BaseController<EtlJob>{
 					if (obj.getColumnPairs()==null){
 						obj.setTasksColumns();
 						if (obj.getColumnPairs()!=null){
-							tcols=new ArrayList<JobColumnPair>();
+							tcols=new ArrayList<ColumnPair>();
 							tcols.addAll(obj.getColumnPairs());
 						}
 					}
@@ -199,7 +243,7 @@ public class EtlJobController extends BaseController<EtlJob>{
 			if (obj.getColumnPairs()!=null)obj.getColumnPairs().clear();
 			obj.setTasksColumns();
 			if (obj.getColumnPairs()!=null){
-				tcols=new ArrayList<JobColumnPair>();
+				tcols=new ArrayList<ColumnPair>();
 				tcols.addAll(obj.getColumnPairs());
 			}
 		}
@@ -282,7 +326,7 @@ public class EtlJobController extends BaseController<EtlJob>{
 			tp.setParamValue(request.getParameter("w_paramValue_"+tp.getParamKey()));
 			tp.setRemark(request.getParameter("w_paramRemark_"+tp.getParamKey()));
 		}
-		List<JobColumnPair> tcols=columnPairService.getJobColumnPairs(readerTask.getId());
+		List<ColumnPair> tcols=columnPairService.getJobColumnPairs(readerTask.getId());
 		if (tcols==null||tcols.isEmpty()){
 			if (obj.getColumnPairs()==null)obj.setTasksColumns();
 		}else{
@@ -295,7 +339,26 @@ public class EtlJobController extends BaseController<EtlJob>{
 		return mav;
 	}
 	
+	/**
+	 * 删除
+	 * @param id
+	 * @return
+	 * @throws Exception
+	 */
+	@RequestMapping(value = "/delete/{id}")
+	public String delete(@PathVariable("id") Long id) throws Exception {
+		etlJobService.removeById(id);
+		return REDIRECT+listView;
+	}
 	
+	/**
+	 * 批量删除
+	 */
+	@RequestMapping(value = "/delete",method=RequestMethod.POST)
+	public String delete(@RequestParam("ids") Long[] ids , HttpServletRequest request) throws Exception {
+		etlJobService.removeByIds(ids);
+		return REDIRECT+listView;
+	}
 	
 	@RequestMapping(method = RequestMethod.POST, value = "/edit")
 	public String create(@Valid EtlJob job) throws Exception {
@@ -373,16 +436,16 @@ public class EtlJobController extends BaseController<EtlJob>{
 		String[] cloumn_remarks=request.getParameterValues("cloumn_remark");
 		for(int i=0;i<readColumnNames.length;i++){
 			if (StringUtils.isNotEmpty(readColumnNames[i])){
-				JobColumnPair tc=new JobColumnPair();
+				ColumnPair tc=new ColumnPair();
 				tc.setId(NumberUtils.toLong(taskColumnIds[i]));
 				tc.setReadColumnId(NumberUtils.toLong(readColumnIds[i]));
 				tc.setReadColumnName(readColumnNames[i]);
 				tc.setWriteColumnId(NumberUtils.toLong(writeColumnIds[i]));
 				tc.setWriteColumnName(writeColumnNames[i]);
-				tc.setReadtask(obj.getReaderTask());
-				tc.setReadTaskId(tc.getReadtask().getId());
-				tc.setWritetask(obj.getWriterTask());
-				tc.setWriteTaskId(tc.getWritetask().getId());
+//				tc.setReadtask(obj.getReaderTask());
+//				tc.setReadTaskId(tc.getReadtask().getId());
+//				tc.setWritetask(obj.getWriterTask());
+//				tc.setWriteTaskId(tc.getWritetask().getId());
 				tc.setReaderFieldType(NumberUtils.toInt(readerFieldTypes[i]));
 				tc.setWriterFieldType(NumberUtils.toInt(writerFieldTypes[i]));
 				tc.setFunctionName(functionNames[i]);
@@ -396,6 +459,20 @@ public class EtlJobController extends BaseController<EtlJob>{
 		}
 		etlJobService.save(obj);
 		return REDIRECT + listView;
+	}
+	
+	@RequestMapping(method = RequestMethod.GET, value = "/setCheckLabel/{id}")
+	public String setCheckLabel(@PathVariable("id") Long id) throws Exception {
+		EtlJob obj = etlJobService.get(id);
+		if (obj.getCheckLabel()==null || obj.getCheckLabel()==0){
+			obj.setCheckLabel(1);
+		}else{
+			obj.setCheckLabel(0);
+		}
+		obj.setUpdateDate(new Date());
+		obj.setUpdater(UserUtil.getCurrentUser());
+		etlJobService.saveJob(obj);
+		return this.list();
 	}
 	
 	/**
@@ -418,7 +495,7 @@ public class EtlJobController extends BaseController<EtlJob>{
 				writePlguins.add(plugin);
 			}
 		}
-		ModelAndView mav = new ModelAndView(editView);
+		ModelAndView mav = new ModelAndView(updateView);
 		mav.addObject("obj", obj);
 		mav.addObject("readPlguins", readPlguins);
 		mav.addObject("writePlguins", writePlguins);

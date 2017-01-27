@@ -13,7 +13,6 @@ import net.iharding.modules.meta.dao.DataSourceDao;
 import net.iharding.modules.meta.dao.DatabaseDao;
 import net.iharding.modules.meta.dao.DbColumnDao;
 import net.iharding.modules.meta.dao.MetaPropertyDao;
-import net.iharding.modules.meta.dao.MetaReverseDao;
 import net.iharding.modules.meta.model.Dataset;
 import net.iharding.modules.meta.model.DataSource;
 import net.iharding.modules.meta.model.DataSourceWrapper;
@@ -21,6 +20,7 @@ import net.iharding.modules.meta.model.Database;
 import net.iharding.modules.meta.model.DbColumn;
 import net.iharding.modules.meta.model.MetaProperty;
 import net.iharding.modules.meta.model.TreeNode;
+import net.iharding.modules.meta.reverse.MetaReverseDao;
 import net.iharding.modules.meta.service.DataSourceService;
 import net.iharding.modules.meta.util.MetaPropertyComparator;
 

@@ -1,0 +1,95 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>net.iharding</groupId>
+	<artifactId>eshbase-proxy</artifactId>
+	<packaging>war</packaging>
+	<description>ElasticSearch,HBase,Hive Query Proxy</description>
+	<name>eshbase-proxy</name>
+	<url>https://github.com/joezxh/Datax-ui/</url>
+
+	<version>0.1-beta</version>
+	<parent>
+		<groupId>net.iharding.bigdata</groupId>
+		<artifactId>eshbase-all</artifactId>
+		<version>0.1-beta</version>
+		<relativePath>../pom.xml</relativePath>
+	</parent>
+
+	<developers>
+		<developer>
+			<id>joezxh</id>
+			<name>Joe.zhang</name>
+			<email>joezxh@qq.com</email>
+		</developer>
+		<developer>
+			<id>louhuirong</id>
+			<name>louhuirong</name>
+			<email>louhr@iharding.net</email>
+		</developer>
+	</developers>
+
+
+
+
+	<dependencies>
+		<!-- httpclient -->
+		<dependency>
+			<groupId>org.apache.httpcomponents</groupId>
+			<artifactId>httpcore</artifactId>
+			<version>4.2.1</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.httpcomponents</groupId>
+			<artifactId>httpclient</artifactId>
+			<version>4.2.1</version>
+		</dependency>
+		<dependency>
+			<groupId>org.json</groupId>
+			<artifactId>json</artifactId>
+			<version>20160810</version>
+		</dependency>
+		<dependency>
+			<groupId>com.alibaba</groupId>
+			<artifactId>druid</artifactId>
+			<version>1.0.15</version>
+		</dependency>
+		<dependency>
+			<groupId>net.iharding</groupId>
+			<artifactId>eshbase-commons</artifactId>
+			<version>0.1-beta</version>
+		</dependency>
+	</dependencies>
+
+
+	<build>
+		<plugins>
+			<plugin>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>2.3.2</version>
+				<configuration>
+					<source>${jdk.version}</source>
+					<target>${jdk.version}</target>
+					<encoding>UTF-8</encoding>
+				</configuration>
+			</plugin>
+
+			<plugin>
+				<artifactId>maven-jar-plugin</artifactId>
+				<executions>
+					<execution>
+						<goals>
+							<goal>jar</goal>
+						</goals>
+						<phase>package</phase>
+					</execution>
+				</executions>
+			</plugin>
+
+
+		</plugins>
+
+
+	</build>
+
+</project>

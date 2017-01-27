@@ -119,6 +119,11 @@ $(document).ready(function() {
 	);
 });
 
+function checkObj(){
+	var flag = Page.selectsPrompt();
+	if(!flag) return;
+	window.location.href = Page.subUrl() + "/setCheckLabel/" + flag;
+}
 function doQuery(){
 	var queryObj = {
 			search_LIKES_jobName_OR_remark : App.isEqPlacehoder($("#filters"))

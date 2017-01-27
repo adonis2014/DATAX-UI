@@ -1,6 +1,6 @@
 <%@ page contentType="text/html;charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/content/common/common.jsp"%>
-<c:set var="pageTitle" value="${empty obj ? '添加表对象':'修改表对象' }" scope="page" />
+<c:set var="pageTitle" value="${empty obj ? '添加数据集':'修改数据集' }" scope="page" />
 <html>
 <head>
 <title>${pageTitle }</title>
@@ -10,14 +10,14 @@
 	<div class="page-content">
 		<div class="container-fluid">
 			<!-- 页面导航 -->
-			<tool:navBar pageTitle="${pageTitle }" pageTitleContent="元数据管理-表单管理-${pageTitle }" titleIcon="icon-home" />
+			<tool:navBar pageTitle="${pageTitle }" pageTitleContent="元数据管理-数据集管理-${pageTitle }" titleIcon="icon-home" />
 			<!-- 主体内容 -->
 			<div class="row-fluid">
 				<div class="span12">
 					<div class="portlet box blue">
 						<div class="portlet-title">
 							<h4>
-								<i class="icon-reorder"></i>请填写表单
+								<i class="icon-reorder"></i>请填写数据集
 							</h4>
 							<div class="tools">
 								<a href="javascript:;" class="collapse"></a> <a href="javascript:;" class="remove"></a>
@@ -34,7 +34,7 @@
 										<td class="fieldvalue"><a href="${ctx}/meta/Database/show/${obj.database.id}">${obj.database.dbname}</a></td>
 									</tr>
 									<tr>
-										<td class="fieldtitle">表名:</td>
+										<td class="fieldtitle">数据集名:</td>
 										<td class="fieldvalue">${obj.datasetName }</td>
 										<td class="fieldtitle">逻辑名:</td>
 										<td class="fieldvalue"><input type="text" class="span6 m-wrap" validate="{required:true}" name="datasetPname" value="${obj.datasetPname}" /></td>
@@ -62,7 +62,7 @@
 									</tr>
 								</c:if>
 								<tr>
-									<td class="fieldtitle">表类别:</td>
+									<td class="fieldtitle">数据集类别:</td>
 									<td class="fieldvalue"><mytags:dictSelect field="datasetType" id="datasetType" defaultVal="${obj.datasetType}" hasLabel="false" codeType="12" /></td>
 									<td class="fieldtitle">备注:</td>
 									<td class="fieldvalue" ><input type="text" class="span12 m-wrap" name="remark" value="${obj.remark}"/></td>

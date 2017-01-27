@@ -19,12 +19,12 @@ import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 import net.iharding.core.jsonview.IdView;
-import net.iharding.core.orm.IdEntity;
 import net.iharding.modules.meta.model.Dataset;
 
 import org.guess.sys.model.User;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.NotFound;
 import org.hibernate.annotations.NotFoundAction;
 
@@ -64,15 +64,19 @@ public class EtlTask  {
 	/**
 	 * 调度id
 	 */
-	@ManyToOne(cascade =CascadeType.REFRESH,targetEntity = EtlJob.class,fetch = FetchType.LAZY)
+	@ManyToOne(cascade =CascadeType.ALL,targetEntity = EtlJob.class,fetch = FetchType.LAZY)
 	@JoinColumn(name="job_id")
 	@NotFound(action = NotFoundAction.IGNORE)
 	@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 	private EtlJob job;
+	
+	@Column(name="job_id",insertable=false,updatable=false)
+	private Long jobId;
+	
 	/**
 	 * 插件id
 	 */
-	@ManyToOne(cascade = CascadeType.REFRESH,targetEntity = EtlPlugin.class,fetch = FetchType.LAZY)
+	@ManyToOne(cascade = CascadeType.ALL,targetEntity = EtlPlugin.class,fetch = FetchType.LAZY)
 	@JoinColumn(name="plugin_id")
 	@NotFound(action = NotFoundAction.IGNORE)
 	@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
@@ -117,12 +121,12 @@ public class EtlTask  {
 	@Column(name="check_label")
 	private Integer checkLabel;
 	
-	@OneToMany(targetEntity=EtlTaskParam.class,fetch = FetchType.LAZY,cascade=CascadeType.REFRESH,mappedBy="task")
+	@OneToMany(targetEntity=EtlTaskParam.class,fetch = FetchType.LAZY,cascade=CascadeType.ALL,mappedBy = "task")
 	@OrderBy("id ASC")
 	private Set<EtlTaskParam> taskParams;
 	
 	@Column(name="dataset_id",insertable=false,updatable=false)
-	private long datasetId;
+	private Long datasetId;
 	
 	@ManyToOne(cascade =CascadeType.REFRESH,targetEntity = Dataset.class,fetch = FetchType.LAZY)
 	@JoinColumn(name="dataset_id")
@@ -130,7 +134,15 @@ public class EtlTask  {
 	@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 	private Dataset dataset;
 	
-	public long getDatasetId() {
+	public Long getJobId() {
+		return jobId;
+	}
+
+	public void setJobId(Long jobId) {
+		this.jobId = jobId;
+	}
+
+	public Long getDatasetId() {
 		return datasetId;
 	}
 	/**
@@ -175,7 +187,7 @@ public class EtlTask  {
 		this.pkFunctionName = pkFunctionName;
 	}
 
-	public void setDatasetId(long datasetId) {
+	public void setDatasetId(Long datasetId) {
 		this.datasetId = datasetId;
 	}
 

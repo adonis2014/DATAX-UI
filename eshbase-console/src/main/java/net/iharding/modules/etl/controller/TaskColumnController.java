@@ -1,8 +1,10 @@
 package net.iharding.modules.etl.controller;
 
 import org.guess.core.web.BaseController;
-import net.iharding.modules.etl.model.JobColumnPair;
-import net.iharding.modules.etl.service.ColumnPairService;
+
+import net.iharding.modules.meta.model.ColumnPair;
+import net.iharding.modules.meta.service.ColumnPairService;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -17,7 +19,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 */
 @Controller
 @RequestMapping("/etl/taskColumn")
-public class TaskColumnController extends BaseController<JobColumnPair>{
+public class TaskColumnController extends BaseController<ColumnPair>{
 
 	{
 		editView = "/etl/taskColumn/edit";

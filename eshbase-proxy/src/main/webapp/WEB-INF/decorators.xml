@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<decorators defaultdir="/WEB-INF/layouts/">
+	<excludes>
+		<pattern>/upload/*</pattern>
+	</excludes>
+
+	<decorator name="default" page="/WEB-INF/content/common/layouts/default.jsp">
+		<pattern>/sys/*</pattern>
+		<pattern>/meta/*</pattern>
+		<pattern>/monitorLog/*</pattern>
+		<pattern>/blackfilter/*</pattern>
+		<pattern>/esSlowlog/*</pattern>
+		<pattern>/esmgnt/*</pattern>
+		<pattern>/esMonitor/*</pattern>
+		<pattern>/etl/*</pattern>
+		<pattern>/commonQuery/sqlquery</pattern>
+	</decorator>
+	
+	<!--  -->
+	<decorator name="results" page="/WEB-INF/content/common/layouts/results.jsp" >
+		<pattern>/commonQuery/showResults</pattern>
+	</decorator>
+</decorators>

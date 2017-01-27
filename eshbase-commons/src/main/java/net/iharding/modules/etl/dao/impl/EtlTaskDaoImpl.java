@@ -20,6 +20,11 @@ public class EtlTaskDaoImpl extends HibernateDao<EtlTask,Long> implements EtlTas
 	@Override
 	public void save(EtlTask etlTask) {
 		Session session = getSession();
-		session.saveOrUpdate(etlTask);
+		if (etlTask.getId()==null ||etlTask.getId()==0){
+			session.saveOrUpdate(etlTask);
+		}else{
+			session.merge(etlTask);
+		}
+		
 	}
 }

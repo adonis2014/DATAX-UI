@@ -21,7 +21,18 @@ public class EtlJobDaoImpl extends HibernateDao<EtlJob,Long> implements EtlJobDa
 	@Override
 	public void save(EtlJob etljob) {
 		Session session = getSession();
+		if (etljob.getId()==null || etljob.getId()==0){
+			session.save(etljob);
+		}else{
+			session.merge(etljob);
+		}
+	}
+
+	@Override
+	public void saveOrUpdate(EtlJob etljob) {
+		Session session = getSession();
 		session.saveOrUpdate(etljob);
+		session.flush();
 	}
 	
 }

@@ -28,7 +28,7 @@
 		<junit.version>4.11</junit.version>
 		<spring.version>4.1.1.RELEASE</spring.version>
 		<hibernate.version>4.3.7.Final</hibernate.version>
-		<commons-lang3.version>3.1</commons-lang3.version>
+		<commons-lang.version>2.6</commons-lang.version>
 		<commons-io.version>2.4</commons-io.version>
 		<guava.version>18.0</guava.version>
 		<jackson.version>2.6.6</jackson.version>
@@ -37,7 +37,7 @@
 		<slf4j.version>1.7.2</slf4j.version>
 		<logback.version>1.1.2</logback.version>
 		<poi.version>3.8</poi.version>
-		<shiro.version>1.2.6</shiro.version>
+		<shiro.version>1.2.3</shiro.version>
 		<push.version>2.3.1</push.version>
 		<gson.version>2.2.4</gson.version>
 		<activiti.version>5.14</activiti.version>
@@ -56,18 +56,27 @@
 		<!-- cxf -->
 		<cxf.version>2.7.11</cxf.version>
 		<version.source-plugin>2.3</version.source-plugin>
+
+		<quartz.version>2.2.1</quartz.version>
+		<oro.version>2.0.8</oro.version>
+		<ddlutils.version>1.0</ddlutils.version>
+		<dubbo.version>2.5.3</dubbo.version>
+		<fastjson.version>1.2.23</fastjson.version>
+  <zk101tec.version>0.10</zk101tec.version>
+		<otter_canal_version>1.0.23</otter_canal_version>
 	</properties>
 
 
 	<repositories>
 
+		
+		<repository>
+			<id>central</id>
+			<url>http://maven.aliyun.com/nexus/content/groups/public/</url>
+		</repository>
 		<repository>
 			<id>sonatype</id>
 			<url>http://oss.sonatype.org/content/groups/public/</url>
-		</repository>
-		<repository>
-			<id>central</id>
-			<url>http://repo1.maven.org/maven2</url>
 		</repository>
 		<repository>
 			<id>clojars</id>
@@ -103,7 +112,73 @@
 			<dependency>
 				<groupId>org.quartz-scheduler</groupId>
 				<artifactId>quartz</artifactId>
-				<version>2.2.1</version>
+				<version>${quartz.version}</version>
+			</dependency>
+			
+			<dependency>
+  <groupId>com.101tec</groupId>
+  <artifactId>zkclient</artifactId>
+  <version>${zk101tec.version}</version>
+</dependency>
+
+<dependency>
+  <groupId>com.alibaba</groupId>
+  <artifactId>fastjson</artifactId>
+  <version>${fastjson.version}</version>
+</dependency>
+			<!-- apache oro 正则表达式解析 -->
+			<dependency>
+				<groupId>oro</groupId>
+				<artifactId>oro</artifactId>
+				<version>${oro.version}</version>
+			</dependency>
+			<!--apache ddlutils db meta转义工具 -->
+			<dependency>
+				<groupId>org.apache.ddlutils</groupId>
+				<artifactId>ddlutils</artifactId>
+				<version>${ddlutils.version}</version>
+				<exclusions>
+					<exclusion>
+						<groupId>commons-beanutils</groupId>
+						<artifactId>commons-beanutils-core</artifactId>
+					</exclusion>
+					<exclusion>
+						<groupId>commons-logging</groupId>
+						<artifactId>commons-logging-api</artifactId>
+					</exclusion>
+					<exclusion>
+						<groupId>dom4j</groupId>
+						<artifactId>dom4j</artifactId>
+					</exclusion>
+					<exclusion>
+						<groupId>stax</groupId>
+						<artifactId>stax-api</artifactId>
+					</exclusion>
+					<exclusion>
+						<groupId>commons-collections</groupId>
+						<artifactId>commons-collections</artifactId>
+					</exclusion>
+					<exclusion>
+						<groupId>commons-digester</groupId>
+						<artifactId>commons-digester</artifactId>
+					</exclusion>
+					<exclusion>
+						<groupId>commons-betwixt</groupId>
+						<artifactId>commons-betwixt</artifactId>
+					</exclusion>
+				</exclusions>
+			</dependency>
+			<!-- alibaba dubbo -->
+			<dependency>
+				<groupId>com.alibaba</groupId>
+				<artifactId>dubbo</artifactId>
+				<version>${dubbo.version}</version>
+				<exclusions>
+					<exclusion>
+						<groupId>org.springframework</groupId>
+						<artifactId>spring</artifactId>
+					</exclusion>
+				</exclusions>
 			</dependency>
 
 			<!-- j2ee web spec -->
@@ -247,9 +322,9 @@
 				<version>1.2</version>
 			</dependency>
 			<dependency>
-				<groupId>org.apache.commons</groupId>
-				<artifactId>commons-lang3</artifactId>
-				<version>${commons-lang3.version}</version>
+				  <groupId>commons-lang</groupId>
+				  <artifactId>commons-lang</artifactId>
+				  <version>${commons-lang.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>commons-io</groupId>
@@ -529,8 +604,71 @@
 		<dependency>
 			<groupId>org.quartz-scheduler</groupId>
 			<artifactId>quartz</artifactId>
-			<version>2.2.1</version>
 		</dependency>
+		<dependency>
+  <groupId>com.alibaba</groupId>
+  <artifactId>fastjson</artifactId>
+</dependency>
+		<dependency>
+  <groupId>com.101tec</groupId>
+  <artifactId>zkclient</artifactId>
+</dependency>
+
+		<dependency>
+			<groupId>oro</groupId>
+			<artifactId>oro</artifactId>
+		</dependency>
+		<!--apache ddlutils db meta转义工具 -->
+		<dependency>
+			<groupId>org.apache.ddlutils</groupId>
+			<artifactId>ddlutils</artifactId>
+			<exclusions>
+				<exclusion>
+					<groupId>commons-beanutils</groupId>
+					<artifactId>commons-beanutils-core</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>commons-logging</groupId>
+					<artifactId>commons-logging-api</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>dom4j</groupId>
+					<artifactId>dom4j</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>stax</groupId>
+					<artifactId>stax-api</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>commons-collections</groupId>
+					<artifactId>commons-collections</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>commons-digester</groupId>
+					<artifactId>commons-digester</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>commons-betwixt</groupId>
+					<artifactId>commons-betwixt</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>commons-lang</groupId>
+					<artifactId>commons-lang</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+		<!-- alibaba dubbo -->
+		<dependency>
+			<groupId>com.alibaba</groupId>
+			<artifactId>dubbo</artifactId>
+			<exclusions>
+				<exclusion>
+					<groupId>org.springframework</groupId>
+					<artifactId>spring</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+
 		<dependency>
 			<groupId>org.elasticsearch.plugin</groupId>
 			<artifactId>shield</artifactId>
@@ -571,6 +709,10 @@
 					<artifactId>hbase-server</artifactId>
 					<groupId>org.apache.hbase</groupId>
 				</exclusion>
+				<exclusion>
+					<groupId>commons-lang</groupId>
+					<artifactId>commons-lang</artifactId>
+				</exclusion>
 			</exclusions>
 		</dependency>
 		<dependency>
@@ -591,6 +733,10 @@
 				<exclusion>
 					<artifactId>jackson-core-asl</artifactId>
 					<groupId>org.codehaus.jackson</groupId>
+				</exclusion>
+				<exclusion>
+					<groupId>commons-lang</groupId>
+					<artifactId>commons-lang</artifactId>
 				</exclusion>
 			</exclusions>
 		</dependency>
@@ -684,8 +830,8 @@
 			<artifactId>commons-fileupload</artifactId>
 		</dependency>
 		<dependency>
-			<groupId>org.apache.commons</groupId>
-			<artifactId>commons-lang3</artifactId>
+		  <groupId>commons-lang</groupId>
+		  <artifactId>commons-lang</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>commons-io</groupId>
@@ -718,6 +864,12 @@
 		<dependency>
 			<groupId>net.sf.dozer</groupId>
 			<artifactId>dozer</artifactId>
+			<exclusions>
+				<exclusion>
+					<groupId>commons-lang</groupId>
+					<artifactId>commons-lang</artifactId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 
 		<!-- optional datasource pool -->
@@ -882,6 +1034,12 @@
 			<groupId>org.apache.velocity</groupId>
 			<artifactId>velocity</artifactId>
 			<version>1.7</version>
+			<exclusions>
+				<exclusion>
+					<groupId>commons-lang</groupId>
+					<artifactId>commons-lang</artifactId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 		<dependency>
 			<groupId>commons-dbcp</groupId>

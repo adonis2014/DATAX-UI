@@ -12,5 +12,5 @@ import net.iharding.modules.etl.model.EtlJob;
 *
 */
 public interface EtlJobDao extends EntityDao<EtlJob, Long>{
-	
+	public void saveOrUpdate(EtlJob etljob);
 }

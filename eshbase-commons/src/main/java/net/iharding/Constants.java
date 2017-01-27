@@ -53,6 +53,7 @@ public class Constants {
 	public static final int OBJECT_TYPE_PROJECT = 10;//项目
 	public static final int OBJECT_TYPE_MODULE = 11;//模块
 	public static final int OBJECT_TYPE_JOB = 12;//调度中作业
+	public static final int OBJECT_TYPE_OTTER = 13;//增量数据Otter binlog作业
 	
 
 	public static final int DBMS_TYPE_ORACLE = 1;//oracle

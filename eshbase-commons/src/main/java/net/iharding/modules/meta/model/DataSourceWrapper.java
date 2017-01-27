@@ -23,7 +23,7 @@ public class DataSourceWrapper extends DataSource {
 		this.setUpdater(ds.getUpdater());
 	}
 
-	private List<MetaProperty> properties;
+	protected List<MetaProperty> properties;
 
 	public List<MetaProperty> getProperties() {
 		return properties;

@@ -58,6 +58,9 @@ public class Dataset extends IdEntity {
 	@Column(name = "dataset_name")
 	private String datasetName;
 	
+	@Column(name = "name_space")
+	private String nameSpace;
+	
 	/**
 	 * 逻辑名
 	 */
@@ -144,7 +147,15 @@ public class Dataset extends IdEntity {
 		this.rowCount = rowCount;
 	}
 
-	public String getSampleRows() {
+	public String getNameSpace() {
+        return nameSpace;
+    }
+
+    public void setNameSpace(String nameSpace) {
+        this.nameSpace = nameSpace;
+    }
+
+    public String getSampleRows() {
 		return sampleRows;
 	}
 

@@ -92,4 +92,12 @@ public class EtlTaskServiceImpl extends BaseServiceImpl<EtlTask, Long> implement
 		etlTaskDao.save(task);
 		return task;
 	}
+	
+	@Override
+	public void removeByIds(Long[] ids) throws Exception {
+		for(Long id:ids){
+			etlTaskParamDao.batchExecute("delete from EtlTaskParam where taskId=? ", id);
+		}
+		etlTaskDao.batchDelete((Long[]) ids);
+	}
 }

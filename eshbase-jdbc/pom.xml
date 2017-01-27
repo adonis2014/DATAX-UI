@@ -33,7 +33,42 @@
 
 
 	<dependencies>
-	
+
+	<dependency>
+		<groupId>org.apache.calcite</groupId>
+		<artifactId>calcite-core</artifactId>
+		<version>1.10.0</version>
+	</dependency>
+	<dependency>
+		<groupId>org.apache.calcite</groupId>
+		<artifactId>calcite-cassandra</artifactId>
+		<version>1.10.0</version>
+	</dependency>
+	<dependency>
+		<groupId>org.apache.calcite</groupId>
+		<artifactId>calcite-elasticsearch</artifactId>
+		<version>1.10.0</version>
+	</dependency>
+	<dependency>
+		<groupId>org.apache.calcite</groupId>
+		<artifactId>calcite-druid</artifactId>
+		<version>1.10.0</version>
+	</dependency>
+	<dependency>
+		<groupId>org.apache.calcite</groupId>
+		<artifactId>calcite-linq4j</artifactId>
+		<version>1.10.0</version>
+	</dependency>
+	<dependency>
+		<groupId>org.apache.calcite</groupId>
+		<artifactId>calcite-mongodb</artifactId>
+		<version>1.10.0</version>
+	</dependency>
+	<dependency>
+		<groupId>org.apache.calcite</groupId>
+		<artifactId>calcite-spark</artifactId>
+		<version>1.10.0</version>
+	</dependency>
 	</dependencies>
 
 

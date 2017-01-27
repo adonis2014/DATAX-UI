@@ -6,7 +6,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -19,8 +18,11 @@ import javax.persistence.OneToMany;
 import javax.persistence.OrderBy;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import net.iharding.core.jsonview.IdView;
+import net.iharding.modules.meta.model.ColumnPair;
+import net.iharding.modules.meta.model.DatasetPair;
 import net.iharding.modules.meta.model.DbColumn;
 import net.iharding.utils.ETLConstants;
 
@@ -77,15 +79,15 @@ public class EtlJob  {
 	/**
 	 * 最后更新人
 	 */
-	@ManyToOne(cascade = CascadeType.REFRESH,targetEntity = User.class,fetch = FetchType.LAZY)
-	@JoinColumn(name="updateby_id")
-	@NotFound(action = NotFoundAction.IGNORE)
+	@ManyToOne(fetch = FetchType.LAZY)
+	@NotFound(action=NotFoundAction.IGNORE)
+	@JoinColumn(name = "updateby_id")
 	@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 	private User updater;
 	/**
 	 * 建立人
 	 */
-	@ManyToOne(cascade =CascadeType.REFRESH,targetEntity = User.class,fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name="createby_id")
 	@NotFound(action = NotFoundAction.IGNORE)
 	@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
@@ -110,28 +112,31 @@ public class EtlJob  {
 	 */
 	private String remark;
 	
-	@OneToMany(targetEntity=EtlTask.class,cascade=CascadeType.REFRESH,mappedBy="job")
+	@OneToMany(targetEntity=EtlTask.class,cascade={javax.persistence.CascadeType.PERSIST,javax.persistence.CascadeType.REMOVE,javax.persistence.CascadeType.REFRESH},mappedBy="job")
 	@OrderBy("id ASC")
 	private Set<EtlTask> tasks;
+	@Transient
+	private Set<ColumnPair> columnPairs;
+	@Transient
+	private DatasetPair datasetPair;
 	
-	@OneToMany(targetEntity=JobColumnPair.class,cascade=CascadeType.REFRESH,mappedBy="job")
-	@OrderBy("id ASC")
-	private Set<JobColumnPair> columnPairs;
-	
-	public Set<JobColumnPair> getColumnPairs() {
+	public Set<ColumnPair> getColumnPairs() {
 		return columnPairs;
 	}
 
-	public void setColumnPairs(Set<JobColumnPair> columnPairs) {
+	public void setColumnPairs(Set<ColumnPair> columnPairs) {
 		this.columnPairs = columnPairs;
 	}
 
-	public void addColumnPair(JobColumnPair column){
-		if (columnPairs==null){
-			columnPairs=new HashSet<JobColumnPair>();
-		}
-		columnPairs.add(column);
+	public DatasetPair getDatasetPair() {
+		return datasetPair;
 	}
+
+	public void setDatasetPair(DatasetPair datasetPair) {
+		this.datasetPair = datasetPair;
+	}
+
+
 
 	public String getJobName() {
 		return jobName;
@@ -283,6 +288,12 @@ public class EtlJob  {
 			task.convertParams();
 		}
 	}
+	public void addColumnPair(ColumnPair column){
+		if (columnPairs==null){
+			columnPairs=new HashSet<ColumnPair>();
+		}
+		columnPairs.add(column);
+	}
 	
 	public void setTasksColumns(){
 		EtlTask readerTask=this.getReaderTask();
@@ -291,14 +302,14 @@ public class EtlJob  {
 			Set<DbColumn> columns=readerTask.getDataset().getColumns();
 			int i=1;
 			for(DbColumn column:columns){
-				JobColumnPair tcolumn=new JobColumnPair();
-				tcolumn.setJob(this);
+				ColumnPair tcolumn=new ColumnPair();
+//				tcolumn.setJob(this);
 				tcolumn.setReadColumnId(column.getId());
 				tcolumn.setReadColumnName(column.getColumnName());
-				tcolumn.setReadtask(readerTask);
+//				tcolumn.setReadtask(readerTask);
 				tcolumn.setReaderFieldType(ETLConstants.FIELD_SOURCETYPE_INITVALUE);
 				tcolumn.setWriterFieldType(ETLConstants.FIELD_TYPE_ORI);
-				tcolumn.setReadTaskId(readerTask.getId());
+//				tcolumn.setReadTaskId(readerTask.getId());
 				if (writerTask!=null){
 					DbColumn writecolumn=getTaskColumn(tcolumn.getReadColumnName(),writerTask);
 					if (writecolumn!=null){
@@ -309,8 +320,8 @@ public class EtlJob  {
 						tcolumn.setWriteColumnName(column.getColumnName());
 						tcolumn.setRemark(column.getColumnPname()+"->"+column.getColumnName()+"[无对应字段]");
 					}
-					tcolumn.setWritetask(writerTask);
-					tcolumn.setWriteTaskId(writerTask.getId());
+//					tcolumn.setWritetask(writerTask);
+//					tcolumn.setWriteTaskId(writerTask.getId());
 				}
 				tcolumn.setSortId(i);
 				i++;
@@ -329,9 +340,9 @@ public class EtlJob  {
 		return null;
 	}
 
-	public void setTaskColumns(List<JobColumnPair> tcols) {
+	public void setTaskColumns(List<ColumnPair> tcols) {
 		if (columnPairs==null){
-			columnPairs=new HashSet<JobColumnPair>();
+			columnPairs=new HashSet<ColumnPair>();
 		}
 		this.columnPairs.addAll(tcols);
 	}
