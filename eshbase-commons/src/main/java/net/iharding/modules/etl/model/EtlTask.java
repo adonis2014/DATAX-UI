@@ -19,6 +19,8 @@ import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 import net.iharding.core.jsonview.IdView;
+
+import net.iharding.core.orm.IdEntity;
 import net.iharding.modules.meta.model.Dataset;
 
 import org.guess.sys.model.User;
@@ -121,7 +123,7 @@ public class EtlTask  {
 	@Column(name="check_label")
 	private Integer checkLabel;
 	
-	@OneToMany(targetEntity=EtlTaskParam.class,fetch = FetchType.LAZY,cascade=CascadeType.ALL,mappedBy = "task")
+	@OneToMany(targetEntity=EtlTaskParam.class,fetch = FetchType.LAZY,cascade=CascadeType.REFRESH,mappedBy="task")
 	@OrderBy("id ASC")
 	private Set<EtlTaskParam> taskParams;
 	
@@ -187,7 +189,8 @@ public class EtlTask  {
 		this.pkFunctionName = pkFunctionName;
 	}
 
-	public void setDatasetId(Long datasetId) {
+
+	public void setDatasetId(long datasetId) {
 		this.datasetId = datasetId;
 	}
 

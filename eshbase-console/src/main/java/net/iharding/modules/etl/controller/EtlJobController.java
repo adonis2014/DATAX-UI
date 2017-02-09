@@ -14,11 +14,13 @@ import net.iharding.modules.etl.model.EtlPlugin;
 import net.iharding.modules.etl.model.EtlPluginParam;
 import net.iharding.modules.etl.model.EtlTask;
 import net.iharding.modules.etl.model.EtlTaskParam;
+import net.iharding.modules.etl.model.JobColumnPair;
 import net.iharding.modules.etl.service.EtlJobService;
 import net.iharding.modules.etl.service.EtlPluginService;
 import net.iharding.modules.meta.model.Dataset;
 import net.iharding.modules.meta.model.ColumnPair;
 import net.iharding.modules.meta.service.ColumnPairService;
+
 import net.iharding.modules.meta.service.DatasetService;
 
 import org.apache.commons.lang3.StringUtils;
@@ -244,6 +246,7 @@ public class EtlJobController extends BaseController<EtlJob>{
 			obj.setTasksColumns();
 			if (obj.getColumnPairs()!=null){
 				tcols=new ArrayList<ColumnPair>();
+
 				tcols.addAll(obj.getColumnPairs());
 			}
 		}
@@ -446,6 +449,7 @@ public class EtlJobController extends BaseController<EtlJob>{
 //				tc.setReadTaskId(tc.getReadtask().getId());
 //				tc.setWritetask(obj.getWriterTask());
 //				tc.setWriteTaskId(tc.getWritetask().getId());
+
 				tc.setReaderFieldType(NumberUtils.toInt(readerFieldTypes[i]));
 				tc.setWriterFieldType(NumberUtils.toInt(writerFieldTypes[i]));
 				tc.setFunctionName(functionNames[i]);

@@ -26,5 +26,6 @@ public class EtlTaskDaoImpl extends HibernateDao<EtlTask,Long> implements EtlTas
 			session.merge(etlTask);
 		}
 		
+
 	}
 }
