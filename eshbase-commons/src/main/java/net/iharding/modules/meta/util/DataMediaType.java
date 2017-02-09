@@ -39,6 +39,46 @@ public enum DataMediaType {
     public void setDbType(int dbType) {
         this.dbType = dbType;
     }
+    
+    public static DataMediaType valueOf(int value){
+        switch (value) {
+            case 1:
+                return MYSQL;
+            case 2:
+                return HBASE;
+            case 3:
+                return HDFS_ARVO;
+            case 4:
+                return ELASTICSEARCH;
+            case 5:
+                return MONGODB;
+            case 6:
+                return SOLR;
+            case 7:
+                return KAFKA;
+            case 8:
+                return PRESTODB;
+            case 9:
+                return CASSANDRA;
+            case 10:
+                return HIVE;
+            case 11:
+                return ORACLE;
+            case 12:
+                return PHOENIX;
+            case 13:
+                return PGSQL;
+            case 14:
+                return SQLSERVER;
+            case 15:
+                return MQ;
+            case 16:
+                return GREENPLUM;
+            default:
+                return null;
+            }
+    }
+
 
     public boolean isKafka() {
         return this.equals(DataMediaType.KAFKA);

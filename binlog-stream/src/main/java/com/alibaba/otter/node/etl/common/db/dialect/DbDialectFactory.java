@@ -36,13 +36,14 @@ import org.springframework.jdbc.core.ConnectionCallback;
 import org.springframework.jdbc.core.JdbcTemplate;
 
 import com.alibaba.otter.node.etl.common.datasource.DataSourceService;
-import com.alibaba.otter.shared.common.model.config.data.db.DbMediaSource;
 import com.datastax.driver.core.Cluster;
 import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheLoader;
 import com.google.common.cache.LoadingCache;
 import com.google.common.cache.RemovalListener;
 import com.google.common.cache.RemovalNotification;
+
+import net.iharding.modules.meta.wrapper.DbMediaSource;
 
 /**
  * @author jianghang 2011-10-27 下午02:12:06

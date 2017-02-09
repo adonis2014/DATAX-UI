@@ -16,7 +16,6 @@
 
 package com.alibaba.otter.node.etl.transform;
 
-import java.sql.Timestamp;
 import java.util.List;
 import java.util.Map;
 
@@ -33,8 +32,6 @@ import com.alibaba.otter.shared.common.model.config.enums.StageType;
 import com.alibaba.otter.shared.etl.model.BatchObject;
 import com.alibaba.otter.shared.etl.model.DbBatch;
 import com.alibaba.otter.shared.etl.model.EventData;
-import com.alibaba.otter.shared.etl.model.FileBatch;
-import com.alibaba.otter.shared.etl.model.FileData;
 import com.alibaba.otter.shared.etl.model.RowBatch;
 
 /**
@@ -89,10 +86,7 @@ public class TransformTask extends GlobalTask {
                             // 可能存在同一个Pipeline下有Mq和Db两种同步类型
                             dbBatch.setRowBatch((RowBatch) dataBatchs.get(EventData.class));
 
-                            if (dbBatch.getFileBatch() != null) {
-                                Map<Class, BatchObject> fileBatchs = otterTransformerFactory.transform(dbBatch.getFileBatch());
-                                dbBatch.setFileBatch((FileBatch) fileBatchs.get(FileData.class));
-                            }
+                           
                             // 传递给下一个流程
                             List<PipeKey> nextKeys = rowDataPipeDelegate.put(dbBatch, etlEventData.getNextNid());
                             etlEventData.setDesc(nextKeys);

@@ -17,31 +17,18 @@
 package com.alibaba.otter.node.etl.common.pipe.impl.memory;
 
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.InputStream;
 import java.text.MessageFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.List;
 import java.util.concurrent.ExecutionException;
 
-import org.apache.commons.io.FilenameUtils;
-import org.apache.commons.io.IOUtils;
-import org.apache.commons.lang.ClassUtils;
-import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.util.Assert;
 
 import com.alibaba.otter.node.etl.common.pipe.PipeDataType;
-import com.alibaba.otter.node.etl.common.pipe.exception.PipeException;
-import com.alibaba.otter.node.etl.load.loader.db.FileloadDumper;
 import com.alibaba.otter.shared.common.utils.NioUtils;
 import com.alibaba.otter.shared.etl.model.DbBatch;
-import com.alibaba.otter.shared.etl.model.FileBatch;
-import com.alibaba.otter.shared.etl.model.FileData;
 import com.alibaba.otter.shared.etl.model.Identity;
 
 public class RowDataMemoryPipe extends AbstractMemoryPipe<DbBatch, MemoryPipeKey> {
@@ -73,72 +60,8 @@ public class RowDataMemoryPipe extends AbstractMemoryPipe<DbBatch, MemoryPipeKey
 		}
     }
 
-    // 处理对应的附件
-    @SuppressWarnings("unused")
-    private File prepareFile(FileBatch fileBatch) {
-        // 处理构造对应的文件url
-        String dirname = buildFileName(fileBatch.getIdentity(), ClassUtils.getShortClassName(fileBatch.getClass()));
-        File dir = new File(downloadDir, dirname);
-        NioUtils.create(dir, false, 3);// 创建父目录
-        // 压缩对应的文件数据
-        List<FileData> fileDatas = fileBatch.getFiles();
+   
 
-        for (FileData fileData : fileDatas) {
-            String namespace = fileData.getNameSpace();
-            String path = fileData.getPath();
-            boolean isLocal = StringUtils.isBlank(namespace);
-            String entryName = null;
-            if (true == isLocal) {
-                entryName = FilenameUtils.getPath(path) + FilenameUtils.getName(path);
-            } else {
-                entryName = namespace + File.separator + path;
-            }
-
-            InputStream input = retrive(fileBatch.getIdentity(), fileData);
-            if (input == null) {
-                continue;
-            }
-            File entry = new File(dir, entryName);
-            NioUtils.create(entry.getParentFile(), false, retry);// 尝试创建父路径
-            FileOutputStream output = null;
-            try {
-                output = new FileOutputStream(entry);
-                NioUtils.copy(input, output);// 输出到压缩流中
-            } catch (Exception e) {
-                throw new PipeException("prepareFile error for file[" + entry.getPath() + "]");
-            } finally {
-                IOUtils.closeQuietly(output);
-            }
-        }
-
-        return dir;
-    }
-
-    private InputStream retrive(Identity identity, FileData fileData) {
-        boolean miss = false;
-        try {
-            if (StringUtils.isNotEmpty(fileData.getNameSpace())) {
-                throw new RuntimeException(fileData + " is not support!");
-            } else {
-                try {
-                    File source = new File(fileData.getPath());
-                    if (source.exists() && source.isFile()) {
-                        return new FileInputStream(source);
-                    } else {
-                        miss = true;
-                        return null;
-                    }
-                } catch (FileNotFoundException ex) {
-                    miss = true;
-                    return null;
-                }
-            }
-        } finally {
-            if (miss) {
-                logger.error(FileloadDumper.dumpMissFileDatas(identity, fileData));
-            }
-        }
-    }
 
     // 构造文件名
     private String buildFileName(Identity identity, String prefix) {

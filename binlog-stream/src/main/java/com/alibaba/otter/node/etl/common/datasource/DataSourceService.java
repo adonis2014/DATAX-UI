@@ -16,8 +16,9 @@
 
 package com.alibaba.otter.node.etl.common.datasource;
 
-import com.alibaba.otter.shared.common.model.config.data.DataMediaSource;
-import com.alibaba.otter.shared.common.model.config.data.db.DbMediaSource;
+
+import net.iharding.modules.meta.model.DataSourceWrapper;
+import net.iharding.modules.meta.wrapper.DbMediaSource;
 
 /**
  * 抽象所有的data source处理service,并且返回DataMedia的meta信息
@@ -33,7 +34,7 @@ public interface DataSourceService {
      * @param dataMediaId
      * @return
      */
-    <T> T getDataSource(long pipelineId, DataMediaSource dataMediaSource);
+    <T> T getDataSource(long pipelineId, DataSourceWrapper dataMediaSource);
 
     /**
      * 释放当前pipeline的数据源.

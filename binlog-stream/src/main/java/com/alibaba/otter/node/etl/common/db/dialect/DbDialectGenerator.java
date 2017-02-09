@@ -32,8 +32,9 @@ import com.alibaba.otter.node.etl.common.db.dialect.hbase.HBaseDialect;
 import com.alibaba.otter.node.etl.common.db.dialect.kafka.KafkaDialect;
 import com.alibaba.otter.node.etl.common.db.dialect.mysql.MysqlDialect;
 import com.alibaba.otter.node.etl.common.db.dialect.oracle.OracleDialect;
-import com.alibaba.otter.shared.common.model.config.data.DataMediaType;
 import com.datastax.driver.core.Cluster;
+
+import net.iharding.modules.meta.util.DataMediaType;
 
 /**
  * @author zebin.xuzb @ 2012-8-8

@@ -2,6 +2,7 @@ package net.iharding.modules.meta.wrapper;
 
 import java.util.Properties;
 
+import org.apache.commons.lang3.math.NumberUtils;
 
 import net.iharding.modules.meta.model.DataSourceWrapper;
 import net.iharding.modules.meta.model.MetaProperty;
@@ -77,7 +78,7 @@ public class DbMediaSource extends DataSourceWrapper {
 
     public DataMediaType getType() {
         if (type==null){
-            this.type= DataMediaType.valueOf(getPropertyValue("dbtype"));
+            this.type= DataMediaType.valueOf(NumberUtils.toInt(getPropertyValue("dbtype")));
         }
         return type;
     }

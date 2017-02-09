@@ -43,7 +43,7 @@ public class JmxConnectorServerFactoryBean extends ConnectorServerFactoryBean {
     public void afterPropertiesSet() throws JMException, IOException {
         Node node = configClientService.currentNode();
         int port = node.getPort().intValue() + 1;
-        Integer mbeanPort = node.getParameters().getMbeanPort();
+        Integer mbeanPort =9082;// node.getParameters().getMbeanPort();
         if (mbeanPort != null && mbeanPort != 0) {// 做个兼容处理，<=4.2.2版本没有mbeanPort设置
             port = mbeanPort;
         }

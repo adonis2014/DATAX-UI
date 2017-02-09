@@ -16,22 +16,18 @@
 
 package com.alibaba.otter.node.etl.extract;
 
-import java.sql.Timestamp;
 import java.util.List;
 
 import org.slf4j.MDC;
-import org.springframework.util.CollectionUtils;
 
 import com.alibaba.otter.node.etl.OtterConstants;
 import com.alibaba.otter.node.etl.common.jmx.StageAggregation.AggregationItem;
 import com.alibaba.otter.node.etl.common.pipe.PipeKey;
 import com.alibaba.otter.node.etl.common.task.GlobalTask;
-import com.alibaba.otter.node.etl.conflict.FileBatchConflictDetectService;
 import com.alibaba.otter.node.etl.extract.extractor.OtterExtractorFactory;
 import com.alibaba.otter.shared.arbitrate.model.EtlEventData;
 import com.alibaba.otter.shared.common.model.config.enums.StageType;
 import com.alibaba.otter.shared.etl.model.DbBatch;
-import com.alibaba.otter.shared.etl.model.FileBatch;
 
 /**
  * extract工作线程,负责桥接连接仲裁器
@@ -41,7 +37,6 @@ import com.alibaba.otter.shared.etl.model.FileBatch;
 public class ExtractTask extends GlobalTask {
 
     private OtterExtractorFactory          otterExtractorFactory;
-    private FileBatchConflictDetectService fileBatchConflictDetectService;
 
     public ExtractTask(Long pipelineId){
         super(pipelineId);
@@ -77,14 +72,7 @@ public class ExtractTask extends GlobalTask {
                             }
 
                             otterExtractorFactory.extract(dbBatch);// 重新装配一下数据
-                            if (dbBatch.getFileBatch() != null
-                                && !CollectionUtils.isEmpty(dbBatch.getFileBatch().getFiles())
-                                && pipeline.getParameters().getFileDetect()) { // 判断一下是否有文件同步，并且需要进行文件对比
-                                // 对比一下中美图片是否有变化
-                                FileBatch fileBatch = fileBatchConflictDetectService.detect(dbBatch.getFileBatch(),
-                                                                                            nextNodeId);
-                                dbBatch.setFileBatch(fileBatch);
-                            }
+                            
 
                             List<PipeKey> pipeKeys = rowDataPipeDelegate.put(dbBatch, nextNodeId);
                             etlEventData.setDesc(pipeKeys);
@@ -132,10 +120,6 @@ public class ExtractTask extends GlobalTask {
 
     public void setOtterExtractorFactory(OtterExtractorFactory otterExtractorFactory) {
         this.otterExtractorFactory = otterExtractorFactory;
-    }
-
-    public void setFileBatchConflictDetectService(FileBatchConflictDetectService fileBatchConflictDetectService) {
-        this.fileBatchConflictDetectService = fileBatchConflictDetectService;
     }
 
 }

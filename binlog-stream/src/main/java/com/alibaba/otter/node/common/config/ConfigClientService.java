@@ -63,12 +63,6 @@ public interface ConfigClientService extends ArbitrateConfig {
      */
     public Project findProjectByPipelineId(Long pipelineId);
 
-    /**
-     * 根据pipelineId查询相对的Pipeline对象
-     * 
-     * @param pipelineId
-     * @return
-     */
-    public Pipeline findOppositePipeline(Long pipelineId);
+   
 
 }

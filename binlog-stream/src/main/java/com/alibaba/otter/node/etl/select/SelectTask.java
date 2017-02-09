@@ -42,7 +42,6 @@ import com.alibaba.otter.node.etl.select.selector.OtterSelector;
 import com.alibaba.otter.node.etl.select.selector.OtterSelectorFactory;
 import com.alibaba.otter.shared.arbitrate.model.EtlEventData;
 import com.alibaba.otter.shared.arbitrate.model.TerminEventData;
-import com.alibaba.otter.shared.common.model.config.channel.Channel;
 import com.alibaba.otter.shared.common.model.config.enums.StageType;
 import com.alibaba.otter.shared.common.model.statistics.delay.DelayCount;
 import com.alibaba.otter.shared.common.utils.lock.BooleanMutex;
@@ -50,6 +49,8 @@ import com.alibaba.otter.shared.etl.model.DbBatch;
 import com.alibaba.otter.shared.etl.model.EventData;
 import com.alibaba.otter.shared.etl.model.Identity;
 import com.alibaba.otter.shared.etl.model.RowBatch;
+
+import net.iharding.modules.meta.model.Project;
 
 /**
  * select流处理模式的实现版本
@@ -290,7 +291,7 @@ public class SelectTask extends GlobalTask {
                                 startTime = eventData.get(0).getExecuteTime();
                             }
 
-                            Channel channel = configClientService.findProjectByPipelineId(pipelineId);
+                            Project channel = configClientService.findProjectByPipelineId(pipelineId);
                             RowBatch rowBatch = new RowBatch();
                             // 构造唯一标识
                             Identity identity = new Identity();

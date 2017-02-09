@@ -56,7 +56,7 @@ public class ConfigClientServiceImpl implements InternalConfigClientService, Arb
     private Long timeout = DEFAULT_PERIOD;
     private Long nid;
     private NodeCommmunicationClient nodeCommmunicationClient;
-    private RefreshMemoryMirror<Long, Pipeline> pipelineCache;
+    private RefreshMemoryMirror<Long, Project> projectCache;
     private LoadingCache<Long, Long> projectMapping; // 将pipelineId映射为projectId
     private RefreshMemoryMirror<Long, Node> nodeCache;
 
@@ -75,14 +75,14 @@ public class ConfigClientServiceImpl implements InternalConfigClientService, Arb
         return node;
     }
 
-    public Pipeline findChannel(Long pipelineId) {
-        return pipelineCache.get(pipelineId);
+    public Project findProject(Long pipelineId) {
+        return projectCache.get(pipelineId);
     }
 
-    public Project findChannelByPipelineId(Long pipelineId) {
+    public Project findProjectByPipelineId(Long pipelineId) {
         try {
-            Long channelId = projectMapping.get(pipelineId);
-            return pipelineCache.get(channelId);
+            Long projectId = projectMapping.get(pipelineId);
+            return projectCache.get(projectId);
         } catch (ExecutionException e) {
             e.printStackTrace();
         }
@@ -92,7 +92,7 @@ public class ConfigClientServiceImpl implements InternalConfigClientService, Arb
     public Pipeline findOppositePipeline(Long pipelineId) {
         try {
             Long channelId = projectMapping.get(pipelineId);
-            Channel channel = pipelineCache.get(channelId);
+            Project channel = projectCache.get(channelId);
             List<Pipeline> pipelines = channel.getPipelines();
             for (Pipeline pipeline : pipelines) {
                 if (pipeline.getId().equals(pipelineId) == false) {// 这里假定pipeline只有两个
@@ -108,7 +108,7 @@ public class ConfigClientServiceImpl implements InternalConfigClientService, Arb
     public Pipeline findPipeline(Long pipelineId) {
         try {
             Long channelId = projectMapping.get(pipelineId);
-            Channel channel = pipelineCache.get(channelId);
+            Channel channel = projectCache.get(channelId);
             List<Pipeline> pipelines = channel.getPipelines();
             for (Pipeline pipeline : pipelines) {
                 if (pipeline.getId().equals(pipelineId)) {
@@ -146,7 +146,7 @@ public class ConfigClientServiceImpl implements InternalConfigClientService, Arb
                             if (obj != null && obj instanceof Pipeline) {
                                 Pipeline channel = (Pipeline) obj;
                                 updateMapping(channel, pipelineId);// 排除下自己
-                                pipelineCache.put(channel.getId(), channel);// 更新下channelCache
+                                projectCache.put(channel.getId(), channel);// 更新下channelCache
                                 return channel.getId();
                             }
                         } catch (Exception e) {
@@ -177,7 +177,7 @@ public class ConfigClientServiceImpl implements InternalConfigClientService, Arb
             }
         });
 
-        pipelineCache = new RefreshMemoryMirror<Long, Channel>(timeout, new ComputeFunction<Long, Channel>() {
+        projectCache = new RefreshMemoryMirror<Long, Channel>(timeout, new ComputeFunction<Long, Channel>() {
 
             public Channel apply(Long key, Channel oldValue) {
                 FindChannelEvent event = new FindChannelEvent();
@@ -199,12 +199,16 @@ public class ConfigClientServiceImpl implements InternalConfigClientService, Arb
         });
     }
 
-    public void createOrUpdateChannel(Channel channel) {
-        pipelineCache.put(channel.getId(), channel);
-        updateMapping(channel, null);
+
+    
+    @Override
+    public void createOrUpdatePipeline(Pipeline pipeline) {
+        projectCache.put(pipeline.getId(), pipeline);
+        updateMapping(pipeline, null);
+        
     }
 
-    private void updateMapping(Channel channel, Long excludeId) {
+    private void updateMapping(Pipeline channel, Long excludeId) {
         Long channelId = channel.getId();
         List<Pipeline> pipelines = channel.getPipelines();
         for (Pipeline pipeline : pipelines) {
@@ -223,5 +227,7 @@ public class ConfigClientServiceImpl implements InternalConfigClientService, Arb
     public void setTimeout(Long timeout) {
         this.timeout = timeout;
     }
+
+   
 
 }

@@ -67,6 +67,10 @@ import com.google.common.cache.LoadingCache;
 import com.google.common.cache.RemovalListener;
 import com.google.common.cache.RemovalNotification;
 
+import net.iharding.modules.meta.model.DataSourceWrapper;
+import net.iharding.modules.meta.util.DataMediaType;
+import net.iharding.modules.meta.wrapper.DbMediaSource;
+
 /**
  * Comment of DataSourceServiceImpl
  * 
@@ -156,15 +160,15 @@ public class DBDataSourceService implements DataSourceService, DisposableBean {
 									@Override
 									public Object load(DbMediaSource dbMediaSource) throws Exception {
 										// 扩展功能,可以自定义一些自己实现的 dataSource
-										if (dbMediaSource.getType().isCassandra()) {
+										if (dbMediaSource.getDbType()==DataMediaType.CASSANDRA.getDbType()) {
 											return getCluster(dbMediaSource);
-										} else if (dbMediaSource.getType().isElasticSearch()) {
+										} else if (dbMediaSource.getDbType()==DataMediaType.ELASTICSEARCH.getDbType()) {
 											return getClient(dbMediaSource);
-										} else if (dbMediaSource.getType().isHBase()) {
+										} else if (dbMediaSource.getDbType()==DataMediaType.HBASE.getDbType()) {
 											return getHBaseConnection(dbMediaSource);
-										} else if (dbMediaSource.getType().isHDFSArvo()) {
+										} else if (dbMediaSource.getDbType()==DataMediaType.HDFS_ARVO.getDbType()) {
 											return getHDFS(dbMediaSource);
-										} else if (dbMediaSource.getType().isKafka()) {
+										} else if (dbMediaSource.getDbType()==DataMediaType.KAFKA.getDbType()) {
 											return getProducer(dbMediaSource);
 										} else {
 											DataSource customDataSource = preCreate(pipelineId, dbMediaSource);
@@ -184,10 +188,10 @@ public class DBDataSourceService implements DataSourceService, DisposableBean {
 	}
 
 	@SuppressWarnings("unchecked")
-	public Object getDataSource(long pipelineId, DataMediaSource dataMediaSource) {
+	public Object getDataSource(long pipelineId, DataSourceWrapper dataMediaSource) {
 		Assert.notNull(dataMediaSource);
-		DbMediaSource dbMediaSource = (DbMediaSource) dataMediaSource;
 		try {
+		    DbMediaSource dbMediaSource=(DbMediaSource)dataMediaSource;
 			return dataSources.get(pipelineId).get(dbMediaSource);
 		} catch (ExecutionException e) {
 			return null;
