@@ -97,7 +97,7 @@
 			</exclusions>
 		</dependency>
 		<dependency>
-			<groupId>cn.uncode</groupId>
+			<groupId>net.iharding</groupId>
 			<artifactId>eshbase-schedule</artifactId>
 			<version>0.1-beta</version>
 			<exclusions>

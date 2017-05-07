@@ -2,7 +2,7 @@
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
 	<groupId>net.iharding</groupId>
-	<artifactId>eshbase-commons</artifactId>
+	<artifactId>eshbase-schedule</artifactId>
  	<name>eshbase-schedule</name>
   	<description>Job scheduler.基于开源的uncode-schedule改造</description>
   	<url>https://git.oschina.net/uncode/uncode-schedule</url>

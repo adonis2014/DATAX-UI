@@ -713,6 +713,10 @@
 					<groupId>commons-lang</groupId>
 					<artifactId>commons-lang</artifactId>
 				</exclusion>
+				<exclusion>
+					<groupId>jdk.tools</groupId>
+					<artifactId>jdk.tools</artifactId>
+				</exclusion>
 			</exclusions>
 		</dependency>
 		<dependency>
