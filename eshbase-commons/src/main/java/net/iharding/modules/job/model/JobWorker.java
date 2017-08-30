@@ -161,7 +161,7 @@ public class JobWorker extends IdEntity {
 		td.setTargetMethod(methodName);
 		td.setParams(jobParameter);
 		td.setStartTime(new Date());
-		td.setWorkerId(id);
+//		td.setWorkerId(id);
 		return td;
 	}
 	/**

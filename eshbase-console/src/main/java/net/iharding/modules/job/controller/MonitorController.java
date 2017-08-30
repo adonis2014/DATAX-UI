@@ -26,7 +26,7 @@ public class MonitorController {
 	public ModelAndView list(){
 		ModelAndView mav = new ModelAndView(listView);
 		try {
-			List<ScheduleServer> servers = ConsoleManager.getScheduleManager().getScheduleDataManager().selectServer();
+			List<String> servers = ConsoleManager.getScheduleManager().getScheduleDataManager().loadScheduleServerNames();
 			mav.addObject("servers", servers);
 			List<TaskDefine> tasks = ConsoleManager.queryScheduleTask();
 			mav.addObject("tasks", tasks);
